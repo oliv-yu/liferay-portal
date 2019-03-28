@@ -5,7 +5,8 @@ import {getLang} from 'utils/language.es';
 
 class PageToolbar extends Component {
 	static props = {
-		submitDisabled: PropTypes.bool
+		submitDisabled: PropTypes.bool,
+		onCancel: PropTypes.string
 	};
 
 	static defaultProps = {
@@ -13,6 +14,8 @@ class PageToolbar extends Component {
 	};
 
 	render() {
+		const {submitDisabled, onCancel} = this.props;
+
 		return (
 			<nav className="page-toolbar-root tbar upper-tbar">
 				<div className="container-fluid container-fluid-max-xl">
@@ -22,6 +25,7 @@ class PageToolbar extends Component {
 						<li className="tbar-item">
 							<ClayButton
 								borderless
+								href={onCancel}
 								label={getLang('cancel')}
 								size="sm"
 							/>
@@ -36,10 +40,11 @@ class PageToolbar extends Component {
 
 						<li className="tbar-item">
 							<ClayButton
-								disabled={this.props.submitDisabled}
+								disabled={submitDisabled}
 								displayStyle="primary"
 								label={getLang('publish')}
 								size="sm"
+								type="submit"
 							/>
 						</li>
 					</ul>

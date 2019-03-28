@@ -21,12 +21,13 @@ import DragLayer from './list/DragLayer.es';
 
 class ResultsRankingForm extends Component {
 	static propTypes = {
+		cancelUrl: PropTypes.string.isRequired,
 		searchTerm: PropTypes.string.isRequired
 	};
 
 	state = {
 		addResultIds: [],
-		aliases: ['one', 'two', 'three'],
+		aliases: [],
 		dataLoading: false,
 
 		/**
@@ -48,6 +49,7 @@ class ResultsRankingForm extends Component {
 		 * The list of IDs that are currently pinned.
 		 */
 		resultIdsPinned: [],
+		searchBarTerm: '',
 		totalResultsHiddenCount: 0,
 		totalResultsVisibleCount: 0
 	};
@@ -55,6 +57,8 @@ class ResultsRankingForm extends Component {
 	constructor(props) {
 		super(props);
 
+		this._initialAliases = this.state.aliases;
+		this._initialResultIds = [];
 		this._initialResultIdsHidden = [];
 		this._initialResultIdsPinned = [];
 	}
@@ -65,6 +69,24 @@ class ResultsRankingForm extends Component {
 	}
 
 	/**
+	 * Clears past resultIds, both pinned and hidden lists as a preface for
+	 * using the searchbar.
+	 */
+	_clearResultsData = () => {
+		this.setState({
+			resultIds: [],
+			resultIdsHidden: [],
+			resultIdsPinned: [],
+			totalResultsHiddenCount: 0,
+			totalResultsVisibleCount: 0
+		});
+
+		this._initialResultIds = [];
+		this._initialResultIdsHidden = [];
+		this._initialResultIdsPinned = [];
+	};
+
+	/**
 	 * Retrieves results data from a search term. This will also handle loading
 	 * more data to the results list.
 	 * @TODO
@@ -72,14 +94,18 @@ class ResultsRankingForm extends Component {
 	 * - Remove simulated loading with setTimeout
 	 */
 	_fetchResultsData = () => {
-		const {resultIds} = this.state;
-
 		this.setState({dataLoading: true});
 
 		setTimeout(() => {
-			const dataResponse = getMockResultsData(10, resultIds.length, 100, {
-				hidden: false
-			});
+			const dataResponse = getMockResultsData(
+				10,
+				this._initialResultIds.length,
+				100,
+				this.state.searchBarTerm,
+				{
+					hidden: false
+				}
+			);
 
 			const mappedData = resultsDataToMap(dataResponse.data);
 
@@ -93,6 +119,8 @@ class ResultsRankingForm extends Component {
 			];
 
 			const ids = dataResponse.data.map(({id}) => id);
+
+			this._initialResultIds = [...this._initialResultIds, ...ids];
 
 			this.setState(state => ({
 				dataMap: {...state.dataMap, ...mappedData},
@@ -110,10 +138,16 @@ class ResultsRankingForm extends Component {
 	 * @TODO
 	 * - Swap out mock data
 	 */
-	_fetchResultsDataHidden = (startIndex = 0) => {
-		const dataResponse = getMockResultsData(10, startIndex, 400, {
-			hidden: true
-		});
+	_fetchResultsDataHidden = () => {
+		const dataResponse = getMockResultsData(
+			10,
+			this._initialResultIdsHidden.length,
+			400,
+			this.state.searchBarTerm,
+			{
+				hidden: true
+			}
+		);
 
 		const mappedData = resultsDataToMap(dataResponse.data);
 
@@ -126,8 +160,70 @@ class ResultsRankingForm extends Component {
 
 		this.setState(state => ({
 			dataMap: {...state.dataMap, ...mappedData},
-			resultIdsHidden: [...state.resultIdsHidden, ...ids]
+			resultIdsHidden: [...state.resultIdsHidden, ...ids],
+			totalResultsHiddenCount: dataResponse.items
 		}));
+	};
+
+	/**
+	 * Checks whether changes have been made for submission. Checks the lengths of
+	 * each hidden/pinned added/removed array and the aliases list.
+	 */
+	_getDisablePublish = () => {
+		const disablePublish =
+			this._initialAliases.length === this.state.aliases.length &&
+			this._initialAliases.every(item =>
+				this.state.aliases.includes(item)
+			) &&
+			this._getHiddenAdded().length === 0 &&
+			this._getHiddenRemoved().length === 0 &&
+			this._getPinnedRemoved().length === 0 &&
+			this._getPinnedAdded().length === 0;
+
+		return disablePublish;
+	};
+
+	/**
+	 * Gets the added changes in hidden from the initial and current states.
+	 */
+	_getHiddenAdded = () => {
+		const hiddenAdded = this.state.resultIdsHidden.filter(
+			item => !this._initialResultIdsHidden.includes(item)
+		);
+
+		return hiddenAdded;
+	};
+
+	/**
+	 * Gets the removed changes in hidden from the initial and current states.
+	 */
+	_getHiddenRemoved = () => {
+		const hiddenRemoved = this._initialResultIdsHidden.filter(
+			item => !this.state.resultIdsHidden.includes(item)
+		);
+
+		return hiddenRemoved;
+	};
+
+	/**
+	 * Gets the removed changes in pinned from the initial and current states.
+	 */
+	_getPinnedRemoved = () => {
+		const pinnedRemoved = this._initialResultIdsPinned.filter(
+			item => !this.state.resultIdsPinned.includes(item)
+		);
+
+		return pinnedRemoved;
+	};
+
+	/**
+	 * Gets the added changes in pinned from the initial and current states.
+	 */
+	_getPinnedAdded = () => {
+		const pinnedAdded = this.state.resultIdsPinned.filter(
+			item => !this._initialResultIdsPinned.includes(item)
+		);
+		return pinnedAdded;
 	};
 
 	/**
@@ -173,6 +269,9 @@ class ResultsRankingForm extends Component {
 				hidden: hide,
 				pinned: false
 			}),
+			resultIds: hide
+				? removeIdFromList(state.resultIds, ids)
+				: [...state.resultIds, ...ids],
 			resultIdsHidden: hide
 				? [...ids, ...state.resultIdsHidden]
 				: removeIdFromList(state.resultIdsHidden, ids),
@@ -217,9 +316,12 @@ class ResultsRankingForm extends Component {
 
 		const newMappedData = updateDataMap(
 			mappedData,
-			addedResultsDataList.map(({id}) => id),
+			addedResultsDataList
+				.filter(result => !this._initialResultIds.includes(result.id))
+				.map(({id}) => id),
 			{
-				pinned: true
+				pinned: true,
+				addedResult: true
 			}
 		);
 
@@ -234,6 +336,22 @@ class ResultsRankingForm extends Component {
 				...state.resultIdsPinned
 			]
 		}));
+	};
+
+	/**
+	 * Handles updating the term in the searchbar, which also clears the
+	 * prior resultIds.
+	 * @param {string} searchBarTerm The new term
+	 * (array of objects).
+	 */
+	_handleUpdateSearchBarTerm = searchBarTerm => {
+		this.setState({
+			searchBarTerm: searchBarTerm
+		});
+
+		this._clearResultsData();
+		this._fetchResultsData();
+		this._fetchResultsDataHidden();
 	};
 
 	/**
@@ -258,13 +376,14 @@ class ResultsRankingForm extends Component {
 	};
 
 	render() {
-		const {searchTerm} = this.props;
+		const {cancelUrl, searchTerm} = this.props;
 
 		const {
 			aliases,
 			dataMap,
 			dataLoading,
 			resultIdsHidden,
+			searchBarTerm,
 			selected,
 			totalResultsHiddenCount,
 			totalResultsVisibleCount
@@ -272,7 +391,45 @@ class ResultsRankingForm extends Component {
 
 		return (
 			<div className="results-ranking-form">
-				<PageToolbar />
+				<input
+					id="aliases"
+					name="aliases"
+					type="hidden"
+					value={aliases}
+				/>
+
+				<input
+					id="hiddenAdded"
+					name="hiddenAdded"
+					type="hidden"
+					value={this._getHiddenAdded()}
+				/>
+
+				<input
+					id="hiddenRemoved"
+					name="hiddenRemoved"
+					type="hidden"
+					value={this._getHiddenRemoved()}
+				/>
+
+				<input
+					id="pinnedAdded"
+					name="pinnedAdded"
+					type="hidden"
+					value={this._getPinnedAdded()}
+				/>
+
+				<input
+					id="pinnedRemoved"
+					name="pinnedRemoved"
+					type="hidden"
+					value={this._getPinnedRemoved()}
+				/>
+
+				<PageToolbar
+					onCancel={cancelUrl}
+					submitDisabled={this._getDisablePublish()}
+				/>
 
 				<div className="container-fluid container-fluid-max-xl container-form-lg">
 					<Alias
@@ -308,7 +465,11 @@ class ResultsRankingForm extends Component {
 										onClickPin={this._handleClickPin}
 										onLoadResults={this._fetchResultsData}
 										onMove={this._handleMove}
+										onUpdateSearchBarTerm={
+											this._handleUpdateSearchBarTerm
+										}
 										resultIds={this._getResultIdsVisible()}
+										searchBarTerm={searchBarTerm}
 										selected={selected}
 										totalResultsCount={
 											totalResultsVisibleCount
@@ -324,7 +485,11 @@ class ResultsRankingForm extends Component {
 										onLoadResults={
 											this._fetchResultsDataHidden
 										}
+										onUpdateSearchBarTerm={
+											this._handleUpdateSearchBarTerm
+										}
 										resultIds={resultIdsHidden}
+										searchBarTerm={searchBarTerm}
 										selected={selected}
 										totalResultsCount={
 											totalResultsHiddenCount
