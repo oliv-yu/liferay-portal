@@ -182,8 +182,9 @@ class Item extends Component {
 	}
 
 	_handleAddedResultMouseOver = event => {
-		// const message = getLang('search-your-engine-to-display-results');
-		// Liferay.Portal.ToolTip.show(event.currentTarget, message);
+		const message = getLang('search-your-engine-to-display-results');
+
+		Liferay.Portal.ToolTip.show(event.currentTarget, message);
 	};
 
 	_handleSelect = () => {

@@ -186,45 +186,34 @@ class ResultsRankingForm extends Component {
 	/**
 	 * Gets the added changes in hidden from the initial and current states.
 	 */
-	_getHiddenAdded = () => {
-		const hiddenAdded = this.state.resultIdsHidden.filter(
+	_getHiddenAdded = () =>
+		this.state.resultIdsHidden.filter(
 			item => !this._initialResultIdsHidden.includes(item)
 		);
-
-		return hiddenAdded;
-	};
 
 	/**
 	 * Gets the removed changes in hidden from the initial and current states.
 	 */
-	_getHiddenRemoved = () => {
-		const hiddenRemoved = this._initialResultIdsHidden.filter(
+	_getHiddenRemoved = () =>
+		this._initialResultIdsHidden.filter(
 			item => !this.state.resultIdsHidden.includes(item)
 		);
-
-		return hiddenRemoved;
-	};
 
 	/**
 	 * Gets the removed changes in pinned from the initial and current states.
 	 */
-	_getPinnedRemoved = () => {
-		const pinnedRemoved = this._initialResultIdsPinned.filter(
+	_getPinnedRemoved = () =>
+		this._initialResultIdsPinned.filter(
 			item => !this.state.resultIdsPinned.includes(item)
 		);
-
-		return pinnedRemoved;
-	};
 
 	/**
 	 * Gets the added changes in pinned from the initial and current states.
 	 */
-	_getPinnedAdded = () => {
-		const pinnedAdded = this.state.resultIdsPinned.filter(
+	_getPinnedAdded = () =>
+		this.state.resultIdsPinned.filter(
 			item => !this._initialResultIdsPinned.includes(item)
 		);
-		return pinnedAdded;
-	};
 
 	/**
 	 * Gets the visible data results to show in the visible tab. Organizes the
@@ -320,8 +309,8 @@ class ResultsRankingForm extends Component {
 				.filter(result => !this._initialResultIds.includes(result.id))
 				.map(({id}) => id),
 			{
-				pinned: true,
-				addedResult: true
+				addedResult: true,
+				pinned: true
 			}
 		);
 
@@ -339,19 +328,14 @@ class ResultsRankingForm extends Component {
 	};
 
 	/**
-	 * Handles updating the term in the searchbar, which also clears the
-	 * prior resultIds.
+	 * Handles updating the term in the searchbar, which gets applied for
+	 * fetching data.
 	 * @param {string} searchBarTerm The new term
-	 * (array of objects).
 	 */
 	_handleUpdateSearchBarTerm = searchBarTerm => {
 		this.setState({
 			searchBarTerm: searchBarTerm
 		});
-
-		this._clearResultsData();
-		this._fetchResultsData();
-		this._fetchResultsDataHidden();
 	};
 
 	/**
@@ -362,6 +346,17 @@ class ResultsRankingForm extends Component {
 		this.setState(state => ({
 			aliases: state.aliases.filter(item => item !== label)
 		}));
+	};
+
+	/**
+	 * Handles the searchbar enter, in which results are cleared and replaced
+	 * with fetched data with the new search parameter.
+	 */
+	_handleSearchBarEnter = () => {
+		this._clearResultsData();
+
+		this._fetchResultsData();
+		this._fetchResultsDataHidden();
 	};
 
 	/**
@@ -380,8 +375,8 @@ class ResultsRankingForm extends Component {
 
 		const {
 			aliases,
-			dataMap,
 			dataLoading,
+			dataMap,
 			resultIdsHidden,
 			searchBarTerm,
 			selected,
@@ -456,8 +451,8 @@ class ResultsRankingForm extends Component {
 
 								<ClayTabPanel>
 									<List
-										dataMap={dataMap}
 										dataLoading={dataLoading}
+										dataMap={dataMap}
 										onAddResultSubmit={
 											this._handleUpdateAddResultIds
 										}
@@ -465,6 +460,9 @@ class ResultsRankingForm extends Component {
 										onClickPin={this._handleClickPin}
 										onLoadResults={this._fetchResultsData}
 										onMove={this._handleMove}
+										onSearchBarEnter={
+											this._handleSearchBarEnter
+										}
 										onUpdateSearchBarTerm={
 											this._handleUpdateSearchBarTerm
 										}
@@ -479,11 +477,14 @@ class ResultsRankingForm extends Component {
 
 								<ClayTabPanel>
 									<List
-										dataMap={dataMap}
 										dataLoading={dataLoading}
+										dataMap={dataMap}
 										onClickHide={this._handleClickHide}
 										onLoadResults={
 											this._fetchResultsDataHidden
+										}
+										onSearchBarEnter={
+											this._handleSearchBarEnter
 										}
 										onUpdateSearchBarTerm={
 											this._handleUpdateSearchBarTerm

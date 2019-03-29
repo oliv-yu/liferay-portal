@@ -17,6 +17,7 @@ class List extends Component {
 		onClickHide: PropTypes.func,
 		onClickPin: PropTypes.func,
 		onLoadResults: PropTypes.func,
+		onSearchBarEnter: PropTypes.func,
 		onUpdateSearchBarTerm: PropTypes.func,
 		onMove: PropTypes.func,
 		searchBarTerm: PropTypes.string,
@@ -127,6 +128,7 @@ class List extends Component {
 			dataLoading,
 			onAddResultSubmit,
 			onClickPin,
+			onSearchBarEnter,
 			onUpdateSearchBarTerm,
 			resultIds,
 			searchBarTerm
@@ -141,6 +143,7 @@ class List extends Component {
 					onAddResultSubmit={onAddResultSubmit}
 					onClickHide={this._handleClickHide}
 					onClickPin={onClickPin}
+					onSearchBarEnter={onSearchBarEnter}
 					onSelectAll={this._handleSelectAll}
 					onSelectClear={this._handleSelectClear}
 					onUpdateSearchBarTerm={onUpdateSearchBarTerm}

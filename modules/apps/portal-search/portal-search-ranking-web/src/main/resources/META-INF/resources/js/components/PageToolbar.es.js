@@ -5,8 +5,8 @@ import {getLang} from 'utils/language.es';
 
 class PageToolbar extends Component {
 	static props = {
-		submitDisabled: PropTypes.bool,
-		onCancel: PropTypes.string
+		onCancel: PropTypes.string,
+		submitDisabled: PropTypes.bool
 	};
 
 	static defaultProps = {
@@ -14,7 +14,7 @@ class PageToolbar extends Component {
 	};
 
 	render() {
-		const {submitDisabled, onCancel} = this.props;
+		const {onCancel, submitDisabled} = this.props;
 
 		return (
 			<nav className="page-toolbar-root tbar upper-tbar">

@@ -17,6 +17,7 @@ class SearchBar extends Component {
 		onAddResultSubmit: PropTypes.func,
 		onClickHide: PropTypes.func,
 		onClickPin: PropTypes.func,
+		onSearchBarEnter: PropTypes.func,
 		onSelectAll: PropTypes.func.isRequired,
 		onSelectClear: PropTypes.func.isRequired,
 		onUpdateSearchBarTerm: PropTypes.func,
@@ -31,10 +32,6 @@ class SearchBar extends Component {
 	};
 
 	selectAllCheckbox = React.createRef();
-
-	state = {
-		resultSearch: this.props.searchBarTerm
-	};
 
 	/**
 	 * Sets the indeterminate state of the select all checkbox.
@@ -73,13 +70,11 @@ class SearchBar extends Component {
 	_handleSearchChange = event => {
 		event.preventDefault();
 
-		this.setState({
-			resultSearch: event.target.value
-		});
+		this.props.onUpdateSearchBarTerm(event.target.value);
 	};
 
 	_handleSearchEnter = () => {
-		this.props.onUpdateSearchBarTerm(this.state.resultSearch);
+		this.props.onSearchBarEnter();
 	};
 
 	_handleSearchKeyDown = event => {
@@ -116,9 +111,12 @@ class SearchBar extends Component {
 	};
 
 	render() {
-		const {onAddResultSubmit, resultIds, selectedIds} = this.props;
-
-		const {resultSearch} = this.state;
+		const {
+			onAddResultSubmit,
+			resultIds,
+			searchBarTerm,
+			selectedIds
+		} = this.props;
 
 		const classManagementBar = getCN(
 			'management-bar',
@@ -255,7 +253,7 @@ class SearchBar extends Component {
 															'contains-text'
 														)}
 														type="text"
-														value={resultSearch}
+														value={searchBarTerm}
 													/>
 
 													<div className="input-group-inset-item input-group-inset-item-after">
