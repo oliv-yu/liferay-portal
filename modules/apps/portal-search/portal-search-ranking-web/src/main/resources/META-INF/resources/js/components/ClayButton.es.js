@@ -1,23 +1,13 @@
-import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
 import ClayIcon from './ClayIcon.es';
 import getCN from 'classnames';
+import React, {Component} from 'react';
+import {PropTypes} from 'prop-types';
 
 class ClayButton extends Component {
 	static propTypes = {
 		borderless: PropTypes.bool,
 		className: PropTypes.string,
-		displayStyle: PropTypes.oneOf([
-			'primary',
-			'secondary',
-			'info',
-			'success',
-			'warning',
-			'danger',
-			'dark',
-			'light',
-			'unstyled'
-		]),
+		displayStyle: PropTypes.oneOf(['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'dark', 'light', 'unstyled']),
 		href: PropTypes.string,
 		iconName: PropTypes.string,
 		label: PropTypes.string,
