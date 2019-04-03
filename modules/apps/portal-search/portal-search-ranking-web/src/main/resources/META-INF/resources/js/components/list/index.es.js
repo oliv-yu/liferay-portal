@@ -1,4 +1,5 @@
-import ClayButton from '../shared/ClayButton.es';
+import ClayButton from 'components/shared/ClayButton.es';
+import ClayEmptyState from 'components/shared/ClayEmptyState.es';
 import DragLayer from './DragLayer.es';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Item from './Item.es';
@@ -156,12 +157,14 @@ class List extends Component {
 					selectedIds={selectedIds}
 				/>
 
-				<ul className="list-group">
-					{resultIds.map(
-						(id, index, arr) =>
-							this._renderItem(id, index, arr)
-					)}
-				</ul>
+				{!!resultIds.length && (
+					<ul className="list-group">
+						{resultIds.map(
+							(id, index, arr) =>
+								this._renderItem(id, index, arr)
+						)}
+					</ul>
+				)}
 
 				{dataLoading && (
 					<div className="load-more-container">
@@ -169,15 +172,21 @@ class List extends Component {
 					</div>
 				)}
 
-				{!dataLoading && this._hasMoreData() && (
-					<div className="load-more-container">
-						<ClayButton
-							className="load-more-button"
-							label={Liferay.Language.get('load-more-results')}
-							onClick={this._handleLoadMoreResults}
-						/>
-					</div>
-				)}
+				{!dataLoading &&
+					<React.Fragment>
+						{!resultIds.length && <ClayEmptyState />}
+
+						{this._hasMoreData() && (
+							<div className="load-more-container">
+								<ClayButton
+									className="load-more-button"
+									label={Liferay.Language.get('load-more-results')}
+									onClick={this._handleLoadMoreResults}
+								/>
+							</div>
+						)}
+					</React.Fragment>
+				}
 			</div>
 		);
 	}

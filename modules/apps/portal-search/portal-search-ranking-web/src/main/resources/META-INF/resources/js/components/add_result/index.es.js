@@ -1,4 +1,5 @@
 import ClayButton from 'components/shared/ClayButton.es';
+import ClayEmptyState from 'components/shared/ClayEmptyState.es';
 import getCN from 'classnames';
 import Item from 'components/list/Item.es';
 import PaginationBar from './PaginationBar.es';
@@ -24,6 +25,7 @@ class AddResult extends Component {
 		addResultSelectedIds: [],
 		dataLoading: false,
 		dataMap: {},
+		displayInitialMessage: true,
 		page: 1,
 		results: {},
 		selectedDelta: 10,
@@ -79,6 +81,7 @@ class AddResult extends Component {
 									).data
 								)
 							},
+							displayInitialMessage: false,
 							results: getMockResultsData(
 								state.selectedDelta,
 								state.page * state.selectedDelta - state.selectedDelta + 1,
@@ -220,6 +223,7 @@ class AddResult extends Component {
 			addResultSearchTerm,
 			addResultSelectedIds,
 			dataLoading,
+			displayInitialMessage,
 			page,
 			results,
 			selectedDelta,
@@ -299,19 +303,19 @@ class AddResult extends Component {
 							</div>
 						</div>
 
-						{results.items && results.data ? (
-							<div className="modal-body inline-scroller">
-								{dataLoading && (
-									<div className="list-group sheet">
-										<div className="sheet-title">
-											<div className="load-more-container">
-												<span className="loading-animation" />
-											</div>
+						<div className="modal-body inline-scroller">
+							{dataLoading && (
+								<div className="list-group sheet">
+									<div className="sheet-title">
+										<div className="load-more-container">
+											<span className="loading-animation" />
 										</div>
 									</div>
-								)}
+								</div>
+							)}
 
-								{!dataLoading && (
+							{!dataLoading && (
+								results.items && results.data ?
 									<React.Fragment>
 										<div className={classManagementBar}>
 											<div className="container-fluid container-fluid-max-xl">
@@ -390,33 +394,28 @@ class AddResult extends Component {
 												)
 											)}
 										</ul>
-									</React.Fragment>
-								)}
 
-								<PaginationBar
-									deltas={DELTAS}
-									onDeltaChange={this._handleDeltaChange}
-									onPageChange={this._handlePageChange}
-									page={page}
-									selectedDelta={selectedDelta}
-									totalItems={results.items}
-								/>
-							</div>
-						) : (
-							<div className="modal-body inline-scroller">
-								<div className="sheet">
-									<div className="sheet-text text-center">
-										{dataLoading ? (
-											<div className="load-more-container">
-												<span className="loading-animation" />
-											</div>
-										) : (
-											Liferay.Language.get('search-your-engine-to-display-results')
-										)}
+										<PaginationBar
+											deltas={DELTAS}
+											onDeltaChange={this._handleDeltaChange}
+											onPageChange={this._handlePageChange}
+											page={page}
+											selectedDelta={selectedDelta}
+											totalItems={results.items}
+										/>
+									</React.Fragment> :
+									<div className="sheet">
+										{displayInitialMessage ?
+											<ClayEmptyState
+												description={Liferay.Language.get('search-your-engine-to-display-results')}
+												displayState="empty"
+												title={Liferay.Language.get('search-your-engine')}
+											/> :
+											<ClayEmptyState />
+										}
 									</div>
-								</div>
-							</div>
-						)}
+							)}
+						</div>
 
 						<div className="modal-footer">
 							<div className="modal-item-last">

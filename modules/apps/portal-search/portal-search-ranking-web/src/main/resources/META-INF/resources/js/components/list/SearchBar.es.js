@@ -140,7 +140,8 @@ class SearchBar extends Component {
 				'management-bar-primary' :
 				'management-bar-light',
 			'navbar',
-			'navbar-expand-md'
+			'navbar-expand-md',
+			'search-bar-root'
 		);
 
 		return (
@@ -260,13 +261,13 @@ class SearchBar extends Component {
 									</div>
 								</div>
 
-								<div className="navbar-nav">
-									{onAddResultSubmit && (
+								{onAddResultSubmit && (
+									<div className="navbar-nav">
 										<AddResult
 											onAddResultSubmit={onAddResultSubmit}
 										/>
-									)}
-								</div>
+									</div>
+								)}
 							</React.Fragment>
 						}
 					</div>
