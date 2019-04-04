@@ -251,7 +251,7 @@ class AddResult extends Component {
 				/>
 
 				<ReactModal
-					className="modal-dialog modal-lg modal-full-screen-sm-down add-result-modal-root"
+					className="modal-dialog modal-dialog-lg modal-full-screen-sm-down add-result-modal-root"
 					contentLabel="addResultModal"
 					isOpen={showModal}
 					onRequestClose={this._handleCloseModal}

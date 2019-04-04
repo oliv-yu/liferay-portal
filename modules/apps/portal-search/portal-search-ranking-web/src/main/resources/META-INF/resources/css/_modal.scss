@@ -1,3 +1,10 @@
+.alias-modal-root {
+	.alias-modal-description {
+		font-size: 14px;
+		padding-bottom: 10px;
+	}
+}
+
 .add-result-modal-root {
 	.inline-scroller {
 		background-color: $lightBackground;
@@ -5,10 +12,9 @@
 	}
 }
 
-.alias-modal-root {
-	.alias-modal-description {
-		font-size: 14px;
-		padding-bottom: 10px;
+.modal-dialog {
+	&.modal-dialog-lg {
+		max-width: 800px;
 	}
 }
 
