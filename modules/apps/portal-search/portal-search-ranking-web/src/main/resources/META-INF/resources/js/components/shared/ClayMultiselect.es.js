@@ -42,7 +42,9 @@ class ClayMultiselect extends Component {
 		case 'Enter':
 		case 'Tab':
 		case ',':
-			this.props.onAction([...value, createOption(inputValue)]);
+			if (!value.map(item => item.value).includes(inputValue)) {
+				this.props.onAction([...value, createOption(inputValue)]);
+			}
 			this.setState({inputValue: ''});
 			event.preventDefault();
 			break;
