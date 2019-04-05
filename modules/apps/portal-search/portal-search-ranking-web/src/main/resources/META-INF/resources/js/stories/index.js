@@ -37,6 +37,8 @@ const withSheet = storyFn => (
 	</div>
 );
 
+const noop = () => {};
+
 storiesOf('Main|ResultsRankingForm', module).add(
 	'default',
 	() => <ResultsRankingForm cancelUrl="" searchTerm={text('Search Term', 'example')} />
@@ -51,12 +53,15 @@ storiesOf('Components|Alias', module)
 
 storiesOf('Components|List', module)
 	.addDecorator(withSheet)
-	.add('default', () => (
-		<List
-			dataLoading={false}
-			dataMap={{}}
-			onAddResultSubmit={() => {}}
-		/>)
+	.add(
+		'default',
+		() => (
+			<List
+				dataLoading={false}
+				dataMap={{}}
+				onAddResultSubmit={noop}
+			/>
+		)
 	);
 
 storiesOf('Components|EmptyState', module)

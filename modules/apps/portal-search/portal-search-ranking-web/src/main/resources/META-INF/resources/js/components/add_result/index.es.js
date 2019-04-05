@@ -129,7 +129,12 @@ class AddResult extends Component {
 	};
 
 	_handleCloseModal = () => {
-		this.setState({showModal: false});
+		this.setState(
+			{
+				displayInitialMessage: true,
+				showModal: false
+			}
+		);
 	};
 
 	_handleDeltaChange = item => {
