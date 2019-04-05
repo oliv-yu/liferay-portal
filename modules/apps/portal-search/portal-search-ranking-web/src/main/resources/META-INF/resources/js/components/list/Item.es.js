@@ -139,6 +139,7 @@ const DND_PROPS = {
 class Item extends Component {
 	static propTypes = {
 		...DND_PROPS,
+		addedResult: PropTypes.bool,
 		author: PropTypes.string,
 		clicks: PropTypes.number,
 		date: PropTypes.string,
@@ -154,6 +155,7 @@ class Item extends Component {
 		onClickPin: PropTypes.func,
 		onDragHover: PropTypes.func,
 		onMove: PropTypes.func,
+		onRemoveSelect: PropTypes.func,
 		onSelect: PropTypes.func,
 		pinned: PropTypes.bool,
 		searchTerm: PropTypes.string,
@@ -201,10 +203,16 @@ class Item extends Component {
 	};
 
 	_handlePin = () => {
+		if (this.props.addedResult) {
+			this.props.onRemoveSelect([this.props.id]);
+		}
+
 		this.props.onClickPin([this.props.id], !this.props.pinned);
 	};
 
 	_handleHide = () => {
+		this.props.onRemoveSelect([this.props.id]);
+
 		this.props.onClickHide([this.props.id], !this.props.hidden);
 	};
 
@@ -382,8 +390,9 @@ class Item extends Component {
 				{onClickPin && onClickHide && (
 					<div className="autofit-col">
 						<Dropdown
+							addedResult={addedResult}
 							hidden={hidden}
-							onClickHide={addedResult ? null : this._handleHide}
+							onClickHide={this._handleHide}
 							onClickPin={this._handlePin}
 							pinned={pinned}
 						/>

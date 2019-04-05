@@ -37,20 +37,6 @@ class List extends Component {
 		selectedIds: []
 	};
 
-	/**
-	 * Passes along the same arguments from the onClickHide prop, but also
-	 * removes itself from the selected ids list.
-	 */
-	_handleClickHide = (ids, hide) => {
-		this.setState(
-			state => (
-				{selectedIds: state.selectedIds.filter(id => !ids.includes(id))}
-			)
-		);
-
-		this.props.onClickHide(ids, hide);
-	};
-
 	_handleDragHover = index => {
 		this.setState({hoverIndex: index});
 	};
@@ -58,6 +44,18 @@ class List extends Component {
 	_handleLoadMoreResults = () => {
 		this.props.onLoadResults();
 	};
+
+	/**
+	 * Passes along the same arguments from the onClickHide prop, but also
+	 * removes itself from the selected ids list.
+	 */
+	_handleRemoveSelect = ids => {
+		this.setState(
+			state => (
+				{selectedIds: state.selectedIds.filter(id => !ids.includes(id))}
+			)
+		);
+	}
 
 	_handleSelect = id => {
 		this.setState(
@@ -92,7 +90,7 @@ class List extends Component {
 	};
 
 	_renderItem = (id, index, arr) => {
-		const {dataMap, onClickPin, onMove} = this.props;
+		const {dataMap, onClickHide, onClickPin, onMove} = this.props;
 
 		const {selectedIds} = this.state;
 
@@ -112,10 +110,11 @@ class List extends Component {
 				index={index}
 				key={item.id}
 				lastIndex={arr.length}
-				onClickHide={this._handleClickHide}
+				onClickHide={onClickHide}
 				onClickPin={onClickPin}
 				onDragHover={this._handleDragHover}
 				onMove={onMove}
+				onRemoveSelect={this._handleRemoveSelect}
 				onSelect={this._handleSelect}
 				pinned={item.pinned}
 				selected={selectedIds.includes(item.id)}
@@ -130,6 +129,7 @@ class List extends Component {
 			dataLoading,
 			dataMap,
 			onAddResultSubmit,
+			onClickHide,
 			onClickPin,
 			onSearchBarEnter,
 			onUpdateSearchBarTerm,
@@ -146,8 +146,9 @@ class List extends Component {
 				<SearchBar
 					dataMap={dataMap}
 					onAddResultSubmit={onAddResultSubmit}
-					onClickHide={this._handleClickHide}
+					onClickHide={onClickHide}
 					onClickPin={onClickPin}
+					onRemoveSelect={this._handleRemoveSelect}
 					onSearchBarEnter={onSearchBarEnter}
 					onSelectAll={this._handleSelectAll}
 					onSelectClear={this._handleSelectClear}
