@@ -191,7 +191,7 @@ class Item extends Component {
 	}
 
 	_handleAddedResultMouseOver = event => {
-		const message = Liferay.Language.get('search-your-engine-to-display-results');
+		const message = Liferay.Language.get('added-results-cannot-be-hidden');
 
 		Liferay.Portal.ToolTip.show(event.currentTarget, message);
 	};
