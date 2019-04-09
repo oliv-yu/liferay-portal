@@ -328,7 +328,7 @@ class AddResult extends Component {
 					overlayClassName="modal-backdrop react-modal-backdrop"
 					portalClassName="results-ranking-modal-root"
 				>
-					<div className="modal-content">
+					<div className="modal-content" data-testid="add-result-modal">
 						<div className="modal-header">
 							<div className="modal-title">
 								{Liferay.Language.get('add-a-result')}
@@ -350,6 +350,7 @@ class AddResult extends Component {
 												<input
 													aria-label="Search for"
 													className="form-control input-group-inset input-group-inset-after"
+													data-testid="add-result-enter-modal"
 													onChange={this._handleSearchChange}
 													onKeyDown={this._handleSearchKeyDown}
 													placeholder={Liferay.Language.get(

@@ -60,6 +60,7 @@
 		"liferay-lang-key-dev-loader": "^1.0.3",
 		"liferay-npm-scripts": "^1.4.9",
 		"node-sass": "^4.11.0",
+		"react-testing-library": "^6.1.2",
 		"sass-loader": "^7.1.0",
 		"style-loader": "^0.23.1"
 	},
