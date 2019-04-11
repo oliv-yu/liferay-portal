@@ -172,8 +172,12 @@ class ResultsRankingForm extends Component {
 					dataMap: updateDataMap(
 						state.dataMap,
 						ids,
-						{pinned: pin}
+						{
+							hidden: false,
+							pinned: pin
+						}
 					),
+					resultIdsHidden: removeIdFromList(state.resultIdsHidden, ids),
 					resultIdsPinned: pin ?
 						[...state.resultIdsPinned, ...ids] :
 						removeIdFromList(state.resultIdsPinned, ids)
@@ -567,6 +571,7 @@ class ResultsRankingForm extends Component {
 										dataLoading={dataLoading}
 										dataMap={dataMap}
 										onClickHide={this._handleClickHide}
+										onClickPin={this._handleClickPin}
 										onLoadResults={
 											this._handleFetchResultsDataHidden
 										}
