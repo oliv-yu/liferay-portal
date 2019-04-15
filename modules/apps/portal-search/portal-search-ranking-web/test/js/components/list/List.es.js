@@ -1,6 +1,6 @@
 import React from 'react';
 import List from 'components/list/index.es';
-import {cleanup, render, fireEvent} from 'react-testing-library';
+import {cleanup, fireEvent, render} from 'react-testing-library';
 import 'jest-dom/extend-expect';
 
 const DATA_MAP = {

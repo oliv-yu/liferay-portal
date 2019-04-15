@@ -1,0 +1,2715 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ResultsRankingForm should render the results ranking form 1`] = `
+<DocumentFragment>
+  <div
+    class="results-ranking-form-root"
+  >
+    <input
+      id="aliases"
+      name="aliases"
+      type="hidden"
+      value=""
+    />
+    <input
+      id="hiddenAdded"
+      name="hiddenAdded"
+      type="hidden"
+      value=""
+    />
+    <input
+      id="hiddenRemoved"
+      name="hiddenRemoved"
+      type="hidden"
+      value=""
+    />
+    <input
+      id="pinnedAdded"
+      name="pinnedAdded"
+      type="hidden"
+      value=""
+    />
+    <input
+      id="pinnedRemoved"
+      name="pinnedRemoved"
+      type="hidden"
+      value=""
+    />
+    <nav
+      class="page-toolbar-root tbar upper-tbar"
+    >
+      <div
+        class="container-fluid container-fluid-max-xl"
+      >
+        <ul
+          class="tbar-nav"
+        >
+          <li
+            class="tbar-item tbar-item-expand"
+          />
+          <li
+            class="tbar-item"
+          >
+            <a
+              class="btn btn-outline-secondary btn-sm btn-outline-borderless"
+              href="cancel"
+            >
+              cancel
+            </a>
+          </li>
+          <li
+            class="tbar-item"
+          >
+            <button
+              class="btn btn-secondary btn-sm"
+              type="button"
+            >
+              save-as-draft
+            </button>
+          </li>
+          <li
+            class="tbar-item"
+          >
+            <button
+              class="btn btn-primary btn-sm"
+              disabled=""
+              type="submit"
+            >
+              Publish
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div
+      class="container-fluid container-fluid-max-xl container-form-lg"
+    >
+      <div
+        class="sheet sheet-lg form-section-header"
+      >
+        <h2
+          class="sheet-title"
+        >
+          "example"
+        </h2>
+        <div
+          class="results-ranking-alias-root"
+        >
+          <div
+            class="sheet-text"
+          >
+            <div
+              class="alias-title"
+            >
+              <strong>
+                Aliases
+              </strong>
+            </div>
+            <div
+              class="input-group"
+            >
+              <div
+                class="input-group-item input-group-item-shrink"
+              />
+              <div
+                class="input-group-item input-group-item-shrink"
+              >
+                <button
+                  class="btn btn-outline-primary btn-sm btn-outline-borderless"
+                  type="button"
+                >
+                  Add an Alias
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="sheet sheet-lg form-section-body"
+      >
+        <div
+          class="sheet-text"
+        >
+          <strong>
+            Results
+          </strong>
+        </div>
+        <div
+          class="form-section-results-list"
+        >
+          <div
+            class="react-tabs"
+            data-tabs="true"
+          >
+            <ul
+              class="nav nav-underline results-ranking-tabs"
+              role="tablist"
+            >
+              <li
+                aria-controls="react-tabs-1"
+                aria-disabled="false"
+                aria-selected="true"
+                class="nav-item react-tabs__tab--selected"
+                id="react-tabs-0"
+                role="tab"
+                tabindex="0"
+              >
+                <button
+                  class="btn btn-unstyled nav-link active"
+                >
+                  visible
+                </button>
+              </li>
+              <li
+                aria-controls="react-tabs-3"
+                aria-disabled="false"
+                aria-selected="false"
+                class="nav-item"
+                id="react-tabs-2"
+                role="tab"
+              >
+                <button
+                  class="btn btn-unstyled nav-link"
+                >
+                  hidden
+                </button>
+              </li>
+            </ul>
+            <div
+              aria-labelledby="react-tabs-0"
+              class="react-tabs__tab-panel react-tabs__tab-panel--selected"
+              id="react-tabs-1"
+              role="tabpanel"
+            >
+              <div
+                class="results-ranking-list-root"
+              >
+                <nav
+                  class="management-bar management-bar-light navbar navbar-expand-md search-bar-root"
+                >
+                  <div
+                    class="container-fluid container-fluid-max-xl"
+                  >
+                    <div
+                      class="navbar-form navbar-form-autofit navbar-overlay"
+                    >
+                      <ul
+                        class="navbar-nav"
+                      >
+                        <li
+                          class="nav-item"
+                        >
+                          <div
+                            class="custom-control custom-checkbox"
+                          >
+                            <label>
+                              <input
+                                aria-label="Checkbox for search results"
+                                class="custom-control-input"
+                                disabled=""
+                                type="checkbox"
+                              />
+                              <span
+                                class="custom-control-label"
+                              />
+                            </label>
+                          </div>
+                        </li>
+                      </ul>
+                      <div
+                        class="navbar-nav navbar-nav-expand"
+                      >
+                        <div
+                          class="container-fluid container-fluid-max-xl"
+                        >
+                          <div
+                            class="input-group"
+                          >
+                            <div
+                              class="input-group-item"
+                            >
+                              <input
+                                aria-label="Search for"
+                                class="form-control input-group-inset input-group-inset-after"
+                                disabled=""
+                                placeholder="Contains Text"
+                                type="text"
+                                value=""
+                              />
+                              <div
+                                class="input-group-inset-item input-group-inset-item-after"
+                              >
+                                <button
+                                  class="btn btn-unstyled"
+                                  type="button"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="lexicon-icon lexicon-icon-search icon"
+                                    viewBox="0 0 512 512"
+                                  >
+                                    <use
+                                      href="#search"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="navbar-nav"
+                      >
+                        <li
+                          class="nav-item"
+                        >
+                          <button
+                            class="btn btn-primary"
+                            type="button"
+                          >
+                            Add a Result
+                          </button>
+                        </li>
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+                <div
+                  class="load-more-container"
+                >
+                  <span
+                    class="loading-animation"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              aria-labelledby="react-tabs-2"
+              class="react-tabs__tab-panel"
+              id="react-tabs-3"
+              role="tabpanel"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ResultsRankingForm should render the results ranking form after loading 1`] = `
+<DocumentFragment>
+  <div
+    class="results-ranking-form-root"
+  >
+    <input
+      id="aliases"
+      name="aliases"
+      type="hidden"
+      value=""
+    />
+    <input
+      id="hiddenAdded"
+      name="hiddenAdded"
+      type="hidden"
+      value=""
+    />
+    <input
+      id="hiddenRemoved"
+      name="hiddenRemoved"
+      type="hidden"
+      value=""
+    />
+    <input
+      id="pinnedAdded"
+      name="pinnedAdded"
+      type="hidden"
+      value=""
+    />
+    <input
+      id="pinnedRemoved"
+      name="pinnedRemoved"
+      type="hidden"
+      value=""
+    />
+    <nav
+      class="page-toolbar-root tbar upper-tbar"
+    >
+      <div
+        class="container-fluid container-fluid-max-xl"
+      >
+        <ul
+          class="tbar-nav"
+        >
+          <li
+            class="tbar-item tbar-item-expand"
+          />
+          <li
+            class="tbar-item"
+          >
+            <a
+              class="btn btn-outline-secondary btn-sm btn-outline-borderless"
+              href="cancel"
+            >
+              cancel
+            </a>
+          </li>
+          <li
+            class="tbar-item"
+          >
+            <button
+              class="btn btn-secondary btn-sm"
+              type="button"
+            >
+              save-as-draft
+            </button>
+          </li>
+          <li
+            class="tbar-item"
+          >
+            <button
+              class="btn btn-primary btn-sm"
+              disabled=""
+              type="submit"
+            >
+              Publish
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div
+      class="container-fluid container-fluid-max-xl container-form-lg"
+    >
+      <div
+        class="sheet sheet-lg form-section-header"
+      >
+        <h2
+          class="sheet-title"
+        >
+          ""
+        </h2>
+        <div
+          class="results-ranking-alias-root"
+        >
+          <div
+            class="sheet-text"
+          >
+            <div
+              class="alias-title"
+            >
+              <strong>
+                Aliases
+              </strong>
+            </div>
+            <div
+              class="input-group"
+            >
+              <div
+                class="input-group-item input-group-item-shrink"
+              />
+              <div
+                class="input-group-item input-group-item-shrink"
+              >
+                <button
+                  class="btn btn-outline-primary btn-sm btn-outline-borderless"
+                  type="button"
+                >
+                  Add an Alias
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="sheet sheet-lg form-section-body"
+      >
+        <div
+          class="sheet-text"
+        >
+          <strong>
+            Results
+          </strong>
+        </div>
+        <div
+          class="form-section-results-list"
+        >
+          <div
+            class="react-tabs"
+            data-tabs="true"
+          >
+            <ul
+              class="nav nav-underline results-ranking-tabs"
+              role="tablist"
+            >
+              <li
+                aria-controls="react-tabs-5"
+                aria-disabled="false"
+                aria-selected="true"
+                class="nav-item react-tabs__tab--selected"
+                id="react-tabs-4"
+                role="tab"
+                tabindex="0"
+              >
+                <button
+                  class="btn btn-unstyled nav-link active"
+                >
+                  visible
+                </button>
+              </li>
+              <li
+                aria-controls="react-tabs-7"
+                aria-disabled="false"
+                aria-selected="false"
+                class="nav-item"
+                id="react-tabs-6"
+                role="tab"
+              >
+                <button
+                  class="btn btn-unstyled nav-link"
+                >
+                  hidden
+                </button>
+              </li>
+            </ul>
+            <div
+              aria-labelledby="react-tabs-4"
+              class="react-tabs__tab-panel react-tabs__tab-panel--selected"
+              id="react-tabs-5"
+              role="tabpanel"
+            >
+              <div
+                class="results-ranking-list-root"
+              >
+                <nav
+                  class="management-bar management-bar-light navbar navbar-expand-md search-bar-root"
+                >
+                  <div
+                    class="container-fluid container-fluid-max-xl"
+                  >
+                    <div
+                      class="navbar-form navbar-form-autofit navbar-overlay"
+                    >
+                      <ul
+                        class="navbar-nav"
+                      >
+                        <li
+                          class="nav-item"
+                        >
+                          <div
+                            class="custom-control custom-checkbox"
+                          >
+                            <label>
+                              <input
+                                aria-label="Checkbox for search results"
+                                class="custom-control-input"
+                                type="checkbox"
+                              />
+                              <span
+                                class="custom-control-label"
+                              />
+                            </label>
+                          </div>
+                        </li>
+                      </ul>
+                      <div
+                        class="navbar-nav navbar-nav-expand"
+                      >
+                        <div
+                          class="container-fluid container-fluid-max-xl"
+                        >
+                          <div
+                            class="input-group"
+                          >
+                            <div
+                              class="input-group-item"
+                            >
+                              <input
+                                aria-label="Search for"
+                                class="form-control input-group-inset input-group-inset-after"
+                                placeholder="Contains Text"
+                                type="text"
+                                value=""
+                              />
+                              <div
+                                class="input-group-inset-item input-group-inset-item-after"
+                              >
+                                <button
+                                  class="btn btn-unstyled"
+                                  type="button"
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    class="lexicon-icon lexicon-icon-search icon"
+                                    viewBox="0 0 512 512"
+                                  >
+                                    <use
+                                      href="#search"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="navbar-nav"
+                      >
+                        <li
+                          class="nav-item"
+                        >
+                          <button
+                            class="btn btn-primary"
+                            type="button"
+                          >
+                            Add a Result
+                          </button>
+                        </li>
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+                <ul
+                  class="list-group"
+                  data-testid="results-list-group"
+                >
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex results-ranking-item-pinned"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-red result-icon sticker"
+                      >
+                        PDF
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            100 This is a Document Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Document]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Unpin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-unpin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#unpin"
+                                  />
+                                </svg>
+                              </div>
+                              Unpin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        100
+                      </b>
+                    </div>
+                  </li>
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex results-ranking-item-pinned"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-grey result-icon sticker"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-web-content"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#web-content"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            101 This is a Web Content Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Web Content]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Unpin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-unpin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#unpin"
+                                  />
+                                </svg>
+                              </div>
+                              Unpin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        101
+                      </b>
+                    </div>
+                  </li>
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex results-ranking-item-pinned"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-red result-icon sticker"
+                      >
+                        PDF
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            102 This is a Document Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Document]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Unpin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-unpin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#unpin"
+                                  />
+                                </svg>
+                              </div>
+                              Unpin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        102
+                      </b>
+                    </div>
+                  </li>
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex results-ranking-item-pinned"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-grey result-icon sticker"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-web-content"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#web-content"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            103 This is a Web Content Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Web Content]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Unpin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-unpin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#unpin"
+                                  />
+                                </svg>
+                              </div>
+                              Unpin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        103
+                      </b>
+                    </div>
+                  </li>
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex results-ranking-item-pinned"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-red result-icon sticker"
+                      >
+                        PDF
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            104 This is a Document Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Document]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Unpin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-unpin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#unpin"
+                                  />
+                                </svg>
+                              </div>
+                              Unpin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        104
+                      </b>
+                    </div>
+                  </li>
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-grey result-icon sticker"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-web-content"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#web-content"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            105 This is a Web Content Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Web Content]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Pin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-pin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#pin"
+                                  />
+                                </svg>
+                              </div>
+                              Pin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        105
+                      </b>
+                    </div>
+                  </li>
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-red result-icon sticker"
+                      >
+                        PDF
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            106 This is a Document Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Document]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Pin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-pin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#pin"
+                                  />
+                                </svg>
+                              </div>
+                              Pin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        106
+                      </b>
+                    </div>
+                  </li>
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-grey result-icon sticker"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-web-content"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#web-content"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            107 This is a Web Content Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Web Content]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Pin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-pin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#pin"
+                                  />
+                                </svg>
+                              </div>
+                              Pin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        107
+                      </b>
+                    </div>
+                  </li>
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-red result-icon sticker"
+                      >
+                        PDF
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            108 This is a Document Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Document]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Pin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-pin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#pin"
+                                  />
+                                </svg>
+                              </div>
+                              Pin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        108
+                      </b>
+                    </div>
+                  </li>
+                  <li
+                    class="list-item-root list-group-item list-group-item-flex"
+                  >
+                    <div
+                      class="autofit-col result-drag"
+                    >
+                      <span
+                        class="result-drag-sticker sticker sticker-secondary"
+                        draggable="true"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-drag"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#drag"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="custom-control custom-checkbox"
+                      >
+                        <label>
+                          <input
+                            class="custom-control-input"
+                            type="checkbox"
+                          />
+                          <span
+                            class="custom-control-label"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <span
+                        class="icon-grey result-icon sticker"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="lexicon-icon lexicon-icon-web-content"
+                          viewBox="0 0 512 512"
+                        >
+                          <use
+                            href="#web-content"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div
+                      class="autofit-col autofit-col-expand"
+                    >
+                      <section
+                        class="autofit-section"
+                      >
+                        <h4
+                          class="list-group-title"
+                        >
+                          <span
+                            class="text-truncate-inline"
+                          >
+                            109 This is a Web Content Example
+                          </span>
+                        </h4>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          Test Test - Apr 18 2018, 11:04 AM
+                        </p>
+                        <p
+                          class="list-group-subtext"
+                        >
+                          [Web Content]
+                        </p>
+                        <p
+                          class="list-group-text list-item-description"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        </p>
+                      </section>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-hide"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Hide Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-hidden icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#hidden"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="result-pin"
+                      >
+                        <button
+                          class="btn btn-outline-secondary btn-monospaced btn-outline-borderless component-action"
+                          title="Pin Result"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-pin icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#pin"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="autofit-col"
+                    >
+                      <div
+                        class="dropdown dropdown-action result-dropdown"
+                      >
+                        <button
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="btn btn-secondary component-action dropdown-toggle"
+                          data-toggle="dropdown"
+                          id="optionDropdown"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="lexicon-icon lexicon-icon-ellipsis-v icon"
+                            viewBox="0 0 512 512"
+                          >
+                            <use
+                              href="#ellipsis-v"
+                            />
+                          </svg>
+                        </button>
+                        <ul
+                          aria-labelledby="optionDropdown"
+                          class="dropdown-menu dropdown-menu-indicator-start dropdown-menu-right"
+                        >
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-pin"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#pin"
+                                  />
+                                </svg>
+                              </div>
+                              Pin Result
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="btn btn-link btn-sm dropdown-item"
+                              type="button"
+                            >
+                              <div
+                                class="dropdown-item-indicator"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="lexicon-icon lexicon-icon-hidden"
+                                  viewBox="0 0 512 512"
+                                >
+                                  <use
+                                    href="#hidden"
+                                  />
+                                </svg>
+                              </div>
+                              Hide Result
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div
+                      class="click-count list-group-text sticker-bottom-right"
+                    >
+                      Clicks 
+                      <b>
+                        109
+                      </b>
+                    </div>
+                  </li>
+                </ul>
+                <div
+                  class="load-more-container"
+                >
+                  <button
+                    class="btn btn-secondary load-more-button"
+                    type="button"
+                  >
+                    load-more-results
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              aria-labelledby="react-tabs-6"
+              class="react-tabs__tab-panel"
+              id="react-tabs-7"
+              role="tabpanel"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

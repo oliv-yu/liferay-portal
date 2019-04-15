@@ -1,10 +1,10 @@
 import React from 'react';
 import PageToolbar from 'components/PageToolbar.es';
-import {cleanup, fireEvent, render} from 'react-testing-library';
+import {cleanup, render} from 'react-testing-library';
 import 'jest-dom/extend-expect';
 
 describe(
-	'Pagetoolbar',
+	'PageToolbar',
 	() => {
 		afterEach(cleanup);
 

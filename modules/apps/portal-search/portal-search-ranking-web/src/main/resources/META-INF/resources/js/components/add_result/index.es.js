@@ -350,7 +350,6 @@ class AddResult extends Component {
 												<input
 													aria-label="Search for"
 													className="form-control input-group-inset input-group-inset-after"
-													data-testid="add-result-enter-modal"
 													onChange={this._handleSearchChange}
 													onKeyDown={this._handleSearchKeyDown}
 													placeholder={Liferay.Language.get(
@@ -446,7 +445,7 @@ class AddResult extends Component {
 											</div>
 										</div>
 
-										<ul className="list-group">
+										<ul className="list-group" data-testid="add-result-items" >
 											{results.items.map(
 												result => (
 													<Item

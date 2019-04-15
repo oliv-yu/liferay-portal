@@ -1,10 +1,12 @@
 import React from 'react';
 import AddResult from 'components/add_result/index.es';
-import {cleanup, fireEvent, render} from 'react-testing-library';
+import {cleanup, fireEvent, render, waitForElement} from 'react-testing-library';
 import 'jest-dom/extend-expect';
+import '@babel/polyfill';
+
+jest.mock('utils/api.es');
 
 const MODAL_ID = 'add-result-modal';
-const MODAL_ENTER_ID = 'add-result-enter-modal';
 
 describe(
 	'AddResult',
@@ -63,5 +65,36 @@ describe(
 				expect(modal.querySelector('.empty-state-description')).toHaveTextContent('Search your engine to display results.');
 			}
 		);
+
+		it(
+			'should not show the prompt in the modal after enter key is pressed',
+			async() => {
+
+				const {getByTestId, getByText, queryByTestId} = render(
+					<AddResult
+						onAddResultSubmit={jest.fn()}
+					/>
+				);
+
+				fireEvent.click(getByText('Add a Result'));
+
+				const modal = queryByTestId(MODAL_ID);
+
+				const input = modal.querySelector('.form-control');
+
+				fireEvent.change(input, {target: {value: 'test'}});
+
+				fireEvent.keyDown(input, {key: 'Enter',
+					keyCode: 13,
+					which: 13
+				});
+
+				await waitForElement(() => getByTestId('add-result-items'));
+
+				expect(modal.querySelector('.empty-state-title')).not.toBeInTheDocument();
+				expect(modal.querySelector('.empty-state-description')).not.toBeInTheDocument();
+			}
+		);
 	}
 );
+

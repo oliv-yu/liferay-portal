@@ -175,5 +175,39 @@ describe(
 				expect(input.value).toEqual('test');
 			}
 		);
+
+		it(
+			'should call the onLoadResults function when the searchbar enter is pressed',
+			() => {
+				const onSearchBarEnter = jest.fn();
+
+				const {queryByPlaceholderText} = render(
+					<SearchBar
+						dataMap={DATA_MAP}
+						onAddResultSubmit={jest.fn()}
+						onClickHide={jest.fn()}
+						onClickPin={jest.fn()}
+						onSearchBarEnter={onSearchBarEnter}
+						onSelectAll={jest.fn()}
+						onSelectClear={jest.fn()}
+						onUpdateSearchBarTerm={jest.fn()}
+						resultIds={[102, 104, 103]}
+						searchBarTerm={'test'}
+						selectedIds={[]}
+					/>
+				);
+
+				const input = queryByPlaceholderText('Contains Text');
+
+				fireEvent.change(input, {target: {value: 'test'}});
+
+				fireEvent.keyDown(input, {key: 'Enter',
+					keyCode: 13,
+					which: 13
+				});
+
+				expect(onSearchBarEnter).toHaveBeenCalledTimes(1);
+			}
+		);
 	}
 );

@@ -9,7 +9,7 @@ describe(
 		afterEach(cleanup);
 
 		it(
-			'should have option to unpin',
+			'should have option to unpin visible',
 			() => {
 
 				const {queryByText} = render(
@@ -28,7 +28,7 @@ describe(
 		);
 
 		it(
-			'should have option to unpin multiple',
+			'should have option to unpin multiple visible',
 			() => {
 
 				const {queryByText} = render(
@@ -47,7 +47,7 @@ describe(
 		);
 
 		it(
-			'should have option to pin',
+			'should have option to pin visible',
 			() => {
 
 				const {queryByText} = render(
@@ -66,7 +66,7 @@ describe(
 		);
 
 		it(
-			'should have option to unpin multiple',
+			'should have option to unpin multiple visible',
 			() => {
 
 				const {queryByText} = render(
@@ -85,7 +85,7 @@ describe(
 		);
 
 		it(
-			'should have option to hide',
+			'should have option to hide visible',
 			() => {
 
 				const {queryByText} = render(
@@ -104,7 +104,7 @@ describe(
 		);
 
 		it(
-			'should have option to hide multiple',
+			'should have option to hide multiple visible',
 			() => {
 
 				const {queryByText} = render(
@@ -123,7 +123,7 @@ describe(
 		);
 
 		it(
-			'should have option to show',
+			'should have option to show hidden',
 			() => {
 
 				const {queryByText} = render(
@@ -142,7 +142,7 @@ describe(
 		);
 
 		it(
-			'should have option to show multiple',
+			'should have option to show multiple hidden',
 			() => {
 
 				const {queryByText} = render(
@@ -161,7 +161,7 @@ describe(
 		);
 
 		it(
-			'should have not have option to show/hide for added results',
+			'should not have option to show for added results',
 			() => {
 
 				const {queryByText} = render(
@@ -175,12 +175,11 @@ describe(
 				);
 
 				expect(queryByText('Show Result')).toBeNull();
-				expect(queryByText('Hide Result')).toBeNull();
 			}
 		);
 
 		it(
-			'should have not have option to pin/unpin for hidden results',
+			'should have option to pin hidden',
 			() => {
 
 				const {queryByText} = render(
@@ -189,12 +188,31 @@ describe(
 						hidden={true}
 						onClickHide={jest.fn()}
 						onClickPin={jest.fn()}
-						pinned={true}
+						pinned={false}
 					/>
 				);
 
-				expect(queryByText('Unpin Result')).toBeNull();
-				expect(queryByText('Pin Result')).toBeNull();
+				expect(queryByText('Pin Result')).not.toBeNull();
+				expect(queryByText('Pin Results')).toBeNull();
+			}
+		);
+
+		it(
+			'should have option to pin multiple hidden',
+			() => {
+
+				const {queryByText} = render(
+					<Dropdown
+						addedResult={true}
+						hidden={true}
+						itemCount={2}
+						onClickHide={jest.fn()}
+						onClickPin={jest.fn()}
+						pinned={false}
+					/>
+				);
+
+				expect(queryByText('Pin Results')).not.toBeNull();
 			}
 		);
 

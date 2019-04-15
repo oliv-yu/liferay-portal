@@ -29,6 +29,7 @@
 	},
 	"dependencies": {
 		"@storybook/addon-viewport": "^5.0.6",
+		"@babel/polyfill": "^7.4.3",
 		"classnames": "^2.2.6",
 		"lodash.isfunction": "^3.0.9",
 		"lodash.times": "^4.3.2",

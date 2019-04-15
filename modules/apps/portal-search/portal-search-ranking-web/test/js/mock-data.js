@@ -1,35 +1,32 @@
 export function getMockResultsData(
-	amount = 1,
+	size = 10,
 	startId = 0,
 	level = 100,
 	searchBarTerm = '',
+	hidden = false,
 	properties = {}
 ) {
 	const mockData = [];
 
 	const PINNED_AMOUNT = 5;
 
-	for (let i = 0; i < amount; i++) {
-		const randomNum = Math.random() * 100;
-
-		const randomNum2 = Math.floor(Math.random() * 5);
-
-		const typeOfItem = randomNum2 < 3 ? 'Document' : 'Web Content';
+	for (let i = 0; i < size; i++) {
+		const typeOfItem = i % 2 === 0 ? 'Document' : 'Web Content';
 
 		const k = searchBarTerm === '' ? i + startId : (i + startId) * 2;
 
 		mockData.push(
 			{
-				author: 'Juan Hidalgo',
-				clicks: Math.floor(randomNum),
+				author: 'Test Test',
+				clicks: k + level,
 				date: 'Apr 18 2018, 11:04 AM',
 				description:
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod',
 				extension:
-					randomNum2 < 3 ? ['doc', 'png', 'pdf'][randomNum2] : null,
-				hidden: false,
+					typeOfItem === 'Document' ? 'pdf' : null,
+				hidden: hidden,
 				id: k + level,
-				pinned: k < PINNED_AMOUNT,
+				pinned: hidden ? false : k < PINNED_AMOUNT,
 				title: `${k + level} This is a ${typeOfItem} Example`,
 				type: typeOfItem,
 				...properties
@@ -38,7 +35,7 @@ export function getMockResultsData(
 	}
 
 	return {
-		data: mockData,
-		items: 50
+		documents: mockData,
+		total: 50
 	};
 }
