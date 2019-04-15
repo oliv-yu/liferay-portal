@@ -8,6 +8,17 @@ import fs from 'fs';
 import path from 'path';
 import properties from 'properties';
 
+const GLOBAL_LANG_PATH = path.resolve(
+	'..',
+	'..',
+	'..',
+	'..',
+	'portal-impl',
+	'src',
+	'content',
+	'Language.properties'
+);
+
 const LANG_PATH = path.resolve(
 	'src',
 	'main',
@@ -16,10 +27,21 @@ const LANG_PATH = path.resolve(
 	'Language.properties'
 );
 
+const LANG_PATHS = [GLOBAL_LANG_PATH, LANG_PATH];
+
 let keys = {};
 
 try {
-	const buffer = fs.readFileSync(LANG_PATH);
+	const bufferArray = LANG_PATHS.map(langPath =>
+		Buffer.concat(
+			[
+				fs.readFileSync(langPath),
+				Buffer.from('\n')
+			]
+		)
+	);
+
+	const buffer = Buffer.concat(bufferArray);
 
 	keys = properties.parse(buffer.toString('utf8'));
 }
@@ -38,9 +60,7 @@ function lang(key) {
 	const value = keys[key];
 
 	if (!value) {
-		// throw new Error(`Language key not found: ${key}`);
-
-		return key;
+		throw new Error(`Language key not found: ${key}`);
 	}
 
 	return value;

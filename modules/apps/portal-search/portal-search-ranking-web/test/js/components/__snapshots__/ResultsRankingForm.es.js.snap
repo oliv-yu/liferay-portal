@@ -54,7 +54,7 @@ exports[`ResultsRankingForm should render the results ranking form 1`] = `
               class="btn btn-outline-secondary btn-sm btn-outline-borderless"
               href="cancel"
             >
-              cancel
+              Cancel
             </a>
           </li>
           <li
@@ -64,7 +64,7 @@ exports[`ResultsRankingForm should render the results ranking form 1`] = `
               class="btn btn-secondary btn-sm"
               type="button"
             >
-              save-as-draft
+              Save as Draft
             </button>
           </li>
           <li
@@ -158,7 +158,7 @@ exports[`ResultsRankingForm should render the results ranking form 1`] = `
                 <button
                   class="btn btn-unstyled nav-link active"
                 >
-                  visible
+                  Visible
                 </button>
               </li>
               <li
@@ -172,7 +172,7 @@ exports[`ResultsRankingForm should render the results ranking form 1`] = `
                 <button
                   class="btn btn-unstyled nav-link"
                 >
-                  hidden
+                  Hidden
                 </button>
               </li>
             </ul>
@@ -353,7 +353,7 @@ exports[`ResultsRankingForm should render the results ranking form after loading
               class="btn btn-outline-secondary btn-sm btn-outline-borderless"
               href="cancel"
             >
-              cancel
+              Cancel
             </a>
           </li>
           <li
@@ -363,7 +363,7 @@ exports[`ResultsRankingForm should render the results ranking form after loading
               class="btn btn-secondary btn-sm"
               type="button"
             >
-              save-as-draft
+              Save as Draft
             </button>
           </li>
           <li
@@ -457,7 +457,7 @@ exports[`ResultsRankingForm should render the results ranking form after loading
                 <button
                   class="btn btn-unstyled nav-link active"
                 >
-                  visible
+                  Visible
                 </button>
               </li>
               <li
@@ -471,7 +471,7 @@ exports[`ResultsRankingForm should render the results ranking form after loading
                 <button
                   class="btn btn-unstyled nav-link"
                 >
-                  hidden
+                  Hidden
                 </button>
               </li>
             </ul>
@@ -2695,7 +2695,7 @@ exports[`ResultsRankingForm should render the results ranking form after loading
                     class="btn btn-secondary load-more-button"
                     type="button"
                   >
-                    load-more-results
+                    Load More Results
                   </button>
                 </div>
               </div>
