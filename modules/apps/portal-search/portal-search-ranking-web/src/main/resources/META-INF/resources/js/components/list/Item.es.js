@@ -314,15 +314,17 @@ class Item extends Component {
 				onMouseLeave={this._handleMouseLeave}
 				style={style}
 			>
-				{onDragHover && !hidden && (
-					<div className="autofit-col result-drag">
-						{connectDragSource(
-							<span className="result-drag-sticker sticker sticker-secondary">
-								<ClayIcon iconName="drag" />
-							</span>
-						)}
-					</div>
-				)}
+				<div
+					className="autofit-col result-drag"
+					data-testid="DRAG_ICON"
+					style={{visibility: pinned ? 'visible' : 'hidden'}}
+				>
+					{connectDragSource(
+						<span className="result-drag-sticker sticker sticker-secondary">
+							<ClayIcon iconName="drag" />
+						</span>
+					)}
+				</div>
 
 				<div className="autofit-col">
 					<div className="custom-control custom-checkbox">

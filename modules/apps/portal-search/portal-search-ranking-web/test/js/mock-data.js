@@ -39,3 +39,27 @@ export function getMockResultsData(
 		total: 50
 	};
 }
+
+/**
+ * Mocks a single document result.
+ * @param {number} id The id of the document result.
+ * @param {Object} properties The properties to add or override.
+ * @return {Object} The document result object.
+ */
+export function mockDocument(id = 1, properties) {
+	return (
+		{
+			author: 'Test Author',
+			clicks: 123,
+			date: 'Apr 18 2018, 11:04 AM',
+			description: 'This is a test description.',
+			extension: 'pdf',
+			hidden: false,
+			id,
+			pinned: false,
+			title: 'Test Title',
+			type: 'Document',
+			...properties
+		}
+	);
+}
