@@ -14,7 +14,7 @@ describe(
 
 				const {container} = render(
 					<Tag
-						label={'one'}
+						label="one"
 						onClickDelete={jest.fn()}
 					/>
 				);
@@ -32,7 +32,7 @@ describe(
 
 				const {container} = render(
 					<Tag
-						label={'one'}
+						label="one"
 						onClickDelete={onClickDelete}
 					/>
 				);

@@ -14,11 +14,11 @@ describe(
 
 				const {container} = render(
 					<Pagination
-    					href={''}
-	    				onChange={jest.fn()}
-		    			page={1}
-			    		total={7}
-				    />
+						href=""
+						onChange={jest.fn()}
+						page={1}
+						total={7}
+					/>
 				);
 
 				expect(container.querySelector('.page-item-previous')).toHaveClass('disabled');
@@ -31,11 +31,11 @@ describe(
 
 				const {container} = render(
 					<Pagination
-    					href={''}
-	    				onChange={jest.fn()}
-		    			page={7}
-			    		total={7}
-				    />
+						href=""
+						onChange={jest.fn()}
+						page={7}
+						total={7}
+					/>
 				);
 
 				expect(container.querySelector('.page-item-next')).toHaveClass('disabled');
@@ -48,7 +48,7 @@ describe(
 
 				const {container, getByText} = render(
 					<Pagination
-						href={''}
+						href=""
 						onChange={jest.fn()}
 						page={1}
 						total={5}
@@ -67,7 +67,7 @@ describe(
 
 				const {queryAllByText} = render(
 					<Pagination
-						href={''}
+						href=""
 						onChange={jest.fn()}
 						page={5}
 						total={10}
@@ -84,7 +84,7 @@ describe(
 
 				const {queryByText} = render(
 					<Pagination
-						href={''}
+						href=""
 						onChange={jest.fn()}
 						page={3}
 						total={5}
@@ -103,7 +103,7 @@ describe(
 
 				const {getByText} = render(
 					<Pagination
-						href={''}
+						href=""
 						onChange={onChange}
 						page={3}
 						total={5}
