@@ -23,6 +23,7 @@ class List extends Component {
 		onSearchBarEnter: PropTypes.func,
 		onUpdateSearchBarTerm: PropTypes.func,
 		resultIds: PropTypes.arrayOf(Number),
+		resultIdsPinned: PropTypes.arrayOf(Number),
 		searchBarTerm: PropTypes.string,
 		totalResultsCount: PropTypes.number
 	};
@@ -33,12 +34,73 @@ class List extends Component {
 	};
 
 	state = {
+		focusIndex: null,
 		hoverIndex: null,
+		reorderIndex: null,
 		selectedIds: []
 	};
 
+	_changeFocusIndex = index => {
+		this.setState({focusIndex: index});
+	}
+
+	_changeReorderIndex = index => {
+		this.setState({reorderIndex: index});
+	}
+
 	_handleDragHover = index => {
 		this.setState({hoverIndex: index});
+	};
+
+	_handleKeyDown = event => {
+		const {onMove, resultIdsPinned} = this.props;
+		const {focusIndex, reorderIndex} = this.state;
+
+		if (reorderIndex !== null) {
+			if (event.key === ' ') {
+				event.preventDefault();
+				this._changeReorderIndex(null);
+			}
+			if (event.key === 'ArrowDown') {
+				event.preventDefault();
+				if (reorderIndex + 1 < resultIdsPinned.length) {
+					onMove(reorderIndex, reorderIndex + 2);
+					this._changeReorderIndex(reorderIndex + 1);
+					this._changeFocusIndex(reorderIndex + 1);
+				}
+			}
+			if (event.key === 'ArrowUp') {
+				event.preventDefault();
+				if (reorderIndex > 0) {
+					onMove(reorderIndex, reorderIndex - 1);
+					this._changeReorderIndex(reorderIndex - 1);
+					this._changeFocusIndex(reorderIndex - 1);
+				}
+			}
+			if (event.key === 'Tab') {
+				event.preventDefault();
+			}
+		}
+		else if (focusIndex !== null) {
+			if (event.key === ' ') {
+				event.preventDefault();
+				const newIndex = (focusIndex >= 0) && (focusIndex < resultIdsPinned.length) ? focusIndex : null;
+
+				this._changeReorderIndex(newIndex);
+			}
+			if (event.key === 'ArrowDown') {
+				event.preventDefault();
+				if (focusIndex + 1 < resultIdsPinned.length) {
+					this._changeFocusIndex(focusIndex + 1);
+				}
+			}
+			if (event.key === 'ArrowUp') {
+				event.preventDefault();
+				if (focusIndex > 0) {
+					this._changeFocusIndex(focusIndex - 1);
+				}
+			}
+		}
 	};
 
 	_handleLoadMoreResults = () => {
@@ -99,7 +161,7 @@ class List extends Component {
 	_renderItem = (id, index, arr) => {
 		const {dataMap, onClickHide, onClickPin, onMove} = this.props;
 
-		const {selectedIds} = this.state;
+		const {focusIndex, reorderIndex, selectedIds} = this.state;
 
 		const item = dataMap[id];
 
@@ -107,10 +169,13 @@ class List extends Component {
 			<Item
 				addedResult={item.addedResult}
 				author={item.author}
+				changeFocusIndex={this._changeFocusIndex}
+				changeReorderIndex={this._changeReorderIndex}
 				clicks={item.clicks}
 				date={item.date}
 				description={item.description}
 				extension={item.extension}
+				focusIndex={focusIndex}
 				hidden={item.hidden}
 				hoverIndex={this.state.hoverIndex}
 				id={item.id}
@@ -124,6 +189,7 @@ class List extends Component {
 				onRemoveSelect={this._handleRemoveSelect}
 				onSelect={this._handleSelect}
 				pinned={item.pinned}
+				reorderIndex={reorderIndex}
 				selected={selectedIds.includes(item.id)}
 				title={item.title}
 				type={item.type}
@@ -171,7 +237,11 @@ class List extends Component {
 				/>
 
 				{!!resultIds.length && (
-					<ul className="list-group" data-testid="results-list-group">
+					<ul
+						className="list-group"
+						data-testid="results-list-group"
+						onKeyDown={this._handleKeyDown}
+					>
 						{resultIds.map(
 							(id, index, arr) =>
 								this._renderItem(id, index, arr)

@@ -715,6 +715,7 @@ class ResultsRankingForm extends Component {
 											this._handleUpdateSearchBarTerm
 										}
 										resultIds={this._getResultIdsVisible()}
+										resultIdsPinned={this.state.resultIdsPinned}
 										searchBarTerm={searchBarTerm}
 										selected={selected}
 										totalResultsCount={

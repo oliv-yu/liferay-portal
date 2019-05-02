@@ -8,6 +8,10 @@
 		line-height: 21px;
 	}
 
+	&:focus {
+		outline: none;
+	}
+
 	/**
 	* This is a fix for mouse events to properly fire for disabled buttons.
 	* Otherwise, the tooltip will not hide after leaving the button.
@@ -98,6 +102,17 @@
 		&:hover {
 			.result-pin button {
 				color: inherit;
+			}
+		}
+
+		&.results-ranking-item-focus {
+			border-color: transparent;
+			border-radius: 2px;
+			box-shadow: 0 0 0 2px $primaryL1;
+			z-index: 100;
+
+			&.results-ranking-item-reorder {
+				background-color: $primaryL4;
 			}
 		}
 	}

@@ -141,10 +141,13 @@ class Item extends Component {
 		...DND_PROPS,
 		addedResult: PropTypes.bool,
 		author: PropTypes.string,
+		changeFocusIndex: PropTypes.func,
+		changeReorderIndex: PropTypes.func,
 		clicks: PropTypes.number,
 		date: PropTypes.string,
 		description: PropTypes.string,
 		extension: PropTypes.string,
+		focusIndex: PropTypes.number,
 		hidden: PropTypes.bool,
 		hoverIndex: PropTypes.number,
 		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -158,6 +161,7 @@ class Item extends Component {
 		onRemoveSelect: PropTypes.func,
 		onSelect: PropTypes.func,
 		pinned: PropTypes.bool,
+		reorderIndex: PropTypes.number,
 		searchTerm: PropTypes.string,
 		selected: PropTypes.bool,
 		title: PropTypes.string,
@@ -202,6 +206,38 @@ class Item extends Component {
 		Liferay.Portal.ToolTip.show(event.currentTarget, message);
 	};
 
+	_handleBlur = () => {
+		const {changeFocusIndex, focusIndex, reorderIndex} = this.props;
+
+		if (reorderIndex !== focusIndex) {
+			changeFocusIndex(null);
+		}
+	}
+
+	_handleFocus = () => {
+		const {changeFocusIndex, index, reorderIndex} = this.props;
+
+		if (reorderIndex === null) {
+			changeFocusIndex(index);
+		}
+	}
+
+	_handleHide = () => {
+		const {changeFocusIndex, changeReorderIndex, hidden, id, onClickHide, onRemoveSelect} = this.props;
+
+		onRemoveSelect([id]);
+
+		onClickHide([id], !hidden);
+
+		if (changeReorderIndex) {
+			changeReorderIndex(null);
+		}
+
+		if (changeFocusIndex) {
+			changeFocusIndex(null);
+		}
+	};
+
 	_handleMouseEnter = () => {
 		this.setState({hovering: true});
 	};
@@ -211,21 +247,35 @@ class Item extends Component {
 	};
 
 	_handleSelect = () => {
-		this.props.onSelect(this.props.id);
+		const {changeFocusIndex, changeReorderIndex, id, onSelect} = this.props;
+
+		onSelect(id);
+
+		if (changeReorderIndex) {
+			changeReorderIndex(null);
+		}
+
+		if (changeFocusIndex) {
+			changeFocusIndex(null);
+		}
 	};
 
 	_handlePin = () => {
-		if (this.props.addedResult) {
-			this.props.onRemoveSelect([this.props.id]);
+		const {addedResult, changeFocusIndex, changeReorderIndex, id, onRemoveSelect, pinned} = this.props;
+
+		if (addedResult) {
+			onRemoveSelect([id]);
 		}
 
-		this.props.onClickPin([this.props.id], !this.props.pinned);
-	};
+		this.props.onClickPin([id], !pinned);
 
-	_handleHide = () => {
-		this.props.onRemoveSelect([this.props.id]);
+		if (changeReorderIndex) {
+			changeReorderIndex(null);
+		}
 
-		this.props.onClickHide([this.props.id], !this.props.hidden);
+		if (changeFocusIndex) {
+			changeFocusIndex(null);
+		}
 	};
 
 	_renderDescription = () => {
@@ -259,6 +309,7 @@ class Item extends Component {
 			date,
 			dragging,
 			extension,
+			focusIndex,
 			hidden,
 			hoverIndex,
 			id,
@@ -267,6 +318,7 @@ class Item extends Component {
 			onClickHide,
 			onClickPin,
 			pinned,
+			reorderIndex,
 			selected,
 			style,
 			title,
@@ -302,8 +354,10 @@ class Item extends Component {
 					index + 1 === hoverIndex && hoverIndex === lastIndex,
 				'list-item-dragging': dragging,
 				'results-ranking-item-added-result': addedResult,
+				'results-ranking-item-focus': pinned && index === focusIndex,
 				'results-ranking-item-hidden': hidden,
-				'results-ranking-item-pinned': pinned
+				'results-ranking-item-pinned': pinned,
+				'results-ranking-item-reorder': index === reorderIndex
 			}
 		);
 
@@ -311,9 +365,12 @@ class Item extends Component {
 			<li
 				className={listClasses}
 				data-testid={id}
+				onBlur={this._handleBlur}
+				onFocus={this._handleFocus}
 				onMouseEnter={this._handleMouseEnter}
 				onMouseLeave={this._handleMouseLeave}
 				style={style}
+				tabIndex={pinned ? 0 : -1}
 			>
 				<div
 					className="autofit-col result-drag"
@@ -331,6 +388,7 @@ class Item extends Component {
 					<div className="custom-control custom-checkbox">
 						<label>
 							<input
+								aria-label="select-checkbox"
 								checked={selected}
 								className="custom-control-input"
 								onChange={this._handleSelect}
@@ -354,11 +412,11 @@ class Item extends Component {
 
 				<div className="autofit-col autofit-col-expand">
 					<section className="autofit-section">
-						<h4 className="list-group-title">
+						<div className="list-group-title">
 							<span className="text-truncate-inline">
 								{url ? <a href={url}>{title}</a> : title}
 							</span>
-						</h4>
+						</div>
 
 						<p className="list-group-subtext">
 							{`${author} - ${date}`}
