@@ -572,13 +572,23 @@ class ResultsRankingForm extends Component {
 	_handleUpdateAddResultIds = addedResultsDataList => {
 		const mappedData = resultsDataToMap(addedResultsDataList);
 
-		const newMappedData = updateDataMap(
+		const preMappedData = updateDataMap(
 			mappedData,
 			addedResultsDataList
 				.filter(result => !this._initialResultIds.includes(result.id))
 				.map(({id}) => id),
 			{
 				addedResult: true,
+				pinned: true
+			}
+		);
+
+		const newMappedData = updateDataMap(
+			preMappedData,
+			addedResultsDataList
+				.filter(result => this._initialResultIds.includes(result.id))
+				.map(({id}) => id),
+			{
 				pinned: true
 			}
 		);
