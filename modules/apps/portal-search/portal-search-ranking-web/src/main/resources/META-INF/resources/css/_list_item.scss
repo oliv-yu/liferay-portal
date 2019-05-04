@@ -113,6 +113,10 @@
 
 			&.results-ranking-item-reorder {
 				background-color: $primaryL4;
+
+				.result-drag-sticker {
+					background-color: $primaryL4;
+				}
 			}
 		}
 	}

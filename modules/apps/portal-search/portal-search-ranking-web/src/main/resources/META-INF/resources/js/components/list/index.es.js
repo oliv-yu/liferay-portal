@@ -6,8 +6,8 @@ import Item from './Item.es';
 import React, {Component} from 'react';
 import SearchBar from './SearchBar.es';
 import {DragDropContext as dragDropContext} from 'react-dnd';
+import {isNotNull, isNull, toggleListItem} from '../../utils/util.es';
 import {PropTypes} from 'prop-types';
-import {toggleListItem} from '../../utils/util.es';
 
 class List extends Component {
 	static propTypes = {
@@ -40,68 +40,96 @@ class List extends Component {
 		selectedIds: []
 	};
 
-	_changeFocusIndex = index => {
-		this.setState({focusIndex: index});
-	}
-
-	_changeReorderIndex = index => {
-		this.setState({reorderIndex: index});
-	}
-
 	_handleDragHover = index => {
 		this.setState({hoverIndex: index});
 	};
 
+	_handleFocus = index => {
+		this.setState({focusIndex: index});
+	}
+
+	_handleItemBlur = () => {
+		this._handleFocus(null);
+		this._handleReorder(null);
+	}
+
+	_handleItemFocus = index => {
+		if (isNull(this.state.reorderIndex)) {
+			this._handleFocus(index);
+		}
+	}
+
 	_handleKeyDown = event => {
-		const {onMove, resultIdsPinned} = this.props;
 		const {focusIndex, reorderIndex} = this.state;
 
-		if (reorderIndex !== null) {
-			if (event.key === ' ') {
-				event.preventDefault();
-				this._changeReorderIndex(null);
-			}
-			if (event.key === 'ArrowDown') {
-				event.preventDefault();
-				if (reorderIndex + 1 < resultIdsPinned.length) {
-					onMove(reorderIndex, reorderIndex + 2);
-					this._changeReorderIndex(reorderIndex + 1);
-					this._changeFocusIndex(reorderIndex + 1);
-				}
-			}
-			if (event.key === 'ArrowUp') {
-				event.preventDefault();
-				if (reorderIndex > 0) {
-					onMove(reorderIndex, reorderIndex - 1);
-					this._changeReorderIndex(reorderIndex - 1);
-					this._changeFocusIndex(reorderIndex - 1);
-				}
-			}
-			if (event.key === 'Tab') {
-				event.preventDefault();
-			}
+		if (isNotNull(reorderIndex)) {
+			this._handleKeyDownReorder(event);
 		}
-		else if (focusIndex !== null) {
-			if (event.key === ' ') {
-				event.preventDefault();
-				const newIndex = (focusIndex >= 0) && (focusIndex < resultIdsPinned.length) ? focusIndex : null;
-
-				this._changeReorderIndex(newIndex);
-			}
-			if (event.key === 'ArrowDown') {
-				event.preventDefault();
-				if (focusIndex + 1 < resultIdsPinned.length) {
-					this._changeFocusIndex(focusIndex + 1);
-				}
-			}
-			if (event.key === 'ArrowUp') {
-				event.preventDefault();
-				if (focusIndex > 0) {
-					this._changeFocusIndex(focusIndex - 1);
-				}
-			}
+		else if (isNotNull(focusIndex)) {
+			this._handleKeyDownFocus(event);
 		}
 	};
+
+	_handleKeyDownFocus = event => {
+		const {resultIdsPinned} = this.props;
+		const {focusIndex} = this.state;
+
+		if (event.key === ' ') {
+			event.preventDefault();
+
+			this._handleReorder(focusIndex);
+		}
+		else if (event.key === 'ArrowDown') {
+			event.preventDefault();
+
+			if (focusIndex + 1 < resultIdsPinned.length) {
+				this._handleFocus(focusIndex + 1);
+			}
+		}
+		else if (event.key === 'ArrowUp') {
+			event.preventDefault();
+
+			if (focusIndex > 0) {
+				this._handleFocus(focusIndex - 1);
+			}
+		}
+	}
+
+	_handleKeyDownReorder = event => {
+		const {onMove, resultIdsPinned} = this.props;
+		const {reorderIndex} = this.state;
+
+		if (event.key === ' ') {
+			event.preventDefault();
+
+			this._handleReorder(null);
+		}
+		else if (event.key === 'ArrowDown') {
+			event.preventDefault();
+
+			if (reorderIndex + 1 < resultIdsPinned.length) {
+				onMove(reorderIndex, reorderIndex + 2);
+
+				this._handleReorder(reorderIndex + 1);
+
+				this._handleFocus(reorderIndex + 1);
+			}
+		}
+		else if (event.key === 'ArrowUp') {
+			event.preventDefault();
+
+			if (reorderIndex > 0) {
+				onMove(reorderIndex, reorderIndex - 1);
+
+				this._handleReorder(reorderIndex - 1);
+
+				this._handleFocus(reorderIndex - 1);
+			}
+		}
+		else if (event.key === 'Tab') {
+			event.preventDefault();
+		}
+	}
 
 	_handleLoadMoreResults = () => {
 		this.props.onLoadResults();
@@ -117,6 +145,10 @@ class List extends Component {
 				{selectedIds: state.selectedIds.filter(id => !ids.includes(id))}
 			)
 		);
+	}
+
+	_handleReorder = index => {
+		this.setState({reorderIndex: index});
 	}
 
 	_handleSelect = id => {
@@ -169,27 +201,27 @@ class List extends Component {
 			<Item
 				addedResult={item.addedResult}
 				author={item.author}
-				changeFocusIndex={this._changeFocusIndex}
-				changeReorderIndex={this._changeReorderIndex}
 				clicks={item.clicks}
 				date={item.date}
 				description={item.description}
 				extension={item.extension}
-				focusIndex={focusIndex}
+				focus={index === focusIndex}
 				hidden={item.hidden}
 				hoverIndex={this.state.hoverIndex}
 				id={item.id}
 				index={index}
 				key={item.id}
 				lastIndex={arr.length}
+				onBlur={this._handleItemBlur}
 				onClickHide={onClickHide}
 				onClickPin={onClickPin}
 				onDragHover={this._handleDragHover}
+				onFocus={this._handleItemFocus}
 				onMove={onMove}
 				onRemoveSelect={this._handleRemoveSelect}
 				onSelect={this._handleSelect}
 				pinned={item.pinned}
-				reorderIndex={reorderIndex}
+				reorder={index === reorderIndex}
 				selected={selectedIds.includes(item.id)}
 				title={item.title}
 				type={item.type}

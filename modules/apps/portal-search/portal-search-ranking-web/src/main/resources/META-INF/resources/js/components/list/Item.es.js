@@ -141,27 +141,27 @@ class Item extends Component {
 		...DND_PROPS,
 		addedResult: PropTypes.bool,
 		author: PropTypes.string,
-		changeFocusIndex: PropTypes.func,
-		changeReorderIndex: PropTypes.func,
 		clicks: PropTypes.number,
 		date: PropTypes.string,
 		description: PropTypes.string,
 		extension: PropTypes.string,
-		focusIndex: PropTypes.number,
+		focus: PropTypes.bool,
 		hidden: PropTypes.bool,
 		hoverIndex: PropTypes.number,
 		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 		index: PropTypes.number,
 		initialPinned: PropTypes.number,
 		lastIndex: PropTypes.number,
+		onBlur: PropTypes.func,
 		onClickHide: PropTypes.func,
 		onClickPin: PropTypes.func,
 		onDragHover: PropTypes.func,
+		onFocus: PropTypes.func,
 		onMove: PropTypes.func,
 		onRemoveSelect: PropTypes.func,
 		onSelect: PropTypes.func,
 		pinned: PropTypes.bool,
-		reorderIndex: PropTypes.number,
+		reorder: PropTypes.bool,
 		searchTerm: PropTypes.string,
 		selected: PropTypes.bool,
 		title: PropTypes.string,
@@ -206,35 +206,23 @@ class Item extends Component {
 		Liferay.Portal.ToolTip.show(event.currentTarget, message);
 	};
 
-	_handleBlur = () => {
-		const {changeFocusIndex, focusIndex, reorderIndex} = this.props;
-
-		if (reorderIndex !== focusIndex) {
-			changeFocusIndex(null);
-		}
-	}
-
 	_handleFocus = () => {
-		const {changeFocusIndex, index, reorderIndex} = this.props;
+		const {index, onFocus, pinned} = this.props;
 
-		if (reorderIndex === null) {
-			changeFocusIndex(index);
+		if (pinned) {
+			onFocus(index);
 		}
 	}
 
 	_handleHide = () => {
-		const {changeFocusIndex, changeReorderIndex, hidden, id, onClickHide, onRemoveSelect} = this.props;
+		const {hidden, id, onBlur, onClickHide, onRemoveSelect} = this.props;
 
 		onRemoveSelect([id]);
 
 		onClickHide([id], !hidden);
 
-		if (changeReorderIndex) {
-			changeReorderIndex(null);
-		}
-
-		if (changeFocusIndex) {
-			changeFocusIndex(null);
+		if (onBlur) {
+			onBlur();
 		}
 	};
 
@@ -247,34 +235,26 @@ class Item extends Component {
 	};
 
 	_handleSelect = () => {
-		const {changeFocusIndex, changeReorderIndex, id, onSelect} = this.props;
+		const {id, onBlur, onSelect} = this.props;
 
 		onSelect(id);
 
-		if (changeReorderIndex) {
-			changeReorderIndex(null);
-		}
-
-		if (changeFocusIndex) {
-			changeFocusIndex(null);
+		if (onBlur) {
+			onBlur();
 		}
 	};
 
 	_handlePin = () => {
-		const {addedResult, changeFocusIndex, changeReorderIndex, id, onRemoveSelect, pinned} = this.props;
+		const {addedResult, id, onBlur, onClickPin, onRemoveSelect, pinned} = this.props;
 
 		if (addedResult) {
 			onRemoveSelect([id]);
 		}
 
-		this.props.onClickPin([id], !pinned);
+		onClickPin([id], !pinned);
 
-		if (changeReorderIndex) {
-			changeReorderIndex(null);
-		}
-
-		if (changeFocusIndex) {
-			changeFocusIndex(null);
+		if (onBlur) {
+			onBlur();
 		}
 	};
 
@@ -309,16 +289,17 @@ class Item extends Component {
 			date,
 			dragging,
 			extension,
-			focusIndex,
+			focus,
 			hidden,
 			hoverIndex,
 			id,
 			index,
 			lastIndex,
+			onBlur,
 			onClickHide,
 			onClickPin,
 			pinned,
-			reorderIndex,
+			reorder,
 			selected,
 			style,
 			title,
@@ -354,10 +335,10 @@ class Item extends Component {
 					index + 1 === hoverIndex && hoverIndex === lastIndex,
 				'list-item-dragging': dragging,
 				'results-ranking-item-added-result': addedResult,
-				'results-ranking-item-focus': pinned && index === focusIndex,
+				'results-ranking-item-focus': focus,
 				'results-ranking-item-hidden': hidden,
 				'results-ranking-item-pinned': pinned,
-				'results-ranking-item-reorder': index === reorderIndex
+				'results-ranking-item-reorder': reorder
 			}
 		);
 
@@ -365,7 +346,7 @@ class Item extends Component {
 			<li
 				className={listClasses}
 				data-testid={id}
-				onBlur={this._handleBlur}
+				onBlur={onBlur}
 				onFocus={this._handleFocus}
 				onMouseEnter={this._handleMouseEnter}
 				onMouseLeave={this._handleMouseLeave}
