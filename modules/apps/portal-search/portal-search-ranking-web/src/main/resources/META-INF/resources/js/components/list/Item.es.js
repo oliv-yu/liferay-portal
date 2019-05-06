@@ -177,6 +177,8 @@ class Item extends Component {
 		connectDropTarget: val => val
 	};
 
+	rootRef = React.createRef();
+
 	state = {
 		hovering: false
 	};
@@ -199,6 +201,20 @@ class Item extends Component {
 					captureDraggingState: true
 				}
 			);
+		}
+	}
+
+	/**
+	 * Use HTMLElement focus method so that pressing tab will focus starting
+	 * from the currently focused item. This is needed when using arrow keys to
+	 * change focus between items.
+	 * @param {Object} prevProps The previous props before updating.
+	 */
+	componentDidUpdate(prevProps) {
+		const {focus} = this.props;
+
+		if (prevProps.focus !== focus && focus) {
+			this.rootRef.current.focus();
 		}
 	}
 
@@ -354,6 +370,7 @@ class Item extends Component {
 				onFocus={this._handleFocus}
 				onMouseEnter={this._handleMouseEnter}
 				onMouseLeave={this._handleMouseLeave}
+				ref={this.rootRef}
 				style={style}
 				tabIndex={pinned ? 0 : -1}
 			>
