@@ -10,6 +10,8 @@ import {getEmptyImage} from 'react-dnd-html5-backend';
 import {PropTypes} from 'prop-types';
 import {sub} from 'utils/language.es';
 
+const ROOT_CLASS = 'list-item-root';
+
 /**
  * Passes the required values to the drop target and drag preview.
  * This method must be called `beginDrag`.
@@ -206,11 +208,13 @@ class Item extends Component {
 		Liferay.Portal.ToolTip.show(event.currentTarget, message);
 	};
 
-	_handleFocus = () => {
-		const {index, onFocus, pinned} = this.props;
+	_handleFocus = event => {
+		if (event.target.classList.contains(ROOT_CLASS)) {
+			const {index, onFocus, pinned} = this.props;
 
-		if (pinned) {
-			onFocus(index);
+			if (pinned) {
+				onFocus(index);
+			}
 		}
 	}
 
@@ -326,7 +330,7 @@ class Item extends Component {
 		);
 
 		const listClasses = getCN(
-			'list-item-root',
+			ROOT_CLASS,
 			'list-group-item',
 			'list-group-item-flex',
 			{
