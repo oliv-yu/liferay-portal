@@ -6,7 +6,8 @@ import Item from './Item.es';
 import React, {Component} from 'react';
 import SearchBar from './SearchBar.es';
 import {DragDropContext as dragDropContext} from 'react-dnd';
-import {isNotNull, isNull, toggleListItem} from '../../utils/util.es';
+import {KEY_CODES} from 'utils/constants.es';
+import {isNull, toggleListItem} from 'utils/util.es';
 import {PropTypes} from 'prop-types';
 
 class List extends Component {
@@ -62,31 +63,32 @@ class List extends Component {
 	_handleKeyDown = event => {
 		const {focusIndex, reorderIndex} = this.state;
 
-		if (isNotNull(reorderIndex)) {
+		if (!isNull(reorderIndex)) {
 			this._handleKeyDownReorder(event);
 		}
-		else if (isNotNull(focusIndex)) {
+		else if (!isNull(focusIndex)) {
 			this._handleKeyDownFocus(event);
 		}
 	};
 
 	_handleKeyDownFocus = event => {
 		const {resultIdsPinned} = this.props;
+
 		const {focusIndex} = this.state;
 
-		if (event.key === ' ') {
+		if (event.key === KEY_CODES.SPACE) {
 			event.preventDefault();
 
 			this._handleReorder(focusIndex);
 		}
-		else if (event.key === 'ArrowDown') {
+		else if (event.key === KEY_CODES.ARROW_DOWN) {
 			event.preventDefault();
 
 			if (focusIndex + 1 < resultIdsPinned.length) {
 				this._handleFocus(focusIndex + 1);
 			}
 		}
-		else if (event.key === 'ArrowUp') {
+		else if (event.key === KEY_CODES.ARROW_UP) {
 			event.preventDefault();
 
 			if (focusIndex > 0) {
@@ -97,14 +99,15 @@ class List extends Component {
 
 	_handleKeyDownReorder = event => {
 		const {onMove, resultIdsPinned} = this.props;
+
 		const {reorderIndex} = this.state;
 
-		if (event.key === ' ') {
+		if (event.key === KEY_CODES.SPACE) {
 			event.preventDefault();
 
 			this._handleReorder(null);
 		}
-		else if (event.key === 'ArrowDown') {
+		else if (event.key === KEY_CODES.ARROW_DOWN) {
 			event.preventDefault();
 
 			if (reorderIndex + 1 < resultIdsPinned.length) {
@@ -115,7 +118,7 @@ class List extends Component {
 				this._handleFocus(reorderIndex + 1);
 			}
 		}
-		else if (event.key === 'ArrowUp') {
+		else if (event.key === KEY_CODES.ARROW_UP) {
 			event.preventDefault();
 
 			if (reorderIndex > 0) {
@@ -126,7 +129,7 @@ class List extends Component {
 				this._handleFocus(reorderIndex - 1);
 			}
 		}
-		else if (event.key === 'Tab') {
+		else if (event.key === KEY_CODES.TAB) {
 			event.preventDefault();
 		}
 	}

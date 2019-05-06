@@ -56,14 +56,6 @@ export function isArray(val) {
 }
 
 /**
- * Checks if a value is not null.
- * @param {*} val The value to check.
- */
-export function isNotNull(val) {
-	return val !== null;
-}
-
-/**
  * Checks if a value is null.
  * @param {*} val The value to check.
  */
