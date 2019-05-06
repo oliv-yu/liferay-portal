@@ -7,6 +7,7 @@ import React, {Component} from 'react';
 import {DragSource as dragSource, DropTarget as dropTarget} from 'react-dnd';
 import {findDOMNode} from 'react-dom';
 import {getEmptyImage} from 'react-dnd-html5-backend';
+import {KEY_CODES} from 'utils/constants.es';
 import {PropTypes} from 'prop-types';
 import {sub} from 'utils/language.es';
 
@@ -226,11 +227,9 @@ class Item extends Component {
 
 	_handleFocus = event => {
 		if (event.target.classList.contains(ROOT_CLASS)) {
-			const {index, onFocus, pinned} = this.props;
+			const {index, onFocus} = this.props;
 
-			if (pinned) {
-				onFocus(index);
-			}
+			onFocus(index);
 		}
 	}
 
@@ -246,6 +245,22 @@ class Item extends Component {
 		}
 	};
 
+	_handleKeyDown = event => {
+		const {focus} = this.props;
+
+		if (focus) {
+			if (event.key === KEY_CODES.KEY_S) {
+				this._handleSelect();
+			}
+			else if (event.key === KEY_CODES.KEY_P) {
+				this._handlePin();
+			}
+			else if (event.key === KEY_CODES.KEY_V) {
+				this._handleHide();
+			}
+		}
+	}
+
 	_handleMouseEnter = () => {
 		this.setState({hovering: true});
 	};
@@ -255,13 +270,9 @@ class Item extends Component {
 	};
 
 	_handleSelect = () => {
-		const {id, onBlur, onSelect} = this.props;
+		const {id, onSelect} = this.props;
 
 		onSelect(id);
-
-		if (onBlur) {
-			onBlur();
-		}
 	};
 
 	_handlePin = () => {
@@ -368,11 +379,12 @@ class Item extends Component {
 				data-testid={id}
 				onBlur={onBlur}
 				onFocus={this._handleFocus}
+				onKeyDown={this._handleKeyDown}
 				onMouseEnter={this._handleMouseEnter}
 				onMouseLeave={this._handleMouseLeave}
 				ref={this.rootRef}
 				style={style}
-				tabIndex={pinned ? 0 : -1}
+				tabIndex={0}
 			>
 				<div
 					className="autofit-col result-drag"

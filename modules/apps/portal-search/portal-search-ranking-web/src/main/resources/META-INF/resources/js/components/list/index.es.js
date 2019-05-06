@@ -6,8 +6,8 @@ import Item from './Item.es';
 import React, {Component} from 'react';
 import SearchBar from './SearchBar.es';
 import {DragDropContext as dragDropContext} from 'react-dnd';
-import {KEY_CODES} from 'utils/constants.es';
 import {isNull, toggleListItem} from 'utils/util.es';
+import {KEY_CODES} from 'utils/constants.es';
 import {PropTypes} from 'prop-types';
 
 class List extends Component {
@@ -37,7 +37,7 @@ class List extends Component {
 	state = {
 		focusIndex: null,
 		hoverIndex: null,
-		reorderIndex: null,
+		reorder: false,
 		selectedIds: []
 	};
 
@@ -51,40 +51,53 @@ class List extends Component {
 
 	_handleItemBlur = () => {
 		this._handleFocus(null);
-		this._handleReorder(null);
+		this._handleReorder(false);
 	}
 
 	_handleItemFocus = index => {
-		if (isNull(this.state.reorderIndex)) {
+		if (!this.state.reorder) {
 			this._handleFocus(index);
 		}
 	}
 
+	/**
+	 * Will trigger the KeyDownFocus as long as focusIndex is defined.
+	 */
 	_handleKeyDown = event => {
-		const {focusIndex, reorderIndex} = this.state;
-
-		if (!isNull(reorderIndex)) {
-			this._handleKeyDownReorder(event);
-		}
-		else if (!isNull(focusIndex)) {
+		if (!(isNull(this.state.focusIndex))) {
 			this._handleKeyDownFocus(event);
 		}
 	};
 
+	/**
+	 * Defines the keyboard shortcuts. If reorder is true, it will move
+	 * pinned items up or down. If reorder is false, it will scroll through
+	 * all items.
+	 */
 	_handleKeyDownFocus = event => {
-		const {resultIdsPinned} = this.props;
+		const {onMove, resultIds, resultIdsPinned} = this.props;
 
-		const {focusIndex} = this.state;
+		const {focusIndex, reorder} = this.state;
+
+		const pinLength = resultIdsPinned ? resultIdsPinned.length : 0;
 
 		if (event.key === KEY_CODES.SPACE) {
 			event.preventDefault();
 
-			this._handleReorder(focusIndex);
+			this._handleReorder(!reorder && focusIndex < pinLength);
 		}
 		else if (event.key === KEY_CODES.ARROW_DOWN) {
 			event.preventDefault();
 
-			if (focusIndex + 1 < resultIdsPinned.length) {
+			if (focusIndex + 1 < resultIds.length) {
+
+				if (reorder && focusIndex + 1 < pinLength) {
+					onMove(focusIndex, focusIndex + 2);
+				}
+				else if (focusIndex + 1 === pinLength) {
+					this._handleReorder(false);
+				}
+
 				this._handleFocus(focusIndex + 1);
 			}
 		}
@@ -92,45 +105,17 @@ class List extends Component {
 			event.preventDefault();
 
 			if (focusIndex > 0) {
+				if (reorder) {
+					onMove(focusIndex, focusIndex - 1);
+				}
+
 				this._handleFocus(focusIndex - 1);
 			}
 		}
-	}
-
-	_handleKeyDownReorder = event => {
-		const {onMove, resultIdsPinned} = this.props;
-
-		const {reorderIndex} = this.state;
-
-		if (event.key === KEY_CODES.SPACE) {
-			event.preventDefault();
-
-			this._handleReorder(null);
-		}
-		else if (event.key === KEY_CODES.ARROW_DOWN) {
-			event.preventDefault();
-
-			if (reorderIndex + 1 < resultIdsPinned.length) {
-				onMove(reorderIndex, reorderIndex + 2);
-
-				this._handleReorder(reorderIndex + 1);
-
-				this._handleFocus(reorderIndex + 1);
-			}
-		}
-		else if (event.key === KEY_CODES.ARROW_UP) {
-			event.preventDefault();
-
-			if (reorderIndex > 0) {
-				onMove(reorderIndex, reorderIndex - 1);
-
-				this._handleReorder(reorderIndex - 1);
-
-				this._handleFocus(reorderIndex - 1);
-			}
-		}
 		else if (event.key === KEY_CODES.TAB) {
-			event.preventDefault();
+			if (reorder) {
+				event.preventDefault();
+			}
 		}
 	}
 
@@ -150,8 +135,8 @@ class List extends Component {
 		);
 	}
 
-	_handleReorder = index => {
-		this.setState({reorderIndex: index});
+	_handleReorder = val => {
+		this.setState({reorder: val});
 	}
 
 	_handleSelect = id => {
@@ -196,7 +181,7 @@ class List extends Component {
 	_renderItem = (id, index, arr) => {
 		const {dataMap, onClickHide, onClickPin, onMove} = this.props;
 
-		const {focusIndex, reorderIndex, selectedIds} = this.state;
+		const {focusIndex, reorder, selectedIds} = this.state;
 
 		const item = dataMap[id];
 
@@ -224,7 +209,7 @@ class List extends Component {
 				onRemoveSelect={this._handleRemoveSelect}
 				onSelect={this._handleSelect}
 				pinned={item.pinned}
-				reorder={index === reorderIndex}
+				reorder={index === focusIndex && reorder}
 				selected={selectedIds.includes(item.id)}
 				title={item.title}
 				type={item.type}

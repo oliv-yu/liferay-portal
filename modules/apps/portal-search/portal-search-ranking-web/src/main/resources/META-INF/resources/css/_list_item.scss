@@ -69,6 +69,8 @@
 	}
 
 	&:hover {
+		z-index: 0;
+
 		.result-pin, .result-hide {
 			visibility: visible;
 		}
@@ -104,19 +106,19 @@
 				color: inherit;
 			}
 		}
+	}
 
-		&.results-ranking-item-focus {
-			border-color: transparent;
-			border-radius: 2px;
-			box-shadow: 0 0 0 0.125rem $white, 0 0 0 0.25rem $primaryL2;
-			z-index: 1;
+	&.results-ranking-item-focus {
+		border-color: transparent;
+		border-radius: 2px;
+		box-shadow: 0 0 0 0.125rem $white, 0 0 0 0.25rem $primaryL2;
+		z-index: 1;
 
-			&.results-ranking-item-reorder {
+		&.results-ranking-item-reorder {
+			background-color: $primaryL4;
+
+			.result-drag-sticker {
 				background-color: $primaryL4;
-
-				.result-drag-sticker {
-					background-color: $primaryL4;
-				}
 			}
 		}
 	}
