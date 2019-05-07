@@ -172,6 +172,24 @@ class List extends Component {
 	};
 
 	/**
+	 * Handles the pin action. Updates the focus index to keep the same item
+	 * focused.
+	 * @param {Array} ids The list of ids to pin.
+	 * @param {boolean} pinned Set ids to pin or unpinned.
+	 */
+	_handleClickPin = (ids, pinned) => {
+		this.props.onClickPin(ids, pinned);
+
+		this.setState((state, props) => {
+			const newFocusIndex = props.resultIds.indexOf(ids[0]);
+
+			return (
+				{focusIndex: newFocusIndex > -1 ? newFocusIndex : null}
+			);
+		});
+	}
+
+	/**
 	 * Render the item. If the item id isn't found on the dataMap, nothing
 	 * will be rendered for the item.
 	 * @param {string} id The item id.
@@ -202,7 +220,7 @@ class List extends Component {
 				lastIndex={arr.length}
 				onBlur={this._handleItemBlur}
 				onClickHide={onClickHide}
-				onClickPin={onClickPin}
+				onClickPin={this._handleClickPin}
 				onDragHover={this._handleDragHover}
 				onFocus={this._handleItemFocus}
 				onMove={onMove}

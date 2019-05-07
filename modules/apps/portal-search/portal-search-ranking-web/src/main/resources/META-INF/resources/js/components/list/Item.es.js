@@ -249,13 +249,13 @@ class Item extends Component {
 		const {focus} = this.props;
 
 		if (focus) {
-			if (event.key === KEY_CODES.KEY_S) {
+			if (event.key === KEY_CODES.S) {
 				this._handleSelect();
 			}
-			else if (event.key === KEY_CODES.KEY_P) {
+			else if (event.key === KEY_CODES.P) {
 				this._handlePin();
 			}
-			else if (event.key === KEY_CODES.KEY_V) {
+			else if (event.key === KEY_CODES.H) {
 				this._handleHide();
 			}
 		}
@@ -276,17 +276,13 @@ class Item extends Component {
 	};
 
 	_handlePin = () => {
-		const {addedResult, id, onBlur, onClickPin, onRemoveSelect, pinned} = this.props;
+		const {addedResult, id, onClickPin, onRemoveSelect, pinned} = this.props;
 
 		if (addedResult) {
 			onRemoveSelect([id]);
 		}
 
 		onClickPin([id], !pinned);
-
-		if (onBlur) {
-			onBlur();
-		}
 	};
 
 	_renderDescription = () => {
