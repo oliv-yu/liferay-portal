@@ -110,7 +110,7 @@ public class ElasticsearchBulkableDocumentRequestTranslator
 				WriteRequest.RefreshPolicy.IMMEDIATE);
 		}
 
-		indexRequestBuilder.setType(indexDocumentRequest.getType());
+		indexRequestBuilder.setType(getType(indexDocumentRequest));
 
 		setSource(indexDocumentRequest, indexRequestBuilder);
 
@@ -140,6 +140,14 @@ public class ElasticsearchBulkableDocumentRequestTranslator
 		setDoc(updateDocumentRequest, updateRequestBuilder);
 
 		return updateRequestBuilder;
+	}
+
+	protected String getType(IndexDocumentRequest indexDocumentRequest) {
+		if (indexDocumentRequest.getType() != null) {
+			return indexDocumentRequest.getType();
+		}
+
+		return "_doc";
 	}
 
 	protected String getUid(IndexDocumentRequest indexDocumentRequest) {
