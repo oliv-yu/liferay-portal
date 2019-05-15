@@ -159,7 +159,12 @@ public class DocumentBuilderImpl implements DocumentBuilder {
 	}
 
 	protected void setFieldValues(String name, Object[] values) {
-		_documentImpl.setFieldValues(name, Arrays.asList(values));
+		if (values != null) {
+			_documentImpl.setFieldValues(name, Arrays.asList(values));
+		}
+		else {
+			_documentImpl.unsetField(name);
+		}
 	}
 
 	private final DocumentImpl _documentImpl = new DocumentImpl();
