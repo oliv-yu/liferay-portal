@@ -226,17 +226,6 @@ class ResultsRankingForm extends Component {
 	};
 
 	/**
-	 * Checks whether changes have been made for submission. Checks the lengths of
-	 * each hidden/pinned added/removed array and the aliases list.
-	 */
-	_getDisablePublish = () =>
-		this._getAliasUnchanged() &&
-			this._getHiddenAdded().length === 0 &&
-			this._getHiddenRemoved().length === 0 &&
-			this._getPinnedRemoved().length === 0 &&
-			this._getPinnedAdded().length === 0;
-
-	/**
 	 * Gets the added changes in hidden from the initial and current states.
 	 */
 	_getHiddenAdded = () =>
@@ -563,21 +552,6 @@ class ResultsRankingForm extends Component {
 	};
 
 	/**
-	 * Handles the saving the form as a draft. Sets the workflow action input
-	 * and submits the form.
-	 */
-	_handleSaveAsDraft = () => {
-		this.setState(
-			{
-				workflowAction: this.context.constants.WORKFLOW_ACTION_SAVE_DRAFT
-			},
-			() => {
-				submitForm(document[this.props.formName]);
-			}
-		);
-	}
-
-	/**
 	 * Handles the search bar enter, in which results are cleared and replaced
 	 * with fetched data with the new search parameter.
 	 */
@@ -718,8 +692,6 @@ class ResultsRankingForm extends Component {
 				<PageToolbar
 					onCancel={cancelUrl}
 					onPublish={this._handlePublish}
-					onSaveAsDraft={this._handleSaveAsDraft}
-					submitDisabled={this._getDisablePublish()}
 				/>
 
 				<div className="container-fluid container-fluid-max-xl container-form-lg">
