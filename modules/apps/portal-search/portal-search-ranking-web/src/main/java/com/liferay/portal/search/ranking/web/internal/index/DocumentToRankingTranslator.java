@@ -21,6 +21,6 @@ import com.liferay.portal.search.document.Document;
  */
 public interface DocumentToRankingTranslator {
 
-	public Ranking translate(Document document, String uid);
+	public Ranking translate(Document document, String id);
 
 }

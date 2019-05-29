@@ -40,7 +40,7 @@ public class RankingToDocumentTranslatorTest {
 
 	@Test
 	public void testDefaults() {
-		Ranking ranking1 = new Ranking();
+		Ranking ranking1 = new Ranking.RankingBuilder().build();
 
 		Document document = translate(ranking1);
 
@@ -52,18 +52,18 @@ public class RankingToDocumentTranslatorTest {
 			document, null);
 
 		Assert.assertEquals("[]", String.valueOf(ranking2.getAliases()));
-		Assert.assertEquals("[]", String.valueOf(ranking2.getHiddenIds()));
+		Assert.assertEquals("[]", String.valueOf(ranking2.getBlockIds()));
 		Assert.assertEquals("[]", String.valueOf(ranking2.getPins()));
 	}
 
 	@Test
-	public void testPinnedDocuments() {
-		Ranking ranking1 = new Ranking() {
-			{
-				setPins(
-					Collections.singletonList(new Ranking.Pin(142857, "uid")));
-			}
-		};
+	public void testPins() {
+		Ranking.RankingBuilder rankingBuilder = new Ranking.RankingBuilder();
+
+		rankingBuilder.pins(
+			Collections.singletonList(new Ranking.Pin(142857, "uid")));
+
+		Ranking ranking1 = rankingBuilder.build();
 
 		Document document = translate(ranking1);
 
