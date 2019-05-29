@@ -14,12 +14,17 @@
 
 package com.liferay.portal.search.ranking.web.internal.index;
 
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.search.document.Document;
 
+import java.text.DateFormat;
+
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,20 +40,44 @@ public class DocumentToRankingTranslatorImpl
 	implements DocumentToRankingTranslator {
 
 	@Override
-	public Ranking translate(Document document, String uid) {
-		Ranking ranking = new Ranking();
+	public Ranking translate(Document document, String id) {
+		return builder(
+		).aliases(
+			ArrayUtil.toStringArray(
+				document.getStrings(SearchTuningFields.ALIASES))
+		).blocks(
+			document.getStrings(SearchTuningFields.BLOCKS)
+		).setDisplayDate(
+			_getDate(document, Field.DISPLAY_DATE)
+		).index(
+			document.getString("index")
+		).setModifiedDate(
+			_getDate(document, Field.MODIFIED_DATE)
+		).pins(
+			_getPins(document)
+		).queryString(
+			document.getString(SearchTuningFields.QUERY_STRING)
+		).status(
+			GetterUtil.getInteger(document.getInteger("status"))
+		).id(
+			id
+		).build();
+	}
 
-		ranking.setAliases(
-			ArrayUtil.toStringArray(document.getStrings("aliases")));
-		ranking.setHiddenIds(document.getStrings("hidden_documents"));
-		ranking.setIndex(document.getString("index"));
-		ranking.setPins(_getPins(document));
-		ranking.setQueryString(
-			document.getString(SearchTuningFields.QUERY_STRING));
-		ranking.setStatus(GetterUtil.getInteger(document.getInteger("status")));
-		ranking.setUid(uid);
+	protected Ranking.RankingBuilder builder() {
+		return new Ranking.RankingBuilder();
+	}
 
-		return ranking;
+	private static Date _getDate(Document document, String name) {
+		try {
+			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
+				_INDEX_DATE_FORMAT_PATTERN);
+
+			return dateFormat.parse(document.getDate(name));
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 	private List<Ranking.Pin> _getPins(Document document) {
@@ -72,5 +101,7 @@ public class DocumentToRankingTranslatorImpl
 		return new Ranking.Pin(
 			GetterUtil.getInteger(map.get("position")), map.get("uid"));
 	}
+
+	private static final String _INDEX_DATE_FORMAT_PATTERN = "yyyyMMddHHmmss";
 
 }

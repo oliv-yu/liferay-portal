@@ -23,10 +23,10 @@ public interface RankingCriteria {
 
 	public List<String> getAliases();
 
+	public String getId();
+
 	public String getIndex();
 
 	public String getQueryString();
-
-	public String getUid();
 
 }

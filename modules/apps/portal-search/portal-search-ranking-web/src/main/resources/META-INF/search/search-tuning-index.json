@@ -6,14 +6,18 @@
 					"store": true,
 					"type": "keyword"
 				},
+				"all_query_strings": {
+					"store": true,
+					"type": "text"
+				},
+				"blocks": {
+					"store": true,
+					"type": "keyword"
+				},
 				"displayDate": {
 					"format": "yyyyMMddHHmmss",
 					"store": true,
 					"type": "date"
-				},
-				"hidden_documents": {
-					"store": true,
-					"type": "keyword"
 				},
 				"index": {
 					"store": true,
