@@ -40,17 +40,17 @@ public class RankingIndexWriterImpl implements RankingIndexWriter {
 	}
 
 	@Override
-	public void remove(String uid) {
+	public void remove(String id) {
 		_searchEngineAdapter.execute(
 			new DeleteDocumentRequest(
-				SearchTuningIndexDefinition.INDEX_NAME, uid));
+				SearchTuningIndexDefinition.INDEX_NAME, id));
 	}
 
 	@Override
 	public void update(Ranking ranking) {
 		_searchEngineAdapter.execute(
 			new IndexDocumentRequest(
-				SearchTuningIndexDefinition.INDEX_NAME, ranking.getUid(),
+				SearchTuningIndexDefinition.INDEX_NAME, ranking.getId(),
 				_rankingToDocumentTranslator.translate(ranking)));
 	}
 

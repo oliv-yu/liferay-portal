@@ -15,7 +15,6 @@
 package com.liferay.portal.search.ranking.web.internal.index;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.document.DocumentBuilderFactory;
 
@@ -38,9 +37,14 @@ public class RankingToDocumentTranslatorImpl
 	public Document translate(Ranking ranking) {
 		return _documentBuilderFactory.builder(
 		).setStrings(
-			"aliases", ArrayUtil.toStringArray(ranking.getAliases())
+			SearchTuningFields.ALIASES,
+			ArrayUtil.toStringArray(ranking.getAliases())
 		).setStrings(
-			"hidden_documents", ArrayUtil.toStringArray(ranking.getHiddenIds())
+			SearchTuningFields.ALL_QUERY_STRINGS,
+			ArrayUtil.toStringArray(ranking.getAllQueryStrings())
+		).setStrings(
+			SearchTuningFields.BLOCKS,
+			ArrayUtil.toStringArray(ranking.getBlockIds())
 		).setString(
 			"index", ranking.getIndex()
 		).setValue(
@@ -48,26 +52,8 @@ public class RankingToDocumentTranslatorImpl
 		).setString(
 			SearchTuningFields.QUERY_STRING, ranking.getQueryString()
 		).setString(
-			"uid", ranking.getUid()
+			"uid", ranking.getId()
 		).build();
-	}
-
-	protected String[] getAliases(Ranking ranking) {
-		List<String> aliases = ranking.getAliases();
-
-		if (ListUtil.isNotEmpty(aliases)) {
-			return ArrayUtil.toStringArray(aliases);
-		}
-
-		return null;
-	}
-
-	protected List<String> getHiddenDocuments(Ranking ranking) {
-		if (ListUtil.isNotEmpty(ranking.getHiddenIds())) {
-			return ranking.getHiddenIds();
-		}
-
-		return null;
 	}
 
 	@Reference(unbind = "-")

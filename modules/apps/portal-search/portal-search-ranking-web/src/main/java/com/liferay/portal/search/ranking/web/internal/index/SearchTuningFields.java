@@ -19,6 +19,12 @@ package com.liferay.portal.search.ranking.web.internal.index;
  */
 public class SearchTuningFields {
 
+	public static final String ALIASES = "aliases";
+
+	public static final String ALL_QUERY_STRINGS = "allQueryStrings";
+
+	public static final String BLOCKS = "blocks";
+
 	public static final String PINS = "pins";
 
 	public static final String QUERY_STRING = "queryString";

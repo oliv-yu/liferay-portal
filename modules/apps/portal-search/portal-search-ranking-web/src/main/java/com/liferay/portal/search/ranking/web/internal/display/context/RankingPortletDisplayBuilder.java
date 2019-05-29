@@ -102,16 +102,13 @@ public class RankingPortletDisplayBuilder {
 		Ranking ranking = _documentToRankingTranslator.translate(document, id);
 
 		RankingEntryDisplayContextBuilder rankingEntryDisplayContextBuilder =
-			new RankingEntryDisplayContextBuilder(id, document, ranking);
+			new RankingEntryDisplayContextBuilder(ranking);
 
 		return rankingEntryDisplayContextBuilder.build();
 	}
 
 	protected List<DropdownItem> getActionDropdownItems() {
 		return new DropdownItemList() {
-
-			private static final long serialVersionUID = 1L;
-
 			{
 				add(
 					dropdownItem -> {
@@ -258,9 +255,6 @@ public class RankingPortletDisplayBuilder {
 
 	private List<DropdownItem> _getFilterNavigationDropdownItems() {
 		return new DropdownItemList() {
-
-			private static final long serialVersionUID = 1L;
-
 			{
 				add(
 					dropdownItem -> {
