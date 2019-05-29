@@ -23,10 +23,10 @@ public interface RankingCriteriaBuilder {
 
 	public RankingCriteria build();
 
+	public RankingCriteriaBuilder id(String uid);
+
 	public RankingCriteriaBuilder index(String index);
 
 	public RankingCriteriaBuilder queryString(String queryString);
-
-	public RankingCriteriaBuilder uid(String uid);
 
 }

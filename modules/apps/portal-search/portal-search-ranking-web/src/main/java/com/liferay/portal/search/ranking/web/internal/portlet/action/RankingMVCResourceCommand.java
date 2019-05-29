@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -29,12 +28,11 @@ import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.document.GetDocumentRequest;
 import com.liferay.portal.search.engine.adapter.document.GetDocumentResponse;
-import com.liferay.portal.search.filter.ComplexQueryPartBuilderFactory;
-import com.liferay.portal.search.query.IdsQuery;
-import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.ranking.web.internal.constants.SearchTuningPortletKeys;
 import com.liferay.portal.search.ranking.web.internal.index.Ranking;
 import com.liferay.portal.search.ranking.web.internal.index.RankingIndexReader;
+import com.liferay.portal.search.ranking.web.internal.searcher.RankingSearchRequestHelper;
+import com.liferay.portal.search.searcher.SearchRequest;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.portal.search.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.searcher.SearchResponse;
@@ -42,11 +40,8 @@ import com.liferay.portal.search.searcher.Searcher;
 
 import java.io.IOException;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.portlet.ResourceRequest;
@@ -91,30 +86,15 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 		}
 	}
 
-	protected void addHiddenIdsQuery(
-		Collection<String> ids, SearchRequestBuilder searchRequestBuilder) {
+	protected SearchRequest buildSearchRequest(
+		ResourceRequest resourceRequest, Ranking ranking) {
 
-		searchRequestBuilder.addComplexQueryPart(
-			complexQueryPartBuilderFactory.builder(
-			).query(
-				_getIdsQuery(ids)
-			).occur(
-				"must_not"
-			).build());
-	}
+		SearchRequestBuilder searchRequestBuilder = getSearchRequestBuilder(
+			resourceRequest);
 
-	protected void addPinnedIdsQuery(
-		Collection<String> ids, SearchRequestBuilder searchRequestBuilder) {
+		rankingSearchRequestHelper.contribute(searchRequestBuilder, ranking);
 
-		searchRequestBuilder.addComplexQueryPart(
-			complexQueryPartBuilderFactory.builder(
-			).boost(
-				1000F
-			).query(
-				_getIdsQuery(ids)
-			).occur(
-				"should"
-			).build());
+		return searchRequestBuilder.build();
 	}
 
 	protected Document getDocument(String index, String id, String type) {
@@ -163,7 +143,7 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 	protected void populateHiddenDocuments(
 		JSONArray jsonArray, Ranking ranking) {
 
-		List<String> ids = ranking.getHiddenIds();
+		List<String> ids = ranking.getBlockIds();
 
 		ids.stream(
 		).map(
@@ -182,23 +162,14 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 	protected void populateVisibleDocuments(
 		ResourceRequest resourceRequest, JSONArray jsonArray, Ranking ranking) {
 
-		List<String> hiddenIds = ranking.getHiddenIds();
-		Set<String> pinnedIds = _getPinnedIds(ranking);
-
-		SearchRequestBuilder searchRequestBuilder = getSearchRequestBuilder(
-			resourceRequest);
-
-		addHiddenIdsQuery(hiddenIds, searchRequestBuilder);
-		addPinnedIdsQuery(pinnedIds, searchRequestBuilder);
-
 		SearchResponse searchResponse = searcher.search(
-			searchRequestBuilder.build());
+			buildSearchRequest(resourceRequest, ranking));
 
 		Stream<Document> stream = searchResponse.getDocumentsStream();
 
 		stream.map(
 			document -> _withPinnedIcon(
-				pinnedIds.contains(document.getString(Field.UID)),
+				ranking.isPinned(document.getString(Field.UID)),
 				_translate(document))
 		).forEach(
 			jsonArray::put
@@ -206,13 +177,10 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 	}
 
 	@Reference
-	protected ComplexQueryPartBuilderFactory complexQueryPartBuilderFactory;
-
-	@Reference
-	protected Queries queries;
-
-	@Reference
 	protected RankingIndexReader rankingIndexReader;
+
+	@Reference
+	protected RankingSearchRequestHelper rankingSearchRequestHelper;
 
 	@Reference
 	protected SearchEngineAdapter searchEngineAdapter;
@@ -222,25 +190,6 @@ public class RankingMVCResourceCommand implements MVCResourceCommand {
 
 	@Reference
 	protected SearchRequestBuilderFactory searchRequestBuilderFactory;
-
-	private IdsQuery _getIdsQuery(Collection<String> ids) {
-		IdsQuery idsQuery = queries.ids();
-
-		idsQuery.addIds(ArrayUtil.toStringArray(ids));
-
-		return idsQuery;
-	}
-
-	private Set<String> _getPinnedIds(Ranking ranking) {
-		List<Ranking.Pin> pins = ranking.getPins();
-
-		return pins.stream(
-		).map(
-			Ranking.Pin::getId
-		).collect(
-			Collectors.toSet()
-		);
-	}
 
 	private JSONObject _translate(Document document) {
 		return JSONUtil.put(

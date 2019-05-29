@@ -15,17 +15,9 @@
 package com.liferay.portal.search.ranking.web.internal.display.context;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.ranking.web.internal.index.Ranking;
 
-import java.text.DateFormat;
-
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,11 +25,7 @@ import java.util.List;
  */
 public class RankingEntryDisplayContextBuilder {
 
-	public RankingEntryDisplayContextBuilder(
-		String id, Document document, Ranking ranking) {
-
-		_id = id;
-		_document = document;
+	public RankingEntryDisplayContextBuilder(Ranking ranking) {
 		_ranking = ranking;
 	}
 
@@ -62,18 +50,6 @@ public class RankingEntryDisplayContextBuilder {
 		return String.valueOf(list.size());
 	}
 
-	private Date _getDate(String name) {
-		try {
-			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
-				_INDEX_DATE_FORMAT_PATTERN);
-
-			return dateFormat.parse(_document.getDate(name));
-		}
-		catch (Exception e) {
-			return null;
-		}
-	}
-
 	private void _setAliases(
 		RankingEntryDisplayContext rankingEntryDisplayContext) {
 
@@ -91,14 +67,14 @@ public class RankingEntryDisplayContextBuilder {
 	private void _setDisplayDate(
 		RankingEntryDisplayContext rankingEntryDisplayContext) {
 
-		rankingEntryDisplayContext.setDisplayDate(_getDate(Field.DISPLAY_DATE));
+		rankingEntryDisplayContext.setDisplayDate(_ranking.getDisplayDate());
 	}
 
 	private void _setHiddenResultsCount(
 		RankingEntryDisplayContext rankingEntryDisplayContext) {
 
 		rankingEntryDisplayContext.setHiddenResultsCount(
-			getSizeString(_ranking.getHiddenIds()));
+			getSizeString(_ranking.getBlockIds()));
 	}
 
 	private void _setIndex(
@@ -116,8 +92,7 @@ public class RankingEntryDisplayContextBuilder {
 	private void _setModifiedDate(
 		RankingEntryDisplayContext rankingEntryDisplayContext) {
 
-		rankingEntryDisplayContext.setModifiedDate(
-			_getDate(Field.MODIFIED_DATE));
+		rankingEntryDisplayContext.setModifiedDate(_ranking.getModifiedDate());
 	}
 
 	private void _setPinnedResultsCount(
@@ -137,14 +112,9 @@ public class RankingEntryDisplayContextBuilder {
 	private void _setUid(
 		RankingEntryDisplayContext rankingEntryDisplayContext) {
 
-		rankingEntryDisplayContext.setUid(_id);
+		rankingEntryDisplayContext.setUid(_ranking.getId());
 	}
 
-	private static final String _INDEX_DATE_FORMAT_PATTERN = PropsUtil.get(
-		PropsKeys.INDEX_DATE_FORMAT_PATTERN);
-
-	private final Document _document;
-	private final String _id;
 	private final Ranking _ranking;
 
 }

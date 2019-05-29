@@ -35,11 +35,13 @@ import com.liferay.portal.search.ranking.web.internal.index.RankingCriteriaBuild
 import com.liferay.portal.search.ranking.web.internal.index.RankingIndexReader;
 import com.liferay.portal.search.ranking.web.internal.index.RankingIndexWriter;
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.portlet.ActionRequest;
@@ -82,8 +84,30 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 		return newStrings;
 	}
 
+	protected void add(
+			ActionRequest actionRequest, ActionResponse actionResponse,
+			Action action)
+		throws Exception {
+
+		if (rankingExistsForKeyword(actionRequest, action)) {
+			SessionErrors.add(actionRequest, Exception.class);
+
+			actionResponse.setRenderParameter("mvcPath", "/error.jsp");
+
+			return;
+		}
+
+		Ranking ranking = addRanking(
+			actionRequest, getIndexName(actionRequest, action._indexParam));
+
+		String redirect = getSaveAndContinueRedirect(
+			actionRequest, ranking, action._redirect);
+
+		sendRedirect(actionRequest, actionResponse, redirect);
+	}
+
 	protected Ranking addRanking(ActionRequest actionRequest, String index) {
-		Ranking ranking = new Ranking();
+		Ranking.RankingBuilder rankingBuilder = new Ranking.RankingBuilder();
 
 		String resultActionCmd = ParamUtil.getString(
 			actionRequest, "resultActionCmd");
@@ -92,29 +116,37 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 
 		if (!resultActionCmd.isEmpty() && !resultActionUid.isEmpty()) {
 			if (resultActionCmd.equals(SearchRankingConstants.PIN)) {
-				ranking.setPins(
+				rankingBuilder.pins(
 					Arrays.asList(new Ranking.Pin(0, resultActionUid)));
 			}
 			else {
-				ranking.setHiddenIds(ListUtil.fromString(resultActionUid));
+				rankingBuilder.blocks(ListUtil.fromString(resultActionUid));
 			}
 		}
 
-		String keywords = ParamUtil.getString(actionRequest, "keywords");
-		Date displayDate = null;
-		Date modifiedDate = new Date();
+		rankingBuilder.index(
+			index
+		).queryString(
+			ParamUtil.getString(actionRequest, "keywords")
+		).status(
+			WorkflowConstants.STATUS_DRAFT
+		);
 
-		ranking.setDisplayDate(displayDate);
-		ranking.setIndex(index);
-		ranking.setQueryString(keywords);
-		ranking.setModifiedDate(modifiedDate);
-		ranking.setStatus(WorkflowConstants.STATUS_DRAFT);
+		String id = rankingIndexWriter.create(rankingBuilder.build());
 
-		String resultsRankingUid = rankingIndexWriter.create(ranking);
+		Optional<Ranking> optional = rankingIndexReader.fetch(id);
 
-		ranking.setUid(resultsRankingUid);
+		return optional.get();
+	}
 
-		return ranking;
+	protected void delete(
+			ActionRequest actionRequest, ActionResponse actionResponse,
+			Action action)
+		throws IOException {
+
+		deleteRanking(action._resultsRankingUid);
+
+		sendRedirect(actionRequest, actionResponse, action._redirect);
 	}
 
 	protected void deleteRanking(String resultsRankingUid) {
@@ -126,46 +158,17 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+		Action action = new Action(actionRequest);
 
-		String redirect = ParamUtil.getString(actionRequest, "redirect");
-
-		String indexParam = ParamUtil.getString(actionRequest, "index-name");
-
-		if (cmd.equals(Constants.ADD)) {
-			if (rankingExistsForKeyword(actionRequest)) {
-				SessionErrors.add(actionRequest, Exception.class);
-
-				actionResponse.setRenderParameter("mvcPath", "/error.jsp");
-
-				return;
-			}
-
-			Ranking ranking = addRanking(
-				actionRequest, getIndexName(actionRequest, indexParam));
-
-			redirect = getSaveAndContinueRedirect(
-				actionRequest, ranking, redirect);
+		if (action.isCmd(Constants.ADD)) {
+			add(actionRequest, actionResponse, action);
 		}
-		else if (cmd.equals(Constants.UPDATE)) {
-			if (rankingExistsForAliases(actionRequest)) {
-				SessionErrors.add(actionRequest, Exception.class);
-
-				actionResponse.setRenderParameter("mvcPath", "/error.jsp");
-
-				return;
-			}
-
-			updateRanking(actionRequest);
+		else if (action.isCmd(Constants.UPDATE)) {
+			update(actionRequest, actionResponse, action);
 		}
-		else if (cmd.equals(Constants.DELETE)) {
-			String resultsRankingUid = ParamUtil.getString(
-				actionRequest, "resultsRankingUid");
-
-			deleteRanking(resultsRankingUid);
+		else if (action.isCmd(Constants.DELETE)) {
+			delete(actionRequest, actionResponse, action);
 		}
-
-		sendRedirect(actionRequest, actionResponse, redirect);
 	}
 
 	protected String getIndexName(
@@ -200,7 +203,7 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 			"mvcRenderCommandName", "editResultsRankingEntry");
 		portletURL.setParameter(Constants.CMD, Constants.UPDATE, false);
 		portletURL.setParameter("redirect", redirect, false);
-		portletURL.setParameter("resultsRankingUid", ranking.getUid(), false);
+		portletURL.setParameter("resultsRankingUid", ranking.getId(), false);
 		portletURL.setParameter(
 			"aliases", StringUtil.merge(ranking.getAliases(), StringPool.COMMA),
 			false);
@@ -234,13 +237,15 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 				aliases
 			).index(
 				index
-			).uid(
+			).id(
 				resultsRankingUid
 			).build());
 	}
 
-	protected boolean rankingExistsForKeyword(ActionRequest actionRequest) {
-		String index = ParamUtil.getString(actionRequest, "index-name");
+	protected boolean rankingExistsForKeyword(
+		ActionRequest actionRequest, Action action) {
+
+		String index = action._indexParam;
 
 		if (Validator.isBlank(index)) {
 			long companyId = portal.getCompanyId(actionRequest);
@@ -248,19 +253,37 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 			index = "liferay-" + companyId;
 		}
 
-		String keywords = ParamUtil.getString(actionRequest, "keywords");
-
 		return rankingIndexReader.exists(
 			rankingCriteriaBuilderFactory.builder(
 			).index(
 				index
 			).queryString(
-				keywords
+				action._queryString
 			).build());
 	}
 
+	protected void update(
+			ActionRequest actionRequest, ActionResponse actionResponse,
+			Action action)
+		throws IOException {
+
+		if (rankingExistsForAliases(actionRequest)) {
+			SessionErrors.add(actionRequest, Exception.class);
+
+			actionResponse.setRenderParameter("mvcPath", "/error.jsp");
+
+			return;
+		}
+
+		updateRanking(actionRequest);
+
+		sendRedirect(actionRequest, actionResponse, action._redirect);
+
+		return;
+	}
+
 	protected void updateRanking(ActionRequest actionRequest) {
-		String uid = ParamUtil.getString(actionRequest, "resultsRankingUid");
+		String id = ParamUtil.getString(actionRequest, "resultsRankingUid");
 
 		String[] aliases = ParamUtil.getStringValues(actionRequest, "aliases");
 
@@ -276,7 +299,7 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 		int pinnedIdsStartIndex = ParamUtil.getInteger(
 			actionRequest, "pinnedIdsStartIndex");
 
-		Optional<Ranking> optional = rankingIndexReader.fetch(uid);
+		Optional<Ranking> optional = rankingIndexReader.fetch(id);
 
 		if (!optional.isPresent()) {
 			return;
@@ -284,10 +307,14 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 
 		Ranking ranking = optional.get();
 
-		ranking.setAliases(aliases);
+		Ranking.RankingBuilder rankingBuilder = new Ranking.RankingBuilder(
+			ranking);
 
-		ranking.setHiddenIds(
-			update(ranking.getHiddenIds(), hiddenAdded, hiddenRemoved));
+		rankingBuilder.aliases(
+			aliases
+		).blocks(
+			update(ranking.getBlockIds(), hiddenAdded, hiddenRemoved)
+		);
 
 		List<Ranking.Pin> originalPinnedDocuments = ranking.getPins();
 
@@ -298,10 +325,10 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 		}
 
 		if (ListUtil.isNotEmpty(newPinnedDocuments)) {
-			ranking.setPins(newPinnedDocuments);
+			rankingBuilder.pins(newPinnedDocuments);
 		}
 		else {
-			ranking.setPins(null);
+			rankingBuilder.pins(null);
 		}
 
 		int workflowAction = ParamUtil.getInteger(
@@ -311,16 +338,16 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 
 			// @TODO Save draft action
 
-			ranking.setStatus(WorkflowConstants.STATUS_DRAFT);
+			rankingBuilder.status(WorkflowConstants.STATUS_DRAFT);
 		}
 		else {
 
 			// @TODO Publish action
 
-			ranking.setStatus(WorkflowConstants.STATUS_APPROVED);
+			rankingBuilder.status(WorkflowConstants.STATUS_APPROVED);
 		}
 
-		rankingIndexWriter.update(ranking);
+		rankingIndexWriter.update(rankingBuilder.build());
 	}
 
 	@Reference
@@ -334,5 +361,29 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	protected RankingIndexWriter rankingIndexWriter;
+
+	protected static class Action {
+
+		public boolean isCmd(String cmd) {
+			return Objects.equals(cmd, _cmd);
+		}
+
+		private final String _cmd;
+		private final String _indexParam;
+		private final String _queryString;
+		private final String _redirect;
+
+		Action(ActionRequest actionRequest) {
+			_cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+			_redirect = ParamUtil.getString(actionRequest, "redirect");
+			_indexParam = ParamUtil.getString(actionRequest, "index-name");
+			_queryString = ParamUtil.getString(actionRequest, "keywords");
+			_resultsRankingUid = ParamUtil.getString(
+				actionRequest, "resultsRankingUid");
+		}
+
+		private final String _resultsRankingUid;
+
+	}
 
 }
