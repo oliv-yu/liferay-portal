@@ -1,5 +1,7 @@
-import React from 'react';
 import AddResult from 'components/add_result/index.es';
+import React from 'react';
+import ReactModal from 'react-modal';
+import {FETCH_VISIBLE_DOCUMENTS_URL} from 'test/mock-data.js';
 import {cleanup, fireEvent, render, waitForElement} from 'react-testing-library';
 import 'jest-dom/extend-expect';
 
@@ -17,13 +19,17 @@ describe(
 	() => {
 		afterEach(cleanup);
 
+		beforeEach(() => {
+			ReactModal.setAppElement('body');
+		});
+
 		it(
 			'should show a modal when the add a result button gets clicked',
 			() => {
 
 				const {getByText, queryByTestId} = render(
 					<AddResult
-						fetchDocumentsUrl={''}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={jest.fn()}
 					/>
 				);
@@ -40,7 +46,7 @@ describe(
 
 				const {getByText, queryByTestId} = render(
 					<AddResult
-						fetchDocumentsUrl={''}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={jest.fn()}
 					/>
 				);
@@ -59,7 +65,7 @@ describe(
 
 				const {getByTestId, getByText} = render(
 					<AddResult
-						fetchDocumentsUrl={''}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={jest.fn()}
 					/>
 				);
@@ -79,7 +85,7 @@ describe(
 
 				const {getByTestId, getByText} = render(
 					<AddResult
-						fetchDocumentsUrl={''}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={jest.fn()}
 					/>
 				);
@@ -110,7 +116,7 @@ describe(
 
 				const {getByTestId, getByText} = render(
 					<AddResult
-						fetchDocumentsUrl={''}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={jest.fn()}
 					/>
 				);
@@ -143,7 +149,7 @@ describe(
 
 				const {getByTestId, getByText} = render(
 					<AddResult
-						fetchDocumentsUrl={''}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={onAddResultSubmit}
 					/>
 				);
@@ -179,7 +185,7 @@ describe(
 
 				const {getByTestId, getByText} = render(
 					<AddResult
-						fetchDocumentsUrl={''}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={onAddResultSubmit}
 					/>
 				);
@@ -218,7 +224,7 @@ describe(
 
 				const {getByTestId, getByText} = render(
 					<AddResult
-						fetchDocumentsUrl={''}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={onAddResultSubmit}
 					/>
 				);

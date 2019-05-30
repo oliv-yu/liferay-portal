@@ -6,6 +6,8 @@ import 'jest-dom/extend-expect';
 
 jest.mock('utils/api.es');
 
+const FORM_NAME = 'testForm';
+
 const RESULTS_LIST_ID = 'results-list-group';
 
 const HIDDEN_IDS_ADDED_INPUT_SELECTOR = '#hiddenIdsAdded';
@@ -27,10 +29,11 @@ describe(
 
 				const {container} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={'example'}
+						formName={FORM_NAME}
+						searchTerm="example"
 					/>
 				);
 
@@ -44,10 +47,11 @@ describe(
 
 				const {getByTestId} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -63,10 +67,11 @@ describe(
 
 				const {getByTestId, getByText} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -84,11 +89,12 @@ describe(
 
 				const {container} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+						formName={FORM_NAME}
 						initialAliases={['one', 'two', 'three']}
-						searchTerm={''}
+						searchTerm=""
 					/>
 				);
 
@@ -106,11 +112,12 @@ describe(
 
 				const {container} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+						formName={FORM_NAME}
 						initialAliases={['one', 'two', 'three']}
-						searchTerm={''}
+						searchTerm=""
 					/>
 				);
 
@@ -130,10 +137,11 @@ describe(
 
 				const {container, getByTestId} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -151,10 +159,11 @@ describe(
 
 				const {container, getByTestId} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -174,10 +183,11 @@ describe(
 
 				const {container, getByTestId} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -195,10 +205,11 @@ describe(
 
 				const {container, getByTestId} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -218,10 +229,11 @@ describe(
 
 				const {container, getByTestId} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -239,10 +251,11 @@ describe(
 
 				const {container, getByTestId, getByText} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -264,10 +277,11 @@ describe(
 
 				const {container, getByTestId, getByText} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -287,10 +301,11 @@ describe(
 
 				const {container, getByTestId, getByText} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -314,10 +329,11 @@ describe(
 
 				const {container, getByTestId, getByText} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -347,10 +363,11 @@ describe(
 
 				const {container, getByTestId} = render(
 					<ResultsRankingForm
-						cancelUrl={'cancel'}
+						cancelUrl="cancel"
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						searchTerm={''}
+						formName={FORM_NAME}
+						searchTerm=""
 					/>
 				);
 
@@ -374,6 +391,7 @@ describe(
 						cancelUrl=""
 						fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
 						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+						formName={FORM_NAME}
 						searchTerm=""
 					/>
 				);

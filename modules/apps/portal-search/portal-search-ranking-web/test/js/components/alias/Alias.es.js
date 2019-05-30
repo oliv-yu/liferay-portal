@@ -1,5 +1,6 @@
-import React from 'react';
 import Alias from 'components/alias/index.es';
+import React from 'react';
+import ReactModal from 'react-modal';
 import {cleanup, fireEvent, render} from 'react-testing-library';
 import 'jest-dom/extend-expect';
 
@@ -9,6 +10,10 @@ describe(
 	'Alias',
 	() => {
 		afterEach(cleanup);
+
+		beforeEach(() => {
+			ReactModal.setAppElement('body');
+		});
 
 		it(
 			'should have a list of tags available',
