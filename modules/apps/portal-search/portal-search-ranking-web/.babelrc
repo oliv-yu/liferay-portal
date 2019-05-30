@@ -1,13 +1,19 @@
 {
-	"presets": [
-		"@babel/preset-react"
-	],
+	"env": {
+		"test": {
+			"plugins": ["@babel/plugin-transform-runtime"]
+		}
+	},
+	"presets": ["@babel/preset-react"],
 	"plugins": [
-		["module-resolver", {
-			"root": ["./src/main/resources/META-INF/resources/js/"],
-			"alias": {
-				"test": "./test/js/"
+		[
+			"module-resolver",
+			{
+				"root": ["./src/main/resources/META-INF/resources/js/"],
+				"alias": {
+					"test": "./test/js/"
+				}
 			}
-		}]
+		]
 	]
 }
