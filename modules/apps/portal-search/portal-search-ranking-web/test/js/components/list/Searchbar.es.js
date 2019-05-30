@@ -2,7 +2,7 @@ import React from 'react';
 import SearchBar from 'components/list/SearchBar.es';
 import {cleanup, fireEvent, render} from 'react-testing-library';
 import 'jest-dom/extend-expect';
-import {getMockResultsData} from 'test/mock-data.js';
+import {FETCH_VISIBLE_DOCUMENTS_URL, getMockResultsData} from 'test/mock-data.js';
 import {resultsDataToMap} from 'utils/util.es';
 
 const DATA_MAP = resultsDataToMap(
@@ -27,6 +27,7 @@ describe(
 				const {queryByText} = render(
 					<SearchBar
 						dataMap={DATA_MAP}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={jest.fn()}
 						onClickHide={jest.fn()}
 						onClickPin={jest.fn()}
@@ -47,6 +48,7 @@ describe(
 				const {queryByText} = render(
 					<SearchBar
 						dataMap={DATA_MAP}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onClickHide={jest.fn()}
 						onClickPin={jest.fn()}
 						onSelectAll={jest.fn()}
@@ -68,6 +70,7 @@ describe(
 				const {queryByText} = render(
 					<SearchBar
 						dataMap={DATA_MAP}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={jest.fn()}
 						onClickHide={jest.fn()}
 						onClickPin={jest.fn()}
@@ -90,6 +93,7 @@ describe(
 				const {container, getByTestId} = render(
 					<SearchBar
 						dataMap={DATA_MAP}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={jest.fn()}
 						onClickHide={jest.fn()}
 						onClickPin={jest.fn()}
@@ -112,6 +116,7 @@ describe(
 				const {queryByText} = render(
 					<SearchBar
 						dataMap={DATA_MAP}
+						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
 						onAddResultSubmit={jest.fn()}
 						onClickHide={jest.fn()}
 						onClickPin={jest.fn()}
