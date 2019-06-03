@@ -24,14 +24,14 @@ function getItemStyles(props) {
 
 	const transform = `translate(${x - OFFSET_X}px, ${y - OFFSET_Y}px)`;
 
-	return !initialOffset || !currentOffset ?
-		{
-			display: 'none'
-		} :
-		{
-			transform,
-			WebkitTransform: transform
-		};
+	return !initialOffset || !currentOffset
+		? {
+				display: 'none'
+		  }
+		: {
+				transform,
+				WebkitTransform: transform
+		  };
 }
 
 const ItemDragLayer = props => {
@@ -44,18 +44,16 @@ const ItemDragLayer = props => {
 	}
 
 	return dragging ? (
-		<div className="drag-layer" style={LAYER_STYLES}>
+		<div className='drag-layer' style={LAYER_STYLES}>
 			<div style={getItemStyles(props)}>{renderItem()}</div>
 		</div>
 	) : null;
 };
 
-export default DndDragLayer(
-	monitor => ({
-		currentOffset: monitor.getSourceClientOffset(),
-		dragging: monitor.isDragging(),
-		initialOffset: monitor.getInitialSourceClientOffset(),
-		item: monitor.getItem(),
-		itemType: monitor.getItemType()
-	})
-)(ItemDragLayer);
+export default DndDragLayer(monitor => ({
+	currentOffset: monitor.getSourceClientOffset(),
+	dragging: monitor.isDragging(),
+	initialOffset: monitor.getInitialSourceClientOffset(),
+	item: monitor.getItem(),
+	itemType: monitor.getItemType()
+}))(ItemDragLayer);

@@ -1,5 +1,7 @@
 import Alias from 'components/alias/index.es';
-import ClayEmptyState, {DISPLAY_STATES} from 'components/shared/ClayEmptyState.es';
+import ClayEmptyState, {
+	DISPLAY_STATES
+} from 'components/shared/ClayEmptyState.es';
 import FormValueDebugger from 'utils/FormValueDebugger.es';
 import List from 'components/list/index.es';
 import PageToolbar from './PageToolbar.es';
@@ -27,7 +29,7 @@ const DELTA = 10;
 class ErrorBoundary extends Component {
 	state = {
 		hasError: false
-	}
+	};
 
 	static getDerivedStateFromError(error) {
 		return {hasError: true};
@@ -40,17 +42,20 @@ class ErrorBoundary extends Component {
 	render() {
 		return this.state.hasError ? (
 			<ClayEmptyState
-				description={Liferay.Language.get('an-error-has-occurred-and-we-were-unable-to-load-the-results')}
+				description={Liferay.Language.get(
+					'an-error-has-occurred-and-we-were-unable-to-load-the-results'
+				)}
 				displayState={DISPLAY_STATES.EMPTY}
 				title={Liferay.Language.get('unable-to-load-content')}
 			/>
-		) :
-			this.props.children;
+		) : (
+			this.props.children
+		);
 	}
 }
 
 const HiddenInput = ({name, value}) => (
-	<input id={name} name={name} type="hidden" value={value} />
+	<input id={name} name={name} type='hidden' value={value} />
 );
 
 class ResultsRankingForm extends Component {
@@ -70,7 +75,6 @@ class ResultsRankingForm extends Component {
 	};
 
 	state = {
-
 		/**
 		 * A list of strings of aliases.
 		 * @type {Array}
@@ -189,7 +193,9 @@ class ResultsRankingForm extends Component {
 	 */
 	_getAliasUnchanged = () =>
 		this.props.initialAliases.length === this.state.aliases.length &&
-			this.props.initialAliases.every(item => this.state.aliases.includes(item));
+		this.props.initialAliases.every(item =>
+			this.state.aliases.includes(item)
+		);
 
 	/**
 	 * Gets the added changes in hidden from the initial and current states.
@@ -231,8 +237,8 @@ class ResultsRankingForm extends Component {
 	_getResultIdsVisible = () => {
 		const {resultIds, resultIdsPinned} = this.state;
 
-		const notPinnedOrHiddenIds = resultIds.filter(
-			id => this._isNotPinnedOrHidden(id)
+		const notPinnedOrHiddenIds = resultIds.filter(id =>
+			this._isNotPinnedOrHidden(id)
 		);
 
 		return [...resultIdsPinned, ...notPinnedOrHiddenIds];
@@ -245,24 +251,16 @@ class ResultsRankingForm extends Component {
 	 * @param {boolean} pin The new pin value to set. Defaults to true.
 	 */
 	_handleClickPin = (ids, pin = true) => {
-		this.setState(
-			state => (
-				{
-					dataMap: updateDataMap(
-						state.dataMap,
-						ids,
-						{
-							hidden: false,
-							pinned: pin
-						}
-					),
-					resultIdsHidden: removeIdFromList(state.resultIdsHidden, ids),
-					resultIdsPinned: pin ?
-						[...state.resultIdsPinned, ...ids] :
-						removeIdFromList(state.resultIdsPinned, ids)
-				}
-			)
-		);
+		this.setState(state => ({
+			dataMap: updateDataMap(state.dataMap, ids, {
+				hidden: false,
+				pinned: pin
+			}),
+			resultIdsHidden: removeIdFromList(state.resultIdsHidden, ids),
+			resultIdsPinned: pin
+				? [...state.resultIdsPinned, ...ids]
+				: removeIdFromList(state.resultIdsPinned, ids)
+		}));
 	};
 
 	/**
@@ -273,29 +271,21 @@ class ResultsRankingForm extends Component {
 	 * @param {boolean} hide The new hide value to set. Defaults to true.
 	 */
 	_handleClickHide = (ids, hide = true) => {
-		this.setState(
-			state => (
-				{
-					dataMap: updateDataMap(
-						state.dataMap,
-						ids,
-						{
-							hidden: hide,
-							pinned: false
-						}
-					),
-					resultIds: hide ?
-						removeIdFromList(state.resultIds, ids) :
-						[...state.resultIds, ...ids],
-					resultIdsHidden: hide ?
-						[...ids, ...state.resultIdsHidden] :
-						removeIdFromList(state.resultIdsHidden, ids),
-					resultIdsPinned: hide ?
-						removeIdFromList(state.resultIdsPinned, ids) :
-						state.resultIdsPinned
-				}
-			)
-		);
+		this.setState(state => ({
+			dataMap: updateDataMap(state.dataMap, ids, {
+				hidden: hide,
+				pinned: false
+			}),
+			resultIds: hide
+				? removeIdFromList(state.resultIds, ids)
+				: [...state.resultIds, ...ids],
+			resultIdsHidden: hide
+				? [...ids, ...state.resultIdsHidden]
+				: removeIdFromList(state.resultIdsHidden, ids),
+			resultIdsPinned: hide
+				? removeIdFromList(state.resultIdsPinned, ids)
+				: state.resultIdsPinned
+		}));
 	};
 
 	/**
@@ -303,26 +293,20 @@ class ResultsRankingForm extends Component {
 	 * more data to the results list.
 	 */
 	_handleFetchResultsData = () => {
-		this.setState(
-			{
-				dataLoading: true,
-				displayError: false
-			}
-		);
+		this.setState({
+			dataLoading: true,
+			displayError: false
+		});
 
 		const {companyId, namespace} = this.context;
 
-		return fetchDocuments(
-			this.props.fetchDocumentsUrl,
-			{
-				[`${namespace}companyId`]: companyId,
-				[`${namespace}from`]: DELTA * this.state.visibleCur,
-				[`${namespace}keywords`]: this.props.searchTerm,
-				[`${namespace}size`]: DELTA
-			}
-		).then(
-			({items, total}) => {
-
+		return fetchDocuments(this.props.fetchDocumentsUrl, {
+			[`${namespace}companyId`]: companyId,
+			[`${namespace}from`]: DELTA * this.state.visibleCur,
+			[`${namespace}keywords`]: this.props.searchTerm,
+			[`${namespace}size`]: DELTA
+		})
+			.then(({items, total}) => {
 				const definedItems = items || {};
 
 				// Get duplicate results in order to set addedResult property to
@@ -335,8 +319,9 @@ class ResultsRankingForm extends Component {
 				// Remove duplicate results from the new list of results to avoid
 				// duplicate key errors.
 
-				const newItems = definedItems
-					.filter(({id}) => !this._initialResultIds.includes(id));
+				const newItems = definedItems.filter(
+					({id}) => !this._initialResultIds.includes(id)
+				);
 
 				// Add new data to the current map of all data.
 
@@ -348,8 +333,7 @@ class ResultsRankingForm extends Component {
 					.filter(({pinned}) => pinned)
 					.map(({id}) => id);
 
-				const ids = newItems
-					.map(({id}) => id);
+				const ids = newItems.map(({id}) => id);
 
 				// Keep history of all initial results, to get the difference
 				// for addedResults and for all added/removed hidden/pinned.
@@ -362,62 +346,51 @@ class ResultsRankingForm extends Component {
 				this._initialResultIds = [...this._initialResultIds, ...ids];
 
 				this.setState(
-					state => (
-						{
-							dataLoading: false,
-							dataMap: {
+					state => ({
+						dataLoading: false,
+						dataMap: {
+							// In the case when a previously added result
+							// is actually one of the results that loads in,
+							// its 'addedResult' property must be set to
+							// false. This prevents confusion since
+							// unpinning or unhiding results added from
+							// the add results modal should remove it from
+							// results list entirely.
 
-								// In the case when a previously added result
-								// is actually one of the results that loads in,
-								// its 'addedResult' property must be set to
-								// false. This prevents confusion since
-								// unpinning or unhiding results added from
-								// the add results modal should remove it from
-								// results list entirely.
-
-								...updateDataMap(
-									state.dataMap,
-									duplicateItems,
-									{
-										addedResult: false
-									}
-								),
-								...mappedData
-							},
-							resultIds: [
-								...state.resultIds,
-								...ids
-							],
-							resultIdsPinned: [
-								...state.resultIdsPinned,
-								...pinnedIds
-							],
-							totalResultsVisibleCount: total,
-							visibleCur: state.visibleCur + 1
-						}
-					),
+							...updateDataMap(state.dataMap, duplicateItems, {
+								addedResult: false
+							}),
+							...mappedData
+						},
+						resultIds: [...state.resultIds, ...ids],
+						resultIdsPinned: [
+							...state.resultIdsPinned,
+							...pinnedIds
+						],
+						totalResultsVisibleCount: total,
+						visibleCur: state.visibleCur + 1
+					}),
 					() => {
-						this._updateDataLoadIndex('pinned', this._initialResultIdsPinned);
+						this._updateDataLoadIndex(
+							'pinned',
+							this._initialResultIdsPinned
+						);
 					}
 				);
-			}
-		).catch(
-			() => {
-
+			})
+			.catch(() => {
 				// Delay showing error message so the user has confirmation
 				// when attempting to reload the content after an error.
 
 				setTimeout(
-					() => this.setState(
-						{
+					() =>
+						this.setState({
 							dataLoading: false,
 							displayError: true
-						}
-					),
+						}),
 					1000
 				);
-			}
-		);
+			});
 	};
 
 	/**
@@ -425,26 +398,20 @@ class ResultsRankingForm extends Component {
 	 * in the hidden tab.
 	 */
 	_handleFetchResultsDataHidden = () => {
-		this.setState(
-			{
-				dataLoading: true,
-				displayError: false
-			}
-		);
+		this.setState({
+			dataLoading: true,
+			displayError: false
+		});
 
 		const {companyId, namespace} = this.context;
 
-		return fetchDocuments(
-			this.props.fetchDocumentsHiddenUrl,
-			{
-				[`${namespace}companyId`]: companyId,
-				[`${namespace}from`]: DELTA * this.state.hiddenCur,
-				[`${namespace}keywords`]: this.props.searchTerm,
-				[`${namespace}size`]: DELTA
-			}
-		).then(
-			({items, total}) => {
-
+		return fetchDocuments(this.props.fetchDocumentsHiddenUrl, {
+			[`${namespace}companyId`]: companyId,
+			[`${namespace}from`]: DELTA * this.state.hiddenCur,
+			[`${namespace}keywords`]: this.props.searchTerm,
+			[`${namespace}size`]: DELTA
+		})
+			.then(({items, total}) => {
 				const definedItems = items || {};
 
 				// Get duplicate results in order to set addedResult property to
@@ -457,8 +424,9 @@ class ResultsRankingForm extends Component {
 				// Remove duplicate results from the new list of results to avoid
 				// duplicate key errors.
 
-				const newItems = definedItems
-					.filter(({id}) => !this._initialResultIdsHidden.includes(id));
+				const newItems = definedItems.filter(
+					({id}) => !this._initialResultIdsHidden.includes(id)
+				);
 
 				// Add new data to the current map of all data
 
@@ -467,7 +435,9 @@ class ResultsRankingForm extends Component {
 				// Get the ids of all items.
 
 				const ids = newItems
-					.filter(({id}) => !this._initialResultIdsHidden.includes(id))
+					.filter(
+						({id}) => !this._initialResultIdsHidden.includes(id)
+					)
 					.map(({id}) => id);
 
 				// Keep history of all initial results, to get the difference
@@ -478,57 +448,41 @@ class ResultsRankingForm extends Component {
 					...ids
 				];
 
-				this.setState(
-					state => (
-						{
-							dataLoading: false,
+				this.setState(state => ({
+					dataLoading: false,
 
-							dataMap: {
+					dataMap: {
+						// In the case when a previously added result
+						// is actually one of the results that loads in,
+						// its 'addedResult' property must be set to
+						// false. This prevents confusion since
+						// unpinning or unhiding results added from
+						// the add results modal should remove it from
+						// results list entirely.
 
-								// In the case when a previously added result
-								// is actually one of the results that loads in,
-								// its 'addedResult' property must be set to
-								// false. This prevents confusion since
-								// unpinning or unhiding results added from
-								// the add results modal should remove it from
-								// results list entirely.
-
-								...updateDataMap(
-									state.dataMap,
-									duplicateItems,
-									{
-										addedResult: false
-									}
-								),
-								...mappedData
-							},
-							hiddenCur: state.hiddenCur + 1,
-							resultIdsHidden: [
-								...state.resultIdsHidden,
-								...ids
-							],
-							totalResultsHiddenCount: total
-						}
-					)
-				);
-			}
-		).catch(
-			() => {
-
+						...updateDataMap(state.dataMap, duplicateItems, {
+							addedResult: false
+						}),
+						...mappedData
+					},
+					hiddenCur: state.hiddenCur + 1,
+					resultIdsHidden: [...state.resultIdsHidden, ...ids],
+					totalResultsHiddenCount: total
+				}));
+			})
+			.catch(() => {
 				// Delay showing error message so the user has confirmation
 				// when attempting to reload the content after an error.
 
 				setTimeout(
-					() => this.setState(
-						{
+					() =>
+						this.setState({
 							dataLoading: false,
 							displayErrorHidden: true
-						}
-					),
+						}),
 					1000
 				);
-			}
-		);
+			});
 	};
 
 	/**
@@ -537,21 +491,10 @@ class ResultsRankingForm extends Component {
 	 * @param {number} toIndex The new index that the item will be moved to.
 	 */
 	_handleMove = (fromIndex, toIndex) => {
-		if (!isNil(fromIndex) &&
-			!isNil(toIndex) &&
-			fromIndex !== toIndex) {
-
-			this.setState(
-				state => (
-					{
-						resultIdsPinned: move(
-							state.resultIdsPinned,
-							fromIndex,
-							toIndex
-						)
-					}
-				)
-			);
+		if (!isNil(fromIndex) && !isNil(toIndex) && fromIndex !== toIndex) {
+			this.setState(state => ({
+				resultIdsPinned: move(state.resultIdsPinned, fromIndex, toIndex)
+			}));
 		}
 	};
 
@@ -568,20 +511,16 @@ class ResultsRankingForm extends Component {
 				submitForm(document[this.props.formName]);
 			}
 		);
-	}
+	};
 
 	/**
 	 * Handles removing an alias.
 	 * @param {String} label Removes the alias with given label.
 	 */
 	_handleRemoveAlias = label => {
-		this.setState(
-			state => (
-				{
-					aliases: state.aliases.filter(item => item !== label)
-				}
-			)
-		);
+		this.setState(state => ({
+			aliases: state.aliases.filter(item => item !== label)
+		}));
 	};
 
 	/**
@@ -589,16 +528,12 @@ class ResultsRankingForm extends Component {
 	 * @param {array} value The value of the new aliases (array of String).
 	 */
 	_handleUpdateAlias = value => {
-		this.setState(
-			state => (
-				{
-					aliases: [
-						...state.aliases,
-						...value.filter(item => !state.aliases.includes(item))
-					]
-				}
-			)
-		);
+		this.setState(state => ({
+			aliases: [
+				...state.aliases,
+				...value.filter(item => !state.aliases.includes(item))
+			]
+		}));
 	};
 
 	/**
@@ -639,36 +574,31 @@ class ResultsRankingForm extends Component {
 
 		const addedResultsIds = addedResultsDataList.map(({id}) => id);
 
-		this.setState(
-			state => (
-				{
-					dataMap: {
-						...state.dataMap,
-						...newMappedData
-					},
+		this.setState(state => ({
+			dataMap: {
+				...state.dataMap,
+				...newMappedData
+			},
 
-					// Remove any results from hidden if they are getting pinned
-					// and considered as an addedResult.
+			// Remove any results from hidden if they are getting pinned
+			// and considered as an addedResult.
 
-					resultIdsHidden: state.resultIdsHidden.filter(
-						id => !addedResultsIds.includes(id)
-					),
-					resultIdsPinned: [
+			resultIdsHidden: state.resultIdsHidden.filter(
+				id => !addedResultsIds.includes(id)
+			),
+			resultIdsPinned: [
+				// Place the addedResults at the top of the pinned list
+				// while removing any that are already part of the
+				// pinned list.
 
-						// Place the addedResults at the top of the pinned list
-						// while removing any that are already part of the
-						// pinned list.
-
-						...addedResultsDataList
-							.filter(
-								result => !state.resultIdsPinned.includes(result.id)
-							)
-							.map(({id}) => id),
-						...state.resultIdsPinned
-					]
-				}
-			)
-		);
+				...addedResultsDataList
+					.filter(
+						result => !state.resultIdsPinned.includes(result.id)
+					)
+					.map(({id}) => id),
+				...state.resultIdsPinned
+			]
+		}));
 	};
 
 	/**
@@ -701,33 +631,27 @@ class ResultsRankingForm extends Component {
 	 * @param {number} increment The amount the new value should increase by.
 	 */
 	_updateDataLoadIndex = (property, list, increment = DELTA) => {
-		this.setState(
-			({dataLoadIndex}) => {
-				const maxValue = list.length - 1;
+		this.setState(({dataLoadIndex}) => {
+			const maxValue = list.length - 1;
 
-				const newValue = dataLoadIndex[property].end + increment;
+			const newValue = dataLoadIndex[property].end + increment;
 
-				return ({
-					dataLoadIndex: {
-						...dataLoadIndex,
-						[property]: {
-							...dataLoadIndex[property],
-							end: newValue > maxValue ? maxValue : newValue
-						}
+			return {
+				dataLoadIndex: {
+					...dataLoadIndex,
+					[property]: {
+						...dataLoadIndex[property],
+						end: newValue > maxValue ? maxValue : newValue
 					}
-				});
-			}
-		);
+				}
+			};
+		});
 	};
 
 	render() {
 		const {namespace} = this.context;
 
-		const {
-			cancelUrl,
-			fetchDocumentsUrl,
-			searchTerm
-		} = this.props;
+		const {cancelUrl, fetchDocumentsUrl, searchTerm} = this.props;
 
 		const {
 			aliases,
@@ -747,23 +671,47 @@ class ResultsRankingForm extends Component {
 		} = this.state;
 
 		return (
-			<div className="results-ranking-form-root">
+			<div className='results-ranking-form-root'>
 				<HiddenInput name={`${namespace}aliases`} value={aliases} />
-				<HiddenInput name={`${namespace}hiddenIdsAdded`} value={this._getHiddenAdded()} />
-				<HiddenInput name={`${namespace}hiddenIdsRemoved`} value={this._getHiddenRemoved()} />
-				<HiddenInput name={`${namespace}pinnedIds`} value={resultIdsPinned} />
-				<HiddenInput name={`${namespace}pinnedIdsEndIndex`} value={dataLoadIndex.pinned.end} />
-				<HiddenInput name={`${namespace}pinnedIdsStartIndex`} value={dataLoadIndex.pinned.start} />
-				<HiddenInput name={`${namespace}workflowAction`} value={workflowAction} />
+
+				<HiddenInput
+					name={`${namespace}hiddenIdsAdded`}
+					value={this._getHiddenAdded()}
+				/>
+
+				<HiddenInput
+					name={`${namespace}hiddenIdsRemoved`}
+					value={this._getHiddenRemoved()}
+				/>
+
+				<HiddenInput
+					name={`${namespace}pinnedIds`}
+					value={resultIdsPinned}
+				/>
+
+				<HiddenInput
+					name={`${namespace}pinnedIdsEndIndex`}
+					value={dataLoadIndex.pinned.end}
+				/>
+
+				<HiddenInput
+					name={`${namespace}pinnedIdsStartIndex`}
+					value={dataLoadIndex.pinned.start}
+				/>
+
+				<HiddenInput
+					name={`${namespace}workflowAction`}
+					value={workflowAction}
+				/>
 
 				<PageToolbar
 					onCancel={cancelUrl}
 					onPublish={this._handlePublish}
 				/>
 
-				<div className="container-fluid container-fluid-max-xl container-form-lg">
-					<div className="sheet sheet-lg form-section-header">
-						<h2 className="sheet-title">{`"${searchTerm}"`}</h2>
+				<div className='container-fluid container-fluid-max-xl container-form-lg'>
+					<div className='sheet sheet-lg form-section-header'>
+						<h2 className='sheet-title'>{`"${searchTerm}"`}</h2>
 
 						<Alias
 							keywords={aliases}
@@ -773,18 +721,22 @@ class ResultsRankingForm extends Component {
 						/>
 					</div>
 
-					<div className="sheet sheet-lg form-section-body">
-						<div className="sheet-text">
+					<div className='sheet sheet-lg form-section-body'>
+						<div className='sheet-text'>
 							<strong>{Liferay.Language.get('results')}</strong>
 						</div>
 
 						<ErrorBoundary>
-							<div className="form-section-results-list">
+							<div className='form-section-results-list'>
 								<ClayTabs onSelect={this._handleTabSelect}>
-									<ClayTabList className="results-ranking-tabs">
-										<ClayTab>{Liferay.Language.get('visible')}</ClayTab>
+									<ClayTabList className='results-ranking-tabs'>
+										<ClayTab>
+											{Liferay.Language.get('visible')}
+										</ClayTab>
 
-										<ClayTab>{Liferay.Language.get('hidden')}</ClayTab>
+										<ClayTab>
+											{Liferay.Language.get('hidden')}
+										</ClayTab>
 									</ClayTabList>
 
 									<ClayTabPanel>
@@ -792,17 +744,26 @@ class ResultsRankingForm extends Component {
 											dataLoading={dataLoading}
 											dataMap={dataMap}
 											displayError={displayError}
-											fetchDocumentsUrl={fetchDocumentsUrl}
+											fetchDocumentsUrl={
+												fetchDocumentsUrl
+											}
 											onAddResultSubmit={
 												this._handleUpdateAddResultIds
 											}
 											onClickHide={this._handleClickHide}
 											onClickPin={this._handleClickPin}
-											onLoadResults={this._handleFetchResultsData}
+											onLoadResults={
+												this._handleFetchResultsData
+											}
 											onMove={this._handleMove}
 											resultIds={this._getResultIdsVisible()}
-											resultIdsPinned={this.state.resultIdsPinned}
-											showLoadMore={this._hasMoreData(totalResultsVisibleCount, visibleCur)}
+											resultIdsPinned={
+												this.state.resultIdsPinned
+											}
+											showLoadMore={this._hasMoreData(
+												totalResultsVisibleCount,
+												visibleCur
+											)}
 										/>
 									</ClayTabPanel>
 
@@ -814,10 +775,14 @@ class ResultsRankingForm extends Component {
 											onClickHide={this._handleClickHide}
 											onClickPin={this._handleClickPin}
 											onLoadResults={
-												this._handleFetchResultsDataHidden
+												this
+													._handleFetchResultsDataHidden
 											}
 											resultIds={resultIdsHidden}
-											showLoadMore={this._hasMoreData(totalResultsHiddenCount, hiddenCur)}
+											showLoadMore={this._hasMoreData(
+												totalResultsHiddenCount,
+												hiddenCur
+											)}
 										/>
 									</ClayTabPanel>
 								</ClayTabs>
@@ -826,7 +791,7 @@ class ResultsRankingForm extends Component {
 					</div>
 				</div>
 
-				{showDebugger &&
+				{showDebugger && (
 					<FormValueDebugger
 						values={[
 							{
@@ -859,7 +824,7 @@ class ResultsRankingForm extends Component {
 							}
 						]}
 					/>
-				}
+				)}
 			</div>
 		);
 	}

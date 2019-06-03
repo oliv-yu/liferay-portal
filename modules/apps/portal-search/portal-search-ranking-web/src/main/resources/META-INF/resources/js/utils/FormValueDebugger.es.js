@@ -4,17 +4,13 @@ const PrettyPrintArray = ({value}) => (
 	<span>
 		{'['}
 
-		{value.map(
-			(item, i) => (
-				<React.Fragment key={i}>
-					<span className="badge badge-pill badge-secondary">
-						{item}
-					</span>
+		{value.map((item, i) => (
+			<React.Fragment key={i}>
+				<span className='badge badge-pill badge-secondary'>{item}</span>
 
-					{i + 1 !== value.length && ', '}
-				</React.Fragment>
-			)
-		)}
+				{i + 1 !== value.length && ', '}
+			</React.Fragment>
+		))}
 
 		{']'}
 	</span>
@@ -26,7 +22,7 @@ const PrettyPrintArray = ({value}) => (
  */
 const FormValueDebugger = ({values}) => (
 	<div
-		className="alert alert-dark"
+		className='alert alert-dark'
 		style={{
 			margin: '0 auto',
 			maxWidth: '1000px'
@@ -35,10 +31,12 @@ const FormValueDebugger = ({values}) => (
 		<p>
 			<strong>{'Form hidden values for debugging'}</strong>
 
-			{' (Only the values from the frontend component. There are others defined in the JSP)'}
+			{
+				' (Only the values from the frontend component. There are others defined in the JSP)'
+			}
 		</p>
 
-		<table className="table table-bordered table-striped">
+		<table className='table table-bordered table-striped'>
 			<thead>
 				<tr>
 					<th>{'Name'}</th>
@@ -47,14 +45,18 @@ const FormValueDebugger = ({values}) => (
 			</thead>
 
 			<tbody>
-				{values.map(
-					({name, value}) => (
-						<tr key={name}>
-							<td>{name}</td>
-							<td>{Array.isArray(value) ? <PrettyPrintArray value={value} /> : value}</td>
-						</tr>
-					)
-				)}
+				{values.map(({name, value}) => (
+					<tr key={name}>
+						<td>{name}</td>
+						<td>
+							{Array.isArray(value) ? (
+								<PrettyPrintArray value={value} />
+							) : (
+								value
+							)}
+						</td>
+					</tr>
+				))}
 			</tbody>
 		</table>
 	</div>

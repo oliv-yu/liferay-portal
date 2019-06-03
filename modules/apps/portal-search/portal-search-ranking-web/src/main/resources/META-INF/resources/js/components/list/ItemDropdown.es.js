@@ -49,9 +49,7 @@ class ItemDropdown extends Component {
 	_handleDropdownToggle = event => {
 		event.preventDefault();
 
-		this.setState(
-			state => ({show: !state.show})
-		);
+		this.setState(state => ({show: !state.show}));
 	};
 
 	_handleDropdownAction = actionFn => event => {
@@ -85,18 +83,18 @@ class ItemDropdown extends Component {
 
 		return (
 			<div
-				className="dropdown dropdown-action result-dropdown"
+				className='dropdown dropdown-action result-dropdown'
 				ref={this.setWrapperRef}
 				{...otherProps}
 			>
 				<ClayButton
-					aria-expanded="false"
-					aria-haspopup="true"
+					aria-expanded='false'
+					aria-haspopup='true'
 					borderless
-					className="component-action dropdown-toggle"
-					data-testid="dropdown-toggle"
-					data-toggle="dropdown"
-					iconName="ellipsis-v"
+					className='component-action dropdown-toggle'
+					data-testid='dropdown-toggle'
+					data-toggle='dropdown'
+					iconName='ellipsis-v'
 					onClick={this._handleDropdownToggle}
 					title={Liferay.Language.get('toggle-dropdown')}
 				/>
@@ -105,29 +103,32 @@ class ItemDropdown extends Component {
 					{onClickPin && (
 						<li>
 							<ClayButton
-								className="dropdown-item"
-								displayStyle="link"
+								className='dropdown-item'
+								displayStyle='link'
 								onClick={this._handleDropdownAction(onClickPin)}
-								size="sm"
+								size='sm'
 							>
-								<div className="dropdown-item-indicator">
+								<div className='dropdown-item-indicator'>
 									<ClayIcon
 										iconName={pinned ? 'unpin' : 'pin'}
 									/>
 								</div>
 
-								{pinned ?
-									getPluralMessage(
-										Liferay.Language.get('unpin-result'),
-										Liferay.Language.get('unpin-results'),
-										itemCount
-									) :
-									getPluralMessage(
-										Liferay.Language.get('pin-result'),
-										Liferay.Language.get('pin-results'),
-										itemCount
-									)
-								}
+								{pinned
+									? getPluralMessage(
+											Liferay.Language.get(
+												'unpin-result'
+											),
+											Liferay.Language.get(
+												'unpin-results'
+											),
+											itemCount
+									  )
+									: getPluralMessage(
+											Liferay.Language.get('pin-result'),
+											Liferay.Language.get('pin-results'),
+											itemCount
+									  )}
 							</ClayButton>
 						</li>
 					)}
@@ -135,27 +136,34 @@ class ItemDropdown extends Component {
 					{onClickHide && (
 						<li>
 							<ClayButton
-								className="dropdown-item"
-								displayStyle="link"
-								onClick={this._handleDropdownAction(onClickHide)}
-								size="sm"
+								className='dropdown-item'
+								displayStyle='link'
+								onClick={this._handleDropdownAction(
+									onClickHide
+								)}
+								size='sm'
 							>
-								<div className="dropdown-item-indicator">
-									<ClayIcon iconName={hidden ? 'view' : 'hidden'} />
+								<div className='dropdown-item-indicator'>
+									<ClayIcon
+										iconName={hidden ? 'view' : 'hidden'}
+									/>
 								</div>
 
-								{hidden ?
-									getPluralMessage(
-										Liferay.Language.get('show-result'),
-										Liferay.Language.get('show-results'),
-										itemCount
-									) :
-									getPluralMessage(
-										Liferay.Language.get('hide-result'),
-										Liferay.Language.get('hide-results'),
-										itemCount
-									)
-								}
+								{hidden
+									? getPluralMessage(
+											Liferay.Language.get('show-result'),
+											Liferay.Language.get(
+												'show-results'
+											),
+											itemCount
+									  )
+									: getPluralMessage(
+											Liferay.Language.get('hide-result'),
+											Liferay.Language.get(
+												'hide-results'
+											),
+											itemCount
+									  )}
 							</ClayButton>
 						</li>
 					)}

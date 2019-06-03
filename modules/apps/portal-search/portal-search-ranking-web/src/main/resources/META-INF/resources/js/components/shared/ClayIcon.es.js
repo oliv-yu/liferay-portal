@@ -14,16 +14,17 @@ class ClayIcon extends Component {
 	render() {
 		const {className, iconName} = this.props;
 
-		const classes = getCN(
-			'lexicon-icon',
-			`lexicon-icon-${iconName}`,
-			{
-				[className]: className
-			}
-		);
+		const classes = getCN('lexicon-icon', `lexicon-icon-${iconName}`, {
+			[className]: className
+		});
 
 		return (
-			<svg aria-hidden="true" className={classes} key={iconName} viewBox="0 0 512 512">
+			<svg
+				aria-hidden='true'
+				className={classes}
+				key={iconName}
+				viewBox='0 0 512 512'
+			>
 				<use href={`${this.context.spritemap}#${iconName}`} />
 			</svg>
 		);

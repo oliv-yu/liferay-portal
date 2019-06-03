@@ -5,267 +5,204 @@ import 'jest-dom/extend-expect';
 
 const DROPDOWN_TOGGLE_ID = 'dropdown-toggle';
 
-describe(
-	'ItemDropdown',
-	() => {
-		afterEach(cleanup);
+describe('ItemDropdown', () => {
+	afterEach(cleanup);
 
-		it(
-			'should have option to unpin visible',
-			() => {
-
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={false}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={true}
-					/>
-				);
-
-				expect(queryByText('Unpin Result')).not.toBeNull();
-				expect(queryByText('Unpin Results')).toBeNull();
-			}
+	it('should have option to unpin visible', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={false}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={true}
+			/>
 		);
 
-		it(
-			'should have option to unpin multiple visible',
-			() => {
+		expect(queryByText('Unpin Result')).not.toBeNull();
+		expect(queryByText('Unpin Results')).toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={false}
-						itemCount={2}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={true}
-					/>
-				);
-
-				expect(queryByText('Unpin Results')).not.toBeNull();
-			}
+	it('should have option to unpin multiple visible', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={false}
+				itemCount={2}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={true}
+			/>
 		);
 
-		it(
-			'should have option to pin visible',
-			() => {
+		expect(queryByText('Unpin Results')).not.toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={false}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
-
-				expect(queryByText('Pin Result')).not.toBeNull();
-				expect(queryByText('Pin Results')).toBeNull();
-			}
+	it('should have option to pin visible', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={false}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should have option to unpin multiple visible',
-			() => {
+		expect(queryByText('Pin Result')).not.toBeNull();
+		expect(queryByText('Pin Results')).toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={false}
-						itemCount={2}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
-
-				expect(queryByText('Pin Results')).not.toBeNull();
-			}
+	it('should have option to unpin multiple visible', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={false}
+				itemCount={2}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should have option to hide visible',
-			() => {
+		expect(queryByText('Pin Results')).not.toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={false}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
-
-				expect(queryByText('Hide Result')).not.toBeNull();
-				expect(queryByText('Hide Results')).toBeNull();
-			}
+	it('should have option to hide visible', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={false}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should have option to hide multiple visible',
-			() => {
+		expect(queryByText('Hide Result')).not.toBeNull();
+		expect(queryByText('Hide Results')).toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={false}
-						itemCount={2}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
-
-				expect(queryByText('Hide Results')).not.toBeNull();
-			}
+	it('should have option to hide multiple visible', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={false}
+				itemCount={2}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should have option to show hidden',
-			() => {
+		expect(queryByText('Hide Results')).not.toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={true}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
-
-				expect(queryByText('Show Result')).not.toBeNull();
-				expect(queryByText('Show Results')).toBeNull();
-			}
+	it('should have option to show hidden', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={true}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should have option to show multiple hidden',
-			() => {
+		expect(queryByText('Show Result')).not.toBeNull();
+		expect(queryByText('Show Results')).toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={true}
-						itemCount={2}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
-
-				expect(queryByText('Show Results')).not.toBeNull();
-			}
+	it('should have option to show multiple hidden', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={true}
+				itemCount={2}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should have option to pin hidden',
-			() => {
+		expect(queryByText('Show Results')).not.toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={true}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
-
-				expect(queryByText('Pin Result')).not.toBeNull();
-				expect(queryByText('Pin Results')).toBeNull();
-			}
+	it('should have option to pin hidden', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={true}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should have option to pin multiple hidden',
-			() => {
+		expect(queryByText('Pin Result')).not.toBeNull();
+		expect(queryByText('Pin Results')).toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={true}
-						itemCount={2}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
-
-				expect(queryByText('Pin Results')).not.toBeNull();
-			}
+	it('should have option to pin multiple hidden', () => {
+		const {queryByText} = render(
+			<ItemDropdown
+				hidden={true}
+				itemCount={2}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should have not have option to show/hide when onClickHide is missing',
-			() => {
+		expect(queryByText('Pin Results')).not.toBeNull();
+	});
 
-				const {queryByText} = render(
-					<ItemDropdown
-						hidden={false}
-						onClickPin={jest.fn()}
-						pinned={true}
-					/>
-				);
-
-				expect(queryByText('Show Result')).toBeNull();
-				expect(queryByText('Hide Result')).toBeNull();
-			}
+	it('should have not have option to show/hide when onClickHide is missing', () => {
+		const {queryByText} = render(
+			<ItemDropdown hidden={false} onClickPin={jest.fn()} pinned={true} />
 		);
 
-		it(
-			'should show the dropdown when clicked on',
-			() => {
+		expect(queryByText('Show Result')).toBeNull();
+		expect(queryByText('Hide Result')).toBeNull();
+	});
 
-				const {container, getByTestId} = render(
-					<ItemDropdown
-						hidden={false}
-						onClickHide={jest.fn()}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
-
-				fireEvent.click(getByTestId(DROPDOWN_TOGGLE_ID));
-
-				expect(container.querySelector('.dropdown-menu')).toHaveClass('show');
-			}
+	it('should show the dropdown when clicked on', () => {
+		const {container, getByTestId} = render(
+			<ItemDropdown
+				hidden={false}
+				onClickHide={jest.fn()}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should call the onClickHide function when it gets clicked on',
-			() => {
+		fireEvent.click(getByTestId(DROPDOWN_TOGGLE_ID));
 
-				const onClickHide = jest.fn();
+		expect(container.querySelector('.dropdown-menu')).toHaveClass('show');
+	});
 
-				const {getByText} = render(
-					<ItemDropdown
-						hidden={false}
-						onClickHide={onClickHide}
-						onClickPin={jest.fn()}
-						pinned={false}
-					/>
-				);
+	it('should call the onClickHide function when it gets clicked on', () => {
+		const onClickHide = jest.fn();
 
-				fireEvent.click(getByText('Hide Result'));
-
-				expect(onClickHide.mock.calls.length).toBe(1);
-			}
+		const {getByText} = render(
+			<ItemDropdown
+				hidden={false}
+				onClickHide={onClickHide}
+				onClickPin={jest.fn()}
+				pinned={false}
+			/>
 		);
 
-		it(
-			'should call the onClickPin function when it gets clicked on',
-			() => {
+		fireEvent.click(getByText('Hide Result'));
 
-				const onClickPin = jest.fn();
+		expect(onClickHide.mock.calls.length).toBe(1);
+	});
 
-				const {getByText} = render(
-					<ItemDropdown
-						hidden={false}
-						onClickHide={jest.fn()}
-						onClickPin={onClickPin}
-						pinned={false}
-					/>
-				);
+	it('should call the onClickPin function when it gets clicked on', () => {
+		const onClickPin = jest.fn();
 
-				fireEvent.click(getByText('Pin Result'));
-
-				expect(onClickPin.mock.calls.length).toBe(1);
-			}
+		const {getByText} = render(
+			<ItemDropdown
+				hidden={false}
+				onClickHide={jest.fn()}
+				onClickPin={onClickPin}
+				pinned={false}
+			/>
 		);
-	}
-);
+
+		fireEvent.click(getByText('Pin Result'));
+
+		expect(onClickPin.mock.calls.length).toBe(1);
+	});
+});

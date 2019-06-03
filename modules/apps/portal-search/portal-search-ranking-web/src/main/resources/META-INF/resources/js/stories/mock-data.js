@@ -49,12 +49,14 @@ export const mockDataMap = {
 		author: 'Test Test',
 		clicks: 3581355,
 		date: 'Apr 18 2018, 11:04 AM',
-		description: 'This is a description of the document. This is a description of the document. This is a description of the document. This is a description of the document. This is a description of the document. This is a description of the document.',
+		description:
+			'This is a description of the document. This is a description of the document. This is a description of the document. This is a description of the document. This is a description of the document. This is a description of the document.',
 		extension: 'doc',
 		hidden: false,
 		id: '5',
 		pinned: false,
-		title: 'Title Example 5 Title Example 5 Title Example 5 Title Example 5 Title Example 5 Title Example 5 Title Example 5 Title Example 5',
+		title:
+			'Title Example 5 Title Example 5 Title Example 5 Title Example 5 Title Example 5 Title Example 5 Title Example 5 Title Example 5',
 		type: 'Document'
 	}
 };

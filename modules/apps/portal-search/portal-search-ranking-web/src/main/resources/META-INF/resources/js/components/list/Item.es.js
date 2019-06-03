@@ -26,13 +26,13 @@ const ROOT_CLASS = 'list-item-root';
  * focusable or clickable.
  */
 const ResultPinIconDisplay = () => (
-	<div className="quick-action-menu result-pin-icon-display">
+	<div className='quick-action-menu result-pin-icon-display'>
 		<ClayButton
 			borderless
-			className="component-action quick-action-item"
-			iconName="pin"
+			className='component-action quick-action-item'
+			iconName='pin'
 			monospaced
-			tabIndex="-1"
+			tabIndex='-1'
 			title={Liferay.Language.get('pinned-result')}
 		/>
 	</div>
@@ -44,23 +44,21 @@ const ResultPinIconDisplay = () => (
  * @param {Object} props Component's current props
  * @returns {Object} The props to be passed to the drop target and drag preview.
  */
-function beginDrag(
-	{
-		author,
-		clicks,
-		date,
-		description,
-		extension,
-		hidden,
-		id,
-		index,
-		onBlur,
-		pinned,
-		selected,
-		title,
-		type
-	}
-) {
+function beginDrag({
+	author,
+	clicks,
+	date,
+	description,
+	extension,
+	hidden,
+	id,
+	index,
+	onBlur,
+	pinned,
+	selected,
+	title,
+	type
+}) {
 	onBlur();
 
 	return {
@@ -128,21 +126,17 @@ function endDrag(props, monitor) {
 	if (monitor.didDrop()) {
 		const {hoverPosition, index: dropIndex} = monitor.getDropResult();
 
-		const destIndex = hoverPosition === HOVER_TYPES.TOP ?
-			dropIndex :
-			dropIndex + 1;
+		const destIndex =
+			hoverPosition === HOVER_TYPES.TOP ? dropIndex : dropIndex + 1;
 
-		const focusIndex = dragIndex < destIndex ?
-			destIndex - 1 :
-			destIndex;
+		const focusIndex = dragIndex < destIndex ? destIndex - 1 : destIndex;
 
 		if (hoverPosition !== null) {
 			onMove(dragIndex, destIndex);
 		}
 
 		onFocus(hoverPosition !== null ? focusIndex : dragIndex);
-	}
-	else {
+	} else {
 		onFocus(dragIndex);
 	}
 }
@@ -169,11 +163,9 @@ function hover(props, monitor, component) {
 
 	if (dragIndex === destIndex) {
 		component.setState({hoverPosition: null});
-	}
-	else if (hoverAbove) {
+	} else if (hoverAbove) {
 		component.setState({hoverPosition: HOVER_TYPES.TOP});
-	}
-	else {
+	} else {
 		component.setState({hoverPosition: HOVER_TYPES.BOTTOM});
 	}
 }
@@ -272,12 +264,9 @@ class Item extends PureComponent {
 		const {connectDragPreview} = this.props;
 
 		if (connectDragPreview) {
-			connectDragPreview(
-				getEmptyImage(),
-				{
-					captureDraggingState: true
-				}
-			);
+			connectDragPreview(getEmptyImage(), {
+				captureDraggingState: true
+			});
 		}
 	}
 
@@ -297,7 +286,7 @@ class Item extends PureComponent {
 
 	_handleBlur = () => {
 		this.props.onBlur();
-	}
+	};
 
 	_handleFocus = event => {
 		if (event.target.classList.contains(ROOT_CLASS)) {
@@ -305,7 +294,7 @@ class Item extends PureComponent {
 
 			onFocus(index);
 		}
-	}
+	};
 
 	_handleHide = () => {
 		const {hidden, id, onBlur, onClickHide, onRemoveSelect} = this.props;
@@ -325,18 +314,22 @@ class Item extends PureComponent {
 		if (focus) {
 			if (event.key === KEY_CODES.S) {
 				this._handleSelect();
-			}
-			else if (event.key === KEY_CODES.P) {
+			} else if (event.key === KEY_CODES.P) {
 				this._handlePin();
-			}
-			else if (event.key === KEY_CODES.H) {
+			} else if (event.key === KEY_CODES.H) {
 				this._handleHide();
 			}
 		}
-	}
+	};
 
 	_handlePin = () => {
-		const {addedResult, id, onClickPin, onRemoveSelect, pinned} = this.props;
+		const {
+			addedResult,
+			id,
+			onClickPin,
+			onRemoveSelect,
+			pinned
+		} = this.props;
 
 		if (addedResult) {
 			onRemoveSelect([id]);
@@ -357,12 +350,13 @@ class Item extends PureComponent {
 		let descriptionBlock = '';
 
 		if (description) {
-			const descriptionText = description.length > 75 ?
-				`${description.slice(0, 75)}...` :
-				description;
+			const descriptionText =
+				description.length > 75
+					? `${description.slice(0, 75)}...`
+					: description;
 
 			descriptionBlock = (
-				<p className="list-group-text list-item-description">
+				<p className='list-group-text list-item-description'>
 					{descriptionText}
 				</p>
 			);
@@ -404,9 +398,9 @@ class Item extends PureComponent {
 			png: 'purple'
 		};
 
-		const colorSticker = colorScheme[extension] ?
-			colorScheme[extension] :
-			'grey';
+		const colorSticker = colorScheme[extension]
+			? colorScheme[extension]
+			: 'grey';
 
 		const classSticker = getCN(
 			`icon-${colorSticker}`,
@@ -419,12 +413,10 @@ class Item extends PureComponent {
 			'list-group-item',
 			'list-group-item-flex',
 			{
-				'item-drop-indicator-above': over &&
-					canDrop &&
-					hoverPosition === HOVER_TYPES.TOP,
-				'item-drop-indicator-below': over &&
-					canDrop &&
-					hoverPosition === HOVER_TYPES.BOTTOM,
+				'item-drop-indicator-above':
+					over && canDrop && hoverPosition === HOVER_TYPES.TOP,
+				'item-drop-indicator-below':
+					over && canDrop && hoverPosition === HOVER_TYPES.BOTTOM,
 				'list-item-dragging': dragging,
 				'list-item-has-clicks': !isNil(clicks),
 				'results-ranking-item-focus': focus,
@@ -446,118 +438,123 @@ class Item extends PureComponent {
 				tabIndex={0}
 			>
 				<div
-					className="autofit-col result-drag"
-					data-testid="DRAG_ICON"
+					className='autofit-col result-drag'
+					data-testid='DRAG_ICON'
 					style={{visibility: pinned ? 'visible' : 'hidden'}}
 				>
 					{connectDragSource(
-						<span className="result-drag-sticker sticker sticker-secondary">
-							<ClayIcon iconName="drag" />
+						<span className='result-drag-sticker sticker sticker-secondary'>
+							<ClayIcon iconName='drag' />
 						</span>
 					)}
 				</div>
 
-				<div className="autofit-col">
-					<div className="custom-control custom-checkbox">
+				<div className='autofit-col'>
+					<div className='custom-control custom-checkbox'>
 						<label>
 							<input
 								aria-label={Liferay.Language.get('select')}
 								checked={selected}
-								className="custom-control-input"
+								className='custom-control-input'
 								onChange={this._handleSelect}
-								type="checkbox"
+								type='checkbox'
 							/>
 
-							<span className="custom-control-label" />
+							<span className='custom-control-label' />
 						</label>
 					</div>
 				</div>
 
-				<div className="autofit-col">
+				<div className='autofit-col'>
 					<span className={classSticker}>
-						{extension ?
-							extension.toUpperCase() :
-							<ClayIcon iconName="web-content" />
-						}
+						{extension ? (
+							extension.toUpperCase()
+						) : (
+							<ClayIcon iconName='web-content' />
+						)}
 					</span>
 				</div>
 
-				<div className="autofit-col autofit-col-expand">
-					<section className="autofit-section">
-						<div className="list-group-title">
-							<span className="text-truncate-inline">
+				<div className='autofit-col autofit-col-expand'>
+					<section className='autofit-section'>
+						<div className='list-group-title'>
+							<span className='text-truncate-inline'>
 								{url ? <a href={url}>{title}</a> : title}
 							</span>
 						</div>
 
-						{(author || date) &&
-							<p className="list-group-subtext">
-								{author && <span className="author">{author}</span>}
+						{(author || date) && (
+							<p className='list-group-subtext'>
+								{author && (
+									<span className='author'>{author}</span>
+								)}
 
-								{date && <span className="date">{date}</span>}
+								{date && <span className='date'>{date}</span>}
 							</p>
-						}
+						)}
 
-						{type &&
-							<p className="list-group-subtext">{`[${type}]`}</p>
-						}
+						{type && (
+							<p className='list-group-subtext'>{`[${type}]`}</p>
+						)}
 
 						{this._renderDescription()}
 					</section>
 				</div>
 
-				<div className="autofit-col">
+				<div className='autofit-col'>
 					{pinned && <ResultPinIconDisplay />}
 
-					<div className="quick-action-menu">
-						{onClickHide &&
+					<div className='quick-action-menu'>
+						{onClickHide && (
 							<ClayButton
 								borderless
-								className="component-action quick-action-item"
+								className='component-action quick-action-item'
 								iconName={hidden ? 'view' : 'hidden'}
 								monospaced
 								onClick={this._handleHide}
-								title={hidden ?
-									Liferay.Language.get('show-result') :
-									Liferay.Language.get('hide-result')
+								title={
+									hidden
+										? Liferay.Language.get('show-result')
+										: Liferay.Language.get('hide-result')
 								}
 							/>
-						}
+						)}
 
 						{onClickPin && (
 							<ClayButton
 								borderless
-								className="component-action quick-action-item"
+								className='component-action quick-action-item'
 								iconName={pinned ? 'unpin' : 'pin'}
 								monospaced
 								onClick={this._handlePin}
-								title={pinned ?
-									Liferay.Language.get('unpin-result') :
-									Liferay.Language.get('pin-result')
+								title={
+									pinned
+										? Liferay.Language.get('unpin-result')
+										: Liferay.Language.get('pin-result')
 								}
 							/>
 						)}
 					</div>
 
-					{(onClickPin || onClickHide) &&
+					{(onClickPin || onClickHide) && (
 						<ItemDropdown
 							hidden={hidden}
 							onClickHide={this._handleHide}
 							onClickPin={this._handlePin}
 							pinned={pinned}
 						/>
-					}
+					)}
 				</div>
 
-				{!isNil(clicks) &&
-					<div className="click-count list-group-text sticker-bottom-right">
+				{!isNil(clicks) && (
+					<div className='click-count list-group-text sticker-bottom-right'>
 						{sub(
 							Liferay.Language.get('clicks-x'),
-							[<b key="CLICK_COUNT">{clicks}</b>],
+							[<b key='CLICK_COUNT'>{clicks}</b>],
 							false
 						)}
 					</div>
-				}
+				)}
 			</li>
 		);
 	}

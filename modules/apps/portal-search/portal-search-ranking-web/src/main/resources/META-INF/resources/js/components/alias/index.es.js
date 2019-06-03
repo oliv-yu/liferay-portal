@@ -31,12 +31,10 @@ class Alias extends Component {
 	};
 
 	_handleOpenModal = () => {
-		this.setState(
-			{
-				modalKeywords: [],
-				showModal: true
-			}
-		);
+		this.setState({
+			modalKeywords: [],
+			showModal: true
+		});
 	};
 
 	_handleSubmit = () => {
@@ -57,64 +55,64 @@ class Alias extends Component {
 		const {modalKeywords} = this.state;
 
 		return (
-			<div className="results-ranking-alias-root">
-				<div className="sheet-text">
-					<div className="alias-title">
+			<div className='results-ranking-alias-root'>
+				<div className='sheet-text'>
+					<div className='alias-title'>
 						<strong>{Liferay.Language.get('aliases')}</strong>
 					</div>
 
-					<div className="input-group">
-						<div className="input-group-item input-group-item-shrink">
-							{filterEmptyStrings(keywords).map(
-								word => (
-									<Tag
-										key={word}
-										label={word}
-										onClickDelete={onClickDelete}
-									/>
-								)
-							)}
+					<div className='input-group'>
+						<div className='input-group-item input-group-item-shrink'>
+							{filterEmptyStrings(keywords).map(word => (
+								<Tag
+									key={word}
+									label={word}
+									onClickDelete={onClickDelete}
+								/>
+							))}
 						</div>
 
-						<div className="input-group-item input-group-item-shrink">
+						<div className='input-group-item input-group-item-shrink'>
 							<ClayButton
 								borderless
-								displayStyle="primary"
+								displayStyle='primary'
 								label={Liferay.Language.get('add-an-alias')}
 								onClick={this._handleOpenModal}
-								size="sm"
+								size='sm'
 							/>
 						</div>
 					</div>
 				</div>
 
 				<ReactModal
-					className="modal-dialog modal-dialog-lg alias-modal-root"
-					contentLabel="aliasModal"
+					className='modal-dialog modal-dialog-lg alias-modal-root'
+					contentLabel='aliasModal'
 					isOpen={this.state.showModal}
 					onRequestClose={this._handleCloseModal}
-					overlayClassName="modal-backdrop react-modal-backdrop"
-					portalClassName="results-ranking-modal-root"
+					overlayClassName='modal-backdrop react-modal-backdrop'
+					portalClassName='results-ranking-modal-root'
 				>
-					<div className="modal-content" data-testid="alias-modal">
-						<div className="modal-header">
-							<div className="modal-title">
+					<div className='modal-content' data-testid='alias-modal'>
+						<div className='modal-header'>
+							<div className='modal-title'>
 								{Liferay.Language.get('add-an-alias')}
 							</div>
 
 							<ClayButton
 								borderless
-								iconName="times"
+								iconName='times'
 								onClick={this._handleCloseModal}
 							/>
 						</div>
 
-						<div className="modal-body">
-							<div className="alias-modal-description">
-								{Liferay.Language.get('add-an-alias-description')}
+						<div className='modal-body'>
+							<div className='alias-modal-description'>
+								{Liferay.Language.get(
+									'add-an-alias-description'
+								)}
 							</div>
 
-							<div className="form-group">
+							<div className='form-group'>
 								<label>{Liferay.Language.get('alias')}</label>
 
 								<ClayMultiselect
@@ -122,31 +120,35 @@ class Alias extends Component {
 									value={modalKeywords}
 								/>
 
-								<div className="form-feedback-group">
-									<div className="form-text">
-										{Liferay.Language.get('add-an-alias-instruction')}
+								<div className='form-feedback-group'>
+									<div className='form-text'>
+										{Liferay.Language.get(
+											'add-an-alias-instruction'
+										)}
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div className="modal-footer">
-							<div className="modal-item-last">
-								<div className="btn-group">
-									<div className="btn-group-item">
+						<div className='modal-footer'>
+							<div className='modal-item-last'>
+								<div className='btn-group'>
+									<div className='btn-group-item'>
 										<ClayButton
 											borderless
-											label={Liferay.Language.get('cancel')}
+											label={Liferay.Language.get(
+												'cancel'
+											)}
 											onClick={this._handleCloseModal}
 										/>
 									</div>
 
-									<div className="btn-group-item">
+									<div className='btn-group-item'>
 										<ClayButton
 											disabled={
 												modalKeywords.length === 0
 											}
-											displayStyle="primary"
+											displayStyle='primary'
 											label={Liferay.Language.get('add')}
 											onClick={this._handleSubmit}
 										/>

@@ -3,41 +3,30 @@ import PageToolbar from 'components/PageToolbar.es';
 import {cleanup, render} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 
-describe(
-	'PageToolbar',
-	() => {
-		afterEach(cleanup);
+describe('PageToolbar', () => {
+	afterEach(cleanup);
 
-		it(
-			'should disable the publish button',
-			() => {
-
-				const {getByText} = render(
-					<PageToolbar
-						onCancel={'cancel'}
-						onPublish={jest.fn()}
-						submitDisabled={true}
-					/>
-				);
-
-				expect(getByText('Publish')).toHaveAttribute('disabled');
-			}
+	it('should disable the publish button', () => {
+		const {getByText} = render(
+			<PageToolbar
+				onCancel={'cancel'}
+				onPublish={jest.fn()}
+				submitDisabled={true}
+			/>
 		);
 
-		it(
-			'should enable the publish button',
-			() => {
+		expect(getByText('Publish')).toHaveAttribute('disabled');
+	});
 
-				const {getByText} = render(
-					<PageToolbar
-						onCancel={'cancel'}
-						onPublish={jest.fn()}
-						submitDisabled={false}
-					/>
-				);
-
-				expect(getByText('Publish')).not.toHaveAttribute('disabled');
-			}
+	it('should enable the publish button', () => {
+		const {getByText} = render(
+			<PageToolbar
+				onCancel={'cancel'}
+				onPublish={jest.fn()}
+				submitDisabled={false}
+			/>
 		);
-	}
-);
+
+		expect(getByText('Publish')).not.toHaveAttribute('disabled');
+	});
+});

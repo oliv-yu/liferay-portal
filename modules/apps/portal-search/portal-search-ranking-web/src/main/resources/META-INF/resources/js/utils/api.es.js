@@ -18,12 +18,8 @@ export function fetchDocuments(url, params) {
 
 	return fetch(fetchUri)
 		.then(response => response.json())
-		.then(
-			data => (
-				{
-					items: data.documents,
-					total: data.total
-				}
-			)
-		);
+		.then(data => ({
+			items: data.documents,
+			total: data.total
+		}));
 }

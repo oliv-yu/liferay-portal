@@ -8,7 +8,7 @@ class FilterInput extends Component {
 		onChange: PropTypes.func,
 		onSubmit: PropTypes.func,
 		searchBarTerm: PropTypes.string
-	}
+	};
 	static defaultProps = {
 		disableSearch: false
 	};
@@ -29,25 +29,27 @@ class FilterInput extends Component {
 		const {disableSearch, onSubmit, searchBarTerm} = this.props;
 
 		return (
-			<div className="navbar-nav navbar-nav-expand">
-				<div className="container-fluid container-fluid-max-xl">
-					<div className="input-group">
-						<div className="input-group-item">
+			<div className='navbar-nav navbar-nav-expand'>
+				<div className='container-fluid container-fluid-max-xl'>
+					<div className='input-group'>
+						<div className='input-group-item'>
 							<input
 								aria-label={Liferay.Language.get('search')}
-								className="form-control input-group-inset input-group-inset-after"
+								className='form-control input-group-inset input-group-inset-after'
 								disabled={disableSearch}
 								onChange={this._handleChange}
 								onKeyDown={this._handleKeyDown}
-								placeholder={Liferay.Language.get('contains-text')}
-								type="text"
+								placeholder={Liferay.Language.get(
+									'contains-text'
+								)}
+								type='text'
 								value={searchBarTerm}
 							/>
 
-							<div className="input-group-inset-item input-group-inset-item-after">
+							<div className='input-group-inset-item input-group-inset-item-after'>
 								<ClayButton
 									displayStyle={'unstyled'}
-									iconName="search"
+									iconName='search'
 									onClick={onSubmit}
 									title={Liferay.Language.get('search-icon')}
 								/>

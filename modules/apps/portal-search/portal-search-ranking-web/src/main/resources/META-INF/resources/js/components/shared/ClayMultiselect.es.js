@@ -40,30 +40,31 @@ class ClayMultiselect extends Component {
 		}
 
 		switch (event.key) {
-		case 'Enter':
-		case 'Tab':
-		case ',':
-			if (!value.map(item => item.value).includes(inputValue)) {
-				this.props.onAction([...value, createOption(inputValue)]);
-			}
+			case 'Enter':
+			case 'Tab':
+			case ',':
+				if (!value.map(item => item.value).includes(inputValue)) {
+					this.props.onAction([...value, createOption(inputValue)]);
+				}
 
-			this.setState({inputValue: ''});
+				this.setState({inputValue: ''});
 
-			event.preventDefault();
+				event.preventDefault();
 
-			break;
-		default:
+				break;
+			default:
 		}
 	};
 
 	render() {
 		const {value} = this.props;
+
 		const {inputValue} = this.state;
 
 		return (
 			<CreatableSelect
-				className="multiselect-root"
-				classNamePrefix="react-select"
+				className='multiselect-root'
+				classNamePrefix='react-select'
 				components={components}
 				inputValue={inputValue}
 				isClearable
@@ -72,7 +73,7 @@ class ClayMultiselect extends Component {
 				onChange={this._handleChange}
 				onInputChange={this._handleInputChange}
 				onKeyDown={this._handleKeyDown}
-				placeholder=""
+				placeholder=''
 				value={value}
 			/>
 		);

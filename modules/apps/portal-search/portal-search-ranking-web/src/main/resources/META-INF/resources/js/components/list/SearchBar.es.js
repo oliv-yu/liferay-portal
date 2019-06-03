@@ -44,8 +44,8 @@ class SearchBar extends Component {
 	componentDidUpdate() {
 		const {resultIds, selectedIds} = this.props;
 
-		const indeterminate = selectedIds.length > 0 &&
-			selectedIds.length !== resultIds.length;
+		const indeterminate =
+			selectedIds.length > 0 && selectedIds.length !== resultIds.length;
 
 		this.selectAllCheckbox.current.indeterminate = indeterminate;
 	}
@@ -53,8 +53,7 @@ class SearchBar extends Component {
 	_handleAllCheckbox = () => {
 		if (this.props.selectedIds.length > 0) {
 			this.props.onSelectClear();
-		}
-		else {
+		} else {
 			this.props.onSelectAll();
 		}
 	};
@@ -76,8 +75,7 @@ class SearchBar extends Component {
 			onRemoveSelect(selectedIds.filter(id => dataMap[id].hidden));
 
 			onClickPin(unpinnedIds, true);
-		}
-		else {
+		} else {
 			onRemoveSelect(selectedIds.filter(id => dataMap[id].addedResult));
 
 			onClickPin(selectedIds, false);
@@ -120,43 +118,47 @@ class SearchBar extends Component {
 
 		const classManagementBar = getCN(
 			'management-bar',
-			this._hasSelectedIds() ?
-				'management-bar-primary' :
-				'management-bar-light',
+			this._hasSelectedIds()
+				? 'management-bar-primary'
+				: 'management-bar-light',
 			'navbar',
 			'navbar-expand-md'
 		);
 
 		return (
-			<div className="search-bar-root">
+			<div className='search-bar-root'>
 				<nav className={classManagementBar}>
-					<div className="container-fluid container-fluid-max-xl">
-						<div className="navbar-form navbar-form-autofit navbar-overlay">
-							<ul className="navbar-nav">
-								<li className="nav-item">
-									<div className="custom-control custom-checkbox">
+					<div className='container-fluid container-fluid-max-xl'>
+						<div className='navbar-form navbar-form-autofit navbar-overlay'>
+							<ul className='navbar-nav'>
+								<li className='nav-item'>
+									<div className='custom-control custom-checkbox'>
 										<label>
 											<input
-												aria-label={Liferay.Language.get('select-all')}
+												aria-label={Liferay.Language.get(
+													'select-all'
+												)}
 												checked={this._hasSelectedIds()}
-												className="custom-control-input"
+												className='custom-control-input'
 												disabled={!resultIds.length}
-												onChange={this._handleAllCheckbox}
+												onChange={
+													this._handleAllCheckbox
+												}
 												ref={this.selectAllCheckbox}
-												type="checkbox"
+												type='checkbox'
 											/>
 
-											<span className="custom-control-label" />
+											<span className='custom-control-label' />
 										</label>
 									</div>
 								</li>
 							</ul>
 
-							{this._hasSelectedIds() &&
+							{this._hasSelectedIds() && (
 								<React.Fragment>
-									<ul className="navbar-nav navbar-nav-expand">
-										<li className="nav-item">
-											<span className="navbar-text">
+									<ul className='navbar-nav navbar-nav-expand'>
+										<li className='nav-item'>
+											<span className='navbar-text'>
 												<strong>
 													{sub(
 														Liferay.Language.get(
@@ -172,76 +174,100 @@ class SearchBar extends Component {
 										</li>
 									</ul>
 
-									<ul className="navbar-nav">
-										<li className="nav-item">
-											<div className="nav-link nav-link-monospaced">
+									<ul className='navbar-nav'>
+										<li className='nav-item'>
+											<div className='nav-link nav-link-monospaced'>
 												<ClayButton
 													borderless
-													className="component-action"
+													className='component-action'
 													iconName={
-														this._isAnyHidden() ?
-															'view' :
-															'hidden'
+														this._isAnyHidden()
+															? 'view'
+															: 'hidden'
 													}
-													onClick={this._handleClickHide}
+													onClick={
+														this._handleClickHide
+													}
 													title={
-														this._isAnyHidden() ?
-															Liferay.Language.get('show-result') :
-															Liferay.Language.get('hide-result')
+														this._isAnyHidden()
+															? Liferay.Language.get(
+																	'show-result'
+															  )
+															: Liferay.Language.get(
+																	'hide-result'
+															  )
 													}
 												/>
 											</div>
 										</li>
 
-										<li className="nav-item">
-											<div className="nav-link nav-link-monospaced">
+										<li className='nav-item'>
+											<div className='nav-link nav-link-monospaced'>
 												<ClayButton
 													borderless
-													className="component-action"
+													className='component-action'
 													iconName={
-														this._isAnyUnpinned() ?
-															'pin' :
-															'unpin'
+														this._isAnyUnpinned()
+															? 'pin'
+															: 'unpin'
 													}
-													onClick={this._handleClickPin}
+													onClick={
+														this._handleClickPin
+													}
 													title={
-														this._isAnyUnpinned() ?
-															Liferay.Language.get('pin-result') :
-															Liferay.Language.get('unpin-result')
+														this._isAnyUnpinned()
+															? Liferay.Language.get(
+																	'pin-result'
+															  )
+															: Liferay.Language.get(
+																	'unpin-result'
+															  )
 													}
 												/>
 											</div>
 										</li>
 
-										<li className="nav-item">
-											<div className="nav-link nav-link-monospaced">
+										<li className='nav-item'>
+											<div className='nav-link nav-link-monospaced'>
 												<ItemDropdown
 													hidden={this._isAnyHidden()}
-													itemCount={selectedIds.length}
-													onClickHide={this._handleClickHide}
-													onClickPin={this._handleClickPin}
-													pinned={!this._isAnyUnpinned()}
+													itemCount={
+														selectedIds.length
+													}
+													onClickHide={
+														this._handleClickHide
+													}
+													onClickPin={
+														this._handleClickPin
+													}
+													pinned={
+														!this._isAnyUnpinned()
+													}
 												/>
 											</div>
 										</li>
 									</ul>
 								</React.Fragment>
-							}
+							)}
 
-							{!this._hasSelectedIds() &&
+							{!this._hasSelectedIds() && (
 								<React.Fragment>
-									<div className="navbar-nav navbar-nav-expand" />
+									<div className='navbar-nav navbar-nav-expand' />
 
 									{onAddResultSubmit && (
-										<ul className="navbar-nav">
+										<ul className='navbar-nav'>
 											<AddResult
-												fetchDocumentsUrl={fetchDocumentsUrl}
-												onAddResultSubmit={onAddResultSubmit}
+												fetchDocumentsUrl={
+													fetchDocumentsUrl
+												}
+												onAddResultSubmit={
+													onAddResultSubmit
+												}
 											/>
 										</ul>
 									)}
 								</React.Fragment>
-							}
+							)}
 						</div>
 					</div>
 				</nav>

@@ -3,15 +3,12 @@ import React from 'react';
 import {Tab, TabList, TabPanel, Tabs} from 'react-tabs';
 
 const ClayTab = ({children, selected, selectedClassName, ...otherProps}) => {
-	const classes = getCN(
-		'btn',
-		'btn-unstyled',
-		'nav-link',
-		{[selectedClassName]: selected}
-	);
+	const classes = getCN('btn', 'btn-unstyled', 'nav-link', {
+		[selectedClassName]: selected
+	});
 
 	return (
-		<Tab className="nav-item" selected={selected} {...otherProps}>
+		<Tab className='nav-item' selected={selected} {...otherProps}>
 			<button className={classes}>{children}</button>
 		</Tab>
 	);
@@ -20,7 +17,7 @@ const ClayTab = ({children, selected, selectedClassName, ...otherProps}) => {
 ClayTab.tabsRole = 'Tab';
 
 const ClayTabs = ({children, ...otherProps}) => (
-	<Tabs selectedTabClassName="active" {...otherProps}>
+	<Tabs selectedTabClassName='active' {...otherProps}>
 		{children}
 	</Tabs>
 );

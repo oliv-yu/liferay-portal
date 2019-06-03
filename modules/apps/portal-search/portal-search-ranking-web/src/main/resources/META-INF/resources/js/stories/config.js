@@ -1,24 +1,21 @@
 import {addParameters, configure} from '@storybook/react';
 
-addParameters(
-	{
-		options: {
+addParameters({
+	options: {
+		/**
+		 * show/hide tool bar
+		 * @type {Boolean}
+		 */
+		isToolshown: true,
 
-			/**
-			 * show/hide tool bar
-			 * @type {Boolean}
-			 */
-			isToolshown: true,
-
-			/**
-			 * Name to display in the top left corner
-			 * Default: 'Storybook'
-			 * @type {String}
-			 */
-			'theme.brandTitle': 'Search Ranking'
-		}
+		/**
+		 * Name to display in the top left corner
+		 * Default: 'Storybook'
+		 * @type {String}
+		 */
+		'theme.brandTitle': 'Search Ranking'
 	}
-);
+});
 
 function loadStories() {
 	// eslint-disable-next-line global-require

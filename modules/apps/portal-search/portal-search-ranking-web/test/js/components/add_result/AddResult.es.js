@@ -2,7 +2,12 @@ import AddResult from 'components/add_result/index.es';
 import React from 'react';
 import ReactModal from 'react-modal';
 import {FETCH_VISIBLE_DOCUMENTS_URL} from 'test/mock-data.js';
-import {cleanup, fireEvent, render, waitForElement} from '@testing-library/react';
+import {
+	cleanup,
+	fireEvent,
+	render,
+	waitForElement
+} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 
 jest.mock('utils/api.es');
@@ -14,243 +19,204 @@ jest.mock('react-dnd', () => ({
 const MODAL_ID = 'add-result-modal';
 const RESULTS_LIST_ID = 'add-result-items';
 
-describe(
-	'AddResult',
-	() => {
-		afterEach(cleanup);
+describe('AddResult', () => {
+	afterEach(cleanup);
 
-		beforeEach(() => {
-			ReactModal.setAppElement('body');
-		});
+	beforeEach(() => {
+		ReactModal.setAppElement('body');
+	});
 
-		it(
-			'should show a modal when the add a result button gets clicked',
-			() => {
-
-				const {getByText, queryByTestId} = render(
-					<AddResult
-						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						onAddResultSubmit={jest.fn()}
-					/>
-				);
-
-				fireEvent.click(getByText('Add a Result'));
-
-				expect(queryByTestId(MODAL_ID)).not.toBeNull();
-			}
+	it('should show a modal when the add a result button gets clicked', () => {
+		const {getByText, queryByTestId} = render(
+			<AddResult
+				fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+				onAddResultSubmit={jest.fn()}
+			/>
 		);
 
-		it(
-			'should close the modal when the cancel button gets clicked',
-			() => {
+		fireEvent.click(getByText('Add a Result'));
 
-				const {getByText, queryByTestId} = render(
-					<AddResult
-						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						onAddResultSubmit={jest.fn()}
-					/>
-				);
+		expect(queryByTestId(MODAL_ID)).not.toBeNull();
+	});
 
-				fireEvent.click(getByText('Add a Result'));
-
-				fireEvent.click(getByText('Cancel'));
-
-				expect(queryByTestId(MODAL_ID)).toBeNull();
-			}
+	it('should close the modal when the cancel button gets clicked', () => {
+		const {getByText, queryByTestId} = render(
+			<AddResult
+				fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+				onAddResultSubmit={jest.fn()}
+			/>
 		);
 
-		it(
-			'should prompt a message to search in the modal',
-			() => {
+		fireEvent.click(getByText('Add a Result'));
 
-				const {getByTestId, getByText} = render(
-					<AddResult
-						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						onAddResultSubmit={jest.fn()}
-					/>
-				);
+		fireEvent.click(getByText('Cancel'));
 
-				fireEvent.click(getByText('Add a Result'));
+		expect(queryByTestId(MODAL_ID)).toBeNull();
+	});
 
-				const modal = getByTestId(MODAL_ID);
-
-				expect(modal.querySelector('.empty-state-title')).toHaveTextContent('Search your engine');
-				expect(modal.querySelector('.empty-state-description')).toHaveTextContent('Search your engine to display results.');
-			}
+	it('should prompt a message to search in the modal', () => {
+		const {getByTestId, getByText} = render(
+			<AddResult
+				fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+				onAddResultSubmit={jest.fn()}
+			/>
 		);
 
-		it(
-			'should not show the prompt in the modal after enter key is pressed',
-			async() => {
+		fireEvent.click(getByText('Add a Result'));
 
-				const {getByTestId, getByText} = render(
-					<AddResult
-						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						onAddResultSubmit={jest.fn()}
-					/>
-				);
+		const modal = getByTestId(MODAL_ID);
 
-				fireEvent.click(getByText('Add a Result'));
+		expect(modal.querySelector('.empty-state-title')).toHaveTextContent(
+			'Search your engine'
+		);
+		expect(
+			modal.querySelector('.empty-state-description')
+		).toHaveTextContent('Search your engine to display results.');
+	});
 
-				const modal = getByTestId(MODAL_ID);
-
-				const input = modal.querySelector('.form-control');
-
-				fireEvent.change(input, {target: {value: 'test'}});
-
-				fireEvent.keyDown(input, {key: 'Enter',
-					keyCode: 13,
-					which: 13
-				});
-
-				await waitForElement(() => getByTestId(RESULTS_LIST_ID));
-
-				expect(modal.querySelector('.empty-state-title')).not.toBeInTheDocument();
-				expect(modal.querySelector('.empty-state-description')).not.toBeInTheDocument();
-			}
+	it('should not show the prompt in the modal after enter key is pressed', async () => {
+		const {getByTestId, getByText} = render(
+			<AddResult
+				fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+				onAddResultSubmit={jest.fn()}
+			/>
 		);
 
-		it(
-			'should show the results in the modal after enter key is pressed',
-			async() => {
+		fireEvent.click(getByText('Add a Result'));
 
-				const {getByTestId, getByText} = render(
-					<AddResult
-						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						onAddResultSubmit={jest.fn()}
-					/>
-				);
+		const modal = getByTestId(MODAL_ID);
 
-				fireEvent.click(getByText('Add a Result'));
+		const input = modal.querySelector('.form-control');
 
-				const modal = getByTestId(MODAL_ID);
+		fireEvent.change(input, {target: {value: 'test'}});
 
-				const input = modal.querySelector('.form-control');
+		fireEvent.keyDown(input, {key: 'Enter', keyCode: 13, which: 13});
 
-				fireEvent.change(input, {target: {value: 'test'}});
+		await waitForElement(() => getByTestId(RESULTS_LIST_ID));
 
-				fireEvent.keyDown(input, {key: 'Enter',
-					keyCode: 13,
-					which: 13
-				});
+		expect(
+			modal.querySelector('.empty-state-title')
+		).not.toBeInTheDocument();
+		expect(
+			modal.querySelector('.empty-state-description')
+		).not.toBeInTheDocument();
+	});
 
-				await waitForElement(() => getByTestId(RESULTS_LIST_ID));
-
-				expect(modal).toHaveTextContent('300 This is a Document Example');
-				expect(modal).toHaveTextContent('309 This is a Web Content Example');
-			}
+	it('should show the results in the modal after enter key is pressed', async () => {
+		const {getByTestId, getByText} = render(
+			<AddResult
+				fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+				onAddResultSubmit={jest.fn()}
+			/>
 		);
 
-		it(
-			'should call the onAddResultSubmit function after add is pressed',
-			async() => {
+		fireEvent.click(getByText('Add a Result'));
 
-				const onAddResultSubmit = jest.fn();
+		const modal = getByTestId(MODAL_ID);
 
-				const {getByTestId, getByText} = render(
-					<AddResult
-						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						onAddResultSubmit={onAddResultSubmit}
-					/>
-				);
+		const input = modal.querySelector('.form-control');
 
-				fireEvent.click(getByText('Add a Result'));
+		fireEvent.change(input, {target: {value: 'test'}});
 
-				const modal = getByTestId(MODAL_ID);
+		fireEvent.keyDown(input, {key: 'Enter', keyCode: 13, which: 13});
 
-				const input = modal.querySelector('.form-control');
+		await waitForElement(() => getByTestId(RESULTS_LIST_ID));
 
-				fireEvent.change(input, {target: {value: 'test'}});
+		expect(modal).toHaveTextContent('300 This is a Document Example');
+		expect(modal).toHaveTextContent('309 This is a Web Content Example');
+	});
 
-				fireEvent.keyDown(input, {key: 'Enter',
-					keyCode: 13,
-					which: 13
-				});
+	it('should call the onAddResultSubmit function after add is pressed', async () => {
+		const onAddResultSubmit = jest.fn();
 
-				await waitForElement(() => getByTestId(RESULTS_LIST_ID));
-
-				fireEvent.click(getByTestId('300').querySelector('.custom-control-input'));
-
-				fireEvent.click(getByText('Add'));
-
-				expect(onAddResultSubmit.mock.calls.length).toBe(1);
-			}
+		const {getByTestId, getByText} = render(
+			<AddResult
+				fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+				onAddResultSubmit={onAddResultSubmit}
+			/>
 		);
 
-		it(
-			'should show next page results in the modal after navigation is pressed',
-			async() => {
+		fireEvent.click(getByText('Add a Result'));
 
-				const onAddResultSubmit = jest.fn();
+		const modal = getByTestId(MODAL_ID);
 
-				const {getByTestId, getByText} = render(
-					<AddResult
-						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						onAddResultSubmit={onAddResultSubmit}
-					/>
-				);
+		const input = modal.querySelector('.form-control');
 
-				fireEvent.click(getByText('Add a Result'));
+		fireEvent.change(input, {target: {value: 'test'}});
 
-				const modal = getByTestId(MODAL_ID);
+		fireEvent.keyDown(input, {key: 'Enter', keyCode: 13, which: 13});
 
-				const input = modal.querySelector('.form-control');
+		await waitForElement(() => getByTestId(RESULTS_LIST_ID));
 
-				fireEvent.change(input, {target: {value: 'test'}});
-
-				fireEvent.keyDown(input, {key: 'Enter',
-					keyCode: 13,
-					which: 13
-				});
-
-				await waitForElement(() => getByTestId(RESULTS_LIST_ID));
-
-				fireEvent.click(modal.querySelector('.page-item-next a'));
-
-				await waitForElement(() => getByTestId('310'));
-
-				expect(modal).not.toHaveTextContent('300 This is a Document Example');
-				expect(modal).not.toHaveTextContent('309 This is a Web Content Example');
-				expect(modal).toHaveTextContent('310 This is a Document Example');
-				expect(modal).toHaveTextContent('319 This is a Web Content Example');
-			}
+		fireEvent.click(
+			getByTestId('300').querySelector('.custom-control-input')
 		);
 
-		it(
-			'should update results count in the modal after page delta is pressed',
-			async() => {
+		fireEvent.click(getByText('Add'));
 
-				const onAddResultSubmit = jest.fn();
+		expect(onAddResultSubmit.mock.calls.length).toBe(1);
+	});
 
-				const {getByTestId, getByText} = render(
-					<AddResult
-						fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
-						onAddResultSubmit={onAddResultSubmit}
-					/>
-				);
+	it('should show next page results in the modal after navigation is pressed', async () => {
+		const onAddResultSubmit = jest.fn();
 
-				fireEvent.click(getByText('Add a Result'));
-
-				const modal = getByTestId(MODAL_ID);
-
-				const input = modal.querySelector('.form-control');
-
-				fireEvent.change(input, {target: {value: 'test'}});
-
-				fireEvent.keyDown(input, {key: 'Enter',
-					keyCode: 13,
-					which: 13
-				});
-
-				await waitForElement(() => getByTestId(RESULTS_LIST_ID));
-
-				fireEvent.click(getByText('50'));
-
-				await waitForElement(() => getByTestId('349'));
-
-				expect(modal).toHaveTextContent('349 This is a Web Content Example');
-			}
+		const {getByTestId, getByText} = render(
+			<AddResult
+				fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+				onAddResultSubmit={onAddResultSubmit}
+			/>
 		);
-	}
-);
 
+		fireEvent.click(getByText('Add a Result'));
+
+		const modal = getByTestId(MODAL_ID);
+
+		const input = modal.querySelector('.form-control');
+
+		fireEvent.change(input, {target: {value: 'test'}});
+
+		fireEvent.keyDown(input, {key: 'Enter', keyCode: 13, which: 13});
+
+		await waitForElement(() => getByTestId(RESULTS_LIST_ID));
+
+		fireEvent.click(modal.querySelector('.page-item-next a'));
+
+		await waitForElement(() => getByTestId('310'));
+
+		expect(modal).not.toHaveTextContent('300 This is a Document Example');
+		expect(modal).not.toHaveTextContent(
+			'309 This is a Web Content Example'
+		);
+		expect(modal).toHaveTextContent('310 This is a Document Example');
+		expect(modal).toHaveTextContent('319 This is a Web Content Example');
+	});
+
+	it('should update results count in the modal after page delta is pressed', async () => {
+		const onAddResultSubmit = jest.fn();
+
+		const {getByTestId, getByText} = render(
+			<AddResult
+				fetchDocumentsUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+				onAddResultSubmit={onAddResultSubmit}
+			/>
+		);
+
+		fireEvent.click(getByText('Add a Result'));
+
+		const modal = getByTestId(MODAL_ID);
+
+		const input = modal.querySelector('.form-control');
+
+		fireEvent.change(input, {target: {value: 'test'}});
+
+		fireEvent.keyDown(input, {key: 'Enter', keyCode: 13, which: 13});
+
+		await waitForElement(() => getByTestId(RESULTS_LIST_ID));
+
+		fireEvent.click(getByText('50'));
+
+		await waitForElement(() => getByTestId('349'));
+
+		expect(modal).toHaveTextContent('349 This is a Web Content Example');
+	});
+});

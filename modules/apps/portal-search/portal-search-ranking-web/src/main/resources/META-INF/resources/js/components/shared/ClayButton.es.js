@@ -7,20 +7,18 @@ class ClayButton extends Component {
 	static propTypes = {
 		borderless: PropTypes.bool,
 		className: PropTypes.string,
-		displayStyle: PropTypes.oneOf(
-			[
-				'danger',
-				'dark',
-				'info',
-				'light',
-				'link',
-				'primary',
-				'secondary',
-				'success',
-				'unstyled',
-				'warning'
-			]
-		),
+		displayStyle: PropTypes.oneOf([
+			'danger',
+			'dark',
+			'info',
+			'light',
+			'link',
+			'primary',
+			'secondary',
+			'success',
+			'unstyled',
+			'warning'
+		]),
 		href: PropTypes.string,
 		iconName: PropTypes.string,
 		label: PropTypes.string,
@@ -69,7 +67,12 @@ class ClayButton extends Component {
 				{label}
 			</a>
 		) : (
-			<button aria-label={label} className={classes} type={type} {...otherProps}>
+			<button
+				aria-label={label}
+				className={classes}
+				type={type}
+				{...otherProps}
+			>
 				{label}
 
 				{iconName && (

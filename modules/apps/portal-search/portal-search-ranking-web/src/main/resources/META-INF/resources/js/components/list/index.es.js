@@ -1,5 +1,7 @@
 import ClayButton from 'components/shared/ClayButton.es';
-import ClayEmptyState, {DISPLAY_STATES} from 'components/shared/ClayEmptyState.es';
+import ClayEmptyState, {
+	DISPLAY_STATES
+} from 'components/shared/ClayEmptyState.es';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Item from './Item.es';
 import ItemDragLayer from './ItemDragLayer.es';
@@ -40,17 +42,17 @@ class List extends PureComponent {
 	_handleItemBlur = () => {
 		this._handleItemFocus(null);
 		this._handleReorder(false);
-	}
+	};
 
 	_handleItemFocus = index => {
 		this.setState({focusIndex: index});
-	}
+	};
 
 	/**
 	 * Will trigger the KeyDownFocus as long as focusIndex is defined.
 	 */
 	_handleKeyDown = event => {
-		if (!(isNull(this.state.focusIndex))) {
+		if (!isNull(this.state.focusIndex)) {
 			this._handleKeyDownFocus(event);
 		}
 	};
@@ -71,13 +73,11 @@ class List extends PureComponent {
 			event.preventDefault();
 
 			this._handleReorder(!reorder && focusIndex < pinLength);
-		}
-		else if (event.key === KEY_CODES.ARROW_DOWN) {
+		} else if (event.key === KEY_CODES.ARROW_DOWN) {
 			event.preventDefault();
 
 			if (focusIndex + 1 < resultIds.length) {
 				if (!(reorder && focusIndex + 1 === pinLength)) {
-
 					if (reorder && focusIndex + 1 < pinLength) {
 						onMove(focusIndex, focusIndex + 2);
 					}
@@ -85,8 +85,7 @@ class List extends PureComponent {
 					this._handleItemFocus(focusIndex + 1);
 				}
 			}
-		}
-		else if (event.key === KEY_CODES.ARROW_UP) {
+		} else if (event.key === KEY_CODES.ARROW_UP) {
 			event.preventDefault();
 
 			if (focusIndex > 0) {
@@ -97,7 +96,7 @@ class List extends PureComponent {
 				this._handleItemFocus(focusIndex - 1);
 			}
 		}
-	}
+	};
 
 	_handleLoadMoreResults = () => {
 		this.props.onLoadResults();
@@ -108,23 +107,19 @@ class List extends PureComponent {
 	 * selected ids list.
 	 */
 	_handleRemoveSelect = ids => {
-		this.setState(
-			state => (
-				{selectedIds: state.selectedIds.filter(id => !ids.includes(id))}
-			)
-		);
-	}
+		this.setState(state => ({
+			selectedIds: state.selectedIds.filter(id => !ids.includes(id))
+		}));
+	};
 
 	_handleReorder = val => {
 		this.setState({reorder: val});
-	}
+	};
 
 	_handleSelect = id => {
-		this.setState(
-			state => (
-				{selectedIds: toggleListItem(state.selectedIds, id)}
-			)
-		);
+		this.setState(state => ({
+			selectedIds: toggleListItem(state.selectedIds, id)
+		}));
 	};
 
 	/**
@@ -155,17 +150,13 @@ class List extends PureComponent {
 		this.props.onClickPin(ids, pinned);
 
 		if (!isNull(this.state.focusIndex)) {
-			this.setState(
-				(state, props) => {
-					const newFocusIndex = props.resultIds.indexOf(ids[0]);
+			this.setState((state, props) => {
+				const newFocusIndex = props.resultIds.indexOf(ids[0]);
 
-					return (
-						{focusIndex: newFocusIndex > -1 ? newFocusIndex : null}
-					);
-				}
-			);
+				return {focusIndex: newFocusIndex > -1 ? newFocusIndex : null};
+			});
 		}
-	}
+	};
 
 	/**
 	 * Render the item. If the item id isn't found on the dataMap, nothing
@@ -207,8 +198,7 @@ class List extends PureComponent {
 				title={item.title}
 				type={item.type}
 			/>
-		) :
-			null;
+		) : null;
 	};
 
 	render() {
@@ -227,7 +217,7 @@ class List extends PureComponent {
 		const {selectedIds} = this.state;
 
 		return (
-			<div className="results-ranking-list-root">
+			<div className='results-ranking-list-root'>
 				<ItemDragLayer />
 
 				<SearchBar
@@ -245,51 +235,55 @@ class List extends PureComponent {
 
 				{!!resultIds.length && (
 					<ul
-						className="list-group show-quick-actions-on-hover"
-						data-testid="results-list-group"
+						className='list-group show-quick-actions-on-hover'
+						data-testid='results-list-group'
 						onKeyDown={this._handleKeyDown}
 					>
-						{resultIds.map(
-							(id, index, arr) =>
-								this._renderItem(id, index, arr)
+						{resultIds.map((id, index, arr) =>
+							this._renderItem(id, index, arr)
 						)}
 					</ul>
 				)}
 
 				{dataLoading && (
-					<div className="load-more-container">
-						<span className="loading-animation" />
+					<div className='load-more-container'>
+						<span className='loading-animation' />
 					</div>
 				)}
 
-				{!dataLoading &&
+				{!dataLoading && (
 					<React.Fragment>
-						{!displayError &&
-							!resultIds.length &&
-								<ClayEmptyState />
-						}
+						{!displayError && !resultIds.length && (
+							<ClayEmptyState />
+						)}
 
-						{displayError &&
+						{displayError && (
 							<ClayEmptyState
 								actionLabel={Liferay.Language.get('try-again')}
-								description={Liferay.Language.get('an-error-has-occurred-and-we-were-unable-to-load-the-results')}
+								description={Liferay.Language.get(
+									'an-error-has-occurred-and-we-were-unable-to-load-the-results'
+								)}
 								displayState={DISPLAY_STATES.EMPTY}
 								onClickAction={this._handleLoadMoreResults}
-								title={Liferay.Language.get('unable-to-load-content')}
+								title={Liferay.Language.get(
+									'unable-to-load-content'
+								)}
 							/>
-						}
+						)}
 
 						{showLoadMore && (
-							<div className="load-more-container">
+							<div className='load-more-container'>
 								<ClayButton
-									className="load-more-button"
-									label={Liferay.Language.get('load-more-results')}
+									className='load-more-button'
+									label={Liferay.Language.get(
+										'load-more-results'
+									)}
 									onClick={this._handleLoadMoreResults}
 								/>
 							</div>
 						)}
 					</React.Fragment>
-				}
+				)}
 			</div>
 		);
 	}

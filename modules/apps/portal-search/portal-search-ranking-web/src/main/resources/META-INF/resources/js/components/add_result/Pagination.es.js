@@ -29,7 +29,7 @@ class PaginationEllipsisItem extends React.Component {
 
 		return (
 			<a
-				className="dropdown-item"
+				className='dropdown-item'
 				href={href}
 				onClick={this._handleChange}
 			>
@@ -85,41 +85,35 @@ class PaginationEllipsis extends React.Component {
 
 		const {show} = this.state;
 
-		const classHidden = getCN(
-			'dropdown-menu',
-			'dropdown-menu-top-center',
-			{
-				show
-			}
-		);
+		const classHidden = getCN('dropdown-menu', 'dropdown-menu-top-center', {
+			show
+		});
 
 		return (
-			<div className="dropdown page-item" ref={this.setWrapperRef}>
+			<div className='dropdown page-item' ref={this.setWrapperRef}>
 				<a
-					aria-expanded="false"
-					aria-haspopup="true"
-					className="dropdown-toggle page-link"
-					data-toggle="dropdown"
+					aria-expanded='false'
+					aria-haspopup='true'
+					className='dropdown-toggle page-link'
+					data-toggle='dropdown'
 					href={href}
 					onClick={this._handleDropdownToggle}
-					role="button"
+					role='button'
 				>
 					{'...'}
 				</a>
 
 				<ul className={classHidden}>
-					{items.map(
-						item => (
-							<PaginationEllipsisItem
-								href={href}
-								key={item}
-								onChange={onChange}
-								page={item}
-							>
-								{item}
-							</PaginationEllipsisItem>
-						)
-					)}
+					{items.map(item => (
+						<PaginationEllipsisItem
+							href={href}
+							key={item}
+							onChange={onChange}
+							page={item}
+						>
+							{item}
+						</PaginationEllipsisItem>
+					))}
 				</ul>
 			</div>
 		);
@@ -152,19 +146,16 @@ class PaginationItem extends React.Component {
 	render() {
 		const {active, children, disabled, href, page} = this.props;
 
-		const classes = getCN(
-			'page-item',
-			{
-				active,
-				disabled
-			}
-		);
+		const classes = getCN('page-item', {
+			active,
+			disabled
+		});
 
 		return (
 			<li className={classes}>
 				{page >= 0 ? (
 					<a
-						className="page-link"
+						className='page-link'
 						href={href}
 						onClick={this._handleChange}
 					>
@@ -223,7 +214,7 @@ class Pagination extends Component {
 					<PaginationEllipsis
 						href={href}
 						items={removedItems}
-						key="paginationEllipsis1"
+						key='paginationEllipsis1'
 						onChange={onChange}
 					/>
 				);
@@ -246,7 +237,7 @@ class Pagination extends Component {
 					<PaginationEllipsis
 						href={href}
 						items={removedItems}
-						key="paginationEllipsis2"
+						key='paginationEllipsis2'
 						onChange={onChange}
 					/>
 				);
@@ -259,58 +250,56 @@ class Pagination extends Component {
 	render() {
 		const {href, onChange, page, total} = this.props;
 
-		const classPrevious = getCN(
-			'page-item',
-			'page-item-previous',
-			{disabled: page === 1}
-		);
+		const classPrevious = getCN('page-item', 'page-item-previous', {
+			disabled: page === 1
+		});
 
-		const classNext = getCN(
-			'page-item',
-			'page-item-next',
-			{disabled: page === total}
-		);
+		const classNext = getCN('page-item', 'page-item-next', {
+			disabled: page === total
+		});
 
 		return (
-			<ul className="pagination" data-testid="pagination">
+			<ul className='pagination' data-testid='pagination'>
 				<li className={classPrevious}>
 					<a
-						className="page-link"
+						className='page-link'
 						href={href}
 						onClick={this._handlePageChangePrevious}
-						role="button"
-						tabIndex="-1"
+						role='button'
+						tabIndex='-1'
 					>
-						<ClayIcon iconName="angle-left" />
+						<ClayIcon iconName='angle-left' />
 
-						<span className="sr-only">{Liferay.Language.get('previous')}</span>
+						<span className='sr-only'>
+							{Liferay.Language.get('previous')}
+						</span>
 					</a>
 				</li>
 
-				{this.getPages().map(
-					(item, index) => (
-						<PaginationItem
-							active={page === item}
-							href={href}
-							key={index}
-							onChange={onChange}
-							page={isFunction(item) ? -1 : item}
-						>
-							{item}
-						</PaginationItem>
-					)
-				)}
+				{this.getPages().map((item, index) => (
+					<PaginationItem
+						active={page === item}
+						href={href}
+						key={index}
+						onChange={onChange}
+						page={isFunction(item) ? -1 : item}
+					>
+						{item}
+					</PaginationItem>
+				))}
 
 				<li className={classNext}>
 					<a
-						className="page-link"
+						className='page-link'
 						href={href}
 						onClick={this._handlePageChangeNext}
-						role="button"
+						role='button'
 					>
-						<ClayIcon iconName="angle-right" />
+						<ClayIcon iconName='angle-right' />
 
-						<span className="sr-only">{Liferay.Language.get('next')}</span>
+						<span className='sr-only'>
+							{Liferay.Language.get('next')}
+						</span>
 					</a>
 				</li>
 			</ul>
