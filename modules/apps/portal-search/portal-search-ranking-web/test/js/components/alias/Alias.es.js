@@ -1,7 +1,7 @@
 import Alias from 'components/alias/index.es';
 import React from 'react';
 import ReactModal from 'react-modal';
-import {cleanup, fireEvent, render} from 'react-testing-library';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 
 const MODAL_ID = 'alias-modal';

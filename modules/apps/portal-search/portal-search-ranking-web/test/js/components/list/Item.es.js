@@ -1,6 +1,6 @@
 import React from 'react';
 import Item from 'components/list/Item.es';
-import {cleanup, fireEvent, render, within} from 'react-testing-library';
+import {cleanup, fireEvent, render, within} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 
 jest.mock('react-dnd', () => ({

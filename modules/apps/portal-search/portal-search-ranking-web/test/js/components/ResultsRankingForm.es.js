@@ -1,6 +1,6 @@
 import React from 'react';
 import ResultsRankingForm from 'components/ResultsRankingForm.es';
-import {cleanup, fireEvent, render, waitForElement, within} from 'react-testing-library';
+import {cleanup, fireEvent, render, waitForElement, within} from '@testing-library/react';
 import {FETCH_HIDDEN_DOCUMENTS_URL, FETCH_VISIBLE_DOCUMENTS_URL} from 'test/mock-data';
 import 'jest-dom/extend-expect';
 

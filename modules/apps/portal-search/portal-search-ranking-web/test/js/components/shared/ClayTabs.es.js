@@ -5,7 +5,7 @@ import {
 	ClayTabs
 } from 'components/shared/ClayTabs.es';
 import React from 'react';
-import {cleanup, render} from 'react-testing-library';
+import {cleanup, render} from '@testing-library/react';
 
 describe(
 	'ClayTabs',

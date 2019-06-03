@@ -1,6 +1,6 @@
 import React from 'react';
 import ItemDropdown from 'components/list/ItemDropdown.es';
-import {cleanup, fireEvent, render} from 'react-testing-library';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 
 const DROPDOWN_TOGGLE_ID = 'dropdown-toggle';

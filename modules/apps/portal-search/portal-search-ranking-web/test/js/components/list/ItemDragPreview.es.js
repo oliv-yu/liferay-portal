@@ -1,6 +1,6 @@
 import ItemDragPreview from 'components/list/ItemDragPreview.es';
 import React from 'react';
-import {cleanup, render} from 'react-testing-library';
+import {cleanup, render} from '@testing-library/react';
 import {mockDocument} from 'test/mock-data';
 import 'jest-dom/extend-expect';
 
