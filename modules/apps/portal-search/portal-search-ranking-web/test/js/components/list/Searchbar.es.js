@@ -1,7 +1,6 @@
 import React from 'react';
 import SearchBar from 'components/list/SearchBar.es';
 import {cleanup, fireEvent, render} from '@testing-library/react';
-import 'jest-dom/extend-expect';
 import {
 	FETCH_VISIBLE_DOCUMENTS_URL,
 	getMockResultsData
@@ -15,8 +14,6 @@ const DATA_MAP = resultsDataToMap(
 const DROPDOWN_TOGGLE_ID = 'dropdown-toggle';
 
 describe('SearchBar', () => {
-	afterEach(cleanup);
-
 	it('should have an add result button when onAddResultSubmit is defined', () => {
 		const {queryByText} = render(
 			<SearchBar

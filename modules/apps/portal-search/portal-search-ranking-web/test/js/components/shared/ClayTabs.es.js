@@ -8,8 +8,6 @@ import React from 'react';
 import {cleanup, render} from '@testing-library/react';
 
 describe('ClayTabs', () => {
-	afterEach(cleanup);
-
 	it('should render', () => {
 		const {asFragment} = render(
 			<ClayTabs>

@@ -7,6 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import properties from 'properties';
+import 'jest-dom/extend-expect';
 
 const GLOBAL_LANG_PATH = path.resolve(
 	'..',

@@ -3,8 +3,6 @@ import React from 'react';
 import {cleanup, render} from '@testing-library/react';
 
 describe('ClayIcon', () => {
-	afterEach(cleanup);
-
 	it('should render', () => {
 		const {asFragment} = render(<ClayIcon iconName='times' />);
 

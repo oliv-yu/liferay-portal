@@ -3,8 +3,6 @@ import React from 'react';
 import {cleanup, render} from '@testing-library/react';
 
 describe('ClayMultiselect', () => {
-	afterEach(cleanup);
-
 	it('should render', () => {
 		const {container} = render(<ClayMultiselect />);
 

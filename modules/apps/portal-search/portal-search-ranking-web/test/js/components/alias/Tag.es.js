@@ -1,11 +1,8 @@
 import React from 'react';
 import Tag from 'components/alias/Tag.es';
 import {cleanup, fireEvent, render} from '@testing-library/react';
-import 'jest-dom/extend-expect';
 
 describe('Tag', () => {
-	afterEach(cleanup);
-
 	it('should have corresponding label', () => {
 		const {container} = render(
 			<Tag label='one' onClickDelete={jest.fn()} />
