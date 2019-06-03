@@ -1,11 +1,8 @@
 import React from 'react';
 import Pagination from 'components/add_result/Pagination.es.js';
 import {cleanup, fireEvent, render} from '@testing-library/react';
-import 'jest-dom/extend-expect';
 
 describe('Pagination', () => {
-	afterEach(cleanup);
-
 	it('should have a disabled previous arrow on first page', () => {
 		const {container} = render(
 			<Pagination href='' onChange={jest.fn()} page={1} total={7} />

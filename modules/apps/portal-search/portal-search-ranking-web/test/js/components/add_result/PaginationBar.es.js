@@ -1,7 +1,6 @@
 import React from 'react';
 import PaginationBar from 'components/add_result/PaginationBar.es.js';
 import {cleanup, render, fireEvent} from '@testing-library/react';
-import 'jest-dom/extend-expect';
 
 const DELTAS = [5, 10, 20, 40, 50];
 
@@ -9,8 +8,6 @@ const PAGINATION_DELTA_ID = 'pagination-delta';
 const PAGINATION_ID = 'pagination';
 
 describe('PaginationBar', () => {
-	afterEach(cleanup);
-
 	it('should have a dropdown for updating delta', () => {
 		const {getByTestId} = render(
 			<PaginationBar

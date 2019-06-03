@@ -2,7 +2,6 @@ import ItemDragPreview from 'components/list/ItemDragPreview.es';
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
 import {mockDocument} from 'test/mock-data';
-import 'jest-dom/extend-expect';
 
 // Mock pinned document since only pinned results can be dragged.
 
@@ -19,8 +18,6 @@ function testText(text) {
 }
 
 describe('ItemDragPreview', () => {
-	afterEach(cleanup);
-
 	it('should display the title', () => {
 		testText(MOCK_DOCUMENT.title);
 	});

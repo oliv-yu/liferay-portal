@@ -1,11 +1,8 @@
 import ItemDragLayer from 'components/list/ItemDragLayer.es';
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
-import 'jest-dom/extend-expect';
 
 describe('ItemDragLayer', () => {
-	afterEach(cleanup);
-
 	it('should render when dragging', () => {
 		const {container} = render(
 			<ItemDragLayer.DecoratedComponent dragging />

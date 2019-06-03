@@ -8,7 +8,6 @@ import {
 	render,
 	waitForElement
 } from '@testing-library/react';
-import 'jest-dom/extend-expect';
 
 jest.mock('utils/api.es');
 jest.mock('react-dnd', () => ({
@@ -20,8 +19,6 @@ const MODAL_ID = 'add-result-modal';
 const RESULTS_LIST_ID = 'add-result-items';
 
 describe('AddResult', () => {
-	afterEach(cleanup);
-
 	beforeEach(() => {
 		ReactModal.setAppElement('body');
 	});
