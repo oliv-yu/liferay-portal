@@ -17,8 +17,7 @@ export function getMockResultsData(
 
 	if (searchBarTerm === '') {
 		LEVEL = hidden ? 200 : 100;
-	}
-	else {
+	} else {
 		LEVEL = 300;
 	}
 
@@ -27,23 +26,20 @@ export function getMockResultsData(
 
 		const k = i + startId;
 
-		mockData.push(
-			{
-				author: 'Test Test',
-				clicks: k + LEVEL,
-				date: 'Apr 18 2018, 11:04 AM',
-				description:
+		mockData.push({
+			author: 'Test Test',
+			clicks: k + LEVEL,
+			date: 'Apr 18 2018, 11:04 AM',
+			description:
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod',
-				extension:
-					typeOfItem === 'Document' ? 'pdf' : null,
-				hidden: hidden,
-				id: k + LEVEL,
-				pinned: hidden ? false : k < PINNED_AMOUNT,
-				title: `${k + LEVEL} This is a ${typeOfItem} Example`,
-				type: typeOfItem,
-				...properties
-			}
-		);
+			extension: typeOfItem === 'Document' ? 'pdf' : null,
+			hidden: hidden,
+			id: k + LEVEL,
+			pinned: hidden ? false : k < PINNED_AMOUNT,
+			title: `${k + LEVEL} This is a ${typeOfItem} Example`,
+			type: typeOfItem,
+			...properties
+		});
 	}
 
 	return {
@@ -59,19 +55,17 @@ export function getMockResultsData(
  * @return {Object} The document result object.
  */
 export function mockDocument(id = 1, properties) {
-	return (
-		{
-			author: 'Test Author',
-			clicks: 123,
-			date: 'Apr 18 2018, 11:04 AM',
-			description: 'This is a test description.',
-			extension: 'pdf',
-			hidden: false,
-			id,
-			pinned: false,
-			title: 'Test Title',
-			type: 'Document',
-			...properties
-		}
-	);
+	return {
+		author: 'Test Author',
+		clicks: 123,
+		date: 'Apr 18 2018, 11:04 AM',
+		description: 'This is a test description.',
+		extension: 'pdf',
+		hidden: false,
+		id,
+		pinned: false,
+		title: 'Test Title',
+		type: 'Document',
+		...properties
+	};
 }

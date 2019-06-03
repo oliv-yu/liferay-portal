@@ -2,20 +2,12 @@ import ClayMultiselect from 'components/shared/ClayMultiselect.es';
 import React from 'react';
 import {cleanup, render} from '@testing-library/react';
 
-describe(
-	'ClayMultiselect',
-	() => {
-		afterEach(cleanup);
+describe('ClayMultiselect', () => {
+	afterEach(cleanup);
 
-		it(
-			'should render',
-			() => {
-				const {container} = render(
-					<ClayMultiselect />
-				);
+	it('should render', () => {
+		const {container} = render(<ClayMultiselect />);
 
-				expect(container.firstChild).not.toBeNull();
-			}
-		);
-	}
-);
+		expect(container.firstChild).not.toBeNull();
+	});
+});

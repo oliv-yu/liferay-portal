@@ -2,7 +2,9 @@ import ClayButton from 'components/shared/ClayButton.es';
 import React, {Component} from 'react';
 import {PropTypes} from 'prop-types';
 
-const DEFAULT_DESCRIPTION = Liferay.Language.get('sorry-there-are-no-results-found');
+const DEFAULT_DESCRIPTION = Liferay.Language.get(
+	'sorry-there-are-no-results-found'
+);
 
 const DEFAULT_TITLE = Liferay.Language.get('no-results-found');
 
@@ -18,13 +20,11 @@ class ClayEmptyState extends Component {
 	static propTypes = {
 		actionLabel: PropTypes.string,
 		description: PropTypes.string,
-		displayState: PropTypes.oneOf(
-			[
-				DISPLAY_STATES.EMPTY,
-				DISPLAY_STATES.SEARCH,
-				DISPLAY_STATES.SUCCESS
-			]
-		),
+		displayState: PropTypes.oneOf([
+			DISPLAY_STATES.EMPTY,
+			DISPLAY_STATES.SEARCH,
+			DISPLAY_STATES.SUCCESS
+		]),
 		onClickAction: PropTypes.func,
 		title: PropTypes.string
 	};
@@ -43,26 +43,29 @@ class ClayEmptyState extends Component {
 		} = this.props;
 
 		return (
-			<div className="empty-state-root">
+			<div className='empty-state-root'>
 				<img
 					alt={Liferay.Language.get('empty-state-image')}
-					className="empty-state-image"
+					className='empty-state-image'
 					src={`${STATE_IMAGES_PATH}/${displayState}_state.gif`}
 				/>
 
-				<div className="empty-state-title">
+				<div className='empty-state-title'>
 					{title || DEFAULT_TITLE}
 				</div>
 
-				<div className="empty-state-description">
+				<div className='empty-state-description'>
 					{description || DEFAULT_DESCRIPTION}
 				</div>
 
-				{actionLabel && onClickAction &&
-					<div className="empty-state-action">
-						<ClayButton label={actionLabel} onClick={onClickAction} />
+				{actionLabel && onClickAction && (
+					<div className='empty-state-action'>
+						<ClayButton
+							label={actionLabel}
+							onClick={onClickAction}
+						/>
 					</div>
-				}
+				)}
 			</div>
 		);
 	}

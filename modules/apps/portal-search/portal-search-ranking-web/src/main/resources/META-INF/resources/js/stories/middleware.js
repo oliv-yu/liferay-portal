@@ -7,11 +7,9 @@ const proxy = require('http-proxy-middleware');
 module.exports = function expressMiddleware(router) {
 	router.use(
 		'/o',
-		proxy(
-			{
-				changeOrigin: true,
-				target: 'http://0.0.0.0:8080'
-			}
-		)
+		proxy({
+			changeOrigin: true,
+			target: 'http://0.0.0.0:8080'
+		})
 	);
 };
