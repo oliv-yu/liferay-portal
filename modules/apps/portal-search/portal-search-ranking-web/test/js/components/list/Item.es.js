@@ -1,7 +1,6 @@
 import React from 'react';
 import Item from 'components/list/Item.es';
 import {cleanup, fireEvent, render, within} from '@testing-library/react';
-import 'jest-dom/extend-expect';
 
 jest.mock('react-dnd', () => ({
 	DragSource: el => el => el,
@@ -15,8 +14,6 @@ const HIDE_BUTTON_LABEL = 'Hide Result';
 const UNPIN_BUTTON_LABEL = 'Unpin Result';
 
 describe('Item', () => {
-	afterEach(cleanup);
-
 	it('should show the dropdown when clicked on', () => {
 		const {container, getByTestId} = render(
 			<Item

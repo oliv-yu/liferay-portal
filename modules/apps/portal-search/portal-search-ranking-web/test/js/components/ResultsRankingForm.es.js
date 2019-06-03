@@ -11,7 +11,6 @@ import {
 	FETCH_HIDDEN_DOCUMENTS_URL,
 	FETCH_VISIBLE_DOCUMENTS_URL
 } from 'test/mock-data';
-import 'jest-dom/extend-expect';
 
 jest.mock('utils/api.es');
 
@@ -28,8 +27,6 @@ const HIDE_BUTTON_LABEL = 'Hide Result';
 const SHOW_BUTTON_LABEL = 'Show Result';
 
 describe('ResultsRankingForm', () => {
-	afterEach(cleanup);
-
 	it('should render the results ranking form', () => {
 		const {container} = render(
 			<ResultsRankingForm

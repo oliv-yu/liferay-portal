@@ -1,11 +1,8 @@
 import React from 'react';
 import FilterInput from 'components/list/FilterInput.es';
 import {cleanup, fireEvent, render} from '@testing-library/react';
-import 'jest-dom/extend-expect';
 
 describe('FilterInput', () => {
-	afterEach(cleanup);
-
 	it('should have the searchbar term in the filter input', () => {
 		const {getByPlaceholderText} = render(
 			<FilterInput

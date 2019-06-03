@@ -1,11 +1,8 @@
 import React from 'react';
 import FilterDisplay from 'components/list/FilterDisplay.es';
 import {cleanup, fireEvent, render} from '@testing-library/react';
-import 'jest-dom/extend-expect';
 
 describe('FilterDisplay', () => {
-	afterEach(cleanup);
-
 	it('should have the correct description', () => {
 		const {getByText} = render(
 			<FilterDisplay

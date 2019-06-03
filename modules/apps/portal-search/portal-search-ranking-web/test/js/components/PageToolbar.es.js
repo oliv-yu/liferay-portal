@@ -1,11 +1,8 @@
 import React from 'react';
 import PageToolbar from 'components/PageToolbar.es';
 import {cleanup, render} from '@testing-library/react';
-import 'jest-dom/extend-expect';
 
 describe('PageToolbar', () => {
-	afterEach(cleanup);
-
 	it('should disable the publish button', () => {
 		const {getByText} = render(
 			<PageToolbar
