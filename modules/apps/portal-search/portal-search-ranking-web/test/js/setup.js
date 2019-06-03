@@ -33,19 +33,13 @@ let keys = {};
 
 try {
 	const bufferArray = LANG_PATHS.map(langPath =>
-		Buffer.concat(
-			[
-				fs.readFileSync(langPath),
-				Buffer.from('\n')
-			]
-		)
+		Buffer.concat([fs.readFileSync(langPath), Buffer.from('\n')])
 	);
 
 	const buffer = Buffer.concat(bufferArray);
 
 	keys = properties.parse(buffer.toString('utf8'));
-}
-catch (e) {
+} catch (e) {
 	// eslint-disable-next-line no-console
 	console.error(`Failed to read lang key file: ${LANG_PATH}`);
 }

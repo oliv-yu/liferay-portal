@@ -8,46 +8,39 @@ class FilterDisplay extends Component {
 		onClear: PropTypes.func,
 		searchBarTerm: PropTypes.string,
 		totalResultsCount: PropTypes.number
-	}
+	};
 
 	render() {
 		const {onClear, searchBarTerm, totalResultsCount} = this.props;
 
 		return (
-			<nav className="tbar tbar-inline-xs-down subnav-tbar subnav-tbar-primary">
-				<div className="container-fluid container-fluid-max-xl">
-					<ul className="tbar-nav tbar-nav-wrap">
-						<li className="tbar-item tbar-item-expand">
-							<div className="tbar-section">
-								<span className="component-text text-truncate-inline">
-									<span className="text-truncate">
+			<nav className='tbar tbar-inline-xs-down subnav-tbar subnav-tbar-primary'>
+				<div className='container-fluid container-fluid-max-xl'>
+					<ul className='tbar-nav tbar-nav-wrap'>
+						<li className='tbar-item tbar-item-expand'>
+							<div className='tbar-section'>
+								<span className='component-text text-truncate-inline'>
+									<span className='text-truncate'>
 										{sub(
 											Liferay.Language.get(
 												'x-results-for-x'
 											),
-											[
-												totalResultsCount,
-												searchBarTerm
-											]
+											[totalResultsCount, searchBarTerm]
 										)}
 									</span>
 								</span>
 							</div>
 						</li>
 
-						<li className="tbar=item">
-							<div className="tbar-section">
+						<li className='tbar=item'>
+							<div className='tbar-section'>
 								<ClayButton
 									borderless
-									displayStyle="unstyled"
-									label={Liferay.Language.get(
-										'clear'
-									)}
+									displayStyle='unstyled'
+									label={Liferay.Language.get('clear')}
 									onClick={onClear}
-									size="sm"
-									title={Liferay.Language.get(
-										'clear'
-									)}
+									size='sm'
+									title={Liferay.Language.get('clear')}
 								/>
 							</div>
 						</li>

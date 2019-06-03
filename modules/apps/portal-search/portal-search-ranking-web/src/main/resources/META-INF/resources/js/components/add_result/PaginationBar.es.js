@@ -27,7 +27,7 @@ class DeltaItem extends React.Component {
 
 		return (
 			<a
-				className="dropdown-item"
+				className='dropdown-item'
 				href={href}
 				onClick={this._handleChange}
 			>
@@ -91,9 +91,7 @@ class PaginationBar extends Component {
 	_handleDropdownToggle = event => {
 		event.preventDefault();
 
-		this.setState(
-			state => ({showDeltaDropdown: !state.showDeltaDropdown})
-		);
+		this.setState(state => ({showDeltaDropdown: !state.showDeltaDropdown}));
 	};
 
 	render() {
@@ -108,57 +106,48 @@ class PaginationBar extends Component {
 
 		const {showDeltaDropdown} = this.state;
 
-		const classDeltaDropdown = getCN(
-			'dropdown-menu',
-			'dropdown-menu-top',
-			{
-				show: showDeltaDropdown
-			}
-		);
+		const classDeltaDropdown = getCN('dropdown-menu', 'dropdown-menu-top', {
+			show: showDeltaDropdown
+		});
 
 		const start = page * selectedDelta;
 
 		return (
-			<div className="pagination-bar">
+			<div className='pagination-bar'>
 				<div
-					className="dropdown pagination-items-per-page"
-					data-testid="pagination-delta"
+					className='dropdown pagination-items-per-page'
+					data-testid='pagination-delta'
 					ref={this.setWrapperRef}
 				>
 					<a
-						aria-expanded="false"
-						aria-haspopup="true"
-						className="dropdown-toggle"
-						data-toggle="dropdown"
+						aria-expanded='false'
+						aria-haspopup='true'
+						className='dropdown-toggle'
+						data-toggle='dropdown'
 						href={href}
 						onClick={this._handleDropdownToggle}
 					>
 						{sub(Liferay.Language.get('x-items'), [selectedDelta])}
-						<ClayIcon iconName="caret-double-l" />
+						<ClayIcon iconName='caret-double-l' />
 					</a>
 
 					<div className={classDeltaDropdown}>
-						{deltas.map(
-							item => (
-								<DeltaItem
-									delta={item}
-									key={item}
-									onChange={this._handleDeltaChange}
-								/>
-							)
-						)}
+						{deltas.map(item => (
+							<DeltaItem
+								delta={item}
+								key={item}
+								onChange={this._handleDeltaChange}
+							/>
+						))}
 					</div>
 				</div>
 
-				<div className="pagination-results">
-					{sub(
-						Liferay.Language.get('showing-x-to-x-of-x-entries'),
-						[
-							start - selectedDelta + 1,
-							Math.min(start, totalItems),
-							totalItems
-						]
-					)}
+				<div className='pagination-results'>
+					{sub(Liferay.Language.get('showing-x-to-x-of-x-entries'), [
+						start - selectedDelta + 1,
+						Math.min(start, totalItems),
+						totalItems
+					])}
 				</div>
 
 				<Pagination

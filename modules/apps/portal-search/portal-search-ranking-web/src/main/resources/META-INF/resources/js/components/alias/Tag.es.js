@@ -22,14 +22,14 @@ class Tag extends Component {
 		const {label} = this.props;
 
 		return (
-			<span className="label label-dismissible label-lg label-secondary">
-				<span className="label-item label-item-expand">{label}</span>
+			<span className='label label-dismissible label-lg label-secondary'>
+				<span className='label-item label-item-expand'>{label}</span>
 
-				<span className="label-item label-item-after">
+				<span className='label-item label-item-after'>
 					<ClayButton
 						aria-label={Liferay.Language.get('close')}
-						className="close"
-						iconName="times"
+						className='close'
+						iconName='times'
 						onClick={this._handleDelete}
 					/>
 				</span>

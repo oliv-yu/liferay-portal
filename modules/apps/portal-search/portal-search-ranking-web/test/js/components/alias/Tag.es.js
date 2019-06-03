@@ -3,44 +3,28 @@ import Tag from 'components/alias/Tag.es';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 
-describe(
-	'Tag',
-	() => {
-		afterEach(cleanup);
+describe('Tag', () => {
+	afterEach(cleanup);
 
-		it(
-			'should have corresponding label',
-			() => {
-
-				const {container} = render(
-					<Tag
-						label="one"
-						onClickDelete={jest.fn()}
-					/>
-				);
-
-				const tag = container.querySelector('.label-item-expand');
-
-				expect(tag).toHaveTextContent('one');
-			}
+	it('should have corresponding label', () => {
+		const {container} = render(
+			<Tag label='one' onClickDelete={jest.fn()} />
 		);
 
-		it(
-			'should call the onClickDelete function when it gets clicked on',
-			() => {
-				const onClickDelete = jest.fn();
+		const tag = container.querySelector('.label-item-expand');
 
-				const {container} = render(
-					<Tag
-						label="one"
-						onClickDelete={onClickDelete}
-					/>
-				);
+		expect(tag).toHaveTextContent('one');
+	});
 
-				fireEvent.click(container.querySelector('button.close'));
+	it('should call the onClickDelete function when it gets clicked on', () => {
+		const onClickDelete = jest.fn();
 
-				expect(onClickDelete.mock.calls.length).toBe(1);
-			}
+		const {container} = render(
+			<Tag label='one' onClickDelete={onClickDelete} />
 		);
-	}
-);
+
+		fireEvent.click(container.querySelector('button.close'));
+
+		expect(onClickDelete.mock.calls.length).toBe(1);
+	});
+});
