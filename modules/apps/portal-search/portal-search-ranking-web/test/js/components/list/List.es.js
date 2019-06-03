@@ -1,6 +1,6 @@
 import React from 'react';
 import List from 'components/list/index.es';
-import {cleanup, fireEvent, render} from 'react-testing-library';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 import {getMockResultsData} from 'test/mock-data.js';
 import {resultsDataToMap} from 'utils/util.es';

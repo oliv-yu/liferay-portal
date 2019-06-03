@@ -1,6 +1,6 @@
 import React from 'react';
 import FilterInput from 'components/list/FilterInput.es';
-import {cleanup, fireEvent, render} from 'react-testing-library';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 
 describe(

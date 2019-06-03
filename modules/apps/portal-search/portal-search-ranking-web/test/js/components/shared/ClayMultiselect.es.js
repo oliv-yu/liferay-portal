@@ -1,6 +1,6 @@
 import ClayMultiselect from 'components/shared/ClayMultiselect.es';
 import React from 'react';
-import {cleanup, render} from 'react-testing-library';
+import {cleanup, render} from '@testing-library/react';
 
 describe(
 	'ClayMultiselect',

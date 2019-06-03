@@ -1,6 +1,6 @@
 import React from 'react';
 import PageToolbar from 'components/PageToolbar.es';
-import {cleanup, render} from 'react-testing-library';
+import {cleanup, render} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 
 describe(

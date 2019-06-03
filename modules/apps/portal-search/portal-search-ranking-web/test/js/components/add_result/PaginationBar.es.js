@@ -1,6 +1,6 @@
 import React from 'react';
 import PaginationBar from 'components/add_result/PaginationBar.es.js';
-import {cleanup, render, fireEvent} from 'react-testing-library';
+import {cleanup, render, fireEvent} from '@testing-library/react';
 import 'jest-dom/extend-expect';
 
 const DELTAS = [5, 10, 20, 40, 50];
