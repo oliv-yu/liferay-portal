@@ -48,7 +48,7 @@
 	"private": true,
 	"scripts": {
 		"build": "liferay-npm-scripts build --bundler",
-		"csf": "liferay-npm-scripts lint",
+		"checkFormat": "liferay-npm-scripts lint",
 		"format": "liferay-npm-scripts format",
 		"storybook": "start-storybook -p 9000 -c ./src/main/resources/META-INF/resources/js/stories",
 		"test": "liferay-npm-scripts test"
