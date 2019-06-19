@@ -4,16 +4,16 @@ import {addDecorator, storiesOf} from '@storybook/react';
 import {array, boolean, select, text, withKnobs} from '@storybook/addon-knobs';
 import {withA11y} from '@storybook/addon-a11y';
 
-import Alias from 'components/alias/index.es';
-import ClayEmptyState from 'components/shared/ClayEmptyState.es';
-import FilterDisplay from '../components/list/FilterDisplay.es';
-import FilterInput from 'components/list/FilterInput.es';
-import Item from 'components/list/Item.es';
-import ItemDragPreview from 'components/list/ItemDragPreview.es';
-import List from 'components/list/index.es';
-import PageToolbar from 'components/PageToolbar.es';
-import ResultsRankingForm from 'components/ResultsRankingForm.es';
-import ThemeContext from 'ThemeContext.es';
+import Alias from 'components/alias/index';
+import ClayEmptyState from 'components/shared/ClayEmptyState';
+import FilterDisplay from '../components/list/FilterDisplay';
+import FilterInput from 'components/list/FilterInput';
+import Item from 'components/list/Item';
+import ItemDragPreview from 'components/list/ItemDragPreview';
+import List from 'components/list/index';
+import PageToolbar from 'components/PageToolbar';
+import ResultsRankingForm from 'components/ResultsRankingForm';
+import ThemeContext from 'ThemeContext';
 import {mockDataMap} from 'stories/mock-data';
 
 import '../../css/main.scss';
