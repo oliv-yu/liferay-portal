@@ -7,6 +7,8 @@ import {
 } from 'test/mock-data.js';
 import {resultsDataToMap} from 'utils/util';
 
+jest.mock('utils/api');
+
 const DATA_MAP = resultsDataToMap(
 	getMockResultsData(10, 0, '', false).documents
 );
