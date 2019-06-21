@@ -1,4 +1,4 @@
-import AddResult from 'components/add_result/index';
+import AddResult from 'components/add_result/AddResult';
 import ClayButton from 'components/shared/ClayButton';
 import getCN from 'classnames';
 import ItemDropdown from './ItemDropdown';

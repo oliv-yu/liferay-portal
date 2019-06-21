@@ -1,7 +1,7 @@
-import Alias from 'components/alias/index';
+import Alias from 'components/alias/Alias';
 import ClayEmptyState, {DISPLAY_STATES} from 'components/shared/ClayEmptyState';
 import FormValueDebugger from 'utils/FormValueDebugger';
-import List from 'components/list/index';
+import List from 'components/list/List';
 import PageToolbar from './PageToolbar';
 import React, {Component} from 'react';
 import ReactModal from 'react-modal';
