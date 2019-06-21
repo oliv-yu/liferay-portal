@@ -1,5 +1,5 @@
 import React from 'react';
-import List from 'components/list/index';
+import List from 'components/list/List';
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import {getMockResultsData} from 'test/mock-data.js';
 import {resultsDataToMap} from 'utils/util';

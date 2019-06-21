@@ -82,7 +82,7 @@ String[] aliases = StringUtil.split(ParamUtil.getString(request, "aliases"), Str
 	<portlet:param name="<%= Constants.CMD %>" value="getHiddenResults" />
 </liferay-portlet:resourceURL>
 
-<aui:script require='<%= npmResolvedPackageName + "/js/index.es as ResultsRankings" %>'>
+<aui:script require='<%= npmResolvedPackageName + " as ResultsRankings" %>'>
 	ResultsRankings.default(
 		'<%= resultsRankingsRootElementId %>',
 		{

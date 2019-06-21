@@ -1,4 +1,4 @@
-import AddResult from 'components/add_result/index';
+import AddResult from 'components/add_result/AddResult';
 import React from 'react';
 import ReactModal from 'react-modal';
 import {FETCH_VISIBLE_DOCUMENTS_URL} from 'test/mock-data.js';

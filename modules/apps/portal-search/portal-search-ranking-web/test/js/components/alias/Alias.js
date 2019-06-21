@@ -1,4 +1,4 @@
-import Alias from 'components/alias/index';
+import Alias from 'components/alias/Alias';
 import React from 'react';
 import ReactModal from 'react-modal';
 import {cleanup, fireEvent, render} from '@testing-library/react';

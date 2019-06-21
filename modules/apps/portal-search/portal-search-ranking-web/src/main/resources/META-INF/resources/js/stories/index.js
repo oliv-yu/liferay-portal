@@ -4,13 +4,13 @@ import {addDecorator, storiesOf} from '@storybook/react';
 import {array, boolean, select, text, withKnobs} from '@storybook/addon-knobs';
 import {withA11y} from '@storybook/addon-a11y';
 
-import Alias from 'components/alias/index';
+import Alias from 'components/alias/Alias';
 import ClayEmptyState from 'components/shared/ClayEmptyState';
 import FilterDisplay from '../components/list/FilterDisplay';
 import FilterInput from 'components/list/FilterInput';
 import Item from 'components/list/Item';
 import ItemDragPreview from 'components/list/ItemDragPreview';
-import List from 'components/list/index';
+import List from 'components/list/List';
 import PageToolbar from 'components/PageToolbar';
 import ResultsRankingForm from 'components/ResultsRankingForm';
 import ThemeContext from 'ThemeContext';
