@@ -1,4 +1,4 @@
-import ClayButton from 'components/shared/ClayButton';
+import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import DRAG_TYPES from 'utils/drag-types';
 import getCN from 'classnames';
@@ -29,12 +29,14 @@ const ResultPinIconDisplay = () => (
 	<div className='quick-action-menu result-pin-icon-display'>
 		<ClayButton
 			borderless
-			className='component-action quick-action-item'
-			iconName='pin'
+			className='btn-outline-borderless component-action quick-action-item'
+			displayType='secondary'
 			monospaced
 			tabIndex='-1'
 			title={Liferay.Language.get('pinned-result')}
-		/>
+		>
+			<ClayIcon symbol='pin' />
+		</ClayButton>
 	</div>
 );
 
@@ -508,8 +510,8 @@ class Item extends PureComponent {
 						{onClickHide && (
 							<ClayButton
 								borderless
-								className='component-action quick-action-item'
-								iconName={hidden ? 'view' : 'hidden'}
+								className='btn-outline-borderless component-action quick-action-item'
+								displayType='secondary'
 								monospaced
 								onClick={this._handleHide}
 								title={
@@ -517,14 +519,16 @@ class Item extends PureComponent {
 										? Liferay.Language.get('show-result')
 										: Liferay.Language.get('hide-result')
 								}
-							/>
+							>
+								<ClayIcon symbol={hidden ? 'view' : 'hidden'} />
+							</ClayButton>
 						)}
 
 						{onClickPin && (
 							<ClayButton
 								borderless
-								className='component-action quick-action-item'
-								iconName={pinned ? 'unpin' : 'pin'}
+								className='btn-outline-borderless component-action quick-action-item'
+								displayType='secondary'
 								monospaced
 								onClick={this._handlePin}
 								title={
@@ -532,7 +536,9 @@ class Item extends PureComponent {
 										? Liferay.Language.get('unpin-result')
 										: Liferay.Language.get('pin-result')
 								}
-							/>
+							>
+								<ClayIcon symbol={pinned ? 'unpin' : 'pin'} />
+							</ClayButton>
 						)}
 					</div>
 
