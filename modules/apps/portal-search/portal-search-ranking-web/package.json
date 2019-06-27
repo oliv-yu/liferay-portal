@@ -5,6 +5,7 @@
 		"@clayui/icon": "^3.0.0-milestone.1",
 		"@clayui/link": "^3.0.0-milestone.1",
 		"@clayui/loading-indicator": "^3.0.0-milestone.1",
+		"@clayui/modal": "^3.0.0-milestone.1",
 		"@clayui/select": "^3.0.0-milestone.1",
 		"classnames": "^2.2.6",
 		"frontend-js-web": "^4.0.0",
@@ -16,7 +17,6 @@
 		"react-dnd": "7.4.5",
 		"react-dnd-html5-backend": "^7.0.2",
 		"react-dom": "^16.6.3",
-		"react-modal": "^3.8.1",
 		"react-select": "^2.4.2",
 		"react-tabs": "^3.0.0"
 	},

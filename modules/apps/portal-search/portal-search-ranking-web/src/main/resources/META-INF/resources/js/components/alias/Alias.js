@@ -1,9 +1,8 @@
 import ClayButton from '@clayui/button';
-import ClayIcon from '@clayui/icon';
+import ClayModal from '@clayui/modal';
 import ClayMultiselect from 'components/shared/ClayMultiselect';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import ReactModal from 'react-modal';
 import Tag from './Tag';
 
 /**
@@ -38,12 +37,12 @@ class Alias extends Component {
 		});
 	};
 
-	_handleSubmit = () => {
+	_handleSubmit = onClose => () => {
 		this.props.onClickSubmit(
 			this.state.modalKeywords.map(item => item.value)
 		);
 
-		this._handleCloseModal();
+		onClose();
 	};
 
 	_handleUpdate = value => {
@@ -53,7 +52,7 @@ class Alias extends Component {
 	render() {
 		const {keywords, onClickDelete} = this.props;
 
-		const {modalKeywords} = this.state;
+		const {modalKeywords, showModal} = this.state;
 
 		return (
 			<div className='results-ranking-alias-root'>
@@ -87,84 +86,74 @@ class Alias extends Component {
 					</div>
 				</div>
 
-				<ReactModal
-					className='modal-dialog modal-dialog-lg alias-modal-root'
-					contentLabel='aliasModal'
-					isOpen={this.state.showModal}
-					onRequestClose={this._handleCloseModal}
-					overlayClassName='modal-backdrop react-modal-backdrop'
-					portalClassName='results-ranking-modal-root'
-				>
-					<div className='modal-content' data-testid='alias-modal'>
-						<div className='modal-header'>
-							<div className='modal-title'>
-								{Liferay.Language.get('add-an-alias')}
-							</div>
+				{showModal && (
+					<ClayModal
+						className='results-ranking-modal-root'
+						onClose={this._handleCloseModal}
+						size='lg'
+					>
+						{onClose => (
+							<div className='alias-modal-root'>
+								<ClayModal.Header>
+									{Liferay.Language.get('add-an-alias')}
+								</ClayModal.Header>
 
-							<ClayButton
-								borderless
-								className='btn-outline-borderless'
-								displayType='secondary'
-								onClick={this._handleCloseModal}
-							>
-								<ClayIcon symbol='times' />
-							</ClayButton>
-						</div>
-
-						<div className='modal-body'>
-							<div className='alias-modal-description'>
-								{Liferay.Language.get(
-									'add-an-alias-description'
-								)}
-							</div>
-
-							<div className='form-group'>
-								<label>{Liferay.Language.get('alias')}</label>
-
-								<ClayMultiselect
-									onAction={this._handleUpdate}
-									value={modalKeywords}
-								/>
-
-								<div className='form-feedback-group'>
-									<div className='form-text'>
+								<ClayModal.Body>
+									<div className='alias-modal-description'>
 										{Liferay.Language.get(
-											'add-an-alias-instruction'
+											'add-an-alias-description'
 										)}
 									</div>
-								</div>
-							</div>
-						</div>
 
-						<div className='modal-footer'>
-							<div className='modal-item-last'>
-								<div className='btn-group'>
-									<div className='btn-group-item'>
-										<ClayButton
-											borderless
-											className='btn-outline-borderless'
-											displayType='secondary'
-											onClick={this._handleCloseModal}
-										>
-											{Liferay.Language.get('cancel')}
-										</ClayButton>
-									</div>
+									<div className='form-group'>
+										<label>
+											{Liferay.Language.get('alias')}
+										</label>
 
-									<div className='btn-group-item'>
-										<ClayButton
-											disabled={
-												modalKeywords.length === 0
-											}
-											onClick={this._handleSubmit}
-										>
-											{Liferay.Language.get('add')}
-										</ClayButton>
+										<ClayMultiselect
+											onAction={this._handleUpdate}
+											value={modalKeywords}
+										/>
+
+										<div className='form-feedback-group'>
+											<div className='form-text'>
+												{Liferay.Language.get(
+													'add-an-alias-instruction'
+												)}
+											</div>
+										</div>
 									</div>
-								</div>
+								</ClayModal.Body>
+
+								<ClayModal.Footer
+									last={
+										<ClayButton.Group spaced>
+											<ClayButton
+												borderless
+												className='btn-outline-borderless'
+												displayType='secondary'
+												onClick={onClose}
+											>
+												{Liferay.Language.get('cancel')}
+											</ClayButton>
+
+											<ClayButton
+												disabled={
+													modalKeywords.length === 0
+												}
+												onClick={this._handleSubmit(
+													onClose
+												)}
+											>
+												{Liferay.Language.get('add')}
+											</ClayButton>
+										</ClayButton.Group>
+									}
+								/>
 							</div>
-						</div>
-					</div>
-				</ReactModal>
+						)}
+					</ClayModal>
+				)}
 			</div>
 		);
 	}

@@ -1,11 +1,11 @@
 import ClayButton from '@clayui/button';
 import ClayEmptyState, {DISPLAY_STATES} from 'components/shared/ClayEmptyState';
 import ClayIcon from '@clayui/icon';
+import ClayModal from '@clayui/modal';
 import getCN from 'classnames';
 import Item from 'components/list/Item';
 import PaginationBar from './PaginationBar';
 import React, {Component} from 'react';
-import ReactModal from 'react-modal';
 import ThemeContext from 'ThemeContext';
 import {fetchDocuments} from 'utils/api';
 import {PropTypes} from 'prop-types';
@@ -215,7 +215,7 @@ class AddResult extends Component {
 		}));
 	};
 
-	_handleSubmit = event => {
+	_handleSubmit = onClose => event => {
 		event.preventDefault();
 
 		const addResultDataList = this.state.addResultSelectedIds.map(
@@ -224,7 +224,7 @@ class AddResult extends Component {
 
 		this.props.onAddResultSubmit(addResultDataList);
 
-		this._handleCloseModal();
+		onClose();
 	};
 
 	/**
@@ -262,7 +262,7 @@ class AddResult extends Component {
 			);
 		}
 
-		return <div className='sheet'>{emptyState}</div>;
+		return <div className='add-result-sheet sheet'>{emptyState}</div>;
 	};
 
 	render() {
@@ -296,255 +296,282 @@ class AddResult extends Component {
 					{Liferay.Language.get('add-a-result')}
 				</ClayButton>
 
-				<ReactModal
-					className='modal-dialog modal-dialog-lg modal-full-screen-sm-down add-result-modal-root'
-					contentLabel='addResultModal'
-					isOpen={showModal}
-					onRequestClose={this._handleCloseModal}
-					overlayClassName='modal-backdrop react-modal-backdrop'
-					portalClassName='results-ranking-modal-root'
-				>
-					<div
-						className='modal-content'
-						data-testid='add-result-modal'
+				{showModal && (
+					<ClayModal
+						className='modal-full-screen-sm-down results-ranking-modal-root'
+						onClose={this._handleCloseModal}
+						size='lg'
 					>
-						<div className='modal-header'>
-							<div className='modal-title'>
-								{Liferay.Language.get('add-a-result')}
-							</div>
-
-							<ClayButton
-								borderless
-								className='btn-outline-borderless'
-								displayType='secondary'
-								onClick={this._handleCloseModal}
+						{onClose => (
+							<div
+								className='add-result-modal-root'
+								data-testid='add-result-modal'
 							>
-								<ClayIcon symbol='times' />
-							</ClayButton>
-						</div>
+								<ClayModal.Header>
+									{Liferay.Language.get('add-a-result')}
+								</ClayModal.Header>
 
-						<div className='modal-header'>
-							<div className='container-fluid container-fluid-max-xl'>
-								<div className='management-bar navbar-expand-md'>
-									<div className='navbar-form navbar-form-autofit'>
-										<div className='input-group'>
-											<div className='input-group-item'>
-												<input
-													aria-label={Liferay.Language.get(
-														'search-your-engine'
-													)}
-													className='form-control input-group-inset input-group-inset-after'
-													onChange={
-														this._handleSearchChange
-													}
-													onKeyDown={
-														this
-															._handleSearchKeyDown
-													}
-													placeholder={Liferay.Language.get(
-														'search-your-engine'
-													)}
-													type='text'
-													value={addResultSearchTerm}
-												/>
+								<ClayModal.Body>
+									<div className='add-result-container container-fluid'>
+										<div className='management-bar navbar-expand-md'>
+											<div className='navbar-form navbar-form-autofit'>
+												<div className='input-group'>
+													<div className='input-group-item'>
+														<input
+															aria-label={Liferay.Language.get(
+																'search-your-engine'
+															)}
+															className='form-control input-group-inset input-group-inset-after'
+															onChange={
+																this
+																	._handleSearchChange
+															}
+															onKeyDown={
+																this
+																	._handleSearchKeyDown
+															}
+															placeholder={Liferay.Language.get(
+																'search-your-engine'
+															)}
+															type='text'
+															value={
+																addResultSearchTerm
+															}
+														/>
 
-												<div className='input-group-inset-item input-group-inset-item-after'>
-													<ClayButton
-														displayType='unstyled'
-														onClick={
-															this
-																._handleSearchEnter
-														}
-													>
-														<ClayIcon symbol='search' />
-													</ClayButton>
+														<div className='input-group-inset-item input-group-inset-item-after'>
+															<ClayButton
+																displayType='unstyled'
+																onClick={
+																	this
+																		._handleSearchEnter
+																}
+															>
+																<ClayIcon symbol='search' />
+															</ClayButton>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							</div>
-						</div>
 
-						<div className='modal-body inline-scroller'>
-							{dataLoading && (
-								<div className='list-group sheet'>
-									<div className='sheet-title'>
-										<div className='load-more-container'>
-											<span className='loading-animation' />
-										</div>
-									</div>
-								</div>
-							)}
-
-							{!dataLoading &&
-								(results.total && results.items ? (
-									<React.Fragment>
-										<div className={classManagementBar}>
-											<div className='container-fluid container-fluid-max-xl'>
-												<ul className='navbar-nav navbar-nav-expand'>
-													<li className='nav-item'>
-														<div className='custom-control custom-checkbox'>
-															<label>
-																<input
-																	aria-label={Liferay.Language.get(
-																		'select-all'
-																	)}
-																	checked={
-																		this._getCurrentResultSelectedIds()
-																			.length ===
-																		results
-																			.items
-																			.length
-																	}
-																	className='custom-control-input'
-																	onChange={
-																		this
-																			._handleAllCheckbox
-																	}
-																	ref={
-																		this
-																			.selectAllCheckbox
-																	}
-																	type='checkbox'
-																/>
-
-																<span className='custom-control-label' />
-															</label>
-														</div>
-													</li>
-
-													<li className='nav-item'>
-														<span className='navbar-text'>
-															{addResultSelectedIds.length >
-															0
-																? sub(
-																		Liferay.Language.get(
-																			'x-items-selected'
-																		),
-																		[
-																			addResultSelectedIds.length
-																		]
-																  )
-																: sub(
-																		Liferay.Language.get(
-																			'x-x-of-x-results'
-																		),
-																		[
-																			start -
-																				selectedDelta +
-																				1,
-																			Math.min(
-																				start,
-																				results.total
-																			),
-																			results.total
-																		]
-																  )}
-														</span>
-													</li>
-
-													{addResultSelectedIds.length >
-														0 && (
-														<li className='nav-item nav-item-shrink'>
-															<ClayButton
-																borderless
-																className='btn-outline-borderless'
-																displayType='secondary'
-																onClick={
-																	this
-																		._handleClearAllSelected
-																}
-																small
-															>
-																{Liferay.Language.get(
-																	'clear-all-selected'
-																)}
-															</ClayButton>
-														</li>
-													)}
-												</ul>
+									<div className='add-result-scroller inline-scroller'>
+										{dataLoading && (
+											<div className='list-group sheet'>
+												<div className='sheet-title'>
+													<div className='load-more-container'>
+														<span className='loading-animation' />
+													</div>
+												</div>
 											</div>
-										</div>
+										)}
 
-										<ul
-											className='list-group'
-											data-testid='add-result-items'
-										>
-											{results.items.map(
-												(result, index) => (
-													<Item
-														author={result.author}
-														clicks={result.clicks}
-														date={result.date}
-														extension={
-															result.extension
-														}
-														hidden={result.hidden}
-														id={result.id}
-														index={index}
-														key={result.id}
-														onSelect={
-															this._handleSelect
-														}
-														selected={addResultSelectedIds.includes(
-															result.id
-														)}
-														title={result.title}
-														type={result.type}
-													/>
-												)
-											)}
-										</ul>
+										{!dataLoading &&
+											(results.total && results.items ? (
+												<>
+													<div className='add-result-sheet sheet'>
+														<div
+															className={
+																classManagementBar
+															}
+														>
+															<div className='container-fluid container-fluid-max-xl'>
+																<ul className='navbar-nav navbar-nav-expand'>
+																	<li className='nav-item'>
+																		<div className='custom-control custom-checkbox'>
+																			<label>
+																				<input
+																					aria-label={Liferay.Language.get(
+																						'select-all'
+																					)}
+																					checked={
+																						this._getCurrentResultSelectedIds()
+																							.length ===
+																						results
+																							.items
+																							.length
+																					}
+																					className='custom-control-input'
+																					onChange={
+																						this
+																							._handleAllCheckbox
+																					}
+																					ref={
+																						this
+																							.selectAllCheckbox
+																					}
+																					type='checkbox'
+																				/>
 
-										<PaginationBar
-											deltas={DELTAS}
-											onDeltaChange={
-												this._handleDeltaChange
-											}
-											onPageChange={
-												this._handlePageChange
-											}
-											page={page}
-											selectedDelta={selectedDelta}
-											totalItems={results.total}
-										/>
-									</React.Fragment>
-								) : (
-									this._renderEmptyState()
-								))}
-						</div>
+																				<span className='custom-control-label' />
+																			</label>
+																		</div>
+																	</li>
 
-						<div className='modal-footer'>
-							<div className='modal-item-last'>
-								<div className='btn-group'>
-									<div className='btn-group-item'>
-										<ClayButton
-											borderless
-											className='btn-outline-borderless'
-											displayType='secondary'
-											onClick={this._handleCloseModal}
-										>
-											{Liferay.Language.get('cancel')}
-										</ClayButton>
+																	<li className='nav-item'>
+																		<span className='navbar-text'>
+																			{addResultSelectedIds.length >
+																			0
+																				? sub(
+																						Liferay.Language.get(
+																							'x-items-selected'
+																						),
+																						[
+																							addResultSelectedIds.length
+																						]
+																				  )
+																				: sub(
+																						Liferay.Language.get(
+																							'x-x-of-x-results'
+																						),
+																						[
+																							start -
+																								selectedDelta +
+																								1,
+																							Math.min(
+																								start,
+																								results.total
+																							),
+																							results.total
+																						]
+																				  )}
+																		</span>
+																	</li>
+
+																	{addResultSelectedIds.length >
+																		0 && (
+																		<li className='nav-item nav-item-shrink'>
+																			<ClayButton
+																				borderless
+																				className='btn-outline-borderless'
+																				displayType='secondary'
+																				onClick={
+																					this
+																						._handleClearAllSelected
+																				}
+																				small
+																			>
+																				{Liferay.Language.get(
+																					'clear-all-selected'
+																				)}
+																			</ClayButton>
+																		</li>
+																	)}
+																</ul>
+															</div>
+														</div>
+
+														<ul
+															className='list-group'
+															data-testid='add-result-items'
+														>
+															{results.items.map(
+																(
+																	result,
+																	index
+																) => (
+																	<Item
+																		author={
+																			result.author
+																		}
+																		clicks={
+																			result.clicks
+																		}
+																		date={
+																			result.date
+																		}
+																		extension={
+																			result.extension
+																		}
+																		hidden={
+																			result.hidden
+																		}
+																		id={
+																			result.id
+																		}
+																		index={
+																			index
+																		}
+																		key={
+																			result.id
+																		}
+																		onSelect={
+																			this
+																				._handleSelect
+																		}
+																		selected={addResultSelectedIds.includes(
+																			result.id
+																		)}
+																		title={
+																			result.title
+																		}
+																		type={
+																			result.type
+																		}
+																	/>
+																)
+															)}
+														</ul>
+													</div>
+
+													<div className='add-result-container'>
+														<PaginationBar
+															deltas={DELTAS}
+															onDeltaChange={
+																this
+																	._handleDeltaChange
+															}
+															onPageChange={
+																this
+																	._handlePageChange
+															}
+															page={page}
+															selectedDelta={
+																selectedDelta
+															}
+															totalItems={
+																results.total
+															}
+														/>
+													</div>
+												</>
+											) : (
+												this._renderEmptyState()
+											))}
 									</div>
+								</ClayModal.Body>
 
-									<div className='btn-group-item'>
-										<ClayButton
-											disabled={
-												addResultSelectedIds.length ===
-												0
-											}
-											onClick={this._handleSubmit}
-										>
-											{Liferay.Language.get('add')}
-										</ClayButton>
-									</div>
-								</div>
+								<ClayModal.Footer
+									last={
+										<ClayButton.Group spaced>
+											<ClayButton
+												borderless
+												className='btn-outline-borderless'
+												displayType='secondary'
+												onClick={onClose}
+											>
+												{Liferay.Language.get('cancel')}
+											</ClayButton>
+
+											<ClayButton
+												disabled={
+													addResultSelectedIds.length ===
+													0
+												}
+												onClick={this._handleSubmit(
+													onClose
+												)}
+											>
+												{Liferay.Language.get('add')}
+											</ClayButton>
+										</ClayButton.Group>
+									}
+								/>
 							</div>
-						</div>
-					</div>
-				</ReactModal>
+						)}
+					</ClayModal>
+				)}
 			</li>
 		);
 	}
