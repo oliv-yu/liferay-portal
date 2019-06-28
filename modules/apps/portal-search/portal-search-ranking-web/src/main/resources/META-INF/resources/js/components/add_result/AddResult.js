@@ -443,7 +443,6 @@ class AddResult extends Component {
 																		0 && (
 																		<li className='nav-item nav-item-shrink'>
 																			<ClayButton
-																				borderless
 																				className='btn-outline-borderless'
 																				displayType='secondary'
 																				onClick={
@@ -546,7 +545,6 @@ class AddResult extends Component {
 									last={
 										<ClayButton.Group spaced>
 											<ClayButton
-												borderless
 												className='btn-outline-borderless'
 												displayType='secondary'
 												onClick={onClose}

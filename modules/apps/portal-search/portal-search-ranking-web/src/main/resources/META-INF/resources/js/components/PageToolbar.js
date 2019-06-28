@@ -25,7 +25,6 @@ class PageToolbar extends Component {
 
 						<li className='tbar-item'>
 							<ClayButton
-								borderless
 								className='btn-outline-borderless'
 								displayType='secondary'
 								href={onCancel}

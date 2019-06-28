@@ -28,7 +28,6 @@ const ROOT_CLASS = 'list-item-root';
 const ResultPinIconDisplay = () => (
 	<div className='quick-action-menu result-pin-icon-display'>
 		<ClayButton
-			borderless
 			className='btn-outline-borderless component-action quick-action-item'
 			displayType='secondary'
 			monospaced
@@ -509,7 +508,6 @@ class Item extends PureComponent {
 					<div className='quick-action-menu'>
 						{onClickHide && (
 							<ClayButton
-								borderless
 								className='btn-outline-borderless component-action quick-action-item'
 								displayType='secondary'
 								monospaced
@@ -526,7 +524,6 @@ class Item extends PureComponent {
 
 						{onClickPin && (
 							<ClayButton
-								borderless
 								className='btn-outline-borderless component-action quick-action-item'
 								displayType='secondary'
 								monospaced

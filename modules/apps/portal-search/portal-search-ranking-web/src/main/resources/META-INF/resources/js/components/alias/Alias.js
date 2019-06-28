@@ -74,7 +74,6 @@ class Alias extends Component {
 
 						<div className='input-group-item input-group-item-shrink'>
 							<ClayButton
-								borderless
 								className='btn-outline-borderless'
 								displayType='secondary'
 								onClick={this._handleOpenModal}
@@ -89,6 +88,7 @@ class Alias extends Component {
 				{showModal && (
 					<ClayModal
 						className='results-ranking-modal-root'
+						data-testid='alias-modal'
 						onClose={this._handleCloseModal}
 						size='lg'
 					>
@@ -129,7 +129,6 @@ class Alias extends Component {
 									last={
 										<ClayButton.Group spaced>
 											<ClayButton
-												borderless
 												className='btn-outline-borderless'
 												displayType='secondary'
 												onClick={onClose}

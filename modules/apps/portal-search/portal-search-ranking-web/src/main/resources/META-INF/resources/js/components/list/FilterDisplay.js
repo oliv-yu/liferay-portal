@@ -35,7 +35,6 @@ class FilterDisplay extends Component {
 						<li className='tbar=item'>
 							<div className='tbar-section'>
 								<ClayButton
-									borderless
 									className='btn-outline-borderless'
 									displayType='unstyled'
 									onClick={onClear}

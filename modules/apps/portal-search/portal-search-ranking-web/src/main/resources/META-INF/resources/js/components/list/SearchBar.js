@@ -179,7 +179,6 @@ class SearchBar extends Component {
 										<li className='nav-item'>
 											<div className='nav-link nav-link-monospaced'>
 												<ClayButton
-													borderless
 													className='btn-outline-borderless component-action'
 													displayType='secondary'
 													onClick={
@@ -209,7 +208,6 @@ class SearchBar extends Component {
 										<li className='nav-item'>
 											<div className='nav-link nav-link-monospaced'>
 												<ClayButton
-													borderless
 													className='btn-outline-borderless component-action'
 													displayType='secondary'
 													onClick={

@@ -90,7 +90,6 @@ class ItemDropdown extends Component {
 				<ClayButton
 					aria-expanded='false'
 					aria-haspopup='true'
-					borderless
 					className='btn-outline-borderless component-action dropdown-toggle'
 					data-testid='dropdown-toggle'
 					data-toggle='dropdown'
