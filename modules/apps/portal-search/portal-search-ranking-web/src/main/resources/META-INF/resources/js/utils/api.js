@@ -1,4 +1,5 @@
-import {fetch} from 'frontend-js-web';
+// import {fetch} from 'frontend-js-web';
+
 import Uri from 'metal-uri';
 
 /**
