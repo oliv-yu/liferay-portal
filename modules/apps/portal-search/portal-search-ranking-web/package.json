@@ -15,8 +15,6 @@
 		"react-tabs": "^3.0.0"
 	},
 	"devDependencies": {
-		"@babel/plugin-transform-runtime": "7.4.4",
-		"@babel/preset-react": "^7.0.0",
 		"@storybook/addon-a11y": "^5.0.6",
 		"@storybook/addon-actions": "^5.0.6",
 		"@storybook/addon-knobs": "^5.0.6",
