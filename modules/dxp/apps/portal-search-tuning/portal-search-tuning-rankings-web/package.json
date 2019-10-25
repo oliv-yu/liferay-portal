@@ -10,6 +10,7 @@
 		"@clayui/modal": "3.0.0",
 		"@clayui/multi-select": "3.0.0",
 		"@clayui/pagination-bar": "3.0.0",
+		"@clayui/sticker": "3.0.0",
 		"@clayui/tabs": "3.0.0",
 		"@clayui/tooltip": "3.0.1",
 		"classnames": "2.2.6",
