@@ -12,6 +12,7 @@
 import ClayButton from '@clayui/button';
 import {ClayCheckbox} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import ClaySticker from '@clayui/sticker';
 import getCN from 'classnames';
 import {PropTypes} from 'prop-types';
 import React, {PureComponent} from 'react';
@@ -24,6 +25,8 @@ import DRAG_TYPES from '../../utils/drag-types.es';
 import {sub} from '../../utils/language.es';
 import {isNil} from '../../utils/util.es';
 import ItemDropdown from './ItemDropdown.es';
+
+const DEFAULT_ICON = 'web-content';
 
 const HOVER_TYPES = {
 	BOTTOM: 'bottom',
@@ -63,7 +66,6 @@ function beginDrag({
 	clicks,
 	date,
 	description,
-	extension,
 	hidden,
 	id,
 	index,
@@ -80,7 +82,6 @@ function beginDrag({
 		clicks,
 		date,
 		description,
-		extension,
 		hidden,
 		id,
 		index,
@@ -223,9 +224,9 @@ class Item extends PureComponent {
 		clicks: PropTypes.number,
 		date: PropTypes.string,
 		description: PropTypes.string,
-		extension: PropTypes.string,
 		focus: PropTypes.bool,
 		hidden: PropTypes.bool,
+		icon: PropTypes.string,
 		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 		index: PropTypes.number,
 		initialPinned: PropTypes.number,
@@ -388,9 +389,9 @@ class Item extends PureComponent {
 			connectDropTarget,
 			date,
 			dragging,
-			extension,
 			focus,
 			hidden,
+			icon,
 			id,
 			onClickHide,
 			onClickPin,
@@ -407,20 +408,14 @@ class Item extends PureComponent {
 		const {hoverPosition} = this.state;
 
 		const colorScheme = {
-			doc: 'blue',
-			pdf: 'red',
-			png: 'purple'
+			'document-image': 'purple',
+			'document-pdf': 'red',
+			'document-text': 'blue'
 		};
 
-		const colorSticker = colorScheme[extension]
-			? colorScheme[extension]
-			: 'grey';
+		const colorSticker = colorScheme[icon] ? colorScheme[icon] : 'grey';
 
-		const classSticker = getCN(
-			`icon-${colorSticker}`,
-			'result-icon',
-			'sticker'
-		);
+		const classSticker = getCN(`icon-${colorSticker}`, 'result-icon');
 
 		const listClasses = getCN(
 			ROOT_CLASS,
@@ -472,13 +467,9 @@ class Item extends PureComponent {
 				</div>
 
 				<div className="autofit-col">
-					<span className={classSticker}>
-						{extension ? (
-							extension.toUpperCase()
-						) : (
-							<ClayIcon symbol="web-content" />
-						)}
-					</span>
+					<ClaySticker className={classSticker} displayType="light">
+						<ClayIcon symbol={icon ? icon : DEFAULT_ICON} />
+					</ClaySticker>
 				</div>
 
 				<div className="autofit-col autofit-col-expand">
