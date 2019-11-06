@@ -28,7 +28,7 @@ import Alias from './alias/Alias.es';
 import List from './list/List.es';
 import ClayEmptyState, {DISPLAY_STATES} from './shared/ClayEmptyState.es';
 
-const DELTA = 50;
+const DELTA = 5;
 
 class ErrorBoundary extends Component {
 	state = {
