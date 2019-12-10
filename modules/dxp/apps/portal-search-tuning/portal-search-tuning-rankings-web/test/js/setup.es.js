@@ -14,7 +14,9 @@ const LanguageUtil = require('../../src/main/resources/META-INF/resources/js/uti
 import {FETCH_HIDDEN_DOCUMENTS_URL, getMockResultsData} from './mocks/data.es';
 
 /**
- * Extends the timeout session due to several async callbacks not being invoked
+ * Extends the timeout session to prevent the following error: 'Timeout - Async
+ * callback was not invoked within the 5000ms timeout specified by
+ * jest.setTimeout.Error'
  */
 jest.setTimeout(10000);
 
