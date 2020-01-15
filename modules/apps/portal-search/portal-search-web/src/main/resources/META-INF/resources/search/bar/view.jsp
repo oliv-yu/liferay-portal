@@ -39,6 +39,8 @@ page import="java.util.Map" %>
 
 <liferay-theme:defineObjects />
 
+<portlet:defineObjects />
+
 <%
 SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortletDisplayContext)java.util.Objects.requireNonNull(request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT));
 
@@ -52,6 +54,7 @@ List<SearchBarPortletDisplayContext> entries = new ArrayList<>();
 
 Map<String, Object> contextObjects = new HashMap<String, Object>();
 
+contextObjects.put("namespace", renderResponse.getNamespace());
 contextObjects.put("searchBarPortletDisplayContext", searchBarPortletDisplayContext);
 %>
 
@@ -121,10 +124,10 @@ contextObjects.put("searchBarPortletDisplayContext", searchBarPortletDisplayCont
 					</div>
 				</aui:fieldset>
 			</aui:form>
-		</liferay-ddm:template-renderer>
 
-		<aui:script use="liferay-search-bar">
-			new Liferay.Search.SearchBar(A.one('#<portlet:namespace/>fm'));
-		</aui:script>
+			<aui:script use="liferay-search-bar">
+				new Liferay.Search.SearchBar(A.one('#<portlet:namespace/>fm'));
+			</aui:script>
+		</liferay-ddm:template-renderer>
 	</c:otherwise>
 </c:choose>

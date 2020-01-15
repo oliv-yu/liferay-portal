@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.search.bar.portlet;
 
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -68,6 +69,10 @@ public class SearchBarPortletDisplayContext {
 
 	public String getEverythingSearchScopeParameterString() {
 		return _everythingSearchScopeParameterString;
+	}
+
+	public String getInputPlaceholder() {
+		return LanguageUtil.get(_httpServletRequest, "search-...");
 	}
 
 	public String getKeywords() {
