@@ -67,18 +67,18 @@ contextObjects.put("searchBarPortletDisplayContext", searchBarPortletDisplayCont
 		</div>
 	</c:when>
 	<c:otherwise>
-		<liferay-ddm:template-renderer
-			className="<%= SearchBarPortletDisplayContext.class.getName() %>"
-			contextObjects="<%= contextObjects %>"
-			displayStyle="<%= searchBarPortletInstanceConfiguration.displayStyle() %>"
-			displayStyleGroupId="<%= searchBarPortletDisplayContext.getDisplayStyleGroupId() %>"
-			entries="<%= entries %>"
-		>
-			<aui:form action="<%= searchBarPortletDisplayContext.getSearchURL() %>" method="get" name="fm">
-				<c:if test="<%= !Validator.isBlank(searchBarPortletDisplayContext.getPaginationStartParameterName()) %>">
-					<input class="search-bar-reset-start-page" name="<%= searchBarPortletDisplayContext.getPaginationStartParameterName() %>" type="hidden" value="0" />
-				</c:if>
+		<aui:form action="<%= searchBarPortletDisplayContext.getSearchURL() %>" method="get" name="fm">
+			<c:if test="<%= !Validator.isBlank(searchBarPortletDisplayContext.getPaginationStartParameterName()) %>">
+				<input class="search-bar-reset-start-page" name="<%= searchBarPortletDisplayContext.getPaginationStartParameterName() %>" type="hidden" value="0" />
+			</c:if>
 
+			<liferay-ddm:template-renderer
+				className="<%= SearchBarPortletDisplayContext.class.getName() %>"
+				contextObjects="<%= contextObjects %>"
+				displayStyle="<%= searchBarPortletInstanceConfiguration.displayStyle() %>"
+				displayStyleGroupId="<%= searchBarPortletDisplayContext.getDisplayStyleGroupId() %>"
+				entries="<%= entries %>"
+			>
 				<aui:fieldset cssClass="search-bar">
 					<aui:input cssClass="search-bar-empty-search-input" name="emptySearchEnabled" type="hidden" value="<%= searchBarPortletDisplayContext.isEmptySearchEnabled() %>" />
 
@@ -123,11 +123,11 @@ contextObjects.put("searchBarPortletDisplayContext", searchBarPortletDisplayCont
 						</c:choose>
 					</div>
 				</aui:fieldset>
-			</aui:form>
+			</liferay-ddm:template-renderer>
+		</aui:form>
 
-			<aui:script use="liferay-search-bar">
-				new Liferay.Search.SearchBar(A.one('#<portlet:namespace/>fm'));
-			</aui:script>
-		</liferay-ddm:template-renderer>
+		<aui:script use="liferay-search-bar">
+			new Liferay.Search.SearchBar(A.one('#<portlet:namespace/>fm'));
+		</aui:script>
 	</c:otherwise>
 </c:choose>
