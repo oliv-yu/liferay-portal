@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.portlet.RenderRequest;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -330,8 +332,10 @@ public class FolderSearchFacetDisplayContextTest {
 			String facetParam)
 		throws Exception {
 
+		RenderRequest renderRequest = Mockito.mock(RenderRequest.class);
+
 		FolderSearchFacetDisplayBuilder folderSearchFacetDisplayBuilder =
-			new FolderSearchFacetDisplayBuilder();
+			new FolderSearchFacetDisplayBuilder(renderRequest);
 
 		folderSearchFacetDisplayBuilder.setFacet(_facet);
 		folderSearchFacetDisplayBuilder.setFolderTitleLookup(
