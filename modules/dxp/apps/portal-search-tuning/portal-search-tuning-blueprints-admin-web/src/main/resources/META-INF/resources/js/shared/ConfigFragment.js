@@ -20,6 +20,7 @@ import ClayMultiSelect from '@clayui/multi-select';
 import ClaySlider from '@clayui/slider';
 import ClaySticker from '@clayui/sticker';
 import {ClayTooltipProvider} from '@clayui/tooltip';
+import getCN from 'classnames';
 import {debounce, openSelectionModal} from 'frontend-js-web';
 import moment from 'moment';
 import {PropTypes} from 'prop-types';
@@ -318,7 +319,7 @@ function ConfigFragment({
 	const _hasConfigurationValues =
 		!!uiConfigurationJSON && uiConfigurationJSON.length > 0;
 
-	function _renderInput(config) {
+	const _renderInput = (config) => {
 		const disabled = !fragmentTemplateJSON.enabled;
 
 		switch (config.type) {
@@ -425,33 +426,6 @@ function ConfigFragment({
 						</ClayInput.GroupItem>
 					</ClayInput.Group>
 				);
-			case INPUT_TYPES.SINGLE_FIELD:
-				return (
-					<div className="single-field">
-						{uiConfigurationValues[config.key].map(
-							(item, index) => (
-								<FieldSelectRow
-									config={config}
-									disabled={disabled}
-									index={index}
-									item={item}
-									key={`${config.key}_${index}`}
-									updateValue={(label, value) => {
-										const configValue =
-											uiConfigurationValues[config.key];
-
-										configValue[index] = {
-											...item,
-											[`${label}`]: value,
-										};
-
-										_handleChange(config.key, configValue);
-									}}
-								/>
-							)
-						)}
-					</div>
-				);
 			case INPUT_TYPES.FIELD:
 				return (
 					<div className="field">
@@ -529,45 +503,6 @@ function ConfigFragment({
 						}}
 					/>
 				);
-			case INPUT_TYPES.SINGLE_SELECT:
-				return (
-					<ClaySelect
-						aria-label={config.name}
-						className="form-control-sm"
-						disabled={disabled}
-						id={config.key}
-						onChange={(event) => {
-							const value =
-								typeof config.typeOptions[0].value ==
-									'boolean' ||
-								typeof config.typeOptions[0].value == 'number'
-									? JSON.parse(event.target.value)
-									: event.target.value;
-
-							_handleChange(config.key, value);
-						}}
-						value={uiConfigurationValues[`${config.key}`]}
-					>
-						{config.typeOptions &&
-							config.typeOptions.map((item) => (
-								<ClaySelect.Option
-									key={item.value}
-									label={item.label}
-									value={item.value}
-								/>
-							))}
-					</ClaySelect>
-				);
-			case INPUT_TYPES.SLIDER:
-				return (
-					<Slider
-						disabled={disabled}
-						keyword={config.key}
-						name={config.name}
-						onChange={_handleChange}
-						value={uiConfigurationValues[`${config.key}`]}
-					/>
-				);
 			case INPUT_TYPES.MULTISELECT:
 				return (
 					<MultiSelect
@@ -617,6 +552,72 @@ function ConfigFragment({
 						)}
 					</ClayInput.Group>
 				);
+			case INPUT_TYPES.SINGLE_FIELD:
+				return (
+					<div className="single-field">
+						{uiConfigurationValues[config.key].map(
+							(item, index) => (
+								<FieldSelectRow
+									config={config}
+									disabled={disabled}
+									index={index}
+									item={item}
+									key={`${config.key}_${index}`}
+									updateValue={(label, value) => {
+										const configValue =
+											uiConfigurationValues[config.key];
+
+										configValue[index] = {
+											...item,
+											[`${label}`]: value,
+										};
+
+										_handleChange(config.key, configValue);
+									}}
+								/>
+							)
+						)}
+					</div>
+				);
+			case INPUT_TYPES.SINGLE_SELECT:
+				return (
+					<ClaySelect
+						aria-label={config.name}
+						className="form-control-sm"
+						disabled={disabled}
+						id={config.key}
+						onChange={(event) => {
+							const value =
+								typeof config.typeOptions[0].value ==
+									'boolean' ||
+								typeof config.typeOptions[0].value == 'number'
+									? JSON.parse(event.target.value)
+									: event.target.value;
+
+							_handleChange(config.key, value);
+						}}
+						value={uiConfigurationValues[`${config.key}`]}
+					>
+						{config.typeOptions &&
+							config.typeOptions.map((item) => (
+								<ClaySelect.Option
+									key={item.value}
+									label={item.label}
+									value={item.value}
+								/>
+							))}
+					</ClaySelect>
+				);
+			case INPUT_TYPES.SLIDER:
+				return (
+					<Slider
+						disabled={disabled}
+						keyword={config.key}
+						name={config.name}
+						onChange={_handleChange}
+						value={uiConfigurationValues[`${config.key}`]}
+					/>
+				);
 			default:
 				return (
 					<ClayInput.Group small>
@@ -638,13 +639,13 @@ function ConfigFragment({
 					</ClayInput.Group>
 				);
 		}
-	}
+	};
 
 	return (
 		<div
-			className={`configuration-fragment-sheet sheet ${
-				!fragmentTemplateJSON.enabled ? `disabled` : `enabled`
-			}`}
+			className={getCN('configuration-fragment-sheet', 'sheet', {
+				disabled: !fragmentTemplateJSON.enabled,
+			})}
 		>
 			<ClayList className="configuration-header-list">
 				<ClayList.Item flex>

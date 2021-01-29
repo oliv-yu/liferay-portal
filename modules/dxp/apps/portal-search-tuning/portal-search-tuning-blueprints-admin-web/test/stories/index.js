@@ -37,7 +37,12 @@ import {
 	DEFAULT_FRAMEWORK_CONFIGURATION,
 } from '../../src/main/resources/META-INF/resources/js/utils/data';
 import AddBlueprintModal from '../../src/main/resources/META-INF/resources/js/view_blueprints/AddBlueprintModal';
-import {SELECTED_FRAGMENTS} from '../js/mocks/data';
+import {
+	ENTITY_JSON,
+	INDEX_FIELDS,
+	SEARCHABLE_ASSET_TYPES,
+	SELECTED_FRAGMENTS,
+} from '../js/mocks/data';
 
 const {addDecorator, storiesOf} = StorybookReact;
 const {action} = StorybookAddonActions;
@@ -58,60 +63,6 @@ const CONTEXT = {
 		'_com_liferay_portal_search_tuning_gsearch_configuration_web_internal_portlet_SearchConfigurationAdminPortlet_',
 	spritemap: STORYBOOK_CONSTANTS.SPRITEMAP_PATH,
 };
-
-const ENTITY_JSON = {
-	'com.liferay.asset.kernel.model.AssetTag': {
-		multiple: false,
-		title: 'Select Tag',
-		url: 'http:…',
-	},
-	'com.liferay.portal.kernel.model.Group': {
-		multiple: false,
-		title: 'Select Site',
-		url: 'http:…',
-	},
-	'com.liferay.portal.kernel.model.Organization': {
-		multiple: true,
-		title: 'Select Organization',
-		url: 'http:/…',
-	},
-	'com.liferay.portal.kernel.model.Role': {
-		multiple: false,
-		title: 'Select Role',
-		url: 'http:…',
-	},
-	'com.liferay.portal.kernel.model.Team': {
-		multiple: false,
-		title: 'Select Team',
-		url: 'http:…',
-	},
-	'com.liferay.portal.kernel.model.User': {
-		multiple: true,
-		title: 'Select User',
-		url: 'http:/…',
-	},
-	'com.liferay.portal.kernel.model.UserGroup': {
-		multiple: false,
-		title: 'Select User Group',
-		url: 'http:…',
-	},
-};
-
-const SEARCHABLE_ASSET_TYPES = [
-	'com.liferay.wiki.model.WikiPage',
-	'com.liferay.commerce.product.model.CPDefinition',
-	'com.liferay.document.library.kernel.model.DLFileEntry',
-	'com.liferay.bookmarks.model.BookmarksFolder',
-	'com.liferay.blogs.model.BlogsEntry',
-	'com.liferay.document.library.kernel.model.DLFolder',
-	'com.liferay.dynamic.data.lists.model.DDLRecord',
-	'com.liferay.bookmarks.model.BookmarksEntry',
-	'com.liferay.journal.model.JournalArticle',
-	'com.liferay.journal.model.JournalFolder',
-	'com.liferay.message.boards.model.MBMessage',
-	'com.liferay.calendar.model.CalendarBooking',
-	'com.liferay.knowledge.base.model.KBArticle',
-];
 
 addDecorator(withKnobs);
 
@@ -141,24 +92,29 @@ const withContainer = (storyFn) => (
 	</ClayLayout.ContainerFluid>
 );
 
+const BLUEPRINT_FORM_PROPS = {
+	blueprintId: '1',
+	blueprintType: 0,
+	entityJSON: ENTITY_JSON,
+	indexFields: INDEX_FIELDS,
+	initialDescription: {},
+	initialTitle: {
+		'en-US': 'Test Title',
+	},
+	redirectURL: '',
+	searchableAssetTypes: SEARCHABLE_ASSET_TYPES,
+	submitFormURL: '',
+};
+
 storiesOf('Pages|BlueprintForm', module)
 	.add('default', () => (
 		<BlueprintForm
 			context={CONTEXT}
 			props={{
-				blueprintId: '1',
-				blueprintType: 0,
-				entityJSON: ENTITY_JSON,
-				initialDescription: {},
+				...BLUEPRINT_FORM_PROPS,
 				initialSelectedFragmentsString: JSON.stringify({
 					query_configuration: SELECTED_FRAGMENTS,
 				}),
-				initialTitle: {
-					'en-US': 'Test Title',
-				},
-				redirectURL: '',
-				searchableAssetTypes: SEARCHABLE_ASSET_TYPES,
-				submitFormURL: '',
 			}}
 		/>
 	))
@@ -166,19 +122,10 @@ storiesOf('Pages|BlueprintForm', module)
 		<BlueprintForm
 			context={CONTEXT}
 			props={{
-				blueprintId: '1',
-				blueprintType: 0,
-				entityJSON: ENTITY_JSON,
-				initialDescription: {},
+				...BLUEPRINT_FORM_PROPS,
 				initialSelectedFragmentsString: JSON.stringify({
 					query_configuration: [],
 				}),
-				initialTitle: {
-					'en-US': 'Test Title',
-				},
-				redirectURL: '',
-				searchableAssetTypes: SEARCHABLE_ASSET_TYPES,
-				submitFormURL: '',
 			}}
 		/>
 	))
@@ -186,16 +133,7 @@ storiesOf('Pages|BlueprintForm', module)
 		<BlueprintForm
 			context={CONTEXT}
 			props={{
-				blueprintId: '0',
-				blueprintType: 0,
-				entityJSON: ENTITY_JSON,
-				initialDescription: {},
-				initialTitle: {
-					'en-US': 'Test Title',
-				},
-				redirectURL: '',
-				searchableAssetTypes: SEARCHABLE_ASSET_TYPES,
-				submitFormURL: '',
+				...BLUEPRINT_FORM_PROPS,
 			}}
 		/>
 	));
