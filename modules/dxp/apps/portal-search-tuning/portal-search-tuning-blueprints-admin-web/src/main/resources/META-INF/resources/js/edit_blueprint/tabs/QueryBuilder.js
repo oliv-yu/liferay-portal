@@ -21,9 +21,9 @@ import {ClayTooltipProvider} from '@clayui/tooltip';
 import {PropTypes} from 'prop-types';
 import React, {useContext, useState} from 'react';
 
-import ConfigFragment from '../../shared/ConfigFragment';
 import JSONFragment from '../../shared/JSONFragment';
 import ThemeContext from '../../shared/ThemeContext';
+import Element from '../../shared/element/index';
 import SelectAssetTypes from './SelectAssetTypes';
 
 const FrameworkListItem = ({
@@ -94,7 +94,7 @@ function QueryBuilder({
 
 				{selectedFragments.map((fragment) => {
 					return fragment.uiConfigurationJSON ? (
-						<ConfigFragment
+						<Element
 							collapseAll={collapseAll}
 							deleteFragment={() => deleteFragment(fragment.id)}
 							entityJSON={entityJSON}

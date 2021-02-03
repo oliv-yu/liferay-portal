@@ -29,11 +29,11 @@ import React, {
 } from 'react';
 
 import CodeMirrorEditor from '../shared/CodeMirrorEditor';
-import ConfigFragment from '../shared/ConfigFragment';
 import ErrorBoundary from '../shared/ErrorBoundary';
 import PreviewModal from '../shared/PreviewModal';
 import SearchInput from '../shared/SearchInput';
 import ThemeContext from '../shared/ThemeContext';
+import Element from '../shared/element';
 import {
 	getUIConfigurationValues,
 	isNotEmpty,
@@ -158,7 +158,7 @@ function EditFragmentForm({
 		return (
 			<div className="portlet-blueprints-admin">
 				<ErrorBoundary>
-					<ConfigFragment
+					<Element
 						collapseAll={false}
 						fragmentOutput={replaceUIConfigurationValues(
 							previewUIConfigurationJSON,

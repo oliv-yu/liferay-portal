@@ -27,11 +27,11 @@ import Sidebar from '../../src/main/resources/META-INF/resources/js/edit_bluepri
 import QueryBuilder from '../../src/main/resources/META-INF/resources/js/edit_blueprint/tabs/QueryBuilder';
 import SelectAssetTypes from '../../src/main/resources/META-INF/resources/js/edit_blueprint/tabs/SelectAssetTypes';
 import FragmentForm from '../../src/main/resources/META-INF/resources/js/edit_fragment';
-import ConfigFragment from '../../src/main/resources/META-INF/resources/js/shared/ConfigFragment';
 import ErrorBoundary from '../../src/main/resources/META-INF/resources/js/shared/ErrorBoundary';
 import JSONFragment from '../../src/main/resources/META-INF/resources/js/shared/JSONFragment';
 import PageToolbar from '../../src/main/resources/META-INF/resources/js/shared/PageToolbar';
 import SearchInput from '../../src/main/resources/META-INF/resources/js/shared/SearchInput';
+import Element from '../../src/main/resources/META-INF/resources/js/shared/element';
 import {
 	DEFAULT_EDIT_FRAGMENT,
 	DEFAULT_FRAMEWORK_CONFIGURATION,
@@ -196,12 +196,12 @@ storiesOf('Components|AddBlueprintModal', module)
 		/>
 	));
 
-storiesOf('Components|ConfigFragment', module)
+storiesOf('Components|Element', module)
 	.addDecorator(withBlueprintsClass)
 	.addDecorator(withBuilderClass)
 	.addDecorator(withContainer)
-	.add('ConfigFragment', () => (
-		<ConfigFragment
+	.add('Element', () => (
+		<Element
 			deleteFragment={action('deleteFragment')}
 			fragmentTemplateJSON={SELECTED_FRAGMENTS[0].fragmentTemplateJSON}
 			uiConfigurationJSON={SELECTED_FRAGMENTS[0].uiConfigurationJSON}

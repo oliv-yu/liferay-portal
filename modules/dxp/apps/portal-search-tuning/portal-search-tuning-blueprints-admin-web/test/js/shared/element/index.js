@@ -12,13 +12,13 @@
 import {fireEvent, render, waitForElement} from '@testing-library/react';
 import React from 'react';
 
-import ConfigFragment from '../../../src/main/resources/META-INF/resources/js/shared/ConfigFragment';
-import {SELECTED_FRAGMENTS} from '../mocks/data';
+import Element from '../../../../src/main/resources/META-INF/resources/js/shared/element';
+import {SELECTED_FRAGMENTS} from '../../mocks/data';
 
 import '@testing-library/jest-dom/extend-expect';
 
 jest.mock(
-	'../../../src/main/resources/META-INF/resources/js/shared/CodeMirrorEditor',
+	'../../../../src/main/resources/META-INF/resources/js/shared/CodeMirrorEditor',
 	() => ({onChange, value}) => (
 		<textarea aria-label="text-area" onChange={onChange} value={value} />
 	)
@@ -29,7 +29,7 @@ const updateFragment = jest.fn();
 
 function renderFragment(props) {
 	return render(
-		<ConfigFragment
+		<Element
 			collapseAll={false}
 			deleteFragment={deleteFragment}
 			fragmentTemplateJSON={SELECTED_FRAGMENTS[0].fragmentTemplateJSON}
@@ -41,7 +41,7 @@ function renderFragment(props) {
 	);
 }
 
-describe('ConfigFragment', () => {
+describe('Element', () => {
 	it('renders the fragment', () => {
 		const {container} = renderFragment();
 
