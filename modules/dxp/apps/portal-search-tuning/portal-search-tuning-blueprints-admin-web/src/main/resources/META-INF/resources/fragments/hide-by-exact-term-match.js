@@ -54,7 +54,7 @@ export default {
 			],
 			key: 'field',
 			name: 'Field',
-			type: 'single-field',
+			type: 'field',
 			typeOptions: [
 				{
 					label: 'Entry Class PK',

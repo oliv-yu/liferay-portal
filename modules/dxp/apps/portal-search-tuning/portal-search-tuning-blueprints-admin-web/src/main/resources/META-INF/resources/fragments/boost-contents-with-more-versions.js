@@ -59,7 +59,7 @@ export default {
 			defaultValue: 'sqrt',
 			key: 'modifier',
 			name: 'Modifier',
-			type: 'single-select',
+			type: 'select',
 			typeOptions: [
 				{
 					label: 'None',

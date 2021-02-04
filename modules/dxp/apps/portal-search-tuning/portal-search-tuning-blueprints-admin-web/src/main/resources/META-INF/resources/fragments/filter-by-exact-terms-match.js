@@ -47,7 +47,7 @@ export default {
 			],
 			key: 'field',
 			name: 'Field',
-			type: 'single-field',
+			type: 'field',
 		},
 		{
 			defaultValue: [],

@@ -82,7 +82,7 @@ export default {
 			defaultValue: 'or',
 			key: 'operator',
 			name: 'Operator',
-			type: 'single-select',
+			type: 'select',
 			typeOptions: [
 				{
 					label: 'OR',
@@ -98,7 +98,7 @@ export default {
 			defaultValue: 'best_fields',
 			key: 'type',
 			name: 'Match Type',
-			type: 'single-select',
+			type: 'select',
 			typeOptions: [
 				{
 					label: 'Best Fields',
@@ -129,7 +129,7 @@ export default {
 		{
 			key: 'fuzziness',
 			name: 'Fuzziness',
-			type: 'single-select',
+			type: 'select',
 			typeOptions: [
 				{
 					label: 'Auto',

@@ -192,7 +192,7 @@ export const toNumber = (str) => {
  * getDefaultValue({
  *  	key: 'config.lfr.enabled',
  *  	name: 'Enabled',
- *  	type: 'single-select',
+ *  	type: 'select',
  *  	typeOptions: [
  *  		{
  *  			label: 'True',
@@ -213,7 +213,7 @@ export const getDefaultValue = (item) => {
 	const itemValue = item.defaultValue;
 
 	switch (item.type) {
-		case INPUT_TYPES.SINGLE_SELECT:
+		case INPUT_TYPES.SELECT:
 			return isNotEmpty(itemValue)
 				? itemValue
 				: item.typeOptions && item.typeOptions[0].value
@@ -245,7 +245,7 @@ export const getDefaultValue = (item) => {
 			return isNotEmpty(itemValue) && typeof itemValue == 'number'
 				? itemValue
 				: '';
-		case INPUT_TYPES.FIELD:
+		case INPUT_TYPES.FIELD_LIST:
 			return isNotEmpty(itemValue) &&
 				itemValue.every(
 					(item) =>
@@ -254,7 +254,7 @@ export const getDefaultValue = (item) => {
 				)
 				? itemValue
 				: [];
-		case INPUT_TYPES.SINGLE_FIELD:
+		case INPUT_TYPES.FIELD:
 			return isNotEmpty(itemValue) &&
 				itemValue.every(
 					(item) =>
@@ -338,7 +338,7 @@ export const replaceUIConfigurationValues = (
 			}
 			else if (
 				config.type === INPUT_TYPES.FIELD ||
-				config.type === INPUT_TYPES.SINGLE_FIELD
+				config.type === INPUT_TYPES.FIELD_LIST
 			) {
 				const fields = uiConfigurationValues[config.key].map(
 					(item) =>
@@ -354,7 +354,7 @@ export const replaceUIConfigurationValues = (
 				);
 
 				configValue =
-					config.type === INPUT_TYPES.FIELD
+					config.type === INPUT_TYPES.FIELD_LIST
 						? JSON.stringify(fields)
 						: fields[0];
 			}
@@ -410,7 +410,7 @@ export const replaceUIConfigurationValues = (
 				typeof configValue === 'number' ||
 				typeof configValue === 'boolean' ||
 				config.type === INPUT_TYPES.ENTITY ||
-				config.type === INPUT_TYPES.FIELD ||
+				config.type === INPUT_TYPES.FIELD_LIST ||
 				config.type === INPUT_TYPES.JSON ||
 				config.type === INPUT_TYPES.MULTISELECT
 			) {
@@ -500,7 +500,7 @@ export const validateUIConfigurationJSON = (uiConfigurationJSON) => {
 				ENTITY_KEYS.includes(item.className)
 			);
 		}
-		else if (item.type === INPUT_TYPES.SINGLE_SELECT) {
+		else if (item.type === INPUT_TYPES.SELECT) {
 			return (
 				isNotAllEmpty([item.key, item.name, item.typeOptions]) &&
 				item.typeOptions.length > 0 &&

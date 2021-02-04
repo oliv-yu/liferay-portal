@@ -57,7 +57,7 @@ export default {
 		{
 			key: 'time_of_day',
 			name: 'Time of Day',
-			type: 'single-select',
+			type: 'select',
 			typeOptions: [
 				{
 					label: 'Morning (4am - 12am)',

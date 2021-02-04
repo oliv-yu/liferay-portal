@@ -81,7 +81,7 @@ export default {
 			defaultValue: 'best_fields',
 			key: 'type',
 			name: 'Match Type',
-			type: 'single-select',
+			type: 'select',
 			typeOptions: [
 				{
 					label: 'Best Fields',

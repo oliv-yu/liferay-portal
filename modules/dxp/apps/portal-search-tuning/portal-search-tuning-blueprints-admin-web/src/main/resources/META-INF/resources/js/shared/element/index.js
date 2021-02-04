@@ -109,7 +109,7 @@ function Element({
 						value={uiConfigurationValues[config.key]}
 					/>
 				);
-			case INPUT_TYPES.FIELD:
+			case INPUT_TYPES.FIELD_LIST:
 				return (
 					<FieldListInput
 						boost={config.boost}
@@ -150,7 +150,7 @@ function Element({
 						value={uiConfigurationValues[config.key]}
 					/>
 				);
-			case INPUT_TYPES.SINGLE_FIELD:
+			case INPUT_TYPES.FIELD:
 				return (
 					<FieldInput
 						boost={config.boost}
@@ -160,7 +160,7 @@ function Element({
 						value={uiConfigurationValues[config.key]}
 					/>
 				);
-			case INPUT_TYPES.SINGLE_SELECT:
+			case INPUT_TYPES.SELECT:
 				return (
 					<SelectInput
 						configKey={config.key}

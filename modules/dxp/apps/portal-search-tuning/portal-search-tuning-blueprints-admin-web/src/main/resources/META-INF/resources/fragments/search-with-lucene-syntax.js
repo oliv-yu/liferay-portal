@@ -79,7 +79,7 @@ export default {
 		{
 			key: 'operator',
 			name: 'Operator',
-			type: 'single-select',
+			type: 'select',
 			typeOptions: [
 				{
 					label: 'OR',
