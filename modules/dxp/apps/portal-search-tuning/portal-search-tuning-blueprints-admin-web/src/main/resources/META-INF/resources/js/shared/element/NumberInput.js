@@ -10,6 +10,7 @@
  */
 
 import {ClayInput} from '@clayui/form';
+import getCN from 'classnames';
 import React from 'react';
 
 import {toNumber} from '../../utils/utils';
@@ -18,11 +19,10 @@ function NumberInput({configKey, disabled, name, onChange, unit, value}) {
 	return (
 		<ClayInput.Group small>
 			<ClayInput.GroupItem
-				className={`${
-					unit || (configKey && configKey.includes('id'))
-						? 'arrowless-input'
-						: ''
-				}`}
+				className={getCN({
+					'arrowless-input':
+						unit || (configKey && configKey.includes('id')),
+				})}
 				prepend
 			>
 				<ClayInput
@@ -40,7 +40,7 @@ function NumberInput({configKey, disabled, name, onChange, unit, value}) {
 			{unit && (
 				<ClayInput.GroupItem append shrink>
 					<ClayInput.GroupText
-						className={disabled ? 'secondary' : ''}
+						className={getCN({secondary: disabled})}
 					>
 						{unit}
 					</ClayInput.GroupText>

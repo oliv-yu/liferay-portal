@@ -94,7 +94,7 @@ function FieldRow({
 							<ClaySelect.Option
 								key={`${index}-${locale}`}
 								label={availableLanguages[locale]}
-								value={`${locale}`}
+								value={locale}
 							/>
 						))}
 					</ClaySelect>
