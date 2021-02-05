@@ -203,6 +203,12 @@ function Element({
 		>
 			<ClayList className="configuration-header-list">
 				<ClayList.Item flex>
+					<ClayList.ItemField>
+						<ClaySticker size="md">
+							<ClayIcon symbol={fragmentTemplateJSON.icon} />
+						</ClaySticker>
+					</ClayList.ItemField>
+
 					<ClayList.ItemField expand>
 						{fragmentTemplateJSON.title && (
 							<ClayList.ItemTitle>

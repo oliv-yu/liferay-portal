@@ -8,6 +8,10 @@
 		label {
 			color: $secondaryL1;
 		}
+
+		.configuration-header-list .sticker {
+			color: $mainLighten52;
+		}
 	}
 
 	&:hover {
@@ -41,6 +45,11 @@
 
 		.list-group-title {
 			font-size: 1rem;
+		}
+
+		.sticker {
+			background-color: $lightBackground;
+			color: $mainLighten28;
 		}
 	}
 
