@@ -46,12 +46,10 @@ export default {
 	},
 	uiConfigurationJSON: [
 		{
-			defaultValue: [
-				{
-					field: '',
-					locale: '',
-				},
-			],
+			defaultValue: {
+				field: '',
+				locale: '',
+			},
 			key: 'field',
 			name: 'Field',
 			type: 'field',

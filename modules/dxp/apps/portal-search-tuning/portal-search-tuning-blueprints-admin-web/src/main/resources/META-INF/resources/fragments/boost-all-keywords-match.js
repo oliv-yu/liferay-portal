@@ -57,7 +57,7 @@ export default {
 			],
 			key: 'fields',
 			name: 'Field',
-			type: 'field',
+			type: 'field-list',
 			typeOptions: [
 				{
 					label: 'Title',

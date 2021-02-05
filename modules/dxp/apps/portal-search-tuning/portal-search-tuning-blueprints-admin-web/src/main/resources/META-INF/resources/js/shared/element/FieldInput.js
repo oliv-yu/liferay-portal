@@ -16,24 +16,20 @@ import FieldRow from './FieldRow';
 function FieldInput({boost, configKey, disabled, onChange, value}) {
 	return (
 		<div className="single-field">
-			{value.map((item, index) => (
-				<FieldRow
-					boost={boost}
-					configKey={configKey}
-					disabled={disabled}
-					index={index}
-					item={item}
-					key={`${configKey}_${index}`}
-					onChange={(label, newValue) => {
-						value[index] = {
-							...item,
-							[`${label}`]: newValue,
-						};
-
-						onChange(configKey, value);
-					}}
-				/>
-			))}
+			<FieldRow
+				boost={boost}
+				configKey={configKey}
+				disabled={disabled}
+				index={configKey}
+				item={value}
+				key={configKey}
+				onChange={(label, newValue) => {
+					onChange(configKey, {
+						...value,
+						[label]: newValue,
+					});
+				}}
+			/>
 		</div>
 	);
 }

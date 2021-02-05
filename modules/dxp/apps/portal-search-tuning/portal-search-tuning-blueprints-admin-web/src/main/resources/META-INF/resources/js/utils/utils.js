@@ -256,18 +256,13 @@ export const getDefaultValue = (item) => {
 				: [];
 		case INPUT_TYPES.FIELD:
 			return isNotEmpty(itemValue) &&
-				itemValue.every(
-					(item) =>
-						isNotNullOrUndefined(item.field) &&
-						isNotNullOrUndefined(item.locale)
-				)
+				isNotNullOrUndefined(itemValue.field) &&
+				isNotNullOrUndefined(itemValue.locale)
 				? itemValue
-				: [
-						{
-							field: '',
-							locale: '',
-						},
-				  ];
+				: {
+						field: '',
+						locale: '',
+				  };
 		case INPUT_TYPES.JSON:
 			return isNotEmpty(itemValue) ? itemValue : {};
 		default:
@@ -336,10 +331,18 @@ export const replaceUIConfigurationValues = (
 					uiConfigurationValues[config.key].map((item) => item.id)
 				);
 			}
-			else if (
-				config.type === INPUT_TYPES.FIELD ||
-				config.type === INPUT_TYPES.FIELD_LIST
-			) {
+			else if (config.type === INPUT_TYPES.FIELD) {
+				configValue = `${configValue.field}${
+					configValue.locale == '' || configValue.locale.includes('$')
+						? configValue.locale
+						: '_' + configValue.locale
+				}${
+					configValue.boost && JSON.parse(configValue.boost) > 1
+						? '^' + configValue.boost
+						: ''
+				}`;
+			}
+			else if (config.type === INPUT_TYPES.FIELD_LIST) {
 				const fields = uiConfigurationValues[config.key].map(
 					(item) =>
 						`${item.field}${
@@ -353,10 +356,7 @@ export const replaceUIConfigurationValues = (
 						}`
 				);
 
-				configValue =
-					config.type === INPUT_TYPES.FIELD_LIST
-						? JSON.stringify(fields)
-						: fields[0];
+				configValue = JSON.stringify(fields);
 			}
 			else if (config.type === INPUT_TYPES.NUMBER) {
 				const oldConfigValue = uiConfigurationValues[config.key];
