@@ -55,7 +55,7 @@ export default {
 				},
 			],
 			key: 'fields',
-			name: 'Fields',
+			label: 'Fields',
 			type: 'field-list',
 			typeOptions: [
 				{
@@ -78,7 +78,7 @@ export default {
 		},
 		{
 			key: 'operator',
-			name: 'Operator',
+			label: 'Operator',
 			type: 'select',
 			typeOptions: [
 				{
@@ -94,7 +94,7 @@ export default {
 		{
 			defaultValue: 1,
 			key: 'boost',
-			name: 'Boost',
+			label: 'Boost',
 			type: 'slider',
 		},
 	],

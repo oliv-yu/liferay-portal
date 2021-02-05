@@ -51,7 +51,7 @@ export default {
 				locale: '',
 			},
 			key: 'field',
-			name: 'Field',
+			label: 'Field',
 			type: 'field',
 			typeOptions: [
 				{
@@ -78,7 +78,7 @@ export default {
 		},
 		{
 			key: 'value',
-			name: 'Value',
+			label: 'Value',
 			type: 'text',
 		},
 	],

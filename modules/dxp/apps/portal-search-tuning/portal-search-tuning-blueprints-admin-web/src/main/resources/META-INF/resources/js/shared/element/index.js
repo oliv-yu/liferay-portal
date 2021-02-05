@@ -92,7 +92,7 @@ function Element({
 				return (
 					<DateInput
 						configKey={config.key}
-						name={config.name}
+						disabled={disabled}
 						onChange={_handleChange}
 						value={uiConfigurationValues[config.key]}
 					/>
@@ -104,7 +104,7 @@ function Element({
 						configKey={config.key}
 						disabled={disabled}
 						entityJSON={entityJSON}
-						name={config.name}
+						label={config.label}
 						onChange={_handleChange}
 						value={uiConfigurationValues[config.key]}
 					/>
@@ -134,7 +134,6 @@ function Element({
 					<MultiSelectInput
 						configKey={config.key}
 						disabled={disabled}
-						name={config.name}
 						onChange={_handleChange}
 						value={uiConfigurationValues[config.key]}
 					/>
@@ -144,7 +143,7 @@ function Element({
 					<NumberInput
 						configKey={config.key}
 						disabled={disabled}
-						name={config.name}
+						label={config.label}
 						onChange={_handleChange}
 						unit={config.unit}
 						value={uiConfigurationValues[config.key]}
@@ -165,7 +164,7 @@ function Element({
 					<SelectInput
 						configKey={config.key}
 						disabled={disabled}
-						name={config.name}
+						label={config.label}
 						onChange={_handleChange}
 						typeOptions={config.typeOptions}
 						value={uiConfigurationValues[config.key]}
@@ -176,7 +175,7 @@ function Element({
 					<SliderInput
 						disabled={disabled}
 						keyword={config.key}
-						name={config.name}
+						label={config.label}
 						onChange={_handleChange}
 						value={uiConfigurationValues[config.key]}
 					/>
@@ -187,7 +186,7 @@ function Element({
 						configKey={config.key}
 						disabled={disabled}
 						id={config.key}
-						label={config.name}
+						label={config.label}
 						onChange={_handleChange}
 						value={uiConfigurationValues[config.key]}
 					/>
@@ -343,7 +342,7 @@ function Element({
 									{config.type !== INPUT_TYPES.JSON && (
 										<ClayList.ItemField className="list-item-label">
 											<label htmlFor={config.key}>
-												{config.name}
+												{config.label}
 
 												{config.helpText && (
 													<ClayTooltipProvider>

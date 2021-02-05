@@ -20,12 +20,12 @@ function EntityInput({
 	configKey,
 	disabled,
 	entityJSON,
-	name,
+	label,
 	onChange,
 	value,
 }) {
 	const _handleMultipleEntitySelect = (key, className) => {
-		if (entityJSON[`${className}`].multiple) {
+		if (entityJSON[className].multiple) {
 			openSelectionModal({
 				buttonAddLabel: Liferay.Language.get('select'),
 				multiple: true,
@@ -35,8 +35,8 @@ function EntityInput({
 					}
 				},
 				selectEventName: 'selectEntity',
-				title: entityJSON[`${className}`].title,
-				url: entityJSON[`${className}`].url,
+				title: entityJSON[className].title,
+				url: entityJSON[className].url,
 			});
 		}
 		else {
@@ -45,14 +45,14 @@ function EntityInput({
 				onSelect: (event) => {
 					onChange(key, [
 						{
-							id: event.entityid,
-							name: event.entityname,
+							label: event.entityname,
+							value: event.entityid,
 						},
 					]);
 				},
 				selectEventName: 'selectEntity',
-				title: entityJSON[`${className}`].title,
-				url: entityJSON[`${className}`].url,
+				title: entityJSON[className].title,
+				url: entityJSON[className].url,
 			});
 		}
 	};
@@ -61,14 +61,14 @@ function EntityInput({
 		<ClayInput.Group small>
 			<ClayInput.GroupItem>
 				<ClayInput
-					aria-label={name}
+					aria-label={label}
 					disabled={disabled}
 					id={configKey}
 					readOnly
 					type="text"
 					value={
 						value.length > 0
-							? value.map((item) => item.name).join(', ')
+							? value.map((item) => item.label).join(', ')
 							: ''
 					}
 				/>

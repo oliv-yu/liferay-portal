@@ -231,7 +231,7 @@ export const getDefaultValue = (item) => {
 			return isNotEmpty(itemValue) &&
 				itemValue.length > 0 &&
 				itemValue.every(
-					(item) => isNotEmpty(item.id) && isNotEmpty(item.name)
+					(item) => isNotEmpty(item.value) && isNotEmpty(item.label)
 				)
 				? itemValue
 				: [];
@@ -472,7 +472,7 @@ const ENTITY_KEYS = [
  * Examples:
  * validateUIConfigurationJSON({
  *  	defaultValue: 10,
- *  	name: 'Title Boost',
+ *  	label: 'Title Boost',
  *  	type: 'slider'
  *  })
  * => false
@@ -480,7 +480,7 @@ const ENTITY_KEYS = [
  * validateUIConfigurationJSON({
  *  	defaultValue: 3,
  *  	key: 'context.timespan',
- *  	name: 'Time Span',
+ *  	label: 'Time Span',
  *  	type: 'number',
  *  	unit: 'days'
  *  }
@@ -496,13 +496,13 @@ export const validateUIConfigurationJSON = (uiConfigurationJSON) => {
 		}
 		else if (item.type === INPUT_TYPES.ENTITY) {
 			return (
-				isNotAllEmpty([item.key, item.name, item.className]) &&
+				isNotAllEmpty([item.key, item.label, item.className]) &&
 				ENTITY_KEYS.includes(item.className)
 			);
 		}
 		else if (item.type === INPUT_TYPES.SELECT) {
 			return (
-				isNotAllEmpty([item.key, item.name, item.typeOptions]) &&
+				isNotAllEmpty([item.key, item.label, item.typeOptions]) &&
 				item.typeOptions.length > 0 &&
 				item.typeOptions.every(
 					(option) =>
@@ -512,7 +512,7 @@ export const validateUIConfigurationJSON = (uiConfigurationJSON) => {
 			);
 		}
 		else {
-			return isNotAllEmpty([item.type, item.key, item.name]);
+			return isNotAllEmpty([item.type, item.key, item.label]);
 		}
 	});
 };

@@ -36,7 +36,7 @@ export default {
 		{
 			defaultValue: 'must',
 			key: 'occur',
-			name: 'Occur',
+			label: 'Occur',
 			type: 'select',
 			typeOptions: [
 				{

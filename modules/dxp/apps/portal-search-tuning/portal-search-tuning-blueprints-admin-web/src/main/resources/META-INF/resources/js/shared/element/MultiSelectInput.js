@@ -12,13 +12,12 @@
 import ClayMultiSelect from '@clayui/multi-select';
 import React, {useState} from 'react';
 
-function MultiSelectInput({configKey, disabled, name, onChange, value}) {
+function MultiSelectInput({configKey, disabled, onChange, value}) {
 	const [inputValue, setInputValue] = useState('');
 
 	return (
 		<ClayMultiSelect
 			disabled={disabled}
-			inputName={name}
 			inputValue={inputValue}
 			items={value}
 			onChange={setInputValue}
