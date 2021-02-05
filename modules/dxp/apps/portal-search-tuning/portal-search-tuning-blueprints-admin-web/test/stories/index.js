@@ -203,7 +203,7 @@ storiesOf('Components|Element', module)
 	.add('Element', () => (
 		<Element
 			deleteFragment={action('deleteFragment')}
-			fragmentTemplateJSON={SELECTED_FRAGMENTS[0].fragmentTemplateJSON}
+			elementTemplateJSON={SELECTED_FRAGMENTS[0].elementTemplateJSON}
 			uiConfigurationJSON={SELECTED_FRAGMENTS[0].uiConfigurationJSON}
 			uiConfigurationValues={SELECTED_FRAGMENTS[0].uiConfigurationValues}
 			updateFragment={action('updateFragment')}
@@ -217,11 +217,11 @@ storiesOf('Components|Fragment', module)
 	.add('JSONFragment', () => (
 		<JSONFragment
 			deleteFragment={action('deleteFragment')}
-			description={SELECTED_FRAGMENTS[0].fragmentTemplateJSON.description}
+			description={SELECTED_FRAGMENTS[0].elementTemplateJSON.description}
 			disabled={false}
-			fragmentTemplateJSON={SELECTED_FRAGMENTS[0].fragmentTemplateJSON}
-			icon={SELECTED_FRAGMENTS[0].fragmentTemplateJSON.icon}
-			title={SELECTED_FRAGMENTS[0].fragmentTemplateJSON.title}
+			elementTemplateJSON={SELECTED_FRAGMENTS[0].elementTemplateJSON}
+			icon={SELECTED_FRAGMENTS[0].elementTemplateJSON.icon}
+			title={SELECTED_FRAGMENTS[0].elementTemplateJSON.title}
 			updateJSON={() => {}}
 		/>
 	));

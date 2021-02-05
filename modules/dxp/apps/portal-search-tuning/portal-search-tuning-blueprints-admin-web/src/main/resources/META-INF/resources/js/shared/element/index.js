@@ -44,7 +44,7 @@ function Element({
 	uiConfigurationValues,
 	deleteFragment,
 	entityJSON,
-	fragmentTemplateJSON,
+	elementTemplateJSON,
 	fragmentOutput,
 	id,
 	updateFragment = () => {},
@@ -67,15 +67,15 @@ function Element({
 	}, 20);
 
 	const _handleToggle = () => {
-		const enabled = !fragmentTemplateJSON.enabled;
+		const enabled = !elementTemplateJSON.enabled;
 
 		updateFragment(id, {
 			fragmentOutput: {
 				...fragmentOutput,
 				enabled,
 			},
-			fragmentTemplateJSON: {
-				...fragmentTemplateJSON,
+			elementTemplateJSON: {
+				...elementTemplateJSON,
 				enabled,
 			},
 		});
@@ -85,7 +85,7 @@ function Element({
 		!!uiConfigurationJSON && uiConfigurationJSON.length > 0;
 
 	const _renderInput = (config) => {
-		const disabled = !fragmentTemplateJSON.enabled;
+		const disabled = !elementTemplateJSON.enabled;
 
 		switch (config.type) {
 			case INPUT_TYPES.DATE:
@@ -197,40 +197,40 @@ function Element({
 	return (
 		<div
 			className={getCN('configuration-fragment-sheet', 'sheet', {
-				disabled: !fragmentTemplateJSON.enabled,
+				disabled: !elementTemplateJSON.enabled,
 			})}
 		>
 			<ClayList className="configuration-header-list">
 				<ClayList.Item flex>
 					<ClayList.ItemField>
 						<ClaySticker size="md">
-							<ClayIcon symbol={fragmentTemplateJSON.icon} />
+							<ClayIcon symbol={elementTemplateJSON.icon} />
 						</ClaySticker>
 					</ClayList.ItemField>
 
 					<ClayList.ItemField expand>
-						{fragmentTemplateJSON.title && (
+						{elementTemplateJSON.title && (
 							<ClayList.ItemTitle>
-								{fragmentTemplateJSON.title[locale] ||
-									(typeof fragmentTemplateJSON.title ==
+								{elementTemplateJSON.title[locale] ||
+									(typeof elementTemplateJSON.title ==
 										'string' &&
-										fragmentTemplateJSON.title)}
+										elementTemplateJSON.title)}
 							</ClayList.ItemTitle>
 						)}
 
-						{fragmentTemplateJSON.description && (
+						{elementTemplateJSON.description && (
 							<ClayList.ItemText subtext={true}>
-								{fragmentTemplateJSON.description[locale] ||
-									(typeof fragmentTemplateJSON.description ==
+								{elementTemplateJSON.description[locale] ||
+									(typeof elementTemplateJSON.description ==
 										'string' &&
-										fragmentTemplateJSON.description)}
+										elementTemplateJSON.description)}
 							</ClayList.ItemText>
 						)}
 					</ClayList.ItemField>
 
 					<ClayToggle
 						onToggle={_handleToggle}
-						toggled={fragmentTemplateJSON.enabled}
+						toggled={elementTemplateJSON.enabled}
 					/>
 
 					{(fragmentOutput || deleteFragment) && (
@@ -382,7 +382,7 @@ Element.propTypes = {
 	deleteFragment: PropTypes.func,
 	entityJSON: PropTypes.object,
 	fragmentOutput: PropTypes.object,
-	fragmentTemplateJSON: PropTypes.object,
+	elementTemplateJSON: PropTypes.object,
 	uiConfigurationJSON: PropTypes.arrayOf(PropTypes.object),
 	uiConfigurationValues: PropTypes.object,
 	updateFragment: PropTypes.func,

@@ -10,7 +10,7 @@
  */
 
 export default {
-	fragmentTemplateJSON: {
+	elementTemplateJSON: {
 		category: 'custom',
 		clauses: [
 			{

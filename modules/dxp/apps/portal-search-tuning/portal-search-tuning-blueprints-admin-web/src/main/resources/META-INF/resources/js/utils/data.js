@@ -52,7 +52,7 @@ import STAGING_AWARE from '../../fragments/staging-aware';
 import TEXT_MATCH_OVER_MULTIPLE_FIELDS from '../../fragments/text-match-over-multiple-fields';
 
 export const CUSTOM_JSON_FRAGMENT = {
-	fragmentTemplateJSON: {
+	elementTemplateJSON: {
 		category: 'custom',
 		clauses: [],
 		conditions: [],

@@ -21,7 +21,7 @@
  */
 
 export default {
-	fragmentTemplateJSON: {
+	elementTemplateJSON: {
 		category: 'filter',
 		clauses: [
 			{

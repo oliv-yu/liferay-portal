@@ -71,7 +71,7 @@ describe('EditBlueprint', () => {
 		const {getByText} = within(container.querySelector('.builder'));
 
 		DEFAULT_BASELINE_FRAGMENTS.map((fragment) =>
-			getByText(fragment.fragmentTemplateJSON.title['en_US'])
+			getByText(fragment.elementTemplateJSON.title['en_US'])
 		);
 	});
 

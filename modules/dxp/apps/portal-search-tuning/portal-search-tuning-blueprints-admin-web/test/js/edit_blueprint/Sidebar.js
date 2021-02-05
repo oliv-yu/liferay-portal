@@ -38,7 +38,7 @@ describe('Sidebar', () => {
 		const {getByText} = renderSidebar();
 
 		SELECTED_FRAGMENTS.map((fragment) =>
-			getByText(fragment.fragmentTemplateJSON.title['en_US'])
+			getByText(fragment.elementTemplateJSON.title['en_US'])
 		);
 	});
 
@@ -46,7 +46,7 @@ describe('Sidebar', () => {
 		const {getByText} = renderSidebar();
 
 		SELECTED_FRAGMENTS.map((fragment) =>
-			getByText(fragment.fragmentTemplateJSON.description['en_US'])
+			getByText(fragment.elementTemplateJSON.description['en_US'])
 		);
 	});
 

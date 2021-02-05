@@ -57,24 +57,24 @@ function EditFragmentForm({
 	const initialConfiguration = JSON.parse(initialConfigurationString);
 
 	const form = useRef();
-	const fragmentTemplateJSONRef = useRef();
+	const elementTemplateJSONRef = useRef();
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [expand, setExpand] = useState(false);
 
 	const [variables, setVariables] = useState(predefinedVariables);
 
-	initialConfiguration.fragmentTemplateJSON.title = renameKeys(
+	initialConfiguration.elementTemplateJSON.title = renameKeys(
 		initialTitle,
 		(str) => str.replace('-', '_')
 	);
-	initialConfiguration.fragmentTemplateJSON.description = renameKeys(
+	initialConfiguration.elementTemplateJSON.description = renameKeys(
 		initialDescription,
 		(str) => str.replace('-', '_')
 	);
 
-	const [fragmentTemplateJSON, setFragmentTemplateJSON] = useState(
-		JSON.stringify(initialConfiguration.fragmentTemplateJSON, null, '\t')
+	const [elementTemplateJSON, setelementTemplateJSON] = useState(
+		JSON.stringify(initialConfiguration.elementTemplateJSON, null, '\t')
 	);
 	const [uiConfigurationJSON, setUIConfigurationJSON] = useState(
 		JSON.stringify(initialConfiguration.uiConfigurationJSON, null, '\t')
@@ -82,7 +82,7 @@ function EditFragmentForm({
 
 	useEffect(() => {
 
-		// Workaround to force a re-render so `fragmentTemplateJSONRef` will be
+		// Workaround to force a re-render so `elementTemplateJSONRef` will be
 		// defined when calling `_onVariableClick`
 
 		setExpand(true);
@@ -129,18 +129,18 @@ function EditFragmentForm({
 	);
 
 	function _onVariableClick(variable) {
-		const doc = fragmentTemplateJSONRef.current.getDoc();
+		const doc = elementTemplateJSONRef.current.getDoc();
 		const cursor = doc.getCursor();
 
 		doc.replaceRange(variable, cursor);
 	}
 
 	function _renderPreviewBody() {
-		let previewFragmentTemplateJSON = {};
+		let previewelementTemplateJSON = {};
 		let previewUIConfigurationJSON = {};
 
 		try {
-			previewFragmentTemplateJSON = JSON.parse(fragmentTemplateJSON);
+			previewelementTemplateJSON = JSON.parse(elementTemplateJSON);
 			previewUIConfigurationJSON = JSON.parse(uiConfigurationJSON);
 		}
 		catch (e) {
@@ -160,11 +160,11 @@ function EditFragmentForm({
 				<ErrorBoundary>
 					<Element
 						collapseAll={false}
+						elementTemplateJSON={previewelementTemplateJSON}
 						fragmentOutput={replaceUIConfigurationValues(
 							previewUIConfigurationJSON,
-							previewFragmentTemplateJSON
+							previewelementTemplateJSON
 						)}
-						fragmentTemplateJSON={previewFragmentTemplateJSON}
 						uiConfigurationJSON={previewUIConfigurationJSON}
 						uiConfigurationValues={getUIConfigurationValues(
 							previewUIConfigurationJSON
@@ -183,26 +183,26 @@ function EditFragmentForm({
 		const formData = new FormData(form.current);
 
 		try {
-			const parseFragmentTemplateJSON = JSON.parse(fragmentTemplateJSON);
+			const parseelementTemplateJSON = JSON.parse(elementTemplateJSON);
 
-			if (!isNotEmpty(parseFragmentTemplateJSON.title)) {
+			if (!isNotEmpty(parseelementTemplateJSON.title)) {
 				throw '';
 			}
 
 			if (
-				typeof parseFragmentTemplateJSON.title === 'object' &&
-				!isNotEmpty(parseFragmentTemplateJSON.title[`${defaultLocale}`])
+				typeof parseelementTemplateJSON.title === 'object' &&
+				!isNotEmpty(parseelementTemplateJSON.title[`${defaultLocale}`])
 			) {
 				throw '';
 			}
 
 			_appendEntryLocale(
-				parseFragmentTemplateJSON.title,
+				parseelementTemplateJSON.title,
 				'title',
 				formData
 			);
 			_appendEntryLocale(
-				parseFragmentTemplateJSON.description,
+				parseelementTemplateJSON.description,
 				'description',
 				formData
 			);
@@ -210,7 +210,7 @@ function EditFragmentForm({
 			formData.append(
 				`${namespace}configuration`,
 				JSON.stringify({
-					fragmentTemplateJSON: parseFragmentTemplateJSON,
+					elementTemplateJSON: parseelementTemplateJSON,
 					uiConfigurationJSON: JSON.parse(uiConfigurationJSON),
 				})
 			);
@@ -432,10 +432,10 @@ function EditFragmentForm({
 								>
 									<CodeMirrorEditor
 										onChange={(value) =>
-											setFragmentTemplateJSON(value)
+											setelementTemplateJSON(value)
 										}
-										ref={fragmentTemplateJSONRef}
-										value={fragmentTemplateJSON}
+										ref={elementTemplateJSONRef}
+										value={elementTemplateJSON}
 									/>
 								</ClayLayout.Col>
 							</ClayLayout.Row>

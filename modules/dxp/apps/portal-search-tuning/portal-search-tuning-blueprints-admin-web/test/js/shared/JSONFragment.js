@@ -32,10 +32,10 @@ function renderFragment(props) {
 		<JSONFragment
 			collapseAll={false}
 			deleteFragment={deleteFragment}
-			description={SELECTED_FRAGMENTS[0].fragmentTemplateJSON.description}
-			fragmentTemplateJSON={SELECTED_FRAGMENTS[0].fragmentTemplateJSON}
-			id={SELECTED_FRAGMENTS[0].fragmentTemplateJSON.id}
-			title={SELECTED_FRAGMENTS[0].fragmentTemplateJSON.title}
+			description={SELECTED_FRAGMENTS[0].elementTemplateJSON.description}
+			elementTemplateJSON={SELECTED_FRAGMENTS[0].elementTemplateJSON}
+			id={SELECTED_FRAGMENTS[0].elementTemplateJSON.id}
+			title={SELECTED_FRAGMENTS[0].elementTemplateJSON.title}
 			updateFragment={updateFragment}
 			{...props}
 		/>
@@ -52,14 +52,14 @@ describe('Fragment', () => {
 	it('displays the title', () => {
 		const {getByText} = renderFragment();
 
-		getByText(SELECTED_FRAGMENTS[0].fragmentTemplateJSON.title['en_US']);
+		getByText(SELECTED_FRAGMENTS[0].elementTemplateJSON.title['en_US']);
 	});
 
 	it('displays the description', () => {
 		const {getByText} = renderFragment();
 
 		getByText(
-			SELECTED_FRAGMENTS[0].fragmentTemplateJSON.description['en_US']
+			SELECTED_FRAGMENTS[0].elementTemplateJSON.description['en_US']
 		);
 	});
 

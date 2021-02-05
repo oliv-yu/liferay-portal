@@ -32,7 +32,7 @@ function renderFragment(props) {
 		<Element
 			collapseAll={false}
 			deleteFragment={deleteFragment}
-			fragmentTemplateJSON={SELECTED_FRAGMENTS[0].fragmentTemplateJSON}
+			elementTemplateJSON={SELECTED_FRAGMENTS[0].elementTemplateJSON}
 			uiConfigurationJSON={SELECTED_FRAGMENTS[0].uiConfigurationJSON}
 			uiConfigurationValues={SELECTED_FRAGMENTS[0].uiConfigurationValues}
 			updateFragment={updateFragment}
@@ -51,14 +51,14 @@ describe('Element', () => {
 	it('displays the title', () => {
 		const {getByText} = renderFragment();
 
-		getByText(SELECTED_FRAGMENTS[0].fragmentTemplateJSON.title['en_US']);
+		getByText(SELECTED_FRAGMENTS[0].elementTemplateJSON.title['en_US']);
 	});
 
 	it('displays the description', () => {
 		const {getByText} = renderFragment();
 
 		getByText(
-			SELECTED_FRAGMENTS[0].fragmentTemplateJSON.description['en_US']
+			SELECTED_FRAGMENTS[0].elementTemplateJSON.description['en_US']
 		);
 	});
 

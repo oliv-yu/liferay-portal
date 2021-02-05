@@ -312,16 +312,16 @@ export const getUIConfigurationValues = (uiConfigurationJSON) => {
  * Function for replacing the ${variable_name} with actual value.
  *
  * @param {object} uiConfigurationJSON Object with UI configuration
- * @param {object} fragmentTemplateJSON Actual fragment template for blueprint configuration
+ * @param {object} elementTemplateJSON Actual fragment template for blueprint configuration
  * @return {object}
  */
 export const replaceUIConfigurationValues = (
 	uiConfigurationJSON,
-	fragmentTemplateJSON,
+	elementTemplateJSON,
 	uiConfigurationValues = getUIConfigurationValues(uiConfigurationJSON)
 ) => {
 	if (uiConfigurationJSON) {
-		let flattenJSON = JSON.stringify(fragmentTemplateJSON);
+		let flattenJSON = JSON.stringify(elementTemplateJSON);
 
 		uiConfigurationJSON.map((config) => {
 			let configValue = uiConfigurationValues[config.key];
@@ -427,7 +427,7 @@ export const replaceUIConfigurationValues = (
 		return JSON.parse(flattenJSON);
 	}
 
-	return fragmentTemplateJSON;
+	return elementTemplateJSON;
 };
 
 /**
@@ -435,21 +435,21 @@ export const replaceUIConfigurationValues = (
  * form will use, by including the id, configuration values, and
  * fragment for submission.
  *
- * @param {object} `{uiConfigurationJSON, fragmentTemplateJSON}` Object with UI configuration
+ * @param {object} `{uiConfigurationJSON, elementTemplateJSON}` Object with UI configuration
  * and fragment template
  * @param {number} id ID number of fragment
  * @return {object}
  */
 export const convertToSelectedFragment = (
-	{fragmentTemplateJSON, uiConfigurationJSON},
+	{elementTemplateJSON, uiConfigurationJSON},
 	id = 0
 ) => {
 	return {
 		fragmentOutput: replaceUIConfigurationValues(
 			uiConfigurationJSON,
-			fragmentTemplateJSON
+			elementTemplateJSON
 		),
-		fragmentTemplateJSON,
+		elementTemplateJSON,
 		id,
 		uiConfigurationJSON,
 		uiConfigurationValues: getUIConfigurationValues(uiConfigurationJSON),

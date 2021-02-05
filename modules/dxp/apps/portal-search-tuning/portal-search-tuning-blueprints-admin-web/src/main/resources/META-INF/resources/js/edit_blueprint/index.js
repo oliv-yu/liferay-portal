@@ -163,7 +163,7 @@ function EditBlueprintForm({
 						query_configuration: selectedQueryFragments.map(
 							(item) => ({
 								fragmentOutput: item.fragmentOutput,
-								fragmentTemplateJSON: item.fragmentTemplateJSON,
+								elementTemplateJSON: item.elementTemplateJSON,
 								uiConfigurationJSON: item.uiConfigurationJSON,
 								uiConfigurationValues:
 									item.uiConfigurationValues,
@@ -246,7 +246,7 @@ function EditBlueprintForm({
 			if (newFragmentValues.uiConfigurationValues) {
 				fragment.fragmentOutput = replaceUIConfigurationValues(
 					fragment.uiConfigurationJSON,
-					fragment.fragmentTemplateJSON,
+					fragment.elementTemplateJSON,
 					newFragmentValues.uiConfigurationValues
 				);
 			}

@@ -22,7 +22,7 @@ import ThemeContext from './ThemeContext';
 function JSONFragment({
 	collapseAll,
 	deleteFragment,
-	fragmentTemplateJSON,
+	elementTemplateJSON,
 	id,
 	updateFragment,
 }) {
@@ -41,7 +41,7 @@ function JSONFragment({
 
 			updateFragment(id, {
 				fragmentOutput: parseJSON,
-				fragmentTemplateJSON: parseJSON,
+				elementTemplateJSON: parseJSON,
 			});
 		}
 		catch {}
@@ -54,18 +54,18 @@ function JSONFragment({
 					<ClayList className="configuration-header-list">
 						<ClayList.Item flex>
 							<ClayList.ItemField expand>
-								{fragmentTemplateJSON.title && (
+								{elementTemplateJSON.title && (
 									<ClayList.ItemTitle>
-										{fragmentTemplateJSON.title[locale] ||
-											fragmentTemplateJSON.title}
+										{elementTemplateJSON.title[locale] ||
+											elementTemplateJSON.title}
 									</ClayList.ItemTitle>
 								)}
 
-								{fragmentTemplateJSON.description && (
+								{elementTemplateJSON.description && (
 									<ClayList.ItemText subtext={true}>
-										{fragmentTemplateJSON.description[
+										{elementTemplateJSON.description[
 											locale
-										] || fragmentTemplateJSON.description}
+										] || elementTemplateJSON.description}
 									</ClayList.ItemText>
 								)}
 							</ClayList.ItemField>
@@ -126,7 +126,7 @@ function JSONFragment({
 				collapse,
 				deleteFragment,
 				id,
-				fragmentTemplateJSON,
+				elementTemplateJSON,
 				locale,
 			])}
 
@@ -136,7 +136,7 @@ function JSONFragment({
 
 					<CodeMirrorEditor
 						onChange={handleChange}
-						value={JSON.stringify(fragmentTemplateJSON, null, '\t')}
+						value={JSON.stringify(elementTemplateJSON, null, '\t')}
 					/>
 				</div>
 			)}
@@ -147,7 +147,7 @@ function JSONFragment({
 JSONFragment.propTypes = {
 	collapseAll: PropTypes.bool,
 	deleteFragment: PropTypes.func,
-	fragmentTemplateJSON: PropTypes.object,
+	elementTemplateJSON: PropTypes.object,
 	icon: PropTypes.string,
 	id: PropTypes.number,
 	updateFragment: PropTypes.func,
