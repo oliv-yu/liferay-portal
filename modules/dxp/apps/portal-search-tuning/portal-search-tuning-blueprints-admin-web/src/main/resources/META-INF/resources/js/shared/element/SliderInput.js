@@ -17,8 +17,17 @@ import React, {useState} from 'react';
 
 import {toNumber} from '../../utils/utils';
 
-function SliderInput({disabled, keyword, name, onChange, value}) {
+function SliderInput({configKey, disabled, initialValue, name, onChange}) {
 	const [active, setActive] = useState(false);
+	const [value, setValue] = useState(initialValue);
+
+	const _handleBlur = () => {
+		onChange(configKey, value);
+	};
+
+	const _handleValueChange = (value) => {
+		setValue(value);
+	};
 
 	return (
 		<>
@@ -29,7 +38,7 @@ function SliderInput({disabled, keyword, name, onChange, value}) {
 						disabled={disabled}
 						insetAfter
 						onChange={(event) => {
-							onChange(keyword, toNumber(event.target.value));
+							onChange(configKey, toNumber(event.target.value));
 						}}
 						type={'number'}
 						value={value}
@@ -53,12 +62,11 @@ function SliderInput({disabled, keyword, name, onChange, value}) {
 			{active && (
 				<div className="slider-configuration">
 					<ClaySlider
-						id={keyword}
+						id={configKey}
 						max={100}
 						min={-100}
-						onValueChange={(value) => {
-							onChange(keyword, value);
-						}}
+						onBlur={_handleBlur}
+						onValueChange={_handleValueChange}
 						value={value}
 					/>
 				</div>

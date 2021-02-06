@@ -46,6 +46,7 @@ function Element({
 	elementTemplateJSON,
 	fragmentOutput,
 	id,
+	initialUIConfigurationValues,
 	updateFragment = () => {},
 }) {
 	const {locale} = useContext(ThemeContext);
@@ -55,6 +56,10 @@ function Element({
 	useEffect(() => {
 		setCollapse(collapseAll);
 	}, [collapseAll]);
+
+	const _getInputId = (elementId, configKey) => {
+		return `${elementId}_${configKey}`;
+	};
 
 	const _handleDelete = () => {
 		deleteFragment(id);
@@ -89,6 +94,7 @@ function Element({
 
 	const _renderInput = (config) => {
 		const disabled = !elementTemplateJSON.enabled;
+		const inputId = _getInputId(id, config.key);
 
 		switch (config.type) {
 			case INPUT_TYPES.DATE:
@@ -177,10 +183,11 @@ function Element({
 				return (
 					<SliderInput
 						disabled={disabled}
-						keyword={config.key}
+						configKey={config.key}
+						id={inputId}
 						label={config.label}
 						onChange={_handleChange}
-						value={uiConfigurationValues[config.key]}
+						initialValue={initialUIConfigurationValues[config.key]}
 					/>
 				);
 			default:
@@ -188,10 +195,10 @@ function Element({
 					<TextInput
 						configKey={config.key}
 						disabled={disabled}
-						id={config.key}
+						id={inputId}
 						label={config.label}
 						onChange={_handleChange}
-						value={uiConfigurationValues[config.key]}
+						initialValue={initialUIConfigurationValues[config.key]}
 					/>
 				);
 		}
@@ -344,7 +351,12 @@ function Element({
 								>
 									{config.type !== INPUT_TYPES.JSON && (
 										<ClayList.ItemField className="list-item-label">
-											<label htmlFor={config.key}>
+											<label
+												htmlFor={_getInputId(
+													id,
+													config.key
+												)}
+											>
 												{config.label}
 
 												{config.helpText && (

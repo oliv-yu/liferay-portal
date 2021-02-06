@@ -10,11 +10,21 @@
  */
 
 import {ClayInput} from '@clayui/form';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {replaceStr} from '../../utils/utils';
 
-function TextInput({configKey, disabled, id, label, onChange, value}) {
+function TextInput({configKey, disabled, id, label, onChange, initialValue}) {
+	const [value, setValue] = useState(initialValue);
+
+	const _handleBlur = (event) => {
+		onChange(configKey, replaceStr(value, '"', ''));
+	};
+
+	const _handleChange = (event) => {
+		setValue(event.target.value);
+	};
+
 	return (
 		<ClayInput.Group small>
 			<ClayInput.GroupItem prepend>
@@ -22,12 +32,8 @@ function TextInput({configKey, disabled, id, label, onChange, value}) {
 					aria-label={label}
 					disabled={disabled}
 					id={id}
-					onChange={(event) =>
-						onChange(
-							configKey,
-							replaceStr(event.target.value, '"', '')
-						)
-					}
+					onBlur={_handleBlur}
+					onChange={_handleChange}
 					value={value}
 				/>
 			</ClayInput.GroupItem>

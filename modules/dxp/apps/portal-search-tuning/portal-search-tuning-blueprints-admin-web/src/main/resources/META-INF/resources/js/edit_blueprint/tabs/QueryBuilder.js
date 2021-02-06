@@ -58,6 +58,7 @@ function QueryBuilder({
 	deleteFragment,
 	entityJSON,
 	frameworkConfig,
+	initialSelectedFragments,
 	onFrameworkConfigChange,
 	onToggleSidebar,
 	searchableAssetTypes,
@@ -92,7 +93,7 @@ function QueryBuilder({
 					</ClayAlert>
 				)}
 
-				{selectedFragments.map((fragment) => {
+				{selectedFragments.map((fragment, index) => {
 					return fragment.uiConfigurationJSON ? (
 						<Element
 							collapseAll={collapseAll}
@@ -101,6 +102,10 @@ function QueryBuilder({
 							entityJSON={entityJSON}
 							fragmentOutput={fragment.fragmentOutput}
 							id={fragment.id}
+							initialUIConfigurationValues={
+								initialSelectedFragments[index]
+									.uiConfigurationValues
+							}
 							key={fragment.id}
 							uiConfigurationJSON={fragment.uiConfigurationJSON}
 							uiConfigurationValues={

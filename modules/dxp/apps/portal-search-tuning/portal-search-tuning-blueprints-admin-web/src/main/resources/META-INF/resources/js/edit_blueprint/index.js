@@ -162,8 +162,8 @@ function EditBlueprintForm({
 					JSON.stringify({
 						query_configuration: selectedQueryFragments.map(
 							(item) => ({
-								fragmentOutput: item.fragmentOutput,
 								elementTemplateJSON: item.elementTemplateJSON,
+								fragmentOutput: item.fragmentOutput,
 								uiConfigurationJSON: item.uiConfigurationJSON,
 								uiConfigurationValues:
 									item.uiConfigurationValues,
@@ -298,6 +298,9 @@ function EditBlueprintForm({
 							deleteFragment={deleteFragment}
 							entityJSON={entityJSON}
 							frameworkConfig={frameworkConfig}
+							initialSelectedFragments={
+								initialSelectedFragments['query_configuration']
+							}
 							onFrameworkConfigChange={(val) =>
 								setFrameworkConfig(val)
 							}
