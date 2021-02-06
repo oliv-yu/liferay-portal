@@ -278,19 +278,19 @@ export const getDefaultValue = (item) => {
  *  	[
  *  		{
  *  			defaultValue: 10,
- *  			key: 'config.title.boost',
- *  			name: 'Title Boost',
+ *  			key: 'boost',
+ *  			label: 'Boost',
  *  			type: 'slider',
  *  		},
  *  		{
  *  			defaultValue: 'en_US',
- *  			key: 'context.language_id',
- *  			name: 'Context Language',
+ *  			key: 'language',
+ *  			label: 'Language',
  *  			type: 'text',
  *  		}
  *  	]
  * )
- * => {context.title.boost: 10, context.language_id: 'en_US'}
+ * => {boost: 10, language: 'en_US'}
  *
  * @param {object} uiConfigurationJSON Object with UI configuration
  * @return {object}
@@ -326,7 +326,20 @@ export const replaceUIConfigurationValues = (
 		uiConfigurationJSON.map((config) => {
 			let configValue = uiConfigurationValues[config.key];
 
-			if (config.type === INPUT_TYPES.ENTITY) {
+			if (config.type === INPUT_TYPES.DATE) {
+				configValue = uiConfigurationValues[config.key]
+					? JSON.parse(
+							moment
+								.unix(uiConfigurationValues[config.key])
+								.format(
+									config.format
+										? config.format
+										: 'YYYYMMDDHHMMSS'
+								)
+					  )
+					: '';
+			}
+			else if (config.type === INPUT_TYPES.ENTITY) {
 				configValue = JSON.stringify(
 					uiConfigurationValues[config.key].map((item) => item.id)
 				);
@@ -358,6 +371,16 @@ export const replaceUIConfigurationValues = (
 
 				configValue = JSON.stringify(fields);
 			}
+			else if (config.type === INPUT_TYPES.JSON) {
+				configValue = JSON.stringify(uiConfigurationValues[config.key]);
+			}
+			else if (config.type === INPUT_TYPES.MULTISELECT) {
+				configValue = JSON.stringify(
+					uiConfigurationValues[config.key].map((item) =>
+						toNumber(item.value)
+					)
+				);
+			}
 			else if (config.type === INPUT_TYPES.NUMBER) {
 				const oldConfigValue = uiConfigurationValues[config.key];
 
@@ -370,39 +393,8 @@ export const replaceUIConfigurationValues = (
 						  )
 					: oldConfigValue;
 			}
-			else if (config.type === INPUT_TYPES.DATE) {
-				configValue = uiConfigurationValues[config.key]
-					? JSON.parse(
-							moment
-								.unix(uiConfigurationValues[config.key])
-								.format(
-									config.format
-										? config.format
-										: 'YYYYMMDDHHMMSS'
-								)
-					  )
-					: '';
-			}
-			else if (config.type === INPUT_TYPES.JSON) {
-				configValue = JSON.stringify(uiConfigurationValues[config.key]);
-			}
-			else if (config.type === INPUT_TYPES.MULTISELECT) {
-				configValue = JSON.stringify(
-					uiConfigurationValues[config.key].map((item) =>
-						toNumber(item.value)
-					)
-				);
-			}
 
-			// Check if key starts with 'config.' prefix to support keys with
-			// both the prefix or not
-
-			const key =
-				config.key &&
-				config.key.substring(0, CONFIG_PREFIX.length + 1) ===
-					`${CONFIG_PREFIX}.`
-					? config.key
-					: `${CONFIG_PREFIX}.${config.key}`;
+			let key = `\${${CONFIG_PREFIX}.${config.key}}`;
 
 			// Check whether to add quotes around output
 
@@ -414,14 +406,10 @@ export const replaceUIConfigurationValues = (
 				config.type === INPUT_TYPES.JSON ||
 				config.type === INPUT_TYPES.MULTISELECT
 			) {
-				flattenJSON = replaceStr(
-					flattenJSON,
-					`"$\{${key}}"`,
-					configValue
-				);
+				key = `"$\{${CONFIG_PREFIX}.${config.key}}"`;
 			}
 
-			flattenJSON = replaceStr(flattenJSON, `\${${key}}`, configValue);
+			flattenJSON = replaceStr(flattenJSON, key, configValue);
 		});
 
 		return JSON.parse(flattenJSON);
@@ -445,11 +433,11 @@ export const convertToSelectedFragment = (
 	id = 0
 ) => {
 	return {
+		elementTemplateJSON,
 		fragmentOutput: replaceUIConfigurationValues(
 			uiConfigurationJSON,
 			elementTemplateJSON
 		),
-		elementTemplateJSON,
 		id,
 		uiConfigurationJSON,
 		uiConfigurationValues: getUIConfigurationValues(uiConfigurationJSON),

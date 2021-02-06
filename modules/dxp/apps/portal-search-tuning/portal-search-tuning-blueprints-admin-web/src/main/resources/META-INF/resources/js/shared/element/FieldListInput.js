@@ -78,4 +78,4 @@ function FieldListInput({
 	);
 }
 
-export default FieldListInput;
+export default React.memo(FieldListInput);

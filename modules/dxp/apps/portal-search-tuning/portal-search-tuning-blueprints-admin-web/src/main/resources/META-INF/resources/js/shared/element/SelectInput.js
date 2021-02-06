@@ -49,4 +49,4 @@ function SelectInput({
 	);
 }
 
-export default SelectInput;
+export default React.memo(SelectInput);

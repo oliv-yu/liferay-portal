@@ -96,7 +96,7 @@ function QueryBuilder({
 					return fragment.uiConfigurationJSON ? (
 						<Element
 							collapseAll={collapseAll}
-							deleteFragment={() => deleteFragment(fragment.id)}
+							deleteFragment={deleteFragment}
 							elementTemplateJSON={fragment.elementTemplateJSON}
 							entityJSON={entityJSON}
 							fragmentOutput={fragment.fragmentOutput}
@@ -111,7 +111,7 @@ function QueryBuilder({
 					) : (
 						<JSONFragment
 							collapseAll={collapseAll}
-							deleteFragment={() => deleteFragment(fragment.id)}
+							deleteFragment={deleteFragment}
 							elementTemplateJSON={fragment.elementTemplateJSON}
 							id={fragment.id}
 							key={fragment.id}

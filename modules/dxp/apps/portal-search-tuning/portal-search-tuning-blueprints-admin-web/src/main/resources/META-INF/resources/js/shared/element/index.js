@@ -18,7 +18,6 @@ import ClayList from '@clayui/list';
 import ClaySticker from '@clayui/sticker';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import getCN from 'classnames';
-import {debounce} from 'frontend-js-web';
 import {PropTypes} from 'prop-types';
 import React, {useContext, useEffect, useState} from 'react';
 
@@ -57,14 +56,18 @@ function Element({
 		setCollapse(collapseAll);
 	}, [collapseAll]);
 
-	const _handleChange = debounce((key, item) => {
+	const _handleDelete = () => {
+		deleteFragment(id);
+	};
+
+	const _handleChange = (key, value) => {
 		updateFragment(id, {
 			uiConfigurationValues: {
 				...uiConfigurationValues,
-				[key]: item,
+				[key]: value,
 			},
 		});
-	}, 20);
+	};
 
 	const _handleToggle = () => {
 		const enabled = !elementTemplateJSON.enabled;
@@ -283,7 +286,7 @@ function Element({
 								)}
 
 								{deleteFragment && (
-									<ClayDropDown.Item onClick={deleteFragment}>
+									<ClayDropDown.Item onClick={_handleDelete}>
 										{Liferay.Language.get('remove')}
 									</ClayDropDown.Item>
 								)}

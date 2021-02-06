@@ -40,8 +40,8 @@ function JSONFragment({
 			const parseJSON = JSON.parse(value);
 
 			updateFragment(id, {
-				fragmentOutput: parseJSON,
 				elementTemplateJSON: parseJSON,
+				fragmentOutput: parseJSON,
 			});
 		}
 		catch {}
