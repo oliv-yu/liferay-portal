@@ -21,6 +21,16 @@ function MultiSelectInput({configKey, disabled, onChange, value}) {
 			inputValue={inputValue}
 			items={value}
 			onChange={setInputValue}
+			onBlur={() => {
+				if (inputValue) {
+					onChange(configKey, [
+						...value,
+						{label: inputValue, value: inputValue},
+					]);
+
+					setInputValue('');
+				}
+			}}
 			onItemsChange={(value) => onChange(configKey, value)}
 		/>
 	);
