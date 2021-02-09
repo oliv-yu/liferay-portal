@@ -583,7 +583,7 @@
 							"en_US": "Text Match Over Multiple Fields"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "match",
 						"clauses": [
 							{
@@ -631,8 +631,8 @@
 								}
 							],
 							"key": "fields",
-							"name": "Fields",
-							"type": "field",
+							"label": "Fields",
+							"type": "field-list",
 							"typeOptions": [
 								{
 									"label": "Title",
@@ -651,8 +651,8 @@
 						{
 							"defaultValue": "or",
 							"key": "operator",
-							"name": "Operator",
-							"type": "single-select",
+							"label": "Operator",
+							"type": "select",
 							"typeOptions": [
 								{
 									"label": "OR",
@@ -667,8 +667,8 @@
 						{
 							"defaultValue": "best_fields",
 							"key": "type",
-							"name": "Match Type",
-							"type": "single-select",
+							"label": "Match Type",
+							"type": "select",
 							"typeOptions": [
 								{
 									"label": "Best Fields",
@@ -698,8 +698,8 @@
 						},
 						{
 							"key": "fuzziness",
-							"name": "Fuzziness",
-							"type": "single-select",
+							"label": "Fuzziness",
+							"type": "select",
 							"typeOptions": [
 								{
 									"label": "Auto",
@@ -722,7 +722,7 @@
 						{
 							"defaultValue": 1,
 							"key": "boost",
-							"name": "Boost",
+							"label": "Boost",
 							"type": "slider"
 						}
 					],
@@ -796,7 +796,7 @@
 							"en_US": "Hide Hidden Contents"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "hide",
 						"clauses": [
 							{
@@ -913,7 +913,7 @@
 							"en_US": "Limit Search to HEAD Version"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{
@@ -1007,7 +1007,7 @@
 							"en_US": "Limit Search to Published Contents"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{
@@ -1105,7 +1105,7 @@
 							"en_US": "Scheduling Aware"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{
@@ -1233,7 +1233,7 @@
 							"en_US": "Staging Aware"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{
@@ -1329,7 +1329,7 @@
 							"en_US": "Publications Aware"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{

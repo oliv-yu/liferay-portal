@@ -208,7 +208,7 @@
 							"en_US": "Boost Contents for the Current Language"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -256,7 +256,7 @@
 						{
 							"defaultValue": 20,
 							"key": "boost",
-							"name": "Boost",
+							"label": "Boost",
 							"type": "slider"
 						}
 					],
@@ -303,7 +303,7 @@
 							"en_US": "Boost Proximity"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -345,26 +345,26 @@
 						{
 							"defaultValue": 20,
 							"key": "boost",
-							"name": "Boost",
+							"label": "Boost",
 							"type": "slider"
 						},
 						{
 							"defaultValue": "expando__keyword__custom_fields__location_geolocation",
 							"helpText": "A geopoint field",
 							"key": "field",
-							"name": "Field",
+							"label": "Field",
 							"type": "text"
 						},
 						{
 							"defaultValue": 0.3,
 							"key": "decay",
-							"name": "Decay",
+							"label": "Decay",
 							"type": "number"
 						},
 						{
 							"defaultValue": 100,
 							"key": "scale",
-							"name": "Scale",
+							"label": "Scale",
 							"type": "number",
 							"unit": "km",
 							"unitSuffix": "km"
@@ -405,7 +405,7 @@
 							"en_US": "Boost Contents in My Groups"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -466,7 +466,7 @@
 							"en_US": "Boost Items for My Commerce Account Groups"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "commerce",
 						"clauses": [
 							{
@@ -498,7 +498,7 @@
 						{
 							"defaultValue": 20,
 							"key": "boost",
-							"name": "Boost",
+							"label": "Boost",
 							"type": "slider"
 						}
 					],
