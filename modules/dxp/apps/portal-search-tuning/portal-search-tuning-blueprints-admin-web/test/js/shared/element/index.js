@@ -12,7 +12,7 @@
 import {fireEvent, render, waitForElement} from '@testing-library/react';
 import React from 'react';
 
-import Element from '../../../../src/main/resources/META-INF/resources/js/shared/element';
+import Element from '../../../../src/main/resources/META-INF/resources/js/shared/element/index';
 import {SELECTED_FRAGMENTS} from '../../mocks/data';
 
 import '@testing-library/jest-dom/extend-expect';
@@ -33,6 +33,9 @@ function renderFragment(props) {
 			collapseAll={false}
 			deleteFragment={deleteFragment}
 			elementTemplateJSON={SELECTED_FRAGMENTS[0].elementTemplateJSON}
+			initialUIConfigurationValues={
+				SELECTED_FRAGMENTS[0].uiConfigurationValues
+			}
 			uiConfigurationJSON={SELECTED_FRAGMENTS[0].uiConfigurationJSON}
 			uiConfigurationValues={SELECTED_FRAGMENTS[0].uiConfigurationValues}
 			updateFragment={updateFragment}

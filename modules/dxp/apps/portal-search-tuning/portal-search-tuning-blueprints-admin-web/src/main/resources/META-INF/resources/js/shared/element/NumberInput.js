@@ -15,7 +15,7 @@ import React from 'react';
 
 import {toNumber} from '../../utils/utils';
 
-function NumberInput({configKey, disabled, name, onChange, unit, value}) {
+function NumberInput({configKey, disabled, label, onChange, unit, value}) {
 	return (
 		<ClayInput.Group small>
 			<ClayInput.GroupItem
@@ -26,7 +26,7 @@ function NumberInput({configKey, disabled, name, onChange, unit, value}) {
 				prepend
 			>
 				<ClayInput
-					aria-label={name}
+					aria-label={label}
 					disabled={disabled}
 					id={configKey}
 					onChange={(event) =>

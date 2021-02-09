@@ -184,14 +184,14 @@ export const toNumber = (str) => {
  * getDefaultValue({
  *  	defaultValue: 10,
  *  	key: 'config.title.boost',
- *  	name: 'Title Boost',
+ *  	label: 'Title Boost',
  *  	type: 'slider',
  *  })
  * => 10
  *
  * getDefaultValue({
  *  	key: 'config.lfr.enabled',
- *  	name: 'Enabled',
+ *  	label: 'Enabled',
  *  	type: 'select',
  *  	typeOptions: [
  *  		{
@@ -423,7 +423,7 @@ export const replaceUIConfigurationValues = (
  * form will use, by including the id, configuration values, and
  * fragment for submission.
  *
- * @param {object} `{uiConfigurationJSON, elementTemplateJSON}` Object with UI configuration
+ * @param {object} `{elementTemplateJSON, uiConfigurationJSON}` Object with UI configuration
  * and fragment template
  * @param {number} id ID number of fragment
  * @return {object}

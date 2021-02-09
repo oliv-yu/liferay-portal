@@ -46,7 +46,7 @@ function Element({
 	elementTemplateJSON,
 	fragmentOutput,
 	id,
-	initialUIConfigurationValues,
+	initialUIConfigurationValues = {},
 	updateFragment = () => {},
 }) {
 	const {locale} = useContext(ThemeContext);
@@ -182,12 +182,12 @@ function Element({
 			case INPUT_TYPES.SLIDER:
 				return (
 					<SliderInput
-						disabled={disabled}
 						configKey={config.key}
+						disabled={disabled}
 						id={inputId}
+						initialValue={initialUIConfigurationValues[config.key]}
 						label={config.label}
 						onChange={_handleChange}
-						initialValue={initialUIConfigurationValues[config.key]}
 					/>
 				);
 			default:
@@ -196,9 +196,9 @@ function Element({
 						configKey={config.key}
 						disabled={disabled}
 						id={inputId}
+						initialValue={initialUIConfigurationValues[config.key]}
 						label={config.label}
 						onChange={_handleChange}
-						initialValue={initialUIConfigurationValues[config.key]}
 					/>
 				);
 		}
@@ -395,9 +395,9 @@ function Element({
 Element.propTypes = {
 	collapseAll: PropTypes.bool,
 	deleteFragment: PropTypes.func,
+	elementTemplateJSON: PropTypes.object,
 	entityJSON: PropTypes.object,
 	fragmentOutput: PropTypes.object,
-	elementTemplateJSON: PropTypes.object,
 	uiConfigurationJSON: PropTypes.arrayOf(PropTypes.object),
 	uiConfigurationValues: PropTypes.object,
 	updateFragment: PropTypes.func,

@@ -15,14 +15,14 @@ import React from 'react';
 function SelectInput({
 	configKey,
 	disabled,
-	name,
+	label,
 	onChange,
 	typeOptions,
 	value,
 }) {
 	return (
 		<ClaySelect
-			aria-label={name}
+			aria-label={label}
 			className="form-control-sm"
 			disabled={disabled}
 			id={configKey}

@@ -74,7 +74,7 @@ export default {
 		{
 			defaultValue: 2,
 			key: 'boost',
-			name: 'Boost',
+			label: 'Boost',
 			type: 'slider',
 		},
 	],

@@ -58,7 +58,7 @@ function QueryBuilder({
 	deleteFragment,
 	entityJSON,
 	frameworkConfig,
-	initialSelectedFragments,
+	initialSelectedFragments = [],
 	onFrameworkConfigChange,
 	onToggleSidebar,
 	searchableAssetTypes,
@@ -104,7 +104,9 @@ function QueryBuilder({
 							id={fragment.id}
 							initialUIConfigurationValues={
 								initialSelectedFragments[index]
-									.uiConfigurationValues
+									? initialSelectedFragments[index]
+											.uiConfigurationValues
+									: undefined
 							}
 							key={fragment.id}
 							uiConfigurationJSON={fragment.uiConfigurationJSON}

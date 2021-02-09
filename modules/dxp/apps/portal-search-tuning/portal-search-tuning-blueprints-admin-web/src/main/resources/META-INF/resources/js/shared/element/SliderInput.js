@@ -17,7 +17,7 @@ import React, {useState} from 'react';
 
 import {toNumber} from '../../utils/utils';
 
-function SliderInput({configKey, disabled, initialValue, name, onChange}) {
+function SliderInput({configKey, disabled, initialValue, label, onChange}) {
 	const [active, setActive] = useState(false);
 	const [value, setValue] = useState(initialValue);
 
@@ -34,7 +34,7 @@ function SliderInput({configKey, disabled, initialValue, name, onChange}) {
 			<ClayInput.Group small>
 				<ClayInput.GroupItem className="arrowless-input">
 					<ClayInput
-						aria-label={name}
+						aria-label={label}
 						disabled={disabled}
 						insetAfter
 						onChange={(event) => {

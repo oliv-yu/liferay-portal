@@ -31,6 +31,7 @@ function renderBuilder(props) {
 		<QueryBuilder
 			deleteFragment={jest.fn()}
 			frameworkConfig={{}}
+			initialSelectedFragments={SELECTED_FRAGMENTS}
 			onFrameworkConfigChange={jest.fn()}
 			searchableAssetTypes={[]}
 			selectedFragments={SELECTED_FRAGMENTS}
