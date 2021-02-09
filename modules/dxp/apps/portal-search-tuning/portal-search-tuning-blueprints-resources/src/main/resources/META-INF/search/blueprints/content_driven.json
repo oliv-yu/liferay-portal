@@ -751,7 +751,7 @@
 							"en_US": "Text Match Over Multiple Fields"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "match",
 						"clauses": [
 							{
@@ -963,7 +963,7 @@
 							"en_US": "Search with the Lucene Syntax"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "match",
 						"clauses": [
 							{
@@ -1124,7 +1124,7 @@
 							"en_US": "Boost Contents for the Current Language"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -1214,7 +1214,7 @@
 							"en_US": "Boost Contents With More Versions"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -1349,7 +1349,7 @@
 							"en_US": "Boost Longer Contents"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -1486,7 +1486,7 @@
 							"en_US": "Boost Freshness"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -1589,7 +1589,7 @@
 							"en_US": "Boost Tags Match"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -1668,7 +1668,7 @@
 							"en_US": "Boost All Keywords Match"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -1839,7 +1839,7 @@
 							"en_US": "Boost All Keywords Match"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "boost",
 						"clauses": [
 							{
@@ -2024,7 +2024,7 @@
 							"en_US": "Hide Comments"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "hide",
 						"clauses": [
 							{
@@ -2130,7 +2130,7 @@
 							"en_US": "Hide Hidden Contents"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "hide",
 						"clauses": [
 							{
@@ -2247,7 +2247,7 @@
 							"en_US": "Limit Search to HEAD Version"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{
@@ -2341,7 +2341,7 @@
 							"en_US": "Limit Search to Published Contents"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{
@@ -2462,7 +2462,7 @@
 							"en_US": "Scheduling Aware"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{
@@ -2613,7 +2613,7 @@
 							"en_US": "Staging Aware"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{
@@ -2709,7 +2709,7 @@
 							"en_US": "Publications Aware"
 						}
 					},
-					"fragmentTemplateJSON": {
+					"elementTemplateJSON": {
 						"category": "filter",
 						"clauses": [
 							{
