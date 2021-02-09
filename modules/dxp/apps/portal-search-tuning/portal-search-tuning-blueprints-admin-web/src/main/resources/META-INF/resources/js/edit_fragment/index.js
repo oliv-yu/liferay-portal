@@ -33,7 +33,7 @@ import ErrorBoundary from '../shared/ErrorBoundary';
 import PreviewModal from '../shared/PreviewModal';
 import SearchInput from '../shared/SearchInput';
 import ThemeContext from '../shared/ThemeContext';
-import Element from '../shared/element';
+import Element from '../shared/element/index';
 import {
 	getUIConfigurationValues,
 	isNotEmpty,
