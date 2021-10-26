@@ -99,6 +99,11 @@ BlueprintsOptionsPortletPreferences blueprintsOptionsPortletPreferences = new Bl
 						</div>
 					</div>
 
+					<liferay-learn:message
+						key="general"
+						resource="search-experiences-blueprints-options-web"
+					/>
+
 					<aui:script>
 						var <portlet:namespace />selectBlueprintButton = document.getElementById(
 							'<portlet:namespace />selectBlueprintButton'
