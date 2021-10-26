@@ -1,0 +1,50 @@
+{
+	"blueprints-general": {
+		"en_US": {
+			"message": "Learn more",
+			"url": "https://learn.liferay.com/dxp/latest/en/liferay-internals/fundamentals/using-the-gogo-shell/using-the-gogo-shell.html"
+		}
+	},
+	"blueprints-settings": {
+		"en_US": {
+			"message": "Learn more",
+			"url": "https://learn.liferay.com/dxp/latest/en/liferay-internals/fundamentals/using-the-gogo-shell/using-the-gogo-shell.html"
+		}
+	},
+	"elements-general": {
+		"en_US": {
+			"message": "Learn more",
+			"url": "https://learn.liferay.com/dxp/latest/en/liferay-internals/fundamentals/using-the-gogo-shell/using-the-gogo-shell.html"
+		}
+	},
+	"element-template": {
+		"en_US": {
+			"message": "Learn more",
+			"url": "https://learn.liferay.com/dxp/latest/en/liferay-internals/fundamentals/using-the-gogo-shell/using-the-gogo-shell.html"
+		}
+	},
+	"ui-configuration": {
+		"en_US": {
+			"message": "Learn more",
+			"url": "https://learn.liferay.com/dxp/latest/en/liferay-internals/fundamentals/using-the-gogo-shell/using-the-gogo-shell.html"
+		}
+	},
+	"add-query-elements": {
+		"en_US": {
+			"message": "Learn more",
+			"url": "https://learn.liferay.com/dxp/latest/en/liferay-internals/fundamentals/using-the-gogo-shell/using-the-gogo-shell.html"
+		}
+	},
+	"liferay-index-clauses": {
+		"en_US": {
+			"message": "Learn more",
+			"url": "https://learn.liferay.com/dxp/latest/en/liferay-internals/fundamentals/using-the-gogo-shell/using-the-gogo-shell.html"
+		}
+	},
+	"clause-contributors": {
+		"en_US": {
+			"message": "Learn more",
+			"url": "https://learn.liferay.com/dxp/latest/en/liferay-internals/fundamentals/using-the-gogo-shell/using-the-gogo-shell.html"
+		}
+	}
+}
