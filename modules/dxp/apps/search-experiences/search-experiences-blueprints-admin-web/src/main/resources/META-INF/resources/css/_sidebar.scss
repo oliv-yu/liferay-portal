@@ -40,22 +40,22 @@
 		height: auto;
 		padding-bottom: 16px;
 	}
+
+	a {
+		margin-left: 4px;
+	}
 }
 
 // Edit Blueprint Sidebars
 
-.add-element-sidebar,
-.preview-sidebar {
+.slide-sidebar {
 	background-color: $white;
 	display: flex;
 	flex-direction: column;
-	height: calc(100% - #{$controlMenuToolbarHeight} - #{$navigationBarHeight});
-	margin-top: $navigationBarHeight;
 	position: fixed;
 	right: 0;
 	transform: translateX(100%);
 	transition: transform ease 0.2s;
-	width: $sidebarWidth;
 	z-index: 972;
 
 	&.open {

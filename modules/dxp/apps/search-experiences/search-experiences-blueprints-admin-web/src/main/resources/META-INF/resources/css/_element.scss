@@ -81,6 +81,13 @@
 			font-size: 1rem;
 		}
 
+		.list-group-subtext {
+			a {
+				color: $primary;
+				margin-left: 4px;
+			}
+		}
+
 		.sticker {
 			background-color: $lightBackground;
 			color: $mainLighten28;

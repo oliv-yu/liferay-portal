@@ -176,9 +176,15 @@ function PreviewSidebar({
 
 	return (
 		<div
-			className={getCN('preview-sidebar', 'sidebar', 'sidebar-light', {
-				open: visible,
-			})}
+			className={getCN(
+				'preview-sidebar',
+				'sidebar',
+				'sidebar-light',
+				'slide-sidebar',
+				{
+					open: visible,
+				}
+			)}
 		>
 			<div className="sidebar-header">
 				<h4 className="component-title">

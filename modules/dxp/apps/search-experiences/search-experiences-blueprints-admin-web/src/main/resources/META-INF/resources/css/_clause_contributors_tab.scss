@@ -1,13 +1,19 @@
 .clause-contributors-tab {
 	padding-top: $pageToolbarHeight;
 
+	.info-sidebar {
+		height: calc(
+			100% - #{$controlMenuToolbarHeight} - #{$pageToolbarHeight}
+		);
+		width: $infoSidebarWidth;
+	}
+
 	.management-bar {
 		border: 1px solid $mainLighten74;
 		border-bottom: 0;
 
 		.search {
 			padding-left: 12px;
-			padding-right: 16px;
 			width: 100%;
 		}
 	}
@@ -34,6 +40,10 @@
 		.table-divider td {
 			text-transform: none;
 		}
+	}
+
+	.toggle-sidebar {
+		margin-left: 8px;
 	}
 
 	.toggle-item {
@@ -63,7 +73,36 @@
 				#{$previewSidebarWidth} - (50vw - 50%) + 24px
 			)
 		);
+	}
+}
 
+@media (min-width: calc(#{$clauseMinWidth} + #{$infoSidebarWidth})) {
+	//anything more than this, start
+	.open-info .clause-content-shift {
+		margin-right: calc(
+			max(
+				50% - (#{$clauseMaxWidth} / 2),
+				#{$infoSidebarWidth} - (50vw - 50%) + 24px
+			)
+		);
+	}
+}
+
+@media (max-width: calc(#{$breakpointMaxWidth} + #{$previewSidebarWidth})) {
+	//anything less than this, start
+	.open-preview .clause-content-shift {
+		.navbar-breakpoint-full {
+			display: none;
+		}
+
+		.navbar-breakpoint-compact {
+			display: block;
+		}
+	}
+}
+
+@media (max-width: calc(#{$breakpointMaxWidth} + #{$infoSidebarWidth})) {
+	.open-info .clause-content-shift {
 		.navbar-breakpoint-full {
 			display: none;
 		}

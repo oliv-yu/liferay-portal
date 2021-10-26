@@ -48,33 +48,64 @@ ViewElementsDisplayContext viewElementsDisplayContext = (ViewElementsDisplayCont
 			"showElementURL", showElementURL
 		).build()
 	%>'
+	infoPanelId="infoPanelId"
 	managementToolbarDisplayContext="<%= (ViewElementsManagementToolbarDisplayContext)request.getAttribute(BlueprintsAdminWebKeys.VIEW_ELEMENTS_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT) %>"
 	propsTransformer="js/view_elements/ElementEntriesManagementToolbarPropsTransformer"
 	searchContainerId="elementEntries"
 	supportsBulkActions="<%= true %>"
 />
 
-<clay:container-fluid>
-	<aui:form method="post" name="fm">
-		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+<div class="closed sidenav-container sidenav-right" id="<%= liferayPortletResponse.getNamespace() + "infoPanelId" %>">
+	<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/elements/info_panel" var="sidebarPanelURL" />
 
-		<liferay-ui:search-container
-			cssClass="blueprints-search-container"
-			id="elementEntries"
-			searchContainer="<%= viewElementsDisplayContext.getSearchContainer() %>"
+	<liferay-frontend:sidebar-panel
+		resourceURL="<%= sidebarPanelURL %>"
+		searchContainerId="elementsSidebar"
+	>
+		<clay:container-fluid
+			cssClass="container-view"
 		>
-			<liferay-ui:search-container-row
-				className="com.liferay.search.experiences.blueprints.model.Element"
-				keyProperty="elementId"
-				modelVar="entry"
-			>
-				<%@ include file="/element_entry_search_columns.jspf" %>
-			</liferay-ui:search-container-row>
+			<h4 class="component-title">
+				<span class="text-truncate-inline">
+					<liferay-ui:message key="elements" />
+				</span>
+			</h4>
 
-			<liferay-ui:search-iterator
-				displayStyle="<%= viewElementsDisplayContext.getDisplayStyle() %>"
-				markupView="lexicon"
-			/>
-		</liferay-ui:search-container>
-	</aui:form>
-</clay:container-fluid>
+			<div>
+				<span class="text-secondary"><liferay-ui:message key="elements-help" /></span>
+
+				<liferay-learn:message
+					key="blueprints-general"
+					resource="search-experiences-blueprints-admin-web"
+				/>
+			</div>
+		</clay:container-fluid>
+	</liferay-frontend:sidebar-panel>
+
+	<div class="sidenav-content">
+		<clay:container-fluid>
+			<aui:form method="post" name="fm">
+				<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+
+				<liferay-ui:search-container
+					cssClass="blueprints-search-container"
+					id="elementEntries"
+					searchContainer="<%= viewElementsDisplayContext.getSearchContainer() %>"
+				>
+					<liferay-ui:search-container-row
+						className="com.liferay.search.experiences.blueprints.model.Element"
+						keyProperty="elementId"
+						modelVar="entry"
+					>
+						<%@ include file="/element_entry_search_columns.jspf" %>
+					</liferay-ui:search-container-row>
+
+					<liferay-ui:search-iterator
+						displayStyle="<%= viewElementsDisplayContext.getDisplayStyle() %>"
+						markupView="lexicon"
+					/>
+				</liferay-ui:search-container>
+			</aui:form>
+		</clay:container-fluid>
+	</div>
+</div>

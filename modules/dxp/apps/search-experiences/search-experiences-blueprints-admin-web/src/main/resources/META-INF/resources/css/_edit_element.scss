@@ -8,6 +8,12 @@ $elementHeaderHeight: 48px;
 		padding-top: 64px;
 	}
 
+	.info-sidebar {
+		height: calc(100vh - 152px);
+		margin-top: $navigationBarHeight;
+		width: $infoSidebarWidth;
+	}
+
 	.element-section {
 		border-color: $mainLighten74;
 		border-style: solid;
@@ -141,6 +147,16 @@ $elementHeaderHeight: 48px;
 		.col-8 {
 			background-color: $lightBackground;
 			padding: 0;
+		}
+	}
+}
+
+@media (min-width: calc(#{$breakpointMaxWidth} + #{$infoSidebarWidth})) {
+	.edit-element-root .element-row {
+		transition: margin-right ease 0.2s;
+
+		&.open-info {
+			margin-right: $infoSidebarWidth;
 		}
 	}
 }

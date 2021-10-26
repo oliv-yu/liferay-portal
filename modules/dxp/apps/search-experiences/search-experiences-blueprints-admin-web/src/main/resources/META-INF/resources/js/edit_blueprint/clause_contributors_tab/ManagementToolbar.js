@@ -34,6 +34,7 @@ function ManagementToolbar({
 	onApplyBaseline,
 	onClearCategory,
 	onClearStatus,
+	onClickInfo,
 	onReverseSort,
 	onUpdateEnabled,
 	selected,
@@ -241,6 +242,17 @@ function ManagementToolbar({
 									</ClayInput.GroupItem>
 								</ClayInput.Group>
 							</ClayManagementToolbar.Item>
+						</ClayManagementToolbar.ItemList>
+
+						<ClayManagementToolbar.ItemList>
+							<ClayButton
+								className="nav-link nav-link-monospaced"
+								displayType="unstyled"
+								onClick={onClickInfo}
+								title={Liferay.Language.get('toggle')}
+							>
+								<ClayIcon symbol="info-circle-open" />
+							</ClayButton>
 						</ClayManagementToolbar.ItemList>
 
 						<ClayManagementToolbar.ItemList>

@@ -9,14 +9,15 @@
  * distribution rights of the Software.
  */
 
+import ClayButton from '@clayui/button';
 import {ClayCheckbox, ClayToggle} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
-import ClaySticker from '@clayui/sticker';
 import ClayTable from '@clayui/table';
-import {ClayTooltipProvider} from '@clayui/tooltip';
+import getCN from 'classnames';
 import React, {useEffect, useState} from 'react';
 
+import InfoSidebar from '../../shared/InfoSidebar';
 import {
 	ACTIVE,
 	ALL,
@@ -53,7 +54,9 @@ function ClauseContributorsTab({
 	applyIndexerClauses,
 	clauseContributors,
 	initialClauseContributorsList,
+	onChangeSidebarInfo,
 	onFrameworkConfigChange,
+	sidebarInfo,
 }) {
 	const [category, setCategory] = useState(ALL);
 	const [contributors, setContributors] = useState(
@@ -239,7 +242,16 @@ function ClauseContributorsTab({
 	};
 
 	return (
-		<div className="clause-contributors-tab">
+		<div
+			className={getCN('clause-contributors-tab', {
+				'open-info': !!sidebarInfo.key,
+			})}
+		>
+			<InfoSidebar
+				info={sidebarInfo}
+				onChangeInfo={onChangeSidebarInfo}
+			/>
+
 			<div className="container-fluid container-fluid-max-xl">
 				<div className="container-view">
 					<div className="clause-content-shift">
@@ -251,20 +263,27 @@ function ClauseContributorsTab({
 											'liferay-indexer-clauses'
 										)}
 
-										<ClayTooltipProvider>
-											<ClaySticker
-												displayType="unstyled"
-												size="sm"
-												title={Liferay.Language.get(
-													'liferay-indexer-clauses-help'
-												)}
-											>
-												<ClayIcon
-													data-tooltip-align="top"
-													symbol="info-circle"
-												/>
-											</ClaySticker>
-										</ClayTooltipProvider>
+										<ClayButton
+											className="toggle-sidebar"
+											displayType="unstyled"
+											onClick={() =>
+												onChangeSidebarInfo({
+													description: Liferay.Language.get(
+														'liferay-indexer-clauses-help'
+													),
+													key:
+														'liferay-indexer-clauses',
+													title: Liferay.Language.get(
+														'liferay-indexer-clauses'
+													),
+												})
+											}
+											title={Liferay.Language.get(
+												'toggle'
+											)}
+										>
+											<ClayIcon symbol="info-circle-open" />
+										</ClayButton>
 									</ClayList.ItemTitle>
 								</ClayList.ItemField>
 
@@ -295,6 +314,17 @@ function ClauseContributorsTab({
 							onApplyBaseline={_handleApplyBaseline}
 							onClearCategory={() => setCategory(ALL)}
 							onClearStatus={() => setStatus(ALL)}
+							onClickInfo={() =>
+								onChangeSidebarInfo({
+									description: Liferay.Language.get(
+										'clause-contributors-help'
+									),
+									key: 'clause-contributors',
+									title: Liferay.Language.get(
+										'clause-contributors'
+									),
+								})
+							}
 							onReverseSort={() =>
 								setSortDirection(
 									sortDirection === ASCENDING

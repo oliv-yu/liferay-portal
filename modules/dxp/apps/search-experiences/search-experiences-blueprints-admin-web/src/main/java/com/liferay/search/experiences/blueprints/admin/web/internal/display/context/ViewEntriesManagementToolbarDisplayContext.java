@@ -154,6 +154,11 @@ public abstract class ViewEntriesManagementToolbarDisplayContext
 		};
 	}
 
+	@Override
+	public Boolean isShowInfoButton() {
+		return true;
+	}
+
 	protected String createActionURL(String actionName, String cmd) {
 		return PortletURLBuilder.createActionURL(
 			liferayPortletResponse

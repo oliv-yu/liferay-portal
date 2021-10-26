@@ -229,6 +229,7 @@ function AddElementSidebar({
 				'add-element-sidebar',
 				'sidebar',
 				'sidebar-light',
+				'slide-sidebar',
 				{open: visible}
 			)}
 		>

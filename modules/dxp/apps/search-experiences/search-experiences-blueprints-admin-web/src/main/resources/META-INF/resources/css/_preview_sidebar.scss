@@ -1,4 +1,6 @@
 .preview-sidebar {
+	height: calc(100% - #{$controlMenuToolbarHeight} - #{$navigationBarHeight});
+	margin-top: $navigationBarHeight;
 	overflow-x: overlay;
 	width: $previewSidebarWidth;
 

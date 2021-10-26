@@ -80,6 +80,7 @@ function EditBlueprintForm({
 	const [showPreview, setShowPreview] = useState(false);
 	const [showSubmitWarningModal, setShowSubmitWarningModal] = useState(false);
 	const [tab, setTab] = useState('query-builder');
+	const [sidebarInfo, setSidebarInfo] = useState({});
 
 	const form = useRef();
 	const sidebarQueryElements = useRef([
@@ -554,6 +555,14 @@ function EditBlueprintForm({
 		[formik]
 	);
 
+	const _handleChangeSidebarInfo = (newSidebarInfo) => {
+		setShowPreview(false);
+
+		setSidebarInfo(
+			sidebarInfo.key !== newSidebarInfo.key ? newSidebarInfo : {}
+		);
+	};
+
 	const _handleSubmit = (event) => {
 		event.preventDefault();
 
@@ -616,7 +625,9 @@ function EditBlueprintForm({
 									.sort(),
 							},
 						]}
+						onChangeSidebarInfo={_handleChangeSidebarInfo}
 						onFrameworkConfigChange={_handleFrameworkConfigChange}
+						sidebarInfo={sidebarInfo}
 					/>
 				);
 			default:
@@ -703,6 +714,7 @@ function EditBlueprintForm({
 						displayType="secondary"
 						onClick={() => {
 							setShowSidebar(false);
+							setSidebarInfo({});
 							setShowPreview(!showPreview);
 						}}
 						small

@@ -13,6 +13,7 @@ import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import ClayForm, {ClayToggle} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import ClayLink from '@clayui/link';
 import ClayList from '@clayui/list';
 import ClaySticker from '@clayui/sticker';
 import {ClayTooltipProvider} from '@clayui/tooltip';
@@ -22,6 +23,7 @@ import React, {useContext, useEffect, useState} from 'react';
 
 import {DEFAULT_ELEMENT_ICON} from '../../utils/data';
 import {INPUT_TYPES} from '../../utils/inputTypes';
+import learnLinks from '../../utils/learnLinks';
 import {
 	cleanUIConfigurationJSON,
 	getElementOutput,
@@ -307,9 +309,31 @@ function Element({
 						)}
 
 						{description && (
-							<ClayList.ItemText subtext={true}>
-								{description}
-							</ClayList.ItemText>
+							<>
+								<ClayList.ItemText subtext={true}>
+									<span className="description">
+										{description}
+									</span>
+
+									{learnLinks['add-query-elements']?.[
+										locale || 'en_US'
+									]?.url && (
+										<ClayLink
+											href={
+												learnLinks[
+													'add-query-elements'
+												][locale || 'en_US'].url
+											}
+										>
+											{
+												learnLinks[
+													'add-query-elements'
+												][locale || 'en_US'].message
+											}
+										</ClayLink>
+									)}
+								</ClayList.ItemText>
+							</>
 						)}
 					</ClayList.ItemField>
 

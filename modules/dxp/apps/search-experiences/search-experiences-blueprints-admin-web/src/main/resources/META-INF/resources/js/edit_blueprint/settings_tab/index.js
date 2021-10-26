@@ -11,10 +11,13 @@
 
 import ClayForm from '@clayui/form';
 import ClayLayout from '@clayui/layout';
+import ClayLink from '@clayui/link';
 import getCN from 'classnames';
-import React from 'react';
+import React, {useContext} from 'react';
 
 import CodeMirrorEditor from '../../shared/CodeMirrorEditor';
+import ThemeContext from '../../shared/ThemeContext';
+import learnLinks from '../../utils/learnLinks';
 
 function SettingsTab({
 	advancedConfig,
@@ -28,6 +31,8 @@ function SettingsTab({
 	sortConfig,
 	touched,
 }) {
+	const {locale} = useContext(ThemeContext);
+
 	const _renderEditor = (configName, configValue) => (
 		<div
 			className={getCN({
@@ -61,6 +66,23 @@ function SettingsTab({
 				<div className="sheet-text">
 					{Liferay.Language.get(
 						'enter-additional-blueprints-configuration-settings-below-refer-to-the-documentation-for-help'
+					)}
+
+					{learnLinks['blueprints-settings']?.[locale || 'en_US']
+						?.url && (
+						<ClayLink
+							href={
+								learnLinks['blueprints-settings'][
+									locale || 'en_US'
+								].url
+							}
+						>
+							{
+								learnLinks['blueprints-settings'][
+									locale || 'en_US'
+								].message
+							}
+						</ClayLink>
 					)}
 				</div>
 

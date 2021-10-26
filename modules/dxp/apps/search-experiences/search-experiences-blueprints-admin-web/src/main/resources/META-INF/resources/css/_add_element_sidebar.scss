@@ -1,4 +1,8 @@
 .add-element-sidebar {
+	height: calc(100% - #{$controlMenuToolbarHeight} - #{$navigationBarHeight});
+	margin-top: $navigationBarHeight;
+	width: $sidebarWidth;
+
 	.element-list {
 		overflow-y: scroll;
 		padding-bottom: 16px;

@@ -15,9 +15,7 @@ import ClayEmptyState from '@clayui/empty-state';
 import ClayIcon from '@clayui/icon';
 import ClayLayout from '@clayui/layout';
 import ClayLink from '@clayui/link';
-import ClaySticker from '@clayui/sticker';
 import ClayToolbar from '@clayui/toolbar';
-import {ClayTooltipProvider} from '@clayui/tooltip';
 import getCN from 'classnames';
 import {fetch, navigate} from 'frontend-js-web';
 import {PropTypes} from 'prop-types';
@@ -31,6 +29,7 @@ import React, {
 
 import CodeMirrorEditor from '../shared/CodeMirrorEditor';
 import ErrorBoundary from '../shared/ErrorBoundary';
+import InfoSidebar from '../shared/InfoSidebar';
 import PreviewModal from '../shared/PreviewModal';
 import SearchInput from '../shared/SearchInput';
 import SubmitWarningModal from '../shared/SubmitWarningModal';
@@ -66,6 +65,7 @@ function EditElementForm({
 	const [showSidebar, setShowSidebar] = useState(false);
 	const [showSubmitWarningModal, setShowSubmitWarningModal] = useState(false);
 	const [expandAllVariables, setExpandAllVariables] = useState(false);
+	const [sidebarInfo, setSidebarInfo] = useState({});
 
 	const [variables, setVariables] = useState(predefinedVariables);
 
@@ -484,7 +484,13 @@ function EditElementForm({
 				</div>
 			</form>
 
-			<div className="element-row">
+			<InfoSidebar info={sidebarInfo} onChangeInfo={setSidebarInfo} />
+
+			<div
+				className={getCN('element-row', {
+					'open-info': !!sidebarInfo.key,
+				})}
+			>
 				<ClayLayout.Row>
 					<ClayLayout.Col size={8}>
 						<div className="element-section">
@@ -515,24 +521,34 @@ function EditElementForm({
 											{Liferay.Language.get(
 												'element-template-json'
 											)}
-
-											<ClayTooltipProvider>
-												<ClaySticker
-													displayType="unstyled"
-													size="sm"
-													title={Liferay.Language.get(
-														'element-template-json-help'
-													)}
-												>
-													<ClayIcon
-														data-tooltip-align="top"
-														symbol="info-circle"
-													/>
-												</ClaySticker>
-											</ClayTooltipProvider>
 										</label>
 									</div>
 								</div>
+
+								<ClayButton
+									borderless
+									displayType="secondary"
+									monospaced
+									onClick={() => {
+										setSidebarInfo(
+											sidebarInfo.key !==
+												'element-template'
+												? {
+														description: Liferay.Language.get(
+															'element-template-help'
+														),
+														key: 'element-template',
+														title: Liferay.Language.get(
+															'element-template'
+														),
+												  }
+												: {}
+										);
+									}}
+									small
+								>
+									<ClayIcon symbol="info-circle-open" />
+								</ClayButton>
 							</div>
 
 							<ClayLayout.Row>
@@ -630,23 +646,34 @@ function EditElementForm({
 											{Liferay.Language.get(
 												'ui-configuration-json'
 											)}
-											<ClayTooltipProvider>
-												<ClaySticker
-													displayType="unstyled"
-													size="sm"
-													title={Liferay.Language.get(
-														'ui-configuration-json-help'
-													)}
-												>
-													<ClayIcon
-														data-tooltip-align="top"
-														symbol="info-circle"
-													/>
-												</ClaySticker>
-											</ClayTooltipProvider>
 										</label>
 									</div>
 								</div>
+
+								<ClayButton
+									borderless
+									displayType="secondary"
+									monospaced
+									onClick={() => {
+										setSidebarInfo(
+											sidebarInfo.key !==
+												'ui-configuration'
+												? {
+														description: Liferay.Language.get(
+															'ui-configuration-help'
+														),
+														key: 'ui-configuration',
+														title: Liferay.Language.get(
+															'ui-configuration-json'
+														),
+												  }
+												: {}
+										);
+									}}
+									small
+								>
+									<ClayIcon symbol="info-circle-open" />
+								</ClayButton>
 							</div>
 
 							<div className="json-section">

@@ -14,6 +14,8 @@
 
 package com.liferay.search.experiences.blueprints.admin.web.internal.display.context;
 
+// import com.liferay.learn.taglib.servlet.taglib.MessageTag;
+
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -117,6 +119,23 @@ public class EditBlueprintDisplayBuilder extends EditEntryDisplayBuilder {
 		return jsonObject;
 	}
 
+	private int _getLiferayLearnLinks() {
+		//		JSONTag jsonTag = new JSONTag();
+
+		//		jsonTag.setResource("search-experiences-web");
+		//
+		//		try {
+		//			return jsonTag.processEndTag();
+		//		}
+		//		catch (Exception exception) {
+		//			_log.error(exception, exception);
+		//		}
+
+		return 0;
+		//		return JSONObjectWebCacheItem.get("search-experiences-web");
+
+	}
+
 	private Map<String, Object> _getProps() {
 		Map<String, Object> props = HashMapBuilder.<String, Object>put(
 			"blueprintId", _blueprintId
@@ -129,6 +148,8 @@ public class EditBlueprintDisplayBuilder extends EditEntryDisplayBuilder {
 		).put(
 			"keywordQueryContributors",
 			BlueprintsAdminComponentUtil.getKeywordQueryContributors()
+		).put(
+			"liferayLearnLinks", _getLiferayLearnLinks()
 		).put(
 			"modelPrefilterContributors",
 			BlueprintsAdminComponentUtil.getModelPrefilterContributors()
