@@ -80,7 +80,7 @@ async function mockFetch(url) {
 			};
 		}
 		default: {
-			throw new Error(`Unhandled request: ${url}`);
+			console.warn(`Unhandled request: ${url}`);
 		}
 	}
 }
