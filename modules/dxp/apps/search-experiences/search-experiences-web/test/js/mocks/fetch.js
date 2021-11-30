@@ -12,7 +12,9 @@
 import {INDEX_FIELDS, QUERY_SXP_ELEMENTS, mockClassNames} from './data';
 
 async function mockFetch(url) {
-	switch (url) {
+	switch (
+		url.split('?')[0] // Exclude query string parameters
+	) {
 		case '/o/search-experiences-rest/v1.0/field-mapping-infos': {
 			return {
 				json: async () => ({
