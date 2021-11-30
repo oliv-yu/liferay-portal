@@ -81,6 +81,16 @@ async function mockFetch(url) {
 		}
 		default: {
 			console.warn(`Unhandled request: ${url}`);
+
+			return {
+				json: async () => ({
+					items: [],
+					page: 1,
+					totalCount: 0,
+				}),
+				ok: true,
+				status: 200,
+			};
 		}
 	}
 }
