@@ -42,7 +42,7 @@ function renderAddSXPElementSidebar(props) {
 	);
 }
 
-describe.skip('AddSXPElementSidebar', () => {
+describe('AddSXPElementSidebar', () => {
 	it('renders the sidebar', () => {
 		const {container} = renderAddSXPElementSidebar();
 
