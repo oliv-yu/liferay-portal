@@ -13,56 +13,52 @@
  */
 
 import ClayAutocomplete from '@clayui/autocomplete';
+import ClayButton from '@clayui/button';
 import {useResource} from '@clayui/data-provider';
 import ClayDropDown from '@clayui/drop-down';
+import {ClayInput} from '@clayui/form';
+import ClayIcon from '@clayui/icon';
 import React, {useState} from 'react';
 
 export default function SearchBar({
 	destinationFriendlyURL,
-	scope,
+	keywords,
+	keywordsParameterName = 'q',
+	scope = '',
 	suggestionsContributorConfiguration,
-	suggestionsDisplayThreshold,
-	suggestionsURL,
+	suggestionsDisplayThreshold, // eslint-disable-line no-unused-vars
+	suggestionsURL = '/o/portal-search-rest/v1.0/suggestions',
 }) {
-	const [value, setValue] = useState('');
+	const fetchURL = new URL(
+		`${Liferay.ThemeDisplay.getPathContext()}${suggestionsURL}`,
+		Liferay.ThemeDisplay.getPortalURL()
+	);
+
+	const [active, setActive] = useState(false);
+	const [value, setValue] = useState(keywords);
 	const [networkStatus, setNetworkStatus] = useState(4);
+
 	const {resource} = useResource({
 		fetchOptions: {
 			body: suggestionsContributorConfiguration,
 			headers: {
-				'Accept-Language': themeDisplay.getBCP47LanguageId(),
+				'Accept-Language': Liferay.ThemeDisplay.getBCP47LanguageId(),
 				'Content-type': 'application/json',
 			},
 			method: 'POST',
 		},
 		fetchPolicy: 'cache-first',
-		link: `${
-			window.location.origin
-		}${themeDisplay.getPathContext()}${suggestionsURL}`,
+		link: fetchURL.href,
 		onNetworkStatusChange: setNetworkStatus,
 		variables: {
 			currentURL: window.location.href,
 			destinationFriendlyURL,
-			groupId: themeDisplay.getScopeGroupId(),
-			plid: themeDisplay.getPlid(),
+			groupId: Liferay.ThemeDisplay.getScopeGroupId(),
+			plid: Liferay.ThemeDisplay.getPlid(),
 			scope,
 			search: value,
 		},
 	});
-
-	const getAssetSearchSummary = (item) => {
-		let assetSearchSummary = item.attributes?.assetSearchSummary;
-
-		if (assetSearchSummary === null || assetSearchSummary === '') {
-			return '';
-		}
-
-		if (assetSearchSummary.length > 75) {
-			assetSearchSummary = assetSearchSummary.substring(0, 75) + '...';
-		}
-
-		return assetSearchSummary;
-	};
 
 	const initialLoading = networkStatus === 1;
 	const loading = networkStatus < 4;
@@ -70,17 +66,45 @@ export default function SearchBar({
 
 	return (
 		<ClayAutocomplete>
-			<ClayAutocomplete.Input
-				onChange={(event) => setValue(event.target.value)}
-				placeholder="Search..."
-				value={value}
-			/>
+			<ClayInput.Group>
+				<ClayInput.GroupItem>
+					<ClayAutocomplete.Input
+						aria-label={Liferay.Language.get('search')}
+						className="input-group-inset input-group-inset-after search-bar-keywords-input"
+						data-qa-id="searchInput"
+						name={keywordsParameterName}
+						onChange={(event) => {
+							setActive(true);
+							setValue(event.target.value);
+						}}
+						placeholder={Liferay.Language.get('search-...')}
+						title={Liferay.Language.get('search')}
+						type="text"
+						value={value}
+					/>
+
+					{loading ? (
+						<ClayAutocomplete.LoadingIndicator />
+					) : (
+						<ClayInput.GroupInsetItem after>
+							<ClayButton
+								aria-label={Liferay.Language.get('submit')}
+								displayType="unstyled"
+								type="submit"
+							>
+								<ClayIcon symbol="search" />
+							</ClayButton>
+						</ClayInput.GroupInsetItem>
+					)}
+				</ClayInput.GroupItem>
+			</ClayInput.Group>
 
 			<ClayAutocomplete.DropDown
-				active={(!!resource && !!value) || initialLoading}
+				active={active && ((!!resource && !!value) || initialLoading)}
 				closeOnClickOutside
+				onSetActive={setActive}
 			>
-				{(error || (resource && resource.error)) && (
+				{(error || resource?.error || !resource?.items.length) && (
 					<ClayDropDown.ItemList>
 						<ClayDropDown.Item className="disabled">
 							{Liferay.Language.get('no-results-found')}
@@ -91,25 +115,38 @@ export default function SearchBar({
 				{!error &&
 					resource &&
 					resource.items &&
+					!!resource.items.length &&
 					resource.items.map((group, groupIndex) => (
-						<ClayDropDown.ItemList key={groupIndex}>
+						<ClayDropDown.ItemList
+							className="searchbar-suggestions-dropdown"
+							key={groupIndex}
+						>
 							<ClayDropDown.Group header={group.displayGroupName}>
-								{group.suggestions.map((item, itemIndex) => (
-									<ClayDropDown.Item
-										href={item.attributes?.assetURL}
-										key={itemIndex}
-									>
-										<div className="text">{item.text}</div>
+								{group.suggestions.map(
+									({text, attributes = {}}, itemIndex) => (
+										<ClayDropDown.Item
+											href={attributes.assetURL}
+											key={itemIndex}
+										>
+											<div>
+												<strong>{text}</strong>
+											</div>
 
-										<div>{getAssetSearchSummary(item)}</div>
-									</ClayDropDown.Item>
-								))}
+											{attributes.assetSearchSummary && (
+												<div className="text-truncate-inline">
+													<div className="text-truncate">
+														{attributes.assetSearchSummary ||
+															''}
+													</div>
+												</div>
+											)}
+										</ClayDropDown.Item>
+									)
+								)}
 							</ClayDropDown.Group>
 						</ClayDropDown.ItemList>
 					))}
 			</ClayAutocomplete.DropDown>
-
-			{loading && <ClayAutocomplete.LoadingIndicator />}
 		</ClayAutocomplete>
 	);
 }
