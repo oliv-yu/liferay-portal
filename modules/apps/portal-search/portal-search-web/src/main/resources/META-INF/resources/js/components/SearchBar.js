@@ -18,11 +18,11 @@ import {useResource} from '@clayui/data-provider';
 import ClayDropDown from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 export default function SearchBar({
 	destinationFriendlyURL,
-	keywords,
+	keywords = '',
 	keywordsParameterName = 'q',
 	scope = '',
 	suggestionsContributorConfiguration,
@@ -37,6 +37,9 @@ export default function SearchBar({
 	const [active, setActive] = useState(false);
 	const [value, setValue] = useState(keywords);
 	const [networkStatus, setNetworkStatus] = useState(4);
+
+	const alignElementRef = useRef();
+	const dropdownRef = useRef();
 
 	const {resource} = useResource({
 		fetchOptions: {
@@ -67,7 +70,7 @@ export default function SearchBar({
 	return (
 		<ClayAutocomplete>
 			<ClayInput.Group>
-				<ClayInput.GroupItem>
+				<ClayInput.GroupItem ref={alignElementRef}>
 					<ClayAutocomplete.Input
 						aria-label={Liferay.Language.get('search')}
 						className="input-group-inset input-group-inset-after search-bar-keywords-input"
@@ -99,12 +102,23 @@ export default function SearchBar({
 				</ClayInput.GroupItem>
 			</ClayInput.Group>
 
-			<ClayAutocomplete.DropDown
+			<ClayDropDown.Menu
 				active={active && ((!!resource && !!value) || initialLoading)}
+				alignElementRef={alignElementRef}
+				autoBestAlign={false}
+				className="autocomplete-dropdown-menu"
 				closeOnClickOutside
 				onSetActive={setActive}
+				ref={dropdownRef}
+				style={{
+					maxHeight: '25rem',
+					maxWidth: 'none',
+					width:
+						alignElementRef.current &&
+						alignElementRef.current.clientWidth + 'px',
+				}}
 			>
-				{(error || resource?.error || !resource?.items.length) && (
+				{(error || resource?.error || !resource?.items?.length) && (
 					<ClayDropDown.ItemList>
 						<ClayDropDown.Item className="disabled">
 							{Liferay.Language.get('no-results-found')}
@@ -123,10 +137,10 @@ export default function SearchBar({
 						>
 							<ClayDropDown.Group header={group.displayGroupName}>
 								{group.suggestions.map(
-									({text, attributes = {}}, itemIndex) => (
+									({text, attributes = {}}, index) => (
 										<ClayDropDown.Item
 											href={attributes.assetURL}
-											key={itemIndex}
+											key={index}
 										>
 											<div>
 												<strong>{text}</strong>
@@ -146,7 +160,7 @@ export default function SearchBar({
 							</ClayDropDown.Group>
 						</ClayDropDown.ItemList>
 					))}
-			</ClayAutocomplete.DropDown>
+			</ClayDropDown.Menu>
 		</ClayAutocomplete>
 	);
 }
