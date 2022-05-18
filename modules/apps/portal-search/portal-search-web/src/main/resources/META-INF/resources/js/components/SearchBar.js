@@ -18,13 +18,18 @@ import {useResource} from '@clayui/data-provider';
 import ClayDropDown from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import {navigate} from 'frontend-js-web';
 import React, {useRef, useState} from 'react';
 
 export default function SearchBar({
 	destinationFriendlyURL,
+	emptySearchEnabled,
 	keywords = '',
 	keywordsParameterName = 'q',
+	paginationStartParameterName,
 	scope = '',
+	scopeParameterName,
+	searchURL = '/search',
 	suggestionsContributorConfiguration,
 	suggestionsDisplayThreshold, // eslint-disable-line no-unused-vars
 	suggestionsURL = '/o/portal-search-rest/v1.0/suggestions',
@@ -67,6 +72,39 @@ export default function SearchBar({
 	const loading = networkStatus < 4;
 	const error = networkStatus === 5;
 
+	const _handleSubmit = () => {
+		if (!!value || emptySearchEnabled) {
+			const queryString = _updateQueryString(document.location.search);
+
+			navigate(searchURL + queryString);
+		}
+	};
+
+	const _updateQueryString = (queryString) => {
+		const searchParams = new URLSearchParams(queryString);
+
+		if (value) {
+			searchParams.set(
+				keywordsParameterName,
+				value.replace(/^\s+|\s+$/, '')
+			);
+		}
+
+		if (paginationStartParameterName) {
+			searchParams.delete(paginationStartParameterName);
+		}
+
+		if (scope) {
+			searchParams.set(scopeParameterName, scope);
+		}
+
+		searchParams.delete('p_p_id');
+		searchParams.delete('p_p_state');
+		searchParams.delete('start');
+
+		return '?' + searchParams.toString();
+	};
+
 	return (
 		<ClayAutocomplete>
 			<ClayInput.Group>
@@ -79,6 +117,11 @@ export default function SearchBar({
 						onChange={(event) => {
 							setActive(true);
 							setValue(event.target.value);
+						}}
+						onKeyDown={(event) => {
+							if (event.key === 'Enter') {
+								_handleSubmit();
+							}
 						}}
 						placeholder={Liferay.Language.get('search-...')}
 						title={Liferay.Language.get('search')}
@@ -93,7 +136,7 @@ export default function SearchBar({
 							<ClayButton
 								aria-label={Liferay.Language.get('submit')}
 								displayType="unstyled"
-								type="submit"
+								onClick={_handleSubmit}
 							>
 								<ClayIcon symbol="search" />
 							</ClayButton>
