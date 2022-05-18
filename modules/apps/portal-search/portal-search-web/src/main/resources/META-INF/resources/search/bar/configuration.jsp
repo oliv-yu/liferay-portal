@@ -102,9 +102,9 @@ String suggestionsContributorConfiguration = StringBundler.concat(StringPool.OPE
 					<aui:input label="enable-suggestions" name="<%= PortletPreferencesJspUtil.getInputName(SearchBarPortletPreferences.PREFERENCE_KEY_SUGGESTIONS_ENABLED) %>" type="checkbox" value="<%= searchBarPortletPreferences.isSuggestionsEnabled() %>" />
 
 					<div class="options-container <%= !searchBarPortletPreferences.isSuggestionsEnabled() ? "hide" : StringPool.BLANK %>" id="<portlet:namespace />suggestionsOptionsContainer">
-						<aui:input label="character-threshold-for-displaying-suggestions" name="<%= PortletPreferencesJspUtil.getInputName(SearchBarPortletPreferences.PREFERENCE_KEY_SUGGESTIONS_DISPLAY_THRESHOLD) %>" size="10" type="text" value="<%= searchBarPortletInstanceConfiguration.suggestionsDisplayThreshold() %>" />
+						<aui:input helpMessage="suggestions-display-threshold-help" label="suggestions-display-threshold" name="<%= PortletPreferencesJspUtil.getInputName(SearchBarPortletPreferences.PREFERENCE_KEY_SUGGESTIONS_DISPLAY_THRESHOLD) %>" size="10" type="text" value="<%= searchBarPortletInstanceConfiguration.suggestionsDisplayThreshold() %>" />
 
-						<aui:input label="suggestions-contributor-configuration" name="<%= PortletPreferencesJspUtil.getInputName(SearchBarPortletPreferences.PREFERENCE_KEY_SUGGESTIONS_CONTRIBUTOR_CONFIGURATION) %>" type="textarea" value="<%= suggestionsContributorConfiguration %>" />
+						<aui:input helpMessage="suggestions-contributor-configuration-help" label="suggestions-contributor-configuration" name="<%= PortletPreferencesJspUtil.getInputName(SearchBarPortletPreferences.PREFERENCE_KEY_SUGGESTIONS_CONTRIBUTOR_CONFIGURATION) %>" type="textarea" value="<%= suggestionsContributorConfiguration %>" />
 					</div>
 				</liferay-frontend:fieldset>
 			</c:if>
