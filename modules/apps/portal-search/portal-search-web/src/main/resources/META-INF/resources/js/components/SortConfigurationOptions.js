@@ -12,7 +12,7 @@
  * details.
  */
 
-import ClayForm, {ClayInput, ClayToggle} from '@clayui/form';
+import ClayForm, {ClayInput, ClaySelect, ClayToggle} from '@clayui/form';
 import React, {useState} from 'react';
 
 import FieldList, {ORDERS} from './FieldList';
@@ -59,6 +59,61 @@ const removeOrderFromFieldName = (fieldName) => {
 		? fieldName.slice(0, -1)
 		: fieldName;
 };
+
+function Inputs({field, label, onChange, order}) {
+	const _handleChangeValue = (value) => (event) => {
+		onChange({[value]: event.target.value});
+	};
+
+	return (
+		<>
+			<ClayInput.GroupItem>
+				<label htmlFor="indexedFieldName">
+					{Liferay.Language.get('indexed-field-name')}
+				</label>
+
+				<ClayInput
+					id="indexedFieldName"
+					onChange={_handleChangeValue('field')}
+					type="text"
+					value={field}
+				/>
+			</ClayInput.GroupItem>
+
+			<ClayInput.GroupItem>
+				<label htmlFor="displayLabel">
+					{Liferay.Language.get('display-label')}
+				</label>
+
+				<ClayInput
+					id="displayLabel"
+					onChange={_handleChangeValue('label')}
+					type="text"
+					value={label}
+				/>
+			</ClayInput.GroupItem>
+
+			<ClayInput.GroupItem>
+				<label htmlFor="order">{Liferay.Language.get('order')}</label>
+
+				<ClaySelect
+					aria-label={Liferay.Language.get('select-order')}
+					id="order"
+					onChange={_handleChangeValue('order')}
+					value={order}
+				>
+					{Object.keys(ORDERS).map((key) => (
+						<ClaySelect.Option
+							key={ORDERS[key].value}
+							label={ORDERS[key].label}
+							value={ORDERS[key].value}
+						/>
+					))}
+				</ClaySelect>
+			</ClayInput.GroupItem>
+		</>
+	);
+}
 
 function SortConfigurationOptions({
 	fieldsInputName = '',
@@ -144,7 +199,16 @@ function SortConfigurationOptions({
 				</ClayInput.Group>
 			</ClayForm.Group>
 
-			<FieldList fields={fields} onChangeFields={setFields} />
+			<FieldList
+				fields={fields}
+				initialValue={{
+					field: '',
+					label: '',
+					order: ORDERS.ASC.value,
+				}}
+				inputItems={(props) => <Inputs {...props} />}
+				onChangeFields={setFields}
+			/>
 		</div>
 	);
 }

@@ -13,7 +13,7 @@
  */
 
 import ClayButton from '@clayui/button';
-import ClayForm, {ClayInput, ClaySelect} from '@clayui/form';
+import ClayForm, {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import React, {useRef} from 'react';
 import {DndProvider, useDrag, useDrop} from 'react-dnd';
@@ -74,11 +74,7 @@ function DropZone({index, move}) {
 	);
 }
 
-function Field({field, index, label, onChange, onDelete, order}) {
-	const _handleChangeValue = (value) => (event) => {
-		onChange({[value]: event.target.value});
-	};
-
+function Field({children, index, onDelete}) {
 	const [{isDragging}, drag] = useDrag({
 		collect: (monitor) => ({
 			isDragging: !!monitor.isDragging(),
@@ -108,52 +104,7 @@ function Field({field, index, label, onChange, onDelete, order}) {
 						</ClayButton>
 					</ClayInput.GroupItem>
 
-					<ClayInput.GroupItem>
-						<label htmlFor="indexedFieldName">
-							{Liferay.Language.get('indexed-field-name')}
-						</label>
-
-						<ClayInput
-							id="indexedFieldName"
-							onChange={_handleChangeValue('field')}
-							type="text"
-							value={field}
-						/>
-					</ClayInput.GroupItem>
-
-					<ClayInput.GroupItem>
-						<label htmlFor="displayLabel">
-							{Liferay.Language.get('display-label')}
-						</label>
-
-						<ClayInput
-							id="displayLabel"
-							onChange={_handleChangeValue('label')}
-							type="text"
-							value={label}
-						/>
-					</ClayInput.GroupItem>
-
-					<ClayInput.GroupItem>
-						<label htmlFor="order">
-							{Liferay.Language.get('order')}
-						</label>
-
-						<ClaySelect
-							aria-label={Liferay.Language.get('select-order')}
-							id="order"
-							onChange={_handleChangeValue('order')}
-							value={order}
-						>
-							{Object.keys(ORDERS).map((key) => (
-								<ClaySelect.Option
-									key={ORDERS[key].value}
-									label={ORDERS[key].label}
-									value={ORDERS[key].value}
-								/>
-							))}
-						</ClaySelect>
-					</ClayInput.GroupItem>
+					{children}
 
 					<ClayInput.GroupItem shrink>
 						<ClayButton
@@ -172,17 +123,21 @@ function Field({field, index, label, onChange, onDelete, order}) {
 	);
 }
 
-function FieldList({fields, onChangeFields}) {
+function FieldList({
+	addFieldLabel = Liferay.Language.get('add-option'),
+	fields,
+	initialValue = {},
+	inputItems,
+	onChangeFields,
+}) {
 	const idCounterRef = useRef(10000); // Starts at 10000 to avoid conflicts with existing fields.
 
 	const _handleAddField = () => {
 		onChangeFields([
 			...fields,
 			{
-				field: '',
+				...initialValue,
 				id: idCounterRef.current++,
-				label: '',
-				order: ORDERS.ASC.value,
 			},
 		]);
 	};
@@ -202,32 +157,35 @@ function FieldList({fields, onChangeFields}) {
 	};
 
 	return (
-		<DndProvider backend={HTML5Backend}>
-			{fields.map((item, index) => (
-				<div key={item.id}>
-					<DropZone index={index} move={_handleMoveField} />
+		<div className="field-list">
+			<DndProvider backend={HTML5Backend}>
+				{fields.map((item, index) => (
+					<div key={item.id}>
+						<DropZone index={index} move={_handleMoveField} />
 
-					<Field
-						field={item.field}
-						index={index}
-						label={item.label}
-						onChange={_handleChangeField(index)}
-						onDelete={() => _handleDeleteField(index)}
-						order={item.order}
-					/>
-				</div>
-			))}
+						<Field
+							index={index}
+							onDelete={() => _handleDeleteField(index)}
+						>
+							{inputItems({
+								...item,
+								onChange: _handleChangeField(index),
+							})}
+						</Field>
+					</div>
+				))}
 
-			<DropZone index={fields.length} move={_handleMoveField} />
+				<DropZone index={fields.length} move={_handleMoveField} />
 
-			<ClayButton displayType="secondary" onClick={_handleAddField}>
-				<span className="inline-item inline-item-before">
-					<ClayIcon symbol="plus" />
-				</span>
+				<ClayButton displayType="secondary" onClick={_handleAddField}>
+					<span className="inline-item inline-item-before">
+						<ClayIcon symbol="plus" />
+					</span>
 
-				{Liferay.Language.get('add-option')}
-			</ClayButton>
-		</DndProvider>
+					{addFieldLabel}
+				</ClayButton>
+			</DndProvider>
+		</div>
 	);
 }
 
