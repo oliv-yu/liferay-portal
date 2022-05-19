@@ -156,6 +156,10 @@ function FieldList({
 		onChangeFields(move(fields, from, to));
 	};
 
+	const _handleReplaceField = (index) => (value) => {
+		onChangeFields(fields.map((item, i) => (i === index ? value : item)));
+	};
+
 	return (
 		<div className="field-list">
 			<DndProvider backend={HTML5Backend}>
@@ -170,6 +174,7 @@ function FieldList({
 							{inputItems({
 								...item,
 								onChange: _handleChangeField(index),
+								onReplace: _handleReplaceField(index),
 							})}
 						</Field>
 					</div>
