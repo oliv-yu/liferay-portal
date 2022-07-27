@@ -12,28 +12,33 @@
 		persistState=true
 		title="category"
 	>
-		<ul class="list-unstyled">
-			<#if entries?has_content>
-				<#list entries as entry>
-					<li class="facet-value">
-						<button
-							class="btn btn-link btn-unstyled facet-term ${(entry.isSelected())?then('facet-term-selected', 'facet-term-unselected')} term-name"
-							data-term-id="${entry.getAssetCategoryId()}"
-							disabled
-							onClick="Liferay.Search.FacetUtil.changeSelection(event);"
-						>
-							${htmlUtil.escape(entry.getDisplayName())}
+		<#list assetCategoriesSearchFacetDisplayContext.getVocabularyNames() as vocabularyName>
+			<b>${vocabularyName}</b>
 
-							<#if entry.isFrequencyVisible()>
-								<small class="term-count">
-									(${entry.getFrequency()})
-								</small>
-							</#if>
-						</button>
-					</li>
-				</#list>
-			</#if>
-		</ul>
+			<ul class="list-unstyled">
+				<#if entries?has_content>
+					<#list entries as entry>
+						<#if entry.getVocabularyName() == vocabularyName>
+							<li class="facet-value">
+								<button
+									class="btn btn-link btn-unstyled facet-term ${(entry.isSelected())?then('facet-term-selected', 'facet-term-unselected')} term-name"
+									data-term-id="${entry.getAssetCategoryId()}"
+									disabled
+									onClick="Liferay.Search.FacetUtil.changeSelection(event);"
+								>
+								${htmlUtil.escape(entry.getDisplayName())}
+								<#if entry.isFrequencyVisible()>
+									<small class="term-count">
+										(${entry.getFrequency()})
+									</small>
+								</#if>
+								</button>
+							</li>
+						</#if>
+					</#list>
+				</#if>
+			</ul>
+		</#list>
 
 		<#if !assetCategoriesSearchFacetDisplayContext.isNothingSelected()>
 			<@liferay_aui.button
