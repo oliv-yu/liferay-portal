@@ -15,9 +15,11 @@
 package com.liferay.portal.search.web.internal.facet.display.context;
 
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.configuration.CategoryFacetFieldConfiguration;
 import com.liferay.portal.search.web.internal.category.facet.configuration.CategoryFacetPortletInstanceConfiguration;
 
 import java.io.Serializable;
@@ -47,6 +49,13 @@ public class AssetCategoriesSearchFacetDisplayContext implements Serializable {
 		_categoryFacetPortletInstanceConfiguration =
 			portletDisplay.getPortletInstanceConfiguration(
 				CategoryFacetPortletInstanceConfiguration.class);
+
+		CategoryFacetFieldConfiguration categoryFacetFieldConfiguration =
+			ConfigurationProviderUtil.getSystemConfiguration(
+				CategoryFacetFieldConfiguration.class);
+
+		_displayVocabularySelector = _isDisplayVocabularySelector(
+			categoryFacetFieldConfiguration.categoryFacetField());
 	}
 
 	public CategoryFacetPortletInstanceConfiguration
@@ -111,6 +120,10 @@ public class AssetCategoriesSearchFacetDisplayContext implements Serializable {
 		return _cloud;
 	}
 
+	public boolean isDisplayVocabularySelector() {
+		return _displayVocabularySelector;
+	}
+
 	public boolean isNothingSelected() {
 		return _nothingSelected;
 	}
@@ -169,6 +182,14 @@ public class AssetCategoriesSearchFacetDisplayContext implements Serializable {
 		_vocabularyNames = vocabularyNames;
 	}
 
+	private boolean _isDisplayVocabularySelector(String fieldName) {
+		if (fieldName.equals("assetVocabularyCategoryIds")) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private List<AssetCategoriesSearchFacetTermDisplayContext>
 		_assetCategoriesSearchFacetTermDisplayContext;
 	private Map<String, List<AssetCategoriesSearchFacetTermDisplayContext>>
@@ -177,6 +198,7 @@ public class AssetCategoriesSearchFacetDisplayContext implements Serializable {
 		_categoryFacetPortletInstanceConfiguration;
 	private boolean _cloud;
 	private long _displayStyleGroupId;
+	private final boolean _displayVocabularySelector;
 	private final HttpServletRequest _httpServletRequest;
 	private boolean _nothingSelected;
 	private String _paginationStartParameterName;
