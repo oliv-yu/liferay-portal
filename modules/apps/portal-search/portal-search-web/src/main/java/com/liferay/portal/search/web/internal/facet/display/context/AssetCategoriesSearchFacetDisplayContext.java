@@ -54,7 +54,7 @@ public class AssetCategoriesSearchFacetDisplayContext implements Serializable {
 			ConfigurationProviderUtil.getSystemConfiguration(
 				CategoryFacetFieldConfiguration.class);
 
-		_displayVocabularySelector = _isDisplayVocabularySelector(
+		_legacyFieldSelected = _isLegacyFieldSelected(
 			categoryFacetFieldConfiguration.categoryFacetField());
 	}
 
@@ -120,8 +120,8 @@ public class AssetCategoriesSearchFacetDisplayContext implements Serializable {
 		return _cloud;
 	}
 
-	public boolean isDisplayVocabularySelector() {
-		return _displayVocabularySelector;
+	public boolean isLegacyFieldSelected() {
+		return _legacyFieldSelected;
 	}
 
 	public boolean isNothingSelected() {
@@ -182,12 +182,12 @@ public class AssetCategoriesSearchFacetDisplayContext implements Serializable {
 		_vocabularyNames = vocabularyNames;
 	}
 
-	private boolean _isDisplayVocabularySelector(String fieldName) {
+	private boolean _isLegacyFieldSelected(String fieldName) {
 		if (fieldName.equals("assetVocabularyCategoryIds")) {
-			return true;
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	private List<AssetCategoriesSearchFacetTermDisplayContext>
@@ -198,8 +198,8 @@ public class AssetCategoriesSearchFacetDisplayContext implements Serializable {
 		_categoryFacetPortletInstanceConfiguration;
 	private boolean _cloud;
 	private long _displayStyleGroupId;
-	private final boolean _displayVocabularySelector;
 	private final HttpServletRequest _httpServletRequest;
+	private final boolean _legacyFieldSelected;
 	private boolean _nothingSelected;
 	private String _paginationStartParameterName;
 	private String _parameterName;

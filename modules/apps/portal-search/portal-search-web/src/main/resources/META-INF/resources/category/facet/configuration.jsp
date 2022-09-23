@@ -86,7 +86,7 @@ CategoryFacetPortletPreferences categoryFacetPortletPreferences = new CategoryFa
 				<aui:input label="display-frequencies" name="<%= PortletPreferencesJspUtil.getInputName(CategoryFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE) %>" type="checkbox" value="<%= categoryFacetPortletPreferences.isFrequenciesVisible() %>" />
 
 				<c:choose>
-					<c:when test="<%= assetCategoriesSearchFacetDisplayContext.isDisplayVocabularySelector() %>">
+					<c:when test="<%= !assetCategoriesSearchFacetDisplayContext.isLegacyFieldSelected() %>">
 						<div id="<portlet:namespace />selectVocabularies">
 							<react:component
 								module="js/components/SelectVocabularies"
