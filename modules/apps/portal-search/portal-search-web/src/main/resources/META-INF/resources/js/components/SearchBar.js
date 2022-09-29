@@ -23,6 +23,7 @@ import {addParams, fetch, navigate} from 'frontend-js-web';
 import React, {useCallback, useRef, useState} from 'react';
 
 import useDebounceCallback from '../hooks/useDebounceCallback';
+import {getRecentSearches} from '../utils/SearchBarUtil';
 import cleanSuggestionsContributorConfiguration from '../utils/clean_suggestions_contributor_configuration';
 
 export default function SearchBar({
@@ -52,6 +53,7 @@ export default function SearchBar({
 	const [autocompleteSearchValue, setAutocompleteSearchValue] = useState('');
 	const [inputValue, setInputValue] = useState(keywords);
 	const [loading, setLoading] = useState(false);
+	const [recentSearches] = useState(getRecentSearches(keywordsParameterName));
 	const [scope, setScope] = useState(
 		selectedEverythingSearchScope
 			? scopeParameterStringEverything
@@ -171,7 +173,7 @@ export default function SearchBar({
 
 			_fetchSuggestions(inputValue, scope);
 
-			setActive(true);
+			setActive(!!recentSearches.length);
 		}
 	};
 
@@ -353,7 +355,11 @@ export default function SearchBar({
 			</ClayInput.Group>
 
 			<ClayDropDown.Menu
-				active={active && !!suggestionsResponseItems.length}
+				active={
+					active &&
+					(!!suggestionsResponseItems.length ||
+						!!recentSearches.length)
+				}
 				alignElementRef={alignElementRef}
 				autoBestAlign={false}
 				className="search-bar-suggestions-dropdown-menu"
@@ -366,6 +372,21 @@ export default function SearchBar({
 						alignElementRef.current.clientWidth + 'px',
 				}}
 			>
+				<ClayDropDown.ItemList
+					className="search-bar-suggestions-results-list"
+					key="RECENT_SEARCHES"
+				>
+					<ClayDropDown.Group header="Recent Searches">
+						{recentSearches.map((keywords, index) => (
+							<ClayDropDown.Item href="#" key={index}>
+								<div className="suggestion-item-title">
+									{keywords}
+								</div>
+							</ClayDropDown.Item>
+						))}
+					</ClayDropDown.Group>
+				</ClayDropDown.ItemList>
+
 				{suggestionsResponseItems.map((group, groupIndex) => (
 					<ClayDropDown.ItemList
 						className="search-bar-suggestions-results-list"

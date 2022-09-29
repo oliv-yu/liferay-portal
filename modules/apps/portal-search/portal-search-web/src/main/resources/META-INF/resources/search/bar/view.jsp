@@ -21,6 +21,7 @@
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/clay" prefix="clay" %><%@
 taglib uri="http://liferay.com/tld/ddm" prefix="liferay-ddm" %><%@
+taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/react" prefix="react" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
@@ -62,6 +63,17 @@ SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortle
 		</div>
 	</c:when>
 	<c:otherwise>
+		<liferay-frontend:component
+			context='<%=
+				HashMapBuilder.<String, Object>put(
+					"keywords", searchBarPortletDisplayContext.getKeywords()
+				).put(
+					"keywordsParameterName", searchBarPortletDisplayContext.getKeywordsParameterName()
+				).build()
+			%>'
+			module="js/utils/initializeSearchBarRecentSearches"
+		/>
+
 		<aui:form action="<%= searchBarPortletDisplayContext.getSearchURL() %>" method="get" name="fm">
 			<c:if test="<%= !Validator.isBlank(searchBarPortletDisplayContext.getPaginationStartParameterName()) %>">
 				<input class="search-bar-reset-start-page" name="<%= searchBarPortletDisplayContext.getPaginationStartParameterName() %>" type="hidden" value="0" />
