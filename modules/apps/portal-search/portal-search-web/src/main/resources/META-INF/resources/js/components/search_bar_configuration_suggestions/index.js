@@ -175,6 +175,21 @@ function SearchBarConfigurationSuggestions({
 				size: '3',
 			});
 		}
+		else if (contributorName === CONTRIBUTOR_TYPES.RECENT_SEARCHES) {
+			onInputSetsAdd({
+				attributes: {
+					characterThreshold: '0',
+					matchDisplayLanguageId: true,
+				},
+				contributorName,
+				displayGroupName:
+					CONTRIBUTOR_TYPES_ASAH_DEFAULT_DISPLAY_GROUP_NAMES[
+						contributorName
+					] || '',
+
+				size: '3',
+			});
+		}
 		else if (contributorName === CONTRIBUTOR_TYPES.SXP_BLUEPRINT) {
 			onInputSetsAdd({
 				attributes: {

@@ -63,6 +63,21 @@ function getSiteActivitiesContributorActivityOptions(learnMessages) {
 			),
 			title: Liferay.Language.get('trending-searches'),
 		},
+		{
+			contributorName: CONTRIBUTOR_TYPES.RECENT_SEARCHES,
+			description: (
+				<>
+					{Liferay.Language.get('recent-searches-help')}
+
+					<LearnMessage
+						className="c-ml-1"
+						learnMessages={learnMessages}
+						resourceKey="search-bar-suggestions-site-activities"
+					/>
+				</>
+			),
+			title: Liferay.Language.get('recent-searches'),
+		},
 	];
 }
 
@@ -233,12 +248,15 @@ function SiteActivities({index, onBlur, onInputSetItemChange, touched, value}) {
 					</ClaySelect>
 				</ClayInput.GroupItem>
 
-				<MinimumSearchesInput
-					onBlur={onBlur('attributes.minCounts')}
-					onChange={_handleChangeAttribute('minCounts')}
-					touched={touched['attributes.minCounts']}
-					value={value.attributes?.minCounts}
-				/>
+				{value.contributorName !==
+					CONTRIBUTOR_TYPES.RECENT_SEARCHES && (
+					<MinimumSearchesInput
+						onBlur={onBlur('attributes.minCounts')}
+						onChange={_handleChangeAttribute('minCounts')}
+						touched={touched['attributes.minCounts']}
+						value={value.attributes?.minCounts}
+					/>
+				)}
 			</div>
 		</>
 	);

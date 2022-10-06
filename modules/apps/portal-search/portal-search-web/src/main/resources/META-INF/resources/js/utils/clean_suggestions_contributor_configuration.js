@@ -41,11 +41,12 @@ export default function cleanSuggestionsContributorConfiguration(
 
 			if (
 				!isDXP &&
-				(item.contributorName === CONTRIBUTOR_TYPES.SXP_BLUEPRINT ||
-					item.contributorName ===
-						CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCH_KEYWORDS ||
-					item.contributorName ===
-						CONTRIBUTOR_TYPES.ASAH_TOP_SEARCH_KEYWORDS)
+				[
+					CONTRIBUTOR_TYPES.SXP_BLUEPRINT,
+					CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCH_KEYWORDS,
+					CONTRIBUTOR_TYPES.ASAH_TOP_SEARCH_KEYWORDS,
+					CONTRIBUTOR_TYPES.RECENT_SEARCHES,
+				].includes(item.contributorName)
 			) {
 				return false;
 			}
