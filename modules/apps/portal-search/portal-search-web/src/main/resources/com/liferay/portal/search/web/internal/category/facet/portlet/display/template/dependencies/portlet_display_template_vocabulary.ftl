@@ -119,7 +119,7 @@
 	markupView="lexicon"
 	persistState=true
 >
-	<#assign vocabularyNames = assetCategoriesSearchFacetDisplayContext.getVocabularyNames() />
+	<#assign vocabularyNames = assetCategoriesSearchFacetDisplayContext.getVocabularyNames()![] />
 
 	<@liferay_ui.panel
 		collapsible=true
@@ -143,7 +143,7 @@
 			</ul>
 		</#if>
 
-		<#if !assetCategoriesSearchFacetDisplayContext.isNothingSelected()>
+		<#if !assetCategoriesSearchFacetDisplayContext.isNothingSelected() && vocabularyNames?has_content>
 			<@liferay_aui.button
 				cssClass="btn-link btn-unstyled facet-clear-btn"
 				onClick="Liferay.Search.FacetUtil.clearSelections(event);"
