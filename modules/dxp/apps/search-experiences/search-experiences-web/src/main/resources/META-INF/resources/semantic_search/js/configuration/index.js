@@ -9,21 +9,11 @@
  * distribution rights of the Software.
  */
 
-import ClayAutocomplete from '@clayui/autocomplete';
-import {useResource} from '@clayui/data-provider';
-import ClayForm, {
-	ClayCheckbox,
-	ClayInput,
-	ClaySelect,
-	ClaySelectBox,
-} from '@clayui/form';
-import ClayIcon from '@clayui/icon';
-import {ClayTooltipProvider} from '@clayui/tooltip';
-import getCN from 'classnames';
 import {useFormik} from 'formik';
-import React, {useState} from 'react';
+import React from 'react';
 
 import {sub} from '../../../sxp_blueprint_admin/js/utils/language';
+import Input from './Input';
 
 /**
  * Formats the object into an array of key and label, commonly used for inputs
@@ -49,196 +39,6 @@ const getEntries = (items = {}) => {
 		value,
 	}));
 };
-
-function ModelAutocomplete({
-	label,
-	name,
-	onBlur,
-	onChange,
-	required,
-	value = '',
-}) {
-	const [networkStatus, setNetworkStatus] = useState(4);
-
-	const {resource} = useResource({
-		fetchPolicy: 'cache-first',
-		link: `${window.location.origin}${Liferay.ThemeDisplay.getPathContext()}
-		/o/search-experiences-rest/v1.0/sentence-transformer/ml-models`,
-		onNetworkStatusChange: setNetworkStatus,
-		variables: {limit: 20, query: value},
-	});
-
-	return (
-		<ClayAutocomplete
-			aria-labelledby={label}
-			id={name}
-			items={(resource?.items || []).map(({modelId}) => modelId)}
-			loadingState={networkStatus}
-			messages={{
-				loading: Liferay.Language.get('loading'),
-				notFound: Liferay.Language.get('no-results-found'),
-			}}
-			name={name}
-			onBlur={onBlur}
-			onChange={onChange}
-			onItemsChange={() => {}}
-			required={required}
-			value={value}
-		>
-			{(item) => (
-				<ClayAutocomplete.Item key={item}>{item}</ClayAutocomplete.Item>
-			)}
-		</ClayAutocomplete>
-	);
-}
-
-function Input({
-	error,
-	formText,
-	helpText,
-	label,
-	name,
-	onBlur,
-	onChange,
-	items,
-	options = {},
-	required = false,
-	touched = false,
-	type,
-	value,
-}) {
-	const _renderInput = () => {
-		if (name.slice(-5) === 'model') {
-			return (
-				<ModelAutocomplete
-					label={label}
-					name={name}
-					onBlur={onBlur}
-					onChange={onChange}
-					required={required}
-					value={value}
-				/>
-			);
-		}
-
-		switch (type) {
-			case 'checkbox':
-				return (
-					<ClayCheckbox
-						aria-label={label}
-						checked={!!value}
-						label={label}
-						name={name}
-						onBlur={onBlur}
-						onChange={(event) => onChange(event.target.checked)}
-						required={required}
-						value={!!value}
-					/>
-				);
-			case 'multiple':
-				return (
-					<ClaySelectBox
-						className="multiple-select-box"
-						items={items}
-						multiple
-						name={name}
-						onBlur={onBlur}
-						onSelectChange={onChange}
-						required={required}
-						value={value}
-					/>
-				);
-			case 'number':
-				return (
-					<ClayInput
-						id={name}
-						max={options.max}
-						min={options.min}
-						name={name}
-						onBlur={onBlur}
-						onChange={(event) => onChange(event.target.value)}
-						required={required}
-						type="number"
-						value={value}
-					/>
-				);
-			case 'select':
-				return (
-					<ClaySelect
-						aria-label={label}
-						id={name}
-						name={name}
-						onBlur={onBlur}
-						onChange={(event) => onChange(event.target.value)}
-						required={required}
-						value={value}
-					>
-						{items.map((item) => (
-							<ClaySelect.Option
-								key={item.value}
-								label={item.label}
-								value={item.value}
-							/>
-						))}
-					</ClaySelect>
-				);
-			default:
-				return (
-					<ClayInput
-						id={name}
-						name={name}
-						onBlur={onBlur}
-						onChange={(event) => onChange(event.target.value)}
-						required={required}
-						type="text"
-						value={value || ''}
-					/>
-				);
-		}
-	};
-
-	return (
-		<ClayForm.Group
-			className={getCN({
-				'has-error': error && touched,
-			})}
-		>
-			{type !== 'checkbox' && (
-				<label htmlFor={name}>
-					{label}
-
-					{required && (
-						<span className="reference-mark">
-							<ClayIcon symbol="asterisk" />
-						</span>
-					)}
-
-					{helpText && (
-						<ClayTooltipProvider>
-							<span className="ml-2" title={helpText}>
-								<ClayIcon symbol="question-circle-full" />
-							</span>
-						</ClayTooltipProvider>
-					)}
-				</label>
-			)}
-
-			{_renderInput()}
-
-			{error && touched && (
-				<ClayForm.FeedbackGroup>
-					<ClayForm.FeedbackItem>{error}</ClayForm.FeedbackItem>
-				</ClayForm.FeedbackGroup>
-			)}
-
-			{formText && (
-				<ClayForm.FeedbackGroup>
-					<ClayForm.Text>{formText}</ClayForm.Text>
-				</ClayForm.FeedbackGroup>
-			)}
-		</ClayForm.Group>
-	);
-}
 
 export default function ({
 	assetEntryClassNames,
@@ -437,6 +237,7 @@ export default function ({
 							onBlur={_handleBlur('model')}
 							onChange={_handleChange('model')}
 							touched={formik.touched.model}
+							type="model"
 							value={formik.values.model}
 						/>
 
