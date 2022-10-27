@@ -28,7 +28,11 @@ function ModelAutocomplete({
 		link: `${window.location.origin}${Liferay.ThemeDisplay.getPathContext()}
 		/o/search-experiences-rest/v1.0/sentence-transformer/ml-models`,
 		onNetworkStatusChange: setNetworkStatus,
-		variables: {limit: 20, query: value},
+		variables: {
+			limit: 20,
+			pipeline_tag: 'feature-extraction',
+			query: value,
+		},
 	});
 
 	return (
