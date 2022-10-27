@@ -9,6 +9,7 @@
  * distribution rights of the Software.
  */
 
+import {ClayCheckbox} from '@clayui/form';
 import {useFormik} from 'formik';
 import React from 'react';
 
@@ -173,15 +174,18 @@ export default function ({
 
 	const _handleChange = (name) => (val) => formik.setFieldValue(name, val);
 
+	const _handleCheckboxChange = (name) => (event) =>
+		formik.setFieldValue(name, event.target.checked);
+
 	return (
 		<div className="semantic-search-settings">
-			<Input
+			<ClayCheckbox
+				aria-label={Liferay.Language.get('enabled')}
+				checked={!!formik.values.enabled}
 				label={Liferay.Language.get('enabled')}
 				name={`${namespace}enabled`}
-				onBlur={_handleBlur('enabled')}
-				onChange={_handleChange('enabled')}
-				type="checkbox"
-				value={formik.values.enabled}
+				onChange={_handleCheckboxChange('enabled')}
+				value={!!formik.values.enabled}
 			/>
 
 			<div className="sheet-section">
@@ -257,13 +261,13 @@ export default function ({
 							value={formik.values.modelTimeout}
 						/>
 
-						<Input
+						<ClayCheckbox
+							aria-label={Liferay.Language.get('enable-gpu')}
+							checked={!!formik.values.enableGPU}
 							label={Liferay.Language.get('enable-gpu')}
 							name={`${namespace}enableGPU`}
-							onBlur={_handleBlur('enableGPU')}
-							onChange={_handleChange('enableGPU')}
-							type="checkbox"
-							value={formik.values.enableGPU}
+							onChange={_handleCheckboxChange('enableGPU')}
+							value={!!formik.values.enableGPU}
 						/>
 					</>
 				)}

@@ -9,12 +9,7 @@
  * distribution rights of the Software.
  */
 
-import ClayForm, {
-	ClayCheckbox,
-	ClayInput,
-	ClaySelect,
-	ClaySelectBox,
-} from '@clayui/form';
+import ClayForm, {ClayInput, ClaySelect, ClaySelectBox} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import getCN from 'classnames';
@@ -39,19 +34,6 @@ function Input({
 }) {
 	const _renderInput = () => {
 		switch (type) {
-			case 'checkbox':
-				return (
-					<ClayCheckbox
-						aria-label={label}
-						checked={!!value}
-						label={label}
-						name={name}
-						onBlur={onBlur}
-						onChange={(event) => onChange(event.target.checked)}
-						required={required}
-						value={!!value}
-					/>
-				);
 			case 'model':
 				return (
 					<ModelAutocomplete
@@ -131,25 +113,23 @@ function Input({
 				'has-error': error && touched,
 			})}
 		>
-			{type !== 'checkbox' && (
-				<label htmlFor={name}>
-					{label}
+			<label htmlFor={name}>
+				{label}
 
-					{required && (
-						<span className="reference-mark">
-							<ClayIcon symbol="asterisk" />
+				{required && (
+					<span className="reference-mark">
+						<ClayIcon symbol="asterisk" />
+					</span>
+				)}
+
+				{helpText && (
+					<ClayTooltipProvider>
+						<span className="ml-2" title={helpText}>
+							<ClayIcon symbol="question-circle-full" />
 						</span>
-					)}
-
-					{helpText && (
-						<ClayTooltipProvider>
-							<span className="ml-2" title={helpText}>
-								<ClayIcon symbol="question-circle-full" />
-							</span>
-						</ClayTooltipProvider>
-					)}
-				</label>
-			)}
+					</ClayTooltipProvider>
+				)}
+			</label>
 
 			{_renderInput()}
 
