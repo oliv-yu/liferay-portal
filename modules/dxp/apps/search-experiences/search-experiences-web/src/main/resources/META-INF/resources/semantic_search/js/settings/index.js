@@ -62,9 +62,8 @@ function ModelAutocomplete({
 
 	const {resource} = useResource({
 		fetchPolicy: 'cache-first',
-		link: `${
-			window.location.origin
-		}${Liferay.ThemeDisplay.getPathContext()}/o/search-experiences-rest/v1.0/sentence-transformer/ml-models`,
+		link: `${window.location.origin}${Liferay.ThemeDisplay.getPathContext()}
+		/o/search-experiences-rest/v1.0/sentence-transformer/ml-models`,
 		onNetworkStatusChange: setNetworkStatus,
 		variables: {limit: 20, query: value},
 	});
@@ -428,7 +427,7 @@ export default function ({
 						<Input
 							error={formik.errors.model}
 							formText={Liferay.Language.get(
-								'please-select-from-the-dropdown-list'
+								'begin-typing-and-select-a-model'
 							)}
 							helpText={Liferay.Language.get(
 								'sentence-transformer-model-help'
