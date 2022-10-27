@@ -11,9 +11,13 @@
 
 import ClayAutocomplete from '@clayui/autocomplete';
 import {useResource} from '@clayui/data-provider';
-import ClayForm, {ClayCheckbox, ClayInput, ClaySelect} from '@clayui/form';
+import ClayForm, {
+	ClayCheckbox,
+	ClayInput,
+	ClaySelect,
+	ClaySelectBox,
+} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import ClayLayout from '@clayui/layout';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import getCN from 'classnames';
 import {useFormik} from 'formik';
@@ -30,15 +34,19 @@ import {sub} from '../../../sxp_blueprint_admin/js/utils/language';
  */
 const getEntries = (items = {}) => {
 	if (Array.isArray(items)) {
-		return items.map((item) => ({
-			key: item,
-			label: item,
-		}));
+		return items.map((item) =>
+			item.value && item.label
+				? item
+				: {
+						label: item,
+						value: item,
+				  }
+		);
 	}
 
-	return Object.entries(items).map(([key, label]) => ({
-		key,
+	return Object.entries(items).map(([value, label]) => ({
 		label,
+		value,
 	}));
 };
 
@@ -82,59 +90,6 @@ function ModelAutocomplete({
 				<ClayAutocomplete.Item key={item}>{item}</ClayAutocomplete.Item>
 			)}
 		</ClayAutocomplete>
-	);
-}
-
-function MultiSelection({name, onBlur, onChange, required, value = [], items}) {
-	const _handleChange = (key) => {
-		onChange(
-			value.includes(key)
-				? value.filter((id) => id !== key)
-				: [...value, key]
-		);
-	};
-
-	const _renderCheckbox = (item) => (
-		<ClayCheckbox
-			aria-label={item.label}
-			checked={value.includes(item.key)}
-			key={item.key}
-			label={item.label}
-			onBlur={onBlur}
-			onChange={() => _handleChange(item.key)}
-		/>
-	);
-
-	return (
-		<ClayLayout.ContainerFluid style={{paddingBottom: 0}} view>
-			<ClayLayout.Row justify="start">
-				<ClayLayout.Col size={6}>
-					{items
-						.slice(0, Math.ceil(items.length / 2))
-						.map((item) => _renderCheckbox(item))}
-				</ClayLayout.Col>
-
-				<ClayLayout.Col size={6}>
-					{items
-						.slice(Math.ceil(items.length / 2))
-						.map((item) => _renderCheckbox(item))}
-				</ClayLayout.Col>
-			</ClayLayout.Row>
-
-			{value.map((key) => (
-				<input hidden key={key} name={name} readOnly value={key} />
-			))}
-
-			{required && !value.length && (
-				<input
-					hidden
-					name={name}
-					onChange={() => {}}
-					required
-					value=""
-				/>
-			)}
-		</ClayLayout.ContainerFluid>
 	);
 }
 
@@ -183,11 +138,13 @@ function Input({
 				);
 			case 'multiple':
 				return (
-					<MultiSelection
+					<ClaySelectBox
+						className="multiple-select-box"
 						items={items}
+						multiple
 						name={name}
 						onBlur={onBlur}
-						onChange={onChange}
+						onSelectChange={onChange}
 						required={required}
 						value={value}
 					/>
@@ -219,9 +176,9 @@ function Input({
 					>
 						{items.map((item) => (
 							<ClaySelect.Option
-								key={item.key}
+								key={item.value}
 								label={item.label}
-								value={item.key}
+								value={item.value}
 							/>
 						))}
 					</ClaySelect>
