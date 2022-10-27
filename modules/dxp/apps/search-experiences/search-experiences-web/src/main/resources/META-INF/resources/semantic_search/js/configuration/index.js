@@ -16,6 +16,11 @@ import React from 'react';
 import {sub} from '../../../sxp_blueprint_admin/js/utils/language';
 import Input from './Input';
 
+const SENTENCE_TRANSFORM_PROVIDER_TYPES = {
+	HUGGING_FACE: 'huggingFace',
+	TXTAI: 'txtai',
+};
+
 /**
  * Formats the object into an array of key and label, commonly used for inputs
  * that require listing out options. If object is actually a flat array, this formats
@@ -67,7 +72,8 @@ export default function ({
 
 		if (
 			!values.modelTimeout &&
-			values.sentenceTransformProvider === 'huggingFace'
+			values.sentenceTransformProvider ===
+				SENTENCE_TRANSFORM_PROVIDER_TYPES.HUGGING_FACE
 		) {
 			errors.modelTimeout = Liferay.Language.get(
 				'this-field-is-required'
@@ -203,7 +209,8 @@ export default function ({
 					value={formik.values.sentenceTransformProvider}
 				/>
 
-				{formik.values.sentenceTransformProvider === 'txtai' && (
+				{formik.values.sentenceTransformProvider ===
+					SENTENCE_TRANSFORM_PROVIDER_TYPES.TXTAI && (
 					<Input
 						helpText={Liferay.Language.get(
 							'sentence-transformer-txtai-host-address-help'
@@ -216,7 +223,8 @@ export default function ({
 					/>
 				)}
 
-				{formik.values.sentenceTransformProvider === 'huggingFace' && (
+				{formik.values.sentenceTransformProvider ===
+					SENTENCE_TRANSFORM_PROVIDER_TYPES.HUGGING_FACE && (
 					<>
 						<Input
 							label={Liferay.Language.get(
