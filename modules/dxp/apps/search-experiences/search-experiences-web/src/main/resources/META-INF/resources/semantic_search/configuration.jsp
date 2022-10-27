@@ -45,7 +45,7 @@ SemanticSearchCompanyConfigurationDisplayContext semanticSearchCompanyConfigurat
 	<span aria-hidden="true" class="loading-animation"></span>
 
 	<react:component
-		module="semantic_search/js/settings/index"
+		module="semantic_search/js/configuration/index"
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"assetEntryClassNames", semanticSearchCompanyConfigurationDisplayContext.getAssetEntryClassNames()
