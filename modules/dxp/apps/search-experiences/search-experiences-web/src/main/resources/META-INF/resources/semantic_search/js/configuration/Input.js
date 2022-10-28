@@ -17,6 +17,8 @@ import React from 'react';
 
 import ModelAutocomplete from './ModelAutocomplete';
 
+const SELECT_BOX_SHOW_ITEMS_COUNT = 6;
+
 function Input({
 	error,
 	formText,
@@ -48,19 +50,22 @@ function Input({
 			case 'multiple':
 				return (
 					<ClaySelectBox
-						className="multiple-select-box"
+						aria-label={label}
+						className="mb-0" // Suppress extra margin from ClaySelectBox
 						items={items}
 						multiple
 						name={name}
 						onBlur={onBlur}
 						onSelectChange={onChange}
 						required={required}
+						size={SELECT_BOX_SHOW_ITEMS_COUNT}
 						value={value}
 					/>
 				);
 			case 'number':
 				return (
 					<ClayInput
+						aria-label={label}
 						id={name}
 						max={options.max}
 						min={options.min}
@@ -95,6 +100,7 @@ function Input({
 			default:
 				return (
 					<ClayInput
+						aria-label={label}
 						id={name}
 						name={name}
 						onBlur={onBlur}

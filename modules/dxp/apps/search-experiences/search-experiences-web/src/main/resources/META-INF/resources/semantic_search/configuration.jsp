@@ -27,20 +27,6 @@ page import="com.liferay.search.experiences.web.internal.display.context.Semanti
 SemanticSearchCompanyConfigurationDisplayContext semanticSearchCompanyConfigurationDisplayContext = (SemanticSearchCompanyConfigurationDisplayContext)request.getAttribute(SemanticSearchCompanyConfigurationDisplayContext.class.getName());
 %>
 
-<style type="text/css">
-	.multiple-select-box {
-		margin-bottom: 0;
-	}
-
-	.multiple-select-box .clay-reorder {
-		height: 200px;
-	}
-
-	.multiple-select-box .clay-reorder .form-control-inset {
-		height: 196px;
-	}
-</style>
-
 <div>
 	<span aria-hidden="true" class="loading-animation"></span>
 

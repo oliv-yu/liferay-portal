@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {ClayCheckbox} from '@clayui/form';
+import ClayForm, {ClayCheckbox} from '@clayui/form';
 import {useFormik} from 'formik';
 import React from 'react';
 
@@ -184,15 +184,17 @@ export default function ({
 		formik.setFieldValue(name, event.target.checked);
 
 	return (
-		<div className="semantic-search-settings">
-			<ClayCheckbox
-				aria-label={Liferay.Language.get('enabled')}
-				checked={!!formik.values.enabled}
-				label={Liferay.Language.get('enabled')}
-				name={`${namespace}enabled`}
-				onChange={_handleCheckboxChange('enabled')}
-				value={!!formik.values.enabled}
-			/>
+		<div className="semantic-search-settings-root">
+			<ClayForm.Group>
+				<ClayCheckbox
+					aria-label={Liferay.Language.get('enabled')}
+					checked={!!formik.values.enabled}
+					label={Liferay.Language.get('enabled')}
+					name={`${namespace}enabled`}
+					onChange={_handleCheckboxChange('enabled')}
+					value={!!formik.values.enabled}
+				/>
+			</ClayForm.Group>
 
 			<div className="sheet-section">
 				<h3 className="sheet-subtitle">
@@ -200,6 +202,7 @@ export default function ({
 				</h3>
 
 				<Input
+					error={formik.errors.sentenceTransformProvider}
 					items={getEntries(availableSentenceTransformProviders)}
 					label={Liferay.Language.get('sentence-transform-provider')}
 					name={`${namespace}sentenceTransformProvider`}
@@ -212,6 +215,7 @@ export default function ({
 				{formik.values.sentenceTransformProvider ===
 					SENTENCE_TRANSFORM_PROVIDER_TYPES.TXTAI && (
 					<Input
+						error={formik.errors.txtaiHostAddress}
 						helpText={Liferay.Language.get(
 							'sentence-transformer-txtai-host-address-help'
 						)}
@@ -227,6 +231,7 @@ export default function ({
 					SENTENCE_TRANSFORM_PROVIDER_TYPES.HUGGING_FACE && (
 					<>
 						<Input
+							error={formik.errors.huggingFaceAccessToken}
 							label={Liferay.Language.get(
 								'hugging-face-access-token'
 							)}
@@ -269,21 +274,21 @@ export default function ({
 							value={formik.values.modelTimeout}
 						/>
 
-						<ClayCheckbox
-							aria-label={Liferay.Language.get('enable-gpu')}
-							checked={!!formik.values.enableGPU}
-							label={Liferay.Language.get('enable-gpu')}
-							name={`${namespace}enableGPU`}
-							onChange={_handleCheckboxChange('enableGPU')}
-							value={!!formik.values.enableGPU}
-						/>
+						<ClayForm.Group>
+							<ClayCheckbox
+								aria-label={Liferay.Language.get('enable-gpu')}
+								checked={!!formik.values.enableGPU}
+								label={Liferay.Language.get('enable-gpu')}
+								name={`${namespace}enableGPU`}
+								onChange={_handleCheckboxChange('enableGPU')}
+								value={!!formik.values.enableGPU}
+							/>
+						</ClayForm.Group>
 					</>
 				)}
 
 				<Input
-					aria-label={Liferay.Language.get(
-						'embedding-vector-dimensions'
-					)}
+					error={formik.errors.embeddingVectorDimensions}
 					items={getEntries(availableEmbeddingVectorDimensions)}
 					label={Liferay.Language.get('embedding-vector-dimensions')}
 					name={`${namespace}embeddingVectorDimensions`}
@@ -316,6 +321,7 @@ export default function ({
 				/>
 
 				<Input
+					error={formik.errors.textTruncationStrategy}
 					helpText={Liferay.Language.get(
 						'sentence-transformer-text-truncation-strategy-help'
 					)}
