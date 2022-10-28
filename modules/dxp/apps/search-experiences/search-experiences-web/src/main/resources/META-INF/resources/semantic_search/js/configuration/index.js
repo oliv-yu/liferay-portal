@@ -22,11 +22,18 @@ const SENTENCE_TRANSFORM_PROVIDER_TYPES = {
 };
 
 /**
- * Formats the object into an array of key and label, commonly used for inputs
- * that require listing out options. If object is actually a flat array, this formats
- * the items into key-label pairs.
- * @param {Object} items Items formatted like {en_US: 'English', es_ES: 'Spanish'}
- * @return {Array} [{key: 'en_US', label: 'English'}, {key: 'es_ES', label: 'Spanish'}]
+ * Formats the object into an array of label and value, important for inputs
+ * that offer selection. If object is actually a flat array, this formats
+ * the items into label-value pairs.
+ *
+ * Examples:
+ * getEntries({en_US: 'English', es_ES: 'Spanish'})
+ * => [{label: 'English', value: 'en_US'}, {label: 'Spanish', value: 'es_ES'}]
+ * getEntries(['one', 'two'])
+ * => [{label: 'one', value: 'one'}, {label: 'two', value: 'two'}]
+ *
+ * @param {Object} items
+ * @return {Array}
  */
 const getEntries = (items = {}) => {
 	if (Array.isArray(items)) {
@@ -46,6 +53,11 @@ const getEntries = (items = {}) => {
 	}));
 };
 
+/**
+ * Form within semantic search settings page, configures transform provider and
+ * indexing settings.
+ * This can be found on: System Settings > Search Experiences > Semantic Search
+ */
 export default function ({
 	assetEntryClassNames,
 	availableAssetEntryClassNames,

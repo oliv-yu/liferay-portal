@@ -13,6 +13,11 @@ import ClayAutocomplete from '@clayui/autocomplete';
 import {useResource} from '@clayui/data-provider';
 import React, {useState} from 'react';
 
+/**
+ * When Hugging Face is selected as the Sentence Transform Provider, this input will
+ * query for applicable models.
+ * This can be found on: System Settings > Search Experiences > Semantic Search
+ */
 function ModelAutocomplete({
 	label,
 	name,
