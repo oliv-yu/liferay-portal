@@ -68,9 +68,9 @@ SemanticSearchCompanyConfigurationDisplayContext semanticSearchCompanyConfigurat
 			).put(
 				"sentenceTransformProvider", semanticSearchCompanyConfigurationDisplayContext.getSentenceTransformProvider()
 			).put(
-				"textaiHostAddress", semanticSearchCompanyConfigurationDisplayContext.getTxtaiHostAddress()
-			).put(
 				"textTruncationStrategy", semanticSearchCompanyConfigurationDisplayContext.getTextTruncationStrategy()
+			).put(
+				"txtaiHostAddress", semanticSearchCompanyConfigurationDisplayContext.getTxtaiHostAddress()
 			).build()
 		%>'
 	/>
