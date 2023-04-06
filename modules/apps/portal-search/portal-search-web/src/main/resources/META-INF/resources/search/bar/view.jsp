@@ -21,15 +21,13 @@
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/clay" prefix="clay" %><%@
 taglib uri="http://liferay.com/tld/ddm" prefix="liferay-ddm" %><%@
-taglib uri="http://liferay.com/tld/react" prefix="react" %><%@
+taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.petra.string.StringPool" %><%@
-page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
+<%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
-page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.ReleaseInfo" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
@@ -44,8 +42,6 @@ page import="com.liferay.portal.search.web.internal.search.bar.portlet.display.c
 <portlet:defineObjects />
 
 <%
-String randomNamespace = PortalUtil.generateRandomKey(request, "portlet_search_bar") + StringPool.UNDERLINE;
-
 SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortletDisplayContext)java.util.Objects.requireNonNull(request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT));
 %>
 
@@ -84,96 +80,153 @@ SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortle
 				displayStyleGroupId="<%= searchBarPortletDisplayContext.getDisplayStyleGroupId() %>"
 				entries="<%= new ArrayList<>() %>"
 			>
-				<c:choose>
-					<c:when test="<%= searchBarPortletDisplayContext.isSuggestionsEnabled() %>">
-						<div id="<portlet:namespace />reactSearchBar">
-							<react:component
-								module="js/components/SearchBar"
-								props='<%=
-									HashMapBuilder.<String, Object>put(
-										"destinationFriendlyURL", searchBarPortletDisplayContext.getDestinationFriendlyURL()
-									).put(
-										"emptySearchEnabled", searchBarPortletDisplayContext.isEmptySearchEnabled()
-									).put(
-										"isDXP", ReleaseInfo.isDXP()
-									).put(
-										"isSearchExperiencesSupported", searchBarPortletDisplayContext.isSearchExperiencesSupported()
-									).put(
-										"keywords", searchBarPortletDisplayContext.getKeywords()
-									).put(
-										"keywordsParameterName", searchBarPortletDisplayContext.getKeywordsParameterName()
-									).put(
-										"letUserChooseScope", searchBarPortletDisplayContext.isLetTheUserChooseTheSearchScope()
-									).put(
-										"paginationStartParameterName", searchBarPortletDisplayContext.getPaginationStartParameterName()
-									).put(
-										"scopeParameterName", searchBarPortletDisplayContext.getScopeParameterName()
-									).put(
-										"scopeParameterStringCurrentSite", searchBarPortletDisplayContext.getCurrentSiteSearchScopeParameterString()
-									).put(
-										"scopeParameterStringEverything", searchBarPortletDisplayContext.getEverythingSearchScopeParameterString()
-									).put(
-										"searchURL", searchBarPortletDisplayContext.getSearchURL()
-									).put(
-										"selectedEverythingSearchScope", searchBarPortletDisplayContext.isSelectedEverythingSearchScope()
-									).put(
-										"suggestionsContributorConfiguration", searchBarPortletDisplayContext.getSuggestionsContributorConfiguration()
-									).put(
-										"suggestionsDisplayThreshold", searchBarPortletDisplayContext.getSuggestionsDisplayThreshold()
-									).put(
-										"suggestionsURL", searchBarPortletDisplayContext.getSuggestionsURL()
-									).build()
-								%>'
-							/>
-						</div>
-					</c:when>
-					<c:otherwise>
-						<div class="search-bar">
-							<aui:input cssClass="search-bar-empty-search-input" name="emptySearchEnabled" type="hidden" value="<%= searchBarPortletDisplayContext.isEmptySearchEnabled() %>" />
+				<div class="search-bar">
+					<aui:input cssClass="search-bar-empty-search-input" name="emptySearchEnabled" type="hidden" value="<%= searchBarPortletDisplayContext.isEmptySearchEnabled() %>" />
 
-							<div class="input-group <%= searchBarPortletDisplayContext.isLetTheUserChooseTheSearchScope() ? "search-bar-scope" : "search-bar-simple" %>">
-								<c:choose>
-									<c:when test="<%= searchBarPortletDisplayContext.isLetTheUserChooseTheSearchScope() %>">
-										<aui:input autocomplete="off" cssClass="search-bar-keywords-input" data-qa-id="searchInput" id="<%= randomNamespace + HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywordsParameterName()) %>" label="" name="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywordsParameterName()) %>" placeholder='<%= LanguageUtil.get(request, "search-...") %>' title='<%= LanguageUtil.get(request, "search") %>' type="text" useNamespace="<%= false %>" value="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywords()) %>" wrapperCssClass="input-group-item input-group-prepend search-bar-keywords-input-wrapper" />
+					<div class="input-group <%= searchBarPortletDisplayContext.isLetTheUserChooseTheSearchScope() ? "search-bar-scope" : "search-bar-simple" %>">
+						<c:choose>
+							<c:when test="<%= searchBarPortletDisplayContext.isLetTheUserChooseTheSearchScope() %>">
+								<aui:input autocomplete="off" cssClass="search-bar-keywords-input" data-qa-id="searchInput" id="<%= liferayPortletResponse.getNamespace() + HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywordsParameterName()) %>" label="" name="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywordsParameterName()) %>" placeholder='<%= LanguageUtil.get(request, "search-...") %>' title='<%= LanguageUtil.get(request, "search") %>' type="text" useNamespace="<%= false %>" value="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywords()) %>" wrapperCssClass="input-group-item input-group-prepend search-bar-keywords-input-wrapper" />
 
-										<aui:select cssClass="search-bar-scope-select" id="<%= randomNamespace + HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getScopeParameterName()) %>" label="" name="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getScopeParameterName()) %>" title="scope" useNamespace="<%= false %>" wrapperCssClass="input-group-item input-group-item-shrink input-group-prepend search-bar-search-select-wrapper">
-											<aui:option label="this-site" selected="<%= searchBarPortletDisplayContext.isSelectedCurrentSiteSearchScope() %>" value="<%= searchBarPortletDisplayContext.getCurrentSiteSearchScopeParameterString() %>" />
+								<aui:select cssClass="search-bar-scope-select" id="<%= liferayPortletResponse.getNamespace() + HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getScopeParameterName()) %>" label="" name="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getScopeParameterName()) %>" title="scope" useNamespace="<%= false %>" wrapperCssClass="input-group-item input-group-item-shrink input-group-prepend search-bar-search-select-wrapper">
+									<aui:option label="this-site" selected="<%= searchBarPortletDisplayContext.isSelectedCurrentSiteSearchScope() %>" value="<%= searchBarPortletDisplayContext.getCurrentSiteSearchScopeParameterString() %>" />
 
-											<c:if test="<%= searchBarPortletDisplayContext.isAvailableEverythingSearchScope() %>">
-												<aui:option label="everything" selected="<%= searchBarPortletDisplayContext.isSelectedEverythingSearchScope() %>" value="<%= searchBarPortletDisplayContext.getEverythingSearchScopeParameterString() %>" />
-											</c:if>
-										</aui:select>
+									<c:if test="<%= searchBarPortletDisplayContext.isAvailableEverythingSearchScope() %>">
+										<aui:option label="everything" selected="<%= searchBarPortletDisplayContext.isSelectedEverythingSearchScope() %>" value="<%= searchBarPortletDisplayContext.getEverythingSearchScopeParameterString() %>" />
+									</c:if>
+								</aui:select>
 
-										<div class="input-group-append input-group-item input-group-item-shrink">
-											<clay:button
-												aria-label='<%= LanguageUtil.get(request, "search") %>'
-												displayType="secondary"
-												icon="search"
-												type="submit"
-											/>
-										</div>
-									</c:when>
-									<c:otherwise>
-										<div class="input-group-item search-bar-keywords-input-wrapper">
-											<input aria-label="<%= LanguageUtil.get(request, "search") %>" autocomplete="off" class="form-control input-group-inset input-group-inset-after search-bar-keywords-input" data-qa-id="searchInput" id="<%= randomNamespace %><%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywordsParameterName()) %>" name="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywordsParameterName()) %>" placeholder="<%= LanguageUtil.get(request, "search-...") %>" title="<%= LanguageUtil.get(request, "search") %>" type="text" value="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywords()) %>" />
+								<div class="input-group-append input-group-item input-group-item-shrink">
+									<clay:button
+										aria-label='<%= LanguageUtil.get(request, "search") %>'
+										displayType="secondary"
+										icon="search"
+										type="submit"
+									/>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="input-group-item search-bar-keywords-input-wrapper">
+									<input aria-label="<%= LanguageUtil.get(request, "search") %>" autocomplete="off" class="form-control input-group-inset input-group-inset-after search-bar-keywords-input" data-qa-id="searchInput" id="<%= liferayPortletResponse.getNamespace() + HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywordsParameterName()) %>" name="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywordsParameterName()) %>" placeholder="<%= LanguageUtil.get(request, "search-...") %>" title="<%= LanguageUtil.get(request, "search") %>" type="text" value="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getKeywords()) %>" />
 
-											<aui:input name="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getScopeParameterName()) %>" type="hidden" value="<%= searchBarPortletDisplayContext.getScopeParameterValue() %>" />
+									<aui:input name="<%= HtmlUtil.escapeAttribute(searchBarPortletDisplayContext.getScopeParameterName()) %>" type="hidden" value="<%= searchBarPortletDisplayContext.getScopeParameterValue() %>" />
 
-											<div class="input-group-inset-item input-group-inset-item-after">
-												<clay:button
-													aria-label='<%= LanguageUtil.get(request, "search") %>'
-													displayType="unstyled"
-													icon="search"
-													type="submit"
-												/>
-											</div>
-										</div>
-									</c:otherwise>
-								</c:choose>
-							</div>
-						</div>
-					</c:otherwise>
-				</c:choose>
+									<div class="input-group-inset-item input-group-inset-item-after" id="<portlet:namespace />inputAfter">
+										<clay:button
+											aria-label='<%= LanguageUtil.get(request, "search") %>'
+											displayType="unstyled"
+											icon="search"
+											type="submit"
+										/>
+									</div>
+								</div>
+
+								<ul class="autocomplete-dropdown-menu dropdown-menu" id="<portlet:namespace />suggestionsContainer"></ul>
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</div>
+
+				<c:if test="<%= searchBarPortletDisplayContext.isSuggestionsEnabled() %>">
+					<aui:script>
+						function <portlet:namespace />renderSuggestionGroups(
+							suggestionGroups,
+							searchURL
+						) {
+							return suggestionGroups
+								.map(function (suggestionGroup) {
+									return (
+										'<li class="dropdown-subheader">' +
+										Liferay.Util.escapeHTML(suggestionGroup.displayGroupName) +
+										'</li>' +
+										'<ul class="list-unstyled">' +
+										<portlet:namespace />renderSuggestionGroupItems(
+											suggestionGroup.suggestions
+										) +
+										'</ul>' +
+										'<ul class="list-unstyled">' +
+										'<li><a class="dropdown-item search-bar-suggestions-show-more" href="' +
+										searchURL +
+										'"><%= LanguageUtil.get(request, "see-more") %></a></li>' +
+										'</ul>'
+									);
+								})
+								.join('');
+						}
+
+						function <portlet:namespace />renderSuggestionGroupItems(suggestionGroupItems) {
+							return suggestionGroupItems
+								.map(function (suggestion) {
+									return (
+										'<li>' +
+										'<a class="dropdown-item" href="' +
+										suggestion.attributes.assetURL +
+										'">' +
+										'<div class="suggestion-item-title">' +
+										Liferay.Util.escapeHTML(suggestion.text) +
+										'</div>' +
+										(suggestion.attributes.assetSearchSummary
+											? '<div class="suggestion-item-description">' +
+											  '<div class="text-truncate-inline">' +
+											  '<div class="text-truncate">' +
+											  Liferay.Util.escapeHTML(
+													suggestion.attributes.assetSearchSummary
+											  ) +
+											  '</div>' +
+											  '</div>' +
+											  '</div>'
+											: '') +
+										'</a>'
+									);
+									('</li>');
+								})
+								.join('');
+						}
+
+						function <portlet:namespace />handleLoadingEnd() {
+							const inputAfterSubmitButtonElement = document.getElementById(
+								'<portlet:namespace />inputAfterSubmitButton'
+							);
+							const inputAfterLoadingSpinnerElement = document.getElementById(
+								'<portlet:namespace />inputAfterLoadingSpinner'
+							);
+
+							if (inputAfterSubmitButtonElement && inputAfterLoadingSpinnerElement) {
+								inputAfterSubmitButtonElement.classList.remove('hide');
+								inputAfterLoadingSpinnerElement.classList.add('hide');
+							}
+						}
+
+						function <portlet:namespace />handleLoadingStart() {
+							const inputAfterSubmitButtonElement = document.getElementById(
+								'<portlet:namespace />inputAfterSubmitButton'
+							);
+							const inputAfterLoadingSpinnerElement = document.getElementById(
+								'<portlet:namespace />inputAfterLoadingSpinner'
+							);
+
+							if (inputAfterSubmitButtonElement && inputAfterLoadingSpinnerElement) {
+								inputAfterSubmitButtonElement.classList.add('hide');
+								inputAfterLoadingSpinnerElement.classList.remove('hide');
+							}
+						}
+
+						Liferay.on('allPortletsReady', function () {
+							if (Liferay.Search.Suggestions['<portlet:namespace />']) {
+								Liferay.Search.Suggestions['<portlet:namespace />'].initialize({
+									keywordsInputId:
+										'<portlet:namespace /><%= HtmlUtil.escapeJS(searchBarPortletDisplayContext.getKeywordsParameterName()) %>',
+									onLoadingEnd: <portlet:namespace />handleLoadingEnd,
+									onLoadingStart: <portlet:namespace />handleLoadingStart,
+									renderSuggestions: <portlet:namespace />renderSuggestionGroups,
+									scopeSelectId:
+										'<portlet:namespace /><%= HtmlUtil.escapeJS(searchBarPortletDisplayContext.getScopeParameterName()) %>',
+									suggestionsContainerId: '<portlet:namespace />suggestionsContainer',
+								});
+							}
+						});
+					</aui:script>
+				</c:if>
 			</liferay-ddm:template-renderer>
 		</aui:form>
 
@@ -184,3 +237,45 @@ SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortle
 		</aui:script>
 	</c:otherwise>
 </c:choose>
+
+<liferay-frontend:component
+	componentId='<%= liferayPortletResponse.getNamespace() + "suggestionsHandler" %>'
+	context='<%=
+		HashMapBuilder.<String, Object>put(
+			"destinationFriendlyURL", searchBarPortletDisplayContext.getDestinationFriendlyURL()
+		).put(
+			"emptySearchEnabled", searchBarPortletDisplayContext.isEmptySearchEnabled()
+		).put(
+			"isDXP", ReleaseInfo.isDXP()
+		).put(
+			"isSearchExperiencesSupported", searchBarPortletDisplayContext.isSearchExperiencesSupported()
+		).put(
+			"keywords", searchBarPortletDisplayContext.getKeywords()
+		).put(
+			"keywordsParameterName", searchBarPortletDisplayContext.getKeywordsParameterName()
+		).put(
+			"letUserChooseScope", searchBarPortletDisplayContext.isLetTheUserChooseTheSearchScope()
+		).put(
+			"namespace", liferayPortletResponse.getNamespace()
+		).put(
+			"paginationStartParameterName", searchBarPortletDisplayContext.getPaginationStartParameterName()
+		).put(
+			"scopeParameterName", searchBarPortletDisplayContext.getScopeParameterName()
+		).put(
+			"scopeParameterStringCurrentSite", searchBarPortletDisplayContext.getCurrentSiteSearchScopeParameterString()
+		).put(
+			"scopeParameterStringEverything", searchBarPortletDisplayContext.getEverythingSearchScopeParameterString()
+		).put(
+			"searchURL", searchBarPortletDisplayContext.getSearchURL()
+		).put(
+			"selectedEverythingSearchScope", searchBarPortletDisplayContext.isSelectedEverythingSearchScope()
+		).put(
+			"suggestionsContributorConfiguration", searchBarPortletDisplayContext.getSuggestionsContributorConfiguration()
+		).put(
+			"suggestionsDisplayThreshold", searchBarPortletDisplayContext.getSuggestionsDisplayThreshold()
+		).put(
+			"suggestionsURL", searchBarPortletDisplayContext.getSuggestionsURL()
+		).build()
+	%>'
+	module="js/utils/suggestions/index"
+/>
