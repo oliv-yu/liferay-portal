@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.search.bar.portlet.display.template;
 
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portletdisplaytemplate.BasePortletDisplayTemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandler;
@@ -22,19 +23,23 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.search.web.constants.SearchBarPortletKeys;
 import com.liferay.portal.search.web.internal.search.bar.portlet.SearchBarPortlet;
+import com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchBarWebTemplateConfiguration;
 import com.liferay.portal.search.web.internal.search.bar.portlet.display.context.SearchBarPortletDisplayContext;
 
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Olivia Yu
  */
 @Component(
+	configurationPid = "com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchBarWebTemplateConfiguration",
 	property = "javax.portlet.name=" + SearchBarPortletKeys.SEARCH_BAR,
 	service = TemplateHandler.class
 )
@@ -44,6 +49,11 @@ public class SearchBarPortletDisplayTemplateHandler
 	@Override
 	public String getClassName() {
 		return SearchBarPortlet.class.getName();
+	}
+
+	@Override
+	public String getDefaultTemplateKey() {
+		return _searchBarWebTemplateConfiguration.searchBarTemplateKeyDefault();
 	}
 
 	@Override
@@ -96,6 +106,14 @@ public class SearchBarPortletDisplayTemplateHandler
 		return templateVariableGroups;
 	}
 
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_searchBarWebTemplateConfiguration =
+			ConfigurableUtil.createConfigurable(
+				SearchBarWebTemplateConfiguration.class, properties);
+	}
+
 	@Override
 	protected String getTemplatesConfigPath() {
 		return "com/liferay/portal/search/web/internal/search/bar/web/portlet" +
@@ -107,5 +125,8 @@ public class SearchBarPortletDisplayTemplateHandler
 
 	@Reference
 	private Portal _portal;
+
+	private volatile SearchBarWebTemplateConfiguration
+		_searchBarWebTemplateConfiguration;
 
 }

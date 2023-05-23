@@ -75,7 +75,6 @@ String suggestionsContributorConfiguration = StringBundler.concat(StringPool.OPE
 				displayStyle="<%= searchBarPortletInstanceConfiguration.displayStyle() %>"
 				displayStyleGroupId="<%= searchBarPortletDisplayContext.getDisplayStyleGroupId() %>"
 				refreshURL="<%= configurationRenderURL %>"
-				showEmptyOption="<%= true %>"
 			/>
 
 			<aui:input helpMessage="invisible-help" label="invisible" name="<%= PortletPreferencesJspUtil.getInputName(SearchBarPortletPreferences.PREFERENCE_KEY_INVISIBLE) %>" type="checkbox" value="<%= searchBarPortletPreferences.isInvisible() %>" />
