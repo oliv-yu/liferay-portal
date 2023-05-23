@@ -126,156 +126,51 @@ SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortle
 						</c:choose>
 					</div>
 				</div>
-
-				<c:if test="<%= searchBarPortletDisplayContext.isSuggestionsEnabled() %>">
-					<aui:script>
-						function <portlet:namespace />renderSuggestionGroups(
-							suggestionGroups,
-							searchURL
-						) {
-							return suggestionGroups
-								.map(function (suggestionGroup) {
-									return (
-										'<li class="dropdown-subheader">' +
-										Liferay.Util.escapeHTML(suggestionGroup.displayGroupName) +
-										'</li>' +
-										'<ul class="list-unstyled">' +
-										<portlet:namespace />renderSuggestionGroupItems(
-											suggestionGroup.suggestions
-										) +
-										'</ul>' +
-										'<ul class="list-unstyled">' +
-										'<li><a class="dropdown-item search-bar-suggestions-show-more" href="' +
-										searchURL +
-										'"><%= LanguageUtil.get(request, "see-more") %></a></li>' +
-										'</ul>'
-									);
-								})
-								.join('');
-						}
-
-						function <portlet:namespace />renderSuggestionGroupItems(suggestionGroupItems) {
-							return suggestionGroupItems
-								.map(function (suggestion) {
-									return (
-										'<li>' +
-										'<a class="dropdown-item" href="' +
-										suggestion.attributes.assetURL +
-										'">' +
-										'<div class="suggestion-item-title">' +
-										Liferay.Util.escapeHTML(suggestion.text) +
-										'</div>' +
-										(suggestion.attributes.assetSearchSummary
-											? '<div class="suggestion-item-description">' +
-											  '<div class="text-truncate-inline">' +
-											  '<div class="text-truncate">' +
-											  Liferay.Util.escapeHTML(
-													suggestion.attributes.assetSearchSummary
-											  ) +
-											  '</div>' +
-											  '</div>' +
-											  '</div>'
-											: '') +
-										'</a>'
-									);
-									('</li>');
-								})
-								.join('');
-						}
-
-						function <portlet:namespace />handleLoadingEnd() {
-							const inputAfterSubmitButtonElement = document.getElementById(
-								'<portlet:namespace />inputAfterSubmitButton'
-							);
-							const inputAfterLoadingSpinnerElement = document.getElementById(
-								'<portlet:namespace />inputAfterLoadingSpinner'
-							);
-
-							if (inputAfterSubmitButtonElement && inputAfterLoadingSpinnerElement) {
-								inputAfterSubmitButtonElement.classList.remove('hide');
-								inputAfterLoadingSpinnerElement.classList.add('hide');
-							}
-						}
-
-						function <portlet:namespace />handleLoadingStart() {
-							const inputAfterSubmitButtonElement = document.getElementById(
-								'<portlet:namespace />inputAfterSubmitButton'
-							);
-							const inputAfterLoadingSpinnerElement = document.getElementById(
-								'<portlet:namespace />inputAfterLoadingSpinner'
-							);
-
-							if (inputAfterSubmitButtonElement && inputAfterLoadingSpinnerElement) {
-								inputAfterSubmitButtonElement.classList.add('hide');
-								inputAfterLoadingSpinnerElement.classList.remove('hide');
-							}
-						}
-
-						Liferay.on('allPortletsReady', function () {
-							if (Liferay.Search.Suggestions['<portlet:namespace />']) {
-								Liferay.Search.Suggestions['<portlet:namespace />'].initialize({
-									keywordsInputId:
-										'<portlet:namespace /><%= HtmlUtil.escapeJS(searchBarPortletDisplayContext.getKeywordsParameterName()) %>',
-									onLoadingEnd: <portlet:namespace />handleLoadingEnd,
-									onLoadingStart: <portlet:namespace />handleLoadingStart,
-									renderSuggestions: <portlet:namespace />renderSuggestionGroups,
-									scopeSelectId:
-										'<portlet:namespace /><%= HtmlUtil.escapeJS(searchBarPortletDisplayContext.getScopeParameterName()) %>',
-									suggestionsContainerId: '<portlet:namespace />suggestionsContainer',
-								});
-							}
-						});
-					</aui:script>
-				</c:if>
 			</liferay-ddm:template-renderer>
 		</aui:form>
-
-		<aui:script use="aui-base,liferay-search-bar">
-			if (!A.one('#<portlet:namespace />reactSearchBar')) {
-				new Liferay.Search.SearchBar(A.one('#<portlet:namespace />fm'));
-			}
-		</aui:script>
 	</c:otherwise>
 </c:choose>
 
-<liferay-frontend:component
-	componentId='<%= liferayPortletResponse.getNamespace() + "suggestionsHandler" %>'
-	context='<%=
-		HashMapBuilder.<String, Object>put(
-			"destinationFriendlyURL", searchBarPortletDisplayContext.getDestinationFriendlyURL()
-		).put(
-			"emptySearchEnabled", searchBarPortletDisplayContext.isEmptySearchEnabled()
-		).put(
-			"isDXP", ReleaseInfo.isDXP()
-		).put(
-			"isSearchExperiencesSupported", searchBarPortletDisplayContext.isSearchExperiencesSupported()
-		).put(
-			"keywords", searchBarPortletDisplayContext.getKeywords()
-		).put(
-			"keywordsParameterName", searchBarPortletDisplayContext.getKeywordsParameterName()
-		).put(
-			"letUserChooseScope", searchBarPortletDisplayContext.isLetTheUserChooseTheSearchScope()
-		).put(
-			"namespace", liferayPortletResponse.getNamespace()
-		).put(
-			"paginationStartParameterName", searchBarPortletDisplayContext.getPaginationStartParameterName()
-		).put(
-			"scopeParameterName", searchBarPortletDisplayContext.getScopeParameterName()
-		).put(
-			"scopeParameterStringCurrentSite", searchBarPortletDisplayContext.getCurrentSiteSearchScopeParameterString()
-		).put(
-			"scopeParameterStringEverything", searchBarPortletDisplayContext.getEverythingSearchScopeParameterString()
-		).put(
-			"searchURL", searchBarPortletDisplayContext.getSearchURL()
-		).put(
-			"selectedEverythingSearchScope", searchBarPortletDisplayContext.isSelectedEverythingSearchScope()
-		).put(
-			"suggestionsContributorConfiguration", searchBarPortletDisplayContext.getSuggestionsContributorConfiguration()
-		).put(
-			"suggestionsDisplayThreshold", searchBarPortletDisplayContext.getSuggestionsDisplayThreshold()
-		).put(
-			"suggestionsURL", searchBarPortletDisplayContext.getSuggestionsURL()
-		).build()
-	%>'
-	module="js/utils/suggestions/index"
-/>
+<c:if test="<%= searchBarPortletDisplayContext.isSuggestionsEnabled() %>">
+	<liferay-frontend:component
+		componentId='<%= liferayPortletResponse.getNamespace() + "suggestionsHandler" %>'
+		context='<%=
+			HashMapBuilder.<String, Object>put(
+				"destinationFriendlyURL", searchBarPortletDisplayContext.getDestinationFriendlyURL()
+			).put(
+				"emptySearchEnabled", searchBarPortletDisplayContext.isEmptySearchEnabled()
+			).put(
+				"isDXP", ReleaseInfo.isDXP()
+			).put(
+				"isSearchExperiencesSupported", searchBarPortletDisplayContext.isSearchExperiencesSupported()
+			).put(
+				"keywords", searchBarPortletDisplayContext.getKeywords()
+			).put(
+				"keywordsParameterName", searchBarPortletDisplayContext.getKeywordsParameterName()
+			).put(
+				"letUserChooseScope", searchBarPortletDisplayContext.isLetTheUserChooseTheSearchScope()
+			).put(
+				"namespace", liferayPortletResponse.getNamespace()
+			).put(
+				"paginationStartParameterName", searchBarPortletDisplayContext.getPaginationStartParameterName()
+			).put(
+				"scopeParameterName", searchBarPortletDisplayContext.getScopeParameterName()
+			).put(
+				"scopeParameterStringCurrentSite", searchBarPortletDisplayContext.getCurrentSiteSearchScopeParameterString()
+			).put(
+				"scopeParameterStringEverything", searchBarPortletDisplayContext.getEverythingSearchScopeParameterString()
+			).put(
+				"searchURL", searchBarPortletDisplayContext.getSearchURL()
+			).put(
+				"selectedEverythingSearchScope", searchBarPortletDisplayContext.isSelectedEverythingSearchScope()
+			).put(
+				"suggestionsContributorConfiguration", searchBarPortletDisplayContext.getSuggestionsContributorConfiguration()
+			).put(
+				"suggestionsDisplayThreshold", searchBarPortletDisplayContext.getSuggestionsDisplayThreshold()
+			).put(
+				"suggestionsURL", searchBarPortletDisplayContext.getSuggestionsURL()
+			).build()
+		%>'
+		module="js/utils/suggestions/index"
+	/>
+</c:if>

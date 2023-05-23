@@ -49,6 +49,7 @@
 				autocomplete="off"
 				cssClass="search-bar-keywords-input"
 				data=data
+				id="${namespace}keywords-input"
 				label=""
 				name=htmlUtil.escape(searchBarPortletDisplayContext.getKeywordsParameterName())
 				placeholder=searchBarPortletDisplayContext.getInputPlaceholder()
@@ -64,7 +65,7 @@
 					autocomplete="off"
 					class="form-control input-group-inset input-group-inset-before search-bar-keywords-input"
 					data-qa-id="searchInput"
-					id="${namespace + stringUtil.randomId()}"
+					id="${namespace}keywords-input"
 					name="${htmlUtil.escape(searchBarPortletDisplayContext.getKeywordsParameterName())}"
 					placeholder="${searchBarPortletDisplayContext.getInputPlaceholder()}"
 					title="${languageUtil.get(locale, "search")}"
@@ -88,5 +89,17 @@
 				/>
 			</div>
 		</#if>
+
+		<ul class="autocomplete-dropdown-menu dropdown-menu search-bar-suggestions-dropdown-menu searchbar-dropdown-menu" id="${namespace}suggestions"></ul>
 	</div>
 </@>
+
+<@liferay_aui.script>
+	if (${searchBarPortletDisplayContext.isSuggestionsEnabled()?c}) {
+		setTimeout(function () {
+			if (Liferay.Search.Suggestions['${namespace}']) {
+				Liferay.Search.Suggestions['${namespace}'].initialize({});
+			}
+		}, 2000);
+	}
+</@liferay_aui.script>

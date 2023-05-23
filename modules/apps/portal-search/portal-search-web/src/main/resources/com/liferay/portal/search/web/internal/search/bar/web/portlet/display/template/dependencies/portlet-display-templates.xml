@@ -2,6 +2,14 @@
 
 <root>
 	<template>
+		<template-key>search-bar-right-aligned-icon-ftl</template-key>
+		<name>portlet-display-template-name-right-aligned-icon-layout</name>
+		<description>portlet-display-template-description-right-aligned-icon</description>
+		<language>ftl</language>
+		<script-file>com/liferay/portal/search/web/internal/search/bar/web/portlet/display/template/dependencies/portlet_display_template_right_aligned_icon.ftl</script-file>
+		<cacheable>false</cacheable>
+	</template>
+	<template>
 		<template-key>search-bar-left-aligned-icon-ftl</template-key>
 		<name>portlet-display-template-name-left-aligned-icon-layout</name>
 		<description>portlet-display-template-description-left-aligned-icon</description>

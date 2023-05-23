@@ -25,15 +25,18 @@ class SuggestionsHandler {
 			isSearchExperiencesSupported,
 			keywordsParameterName,
 			letUserChooseScope,
+			namespace,
 			paginationStartParameterName,
 			scopeParameterName,
 			scopeParameterStringCurrentSite,
 			scopeParameterStringEverything,
 			searchURL,
+			selectedEverythingSearchScope,
 			suggestionsContributorConfiguration,
 			suggestionsURL,
 		} = context;
 
+		this.namespace = namespace;
 		this.destinationFriendlyURL = destinationFriendlyURL;
 		this.keywordsParameterName = keywordsParameterName;
 		this.emptySearchEnabled = emptySearchEnabled;
@@ -44,6 +47,7 @@ class SuggestionsHandler {
 		this.letUserChooseScope = letUserChooseScope;
 		this.paginationStartParameterName = paginationStartParameterName;
 		this.scopeParameterName = scopeParameterName;
+		this.selectedEverythingSearchScope = selectedEverythingSearchScope;
 		this.scopeParameterStringCurrentSite = scopeParameterStringCurrentSite;
 		this.scopeParameterStringEverything = scopeParameterStringEverything;
 		this.searchURL = searchURL;
@@ -61,6 +65,11 @@ class SuggestionsHandler {
 		this._handleKeywordsInputChange = this._handleKeywordsInputChange.bind(
 			this
 		);
+		this._renderSuggestionGroups = this._renderSuggestionGroups.bind(this);
+		this._renderSuggestionGroupItems = this._renderSuggestionGroupItems.bind(
+			this
+		);
+		this._handleClickOutside = this._handleClickOutside.bind(this);
 		this._updateQueryString = this._updateQueryString.bind(this);
 	}
 
@@ -84,17 +93,23 @@ class SuggestionsHandler {
 		scopeSelectId,
 		suggestionsContainerId,
 	}) {
-		this.keywordsInputElement = document.getElementById(keywordsInputId);
-		this.onLoadingEnd = onLoadingEnd;
-		this.onLoadingStart = onLoadingStart;
-		this.renderSuggestions = renderSuggestions;
-		this.scopeSelectElement = document.getElementById(scopeSelectId);
+		this.keywordsInputElement = document.getElementById(
+			keywordsInputId || `${this.namespace}keywords-input`
+		);
+		this.scopeSelectElement = document.getElementById(
+			scopeSelectId || `${this.namespace}scope-select`
+		);
 		this.suggestionsContainerElement = document.getElementById(
-			suggestionsContainerId
+			suggestionsContainerId || `${this.namespace}suggestions`
 		);
 
-		this.scope = this.scopeSelectElement
-			? this.scopeSelectElement.value
+		this.onLoadingEnd = onLoadingEnd;
+		this.onLoadingStart = onLoadingStart;
+		this.renderSuggestions =
+			renderSuggestions || this._renderSuggestionGroups;
+
+		this.scope = this.selectedEverythingSearchScope
+			? this.scopeParameterStringEverything
 			: this.scopeParameterStringCurrentSite;
 
 		// Check for required elements.
@@ -102,11 +117,11 @@ class SuggestionsHandler {
 		const requiredElements = [
 			{
 				element: this.keywordsInputElement,
-				id: keywordsInputId,
+				id: keywordsInputId || `${this.namespace}keywords-input`,
 			},
 			{
 				element: this.suggestionsContainerElement,
-				id: suggestionsContainerId,
+				id: suggestionsContainerId || `${this.namespace}suggestions`,
 			},
 		];
 
@@ -137,12 +152,19 @@ class SuggestionsHandler {
 			handleKeywordsInputChangeDebounced
 		);
 
+		document.body.addEventListener('click', this._handleClickOutside);
+
 		// Cleanup event handlers.
 
 		Liferay.on('beforeNavigate', () => {
 			this.keywordsInputElement.removeEventListener(
 				'input',
 				handleKeywordsInputChangeDebounced
+			);
+
+			document.body.removeEventListener(
+				'click',
+				this._handleClickOutside
 			);
 		});
 	}
@@ -186,6 +208,16 @@ class SuggestionsHandler {
 		).then((response) => response.json());
 	}
 
+	_handleClickOutside(event) {
+		if (
+			this.suggestionsContainerElement?.classList?.contains('show') &&
+			!this.keywordsInputElement.contains(event.target) &&
+			!this.suggestionsContainerElement.contains(event.target)
+		) {
+			this.suggestionsContainerElement.classList.remove('show');
+		}
+	}
+
 	_handleKeywordsInputChange(event) {
 		const inputValue = event.target.value;
 
@@ -193,7 +225,11 @@ class SuggestionsHandler {
 			this.onLoadingStart();
 		}
 
-		this.fetchSuggestions(inputValue, this.scope)
+		const scope = this.scopeSelectElement
+			? this.scopeSelectElement.value
+			: this.scope;
+
+		this.fetchSuggestions(inputValue, scope)
 			.then((data) => {
 				if (data?.items.length) {
 					this.suggestionsContainerElement.classList.add('show');
@@ -209,7 +245,8 @@ class SuggestionsHandler {
 						data?.items,
 						searchURL
 					);
-				} else {
+				}
+				else {
 					this.suggestionsContainerElement.classList.remove('show');
 				}
 			})
@@ -218,6 +255,55 @@ class SuggestionsHandler {
 					this.onLoadingEnd();
 				}
 			});
+	}
+
+	_renderSuggestionGroups(suggestionGroups, searchURL) {
+		return (
+			suggestionGroups
+				.map(
+					(suggestionGroup) =>
+						`<li class="dropdown-subheader">
+						${Liferay.Util.escapeHTML(suggestionGroup.displayGroupName)}
+					</li>
+					<ul class="list-unstyled search-bar-suggestions-results-list">
+						${this._renderSuggestionGroupItems(suggestionGroup.suggestions)}
+					</ul>`
+				)
+				.join('') +
+			`<ul class="list-unstyled">
+				<li>
+					<a class="dropdown-item search-bar-suggestions-show-more" href="${searchURL}">
+						${Liferay.Language.get('see-more')}
+					</a>
+				</li>
+			</ul>`
+		);
+	}
+
+	_renderSuggestionGroupItems(suggestionGroupItems) {
+		return suggestionGroupItems
+			.map(
+				(suggestion) =>
+					`<li>
+						<a class="dropdown-item" href="${suggestion.attributes.assetURL}">
+							<div class="suggestion-item-title">
+								${Liferay.Util.escapeHTML(suggestion.text)}
+							</div>
+
+							${
+								suggestion.attributes.assetSearchSummary &&
+								`<div class="suggestion-item-description">
+								<div class="text-truncate-inline">
+									<div class="text-truncate">
+										${Liferay.Util.escapeHTML(suggestion.attributes.assetSearchSummary)}
+									</div>
+								</div>
+							</div>`
+							}
+						</a>
+					</li>`
+			)
+			.join('');
 	}
 
 	_updateQueryString(queryString, inputValue) {
@@ -252,9 +338,10 @@ class SuggestionsHandler {
 function initializeSuggestionsHandler(context) {
 	const {namespace} = context;
 
-	console.log('init', namespace);
+	console.log('init', namespace); //eslint-disable-line
 
 	if (namespace) {
+
 		// Initialize the SuggestionsHandler to the object path:
 		// `Liferay.Search.Suggestions[namespace]`.
 		//
