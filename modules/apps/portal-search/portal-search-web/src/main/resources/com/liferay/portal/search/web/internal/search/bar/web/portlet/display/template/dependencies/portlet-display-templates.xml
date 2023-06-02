@@ -17,4 +17,20 @@
 		<script-file>com/liferay/portal/search/web/internal/search/bar/web/portlet/display/template/dependencies/portlet_display_template_left_aligned_icon.ftl</script-file>
 		<cacheable>false</cacheable>
 	</template>
+	<template>
+		<template-key>search-bar-columns1</template-key>
+		<name>column_1</name>
+		<description></description>
+		<language>ftl</language>
+		<script-file>com/liferay/portal/search/web/internal/search/bar/web/portlet/display/template/dependencies/portlet_display_template_columns1.ftl</script-file>
+		<cacheable>false</cacheable>
+	</template>
+	<template>
+		<template-key>search-bar-columns2</template-key>
+		<name>column_2</name>
+		<description></description>
+		<language>ftl</language>
+		<script-file>com/liferay/portal/search/web/internal/search/bar/web/portlet/display/template/dependencies/portlet_display_template_columns2.ftl</script-file>
+		<cacheable>false</cacheable>
+	</template>
 </root>
