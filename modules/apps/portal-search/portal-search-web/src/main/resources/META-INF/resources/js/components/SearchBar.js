@@ -25,10 +25,44 @@ import React, {useCallback, useRef, useState} from 'react';
 import useDebounceCallback from '../hooks/useDebounceCallback';
 import {getRecentSearches} from '../utils/SearchBarUtil';
 import cleanSuggestionsContributorConfiguration from '../utils/clean_suggestions_contributor_configuration';
+import {CONTRIBUTOR_TYPES} from '../utils/types/contributorTypes';
+
+/**
+ * Gets the recent contributor object from the suggestions contributor
+ * configuration.
+ * @param {string} suggestionsContributorConfiguration
+ * @returns {object}
+ */
+function getRecentContributor(suggestionsContributorConfiguration) {
+	try {
+		const suggestionsContributorConfigurationArray = JSON.parse(
+			suggestionsContributorConfiguration
+		);
+
+		const recentContributorIndex = suggestionsContributorConfigurationArray.findIndex(
+			(contributor) =>
+				contributor.contributorName ===
+				CONTRIBUTOR_TYPES.RECENT_SEARCHES
+		);
+
+		if (recentContributorIndex > -1) {
+			return suggestionsContributorConfigurationArray[
+				recentContributorIndex
+			];
+		}
+		else {
+			throw `Unable to find contributor name: '${CONTRIBUTOR_TYPES.RECENT_SEARCHES}'`;
+		}
+	}
+	catch {
+		return null;
+	}
+}
 
 export default function SearchBar({
 	destinationFriendlyURL,
 	emptySearchEnabled,
+	federatedSearchKey,
 	isDXP = true,
 	isSearchExperiencesSupported = true,
 	keywords = '',
@@ -53,7 +87,7 @@ export default function SearchBar({
 	const [autocompleteSearchValue, setAutocompleteSearchValue] = useState('');
 	const [inputValue, setInputValue] = useState(keywords);
 	const [loading, setLoading] = useState(false);
-	const [recentSearches] = useState(getRecentSearches(keywordsParameterName));
+	const [recentSearches] = useState(getRecentSearches(federatedSearchKey));
 	const [scope, setScope] = useState(
 		selectedEverythingSearchScope
 			? scopeParameterStringEverything
@@ -65,6 +99,9 @@ export default function SearchBar({
 
 	const alignElementRef = useRef();
 	const dropdownRef = useRef();
+	const recentContributorRef = useRef(
+		getRecentContributor(suggestionsContributorConfiguration)
+	);
 
 	/**
 	 * Returns the lowest suggestions display threshold available.
@@ -372,20 +409,26 @@ export default function SearchBar({
 						alignElementRef.current.clientWidth + 'px',
 				}}
 			>
-				<ClayDropDown.ItemList
-					className="search-bar-suggestions-results-list"
-					key="RECENT_SEARCHES"
-				>
-					<ClayDropDown.Group header="Recent Searches">
-						{recentSearches.map((keywords, index) => (
-							<ClayDropDown.Item href="#" key={index}>
-								<div className="suggestion-item-title">
-									{keywords}
-								</div>
-							</ClayDropDown.Item>
-						))}
-					</ClayDropDown.Group>
-				</ClayDropDown.ItemList>
+				{!!recentContributorRef.current && (
+					<ClayDropDown.ItemList
+						className="search-bar-suggestions-results-list"
+						key="RECENT_SEARCHES"
+					>
+						<ClayDropDown.Group
+							header={
+								recentContributorRef.current?.displayGroupName
+							}
+						>
+							{recentSearches.map((keywords, index) => (
+								<ClayDropDown.Item href="#" key={index}>
+									<div className="suggestion-item-title">
+										{keywords}
+									</div>
+								</ClayDropDown.Item>
+							))}
+						</ClayDropDown.Group>
+					</ClayDropDown.ItemList>
+				)}
 
 				{suggestionsResponseItems.map((group, groupIndex) => (
 					<ClayDropDown.ItemList

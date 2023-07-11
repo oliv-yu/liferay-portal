@@ -14,9 +14,18 @@
 
 import {RECENT_SEARCHES_KEY, getRecentSearches} from './SearchBarUtil';
 
+/**
+ * Sets up the listener to save recent searches.
+ * @param {string} context.federatedSearchKey Used for associating the keywords to which search bar.
+ * @param {string} context.keywords The search query.
+ * @param {number} context.resultThreshold Must at or above this count to save as a recent search.
+ * @param {number} context.totalCount Used to compare with the resultThreshold.
+ */
 export default function initializeSearchBarRecentSearches({
+	federatedSearchKey,
 	keywords,
-	keywordsParameterName,
+	resultThreshold = 1,
+	totalCount,
 }) {
 
 	/**
@@ -28,8 +37,13 @@ export default function initializeSearchBarRecentSearches({
 	 * }
 	 */
 	Liferay.on('endNavigate', () => {
-		if (keywords === '') {
+		if (keywords === '' && totalCount >= resultThreshold) {
 			return;
+		}
+
+		// eslint-disable-next-line eqeqeq
+		if (federatedSearchKey == null || federatedSearchKey === '') {
+			federatedSearchKey = 'default';
 		}
 
 		try {
@@ -38,7 +52,7 @@ export default function initializeSearchBarRecentSearches({
 			);
 
 			const existingRecentSearchesArray =
-				recentSearchesObject[keywordsParameterName] || [];
+				recentSearchesObject[federatedSearchKey] || [];
 
 			// If the stored most recent search is the same as the search just
 			// made, there is no need to do anything further.
@@ -68,7 +82,7 @@ export default function initializeSearchBarRecentSearches({
 				RECENT_SEARCHES_KEY,
 				JSON.stringify({
 					...recentSearchesObject,
-					[keywordsParameterName]: newRecentSearchesArray,
+					[federatedSearchKey]: newRecentSearchesArray,
 				})
 			);
 		}
@@ -79,7 +93,7 @@ export default function initializeSearchBarRecentSearches({
 			localStorage.setItem(
 				RECENT_SEARCHES_KEY,
 				JSON.stringify({
-					[keywordsParameterName]: [keywords],
+					[federatedSearchKey]: [keywords],
 				})
 			);
 		}
@@ -93,7 +107,7 @@ export default function initializeSearchBarRecentSearches({
 		 * @returns {Array}
 		 */
 		getRecentSearches(amount) {
-			return getRecentSearches(keywordsParameterName, amount);
+			return getRecentSearches(federatedSearchKey, amount);
 		},
 	};
 

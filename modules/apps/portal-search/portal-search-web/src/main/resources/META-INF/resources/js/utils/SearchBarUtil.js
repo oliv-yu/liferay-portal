@@ -20,14 +20,19 @@ export const RECENT_SEARCHES_KEY =
  * @param {number} amount
  * @returns {Array}
  */
-export function getRecentSearches(keywordsParameterName, amount = 5) {
+export function getRecentSearches(federatedSearchKey, amount = 5) {
+	// eslint-disable-next-line eqeqeq
+	if (federatedSearchKey == null || federatedSearchKey === '') {
+		federatedSearchKey = 'default';
+	}
+
 	try {
 		const recentSearchesObject = JSON.parse(
 			localStorage.getItem(RECENT_SEARCHES_KEY)
 		);
 
 		const recentSearchesArray =
-			recentSearchesObject[keywordsParameterName] || [];
+			recentSearchesObject[federatedSearchKey] || [];
 
 		// Trim results.
 
