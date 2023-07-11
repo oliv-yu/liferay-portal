@@ -32,7 +32,7 @@ export function getRecentSearches(federatedSearchKey, amount = 5) {
 		);
 
 		const recentSearchesArray =
-			recentSearchesObject[federatedSearchKey] || [];
+			recentSearchesObject[federatedSearchKey].items || [];
 
 		// Trim results.
 

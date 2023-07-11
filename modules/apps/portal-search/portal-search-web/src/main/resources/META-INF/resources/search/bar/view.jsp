@@ -21,11 +21,14 @@
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/clay" prefix="clay" %><%@
 taglib uri="http://liferay.com/tld/ddm" prefix="liferay-ddm" %><%@
+taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/react" prefix="react" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.petra.string.StringPool" %><%@
+<%@ page import="com.liferay.petra.string.StringBundler" %><%@
+page import="com.liferay.petra.string.StringPool" %><%@
+page import="com.liferay.petra.string.StringUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
@@ -51,6 +54,10 @@ String randomNamespace = PortalUtil.generateRandomKey(request, "portlet_search_b
 SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortletDisplayContext)java.util.Objects.requireNonNull(request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT));
 
 SearchBarPortletPreferences searchBarPortletPreferences = new SearchBarPortletPreferencesImpl(java.util.Optional.ofNullable(portletPreferences));
+
+SearchBarPortletInstanceConfiguration searchBarPortletInstanceConfiguration = searchBarPortletDisplayContext.getSearchBarPortletInstanceConfiguration();
+
+String suggestionsContributorConfiguration = StringBundler.concat(StringPool.OPEN_BRACKET, StringUtil.merge(searchBarPortletInstanceConfiguration.suggestionsContributorConfigurations(), StringPool.COMMA), StringPool.CLOSE_BRACKET);
 %>
 
 <c:choose>
@@ -70,10 +77,6 @@ SearchBarPortletPreferences searchBarPortletPreferences = new SearchBarPortletPr
 			<c:if test="<%= !Validator.isBlank(searchBarPortletDisplayContext.getPaginationStartParameterName()) %>">
 				<input class="search-bar-reset-start-page" name="<%= searchBarPortletDisplayContext.getPaginationStartParameterName() %>" type="hidden" value="0" />
 			</c:if>
-
-			<%
-			SearchBarPortletInstanceConfiguration searchBarPortletInstanceConfiguration = searchBarPortletDisplayContext.getSearchBarPortletInstanceConfiguration();
-			%>
 
 			<liferay-ddm:template-renderer
 				className="<%= SearchBarPortlet.class.getName() %>"
@@ -190,3 +193,12 @@ SearchBarPortletPreferences searchBarPortletPreferences = new SearchBarPortletPr
 		</aui:script>
 	</c:otherwise>
 </c:choose>
+
+<liferay-frontend:component
+	context='<%=
+		HashMapBuilder.<String, Object>put(
+			"suggestionsContributorConfiguration", suggestionsContributorConfiguration
+		).build()
+	%>'
+	module="js/utils/initializeRecentSearchesConfiguration"
+/>
