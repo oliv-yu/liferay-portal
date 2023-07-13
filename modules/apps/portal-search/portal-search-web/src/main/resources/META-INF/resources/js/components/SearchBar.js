@@ -17,6 +17,7 @@ import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import {ClayInput, ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import ClayLink from '@clayui/link';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import getCN from 'classnames';
 import {addParams, fetch, navigate} from 'frontend-js-web';
@@ -24,6 +25,7 @@ import React, {useCallback, useRef, useState} from 'react';
 
 import useDebounceCallback from '../hooks/useDebounceCallback';
 import cleanSuggestionsContributorConfiguration from '../utils/clean_suggestions_contributor_configuration';
+import deleteRecentSearch from '../utils/recent_searches/delete_recent_search';
 import getRecentContributor from '../utils/recent_searches/get_recent_contributor';
 import getRecentSearches from '../utils/recent_searches/get_recent_searches';
 
@@ -55,7 +57,9 @@ export default function SearchBar({
 	const [autocompleteSearchValue, setAutocompleteSearchValue] = useState('');
 	const [inputValue, setInputValue] = useState(keywords);
 	const [loading, setLoading] = useState(false);
-	const [recentSearches] = useState(getRecentSearches(federatedSearchKey));
+	const [recentSearches, setRecentSearches] = useState(
+		getRecentSearches(federatedSearchKey)
+	);
 	const [scope, setScope] = useState(
 		selectedEverythingSearchScope
 			? scopeParameterStringEverything
@@ -169,6 +173,12 @@ export default function SearchBar({
 		setScope(event.target.value);
 	};
 
+	const _handleDeleteRecentSearch = (keyword) => {
+		setRecentSearches(recentSearches.filter((item) => item !== keyword));
+
+		deleteRecentSearch(keyword, federatedSearchKey);
+	};
+
 	const _handleFocus = () => {
 		if (
 			_getLowestSuggestionsDisplayThreshold() === 0 &&
@@ -187,7 +197,10 @@ export default function SearchBar({
 		event.stopPropagation();
 
 		if (!!inputValue.trim().length || emptySearchEnabled) {
-			const queryString = _updateQueryString(document.location.search);
+			const queryString = _updateQueryString(
+				document.location.search,
+				inputValue
+			);
 
 			navigate(searchURL + queryString);
 		}
@@ -326,7 +339,7 @@ export default function SearchBar({
 		);
 	};
 
-	const _updateQueryString = (queryString) => {
+	const _updateQueryString = (queryString, inputValue) => {
 		const searchParams = new URLSearchParams(queryString);
 
 		if (emptySearchEnabled || inputValue) {
@@ -387,11 +400,31 @@ export default function SearchBar({
 								recentContributorRef.current?.displayGroupName
 							}
 						>
-							{recentSearches.map((keywords, index) => (
-								<ClayDropDown.Item href="#" key={index}>
-									<div className="suggestion-item-title">
-										{keywords}
-									</div>
+							{recentSearches.map((keyword, index) => (
+								<ClayDropDown.Item key={index}>
+									<ClayLink
+										className="suggestion-item-title"
+										displayType="unstyled"
+										href={
+											searchURL +
+											_updateQueryString(
+												document.location.search,
+												keyword
+											)
+										}
+									>
+										{keyword}
+									</ClayLink>
+
+									<ClayButton
+										className="dropdown-item-indicator-end"
+										displayType="unstyled"
+										onClick={() =>
+											_handleDeleteRecentSearch(keyword)
+										}
+									>
+										<ClayIcon symbol="times" />
+									</ClayButton>
 								</ClayDropDown.Item>
 							))}
 						</ClayDropDown.Group>
