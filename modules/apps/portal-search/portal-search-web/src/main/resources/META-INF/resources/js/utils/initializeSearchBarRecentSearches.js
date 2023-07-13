@@ -12,6 +12,8 @@
  * details.
  */
 
+import {sessionStorage} from 'frontend-js-web';
+
 import {RECENT_SEARCHES_KEY, getRecentSearches} from './SearchBarUtil';
 
 /**
@@ -52,7 +54,7 @@ export default function initializeSearchBarRecentSearches({
 
 		try {
 			const recentSearchesObject = JSON.parse(
-				localStorage.getItem(RECENT_SEARCHES_KEY)
+				sessionStorage.getItem(RECENT_SEARCHES_KEY)
 			);
 
 			const existingRecentSearchesArray =
@@ -82,7 +84,7 @@ export default function initializeSearchBarRecentSearches({
 
 			// Update the existing RECENT_SEARCHES_KEY value.
 
-			localStorage.setItem(
+			sessionStorage.setItem(
 				RECENT_SEARCHES_KEY,
 				JSON.stringify({
 					...recentSearchesObject,
@@ -90,18 +92,20 @@ export default function initializeSearchBarRecentSearches({
 						...recentSearchesObject[federatedSearchKey],
 						items: newRecentSearchesArray,
 					},
-				})
+				}),
+				sessionStorage.TYPES.PERSONALIZATION
 			);
 		}
 		catch {
 
 			// Assume no existing RECENT_SEARCHES_KEY value. Create a new value.
 
-			localStorage.setItem(
+			sessionStorage.setItem(
 				RECENT_SEARCHES_KEY,
 				JSON.stringify({
 					[federatedSearchKey]: {items: [keywords]},
-				})
+				}),
+				sessionStorage.TYPES.PERSONALIZATION
 			);
 		}
 	});

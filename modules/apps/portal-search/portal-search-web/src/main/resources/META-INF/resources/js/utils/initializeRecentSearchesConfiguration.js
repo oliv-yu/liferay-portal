@@ -12,6 +12,8 @@
  * details.
  */
 
+import {sessionStorage} from 'frontend-js-web';
+
 import {RECENT_SEARCHES_KEY} from './SearchBarUtil';
 import {CONTRIBUTOR_TYPES} from './types/contributorTypes';
 
@@ -83,15 +85,15 @@ export default function ({
 
 		try {
 			const recentSearchesObject = JSON.parse(
-				Liferay.Util.LocalStorage.getItem(
+				sessionStorage.getItem(
 					RECENT_SEARCHES_KEY,
-					Liferay.Util.LocalStorage.TYPES.PERSONALIZATION
+					sessionStorage.TYPES.PERSONALIZATION
 				)
 			);
 
 			// Set threshold configuration in local storage.
 
-			Liferay.Util.LocalStorage.setItem(
+			sessionStorage.setItem(
 				RECENT_SEARCHES_KEY,
 				{
 					...recentSearchesObject,
@@ -100,21 +102,21 @@ export default function ({
 						[PROPERTY_THRESHOLD]: threshold,
 					},
 				},
-				Liferay.Util.LocalStorage.TYPES.PERSONALIZATION
+				sessionStorage.TYPES.PERSONALIZATION
 			);
 		}
 		catch {
 
 			// Assume there is no existing storage for `RECENT_SEARCHES_KEY`.
 
-			Liferay.Util.LocalStorage.setItem(
+			sessionStorage.setItem(
 				RECENT_SEARCHES_KEY,
 				{
 					[federatedSearchKey]: {
 						[PROPERTY_THRESHOLD]: threshold,
 					},
 				},
-				Liferay.Util.LocalStorage.TYPES.PERSONALIZATION
+				sessionStorage.TYPES.PERSONALIZATION
 			);
 		}
 	});

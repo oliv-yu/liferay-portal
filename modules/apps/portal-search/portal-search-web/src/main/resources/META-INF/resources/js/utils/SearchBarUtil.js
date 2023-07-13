@@ -12,6 +12,8 @@
  * details.
  */
 
+import {sessionStorage} from 'frontend-js-web';
+
 export const RECENT_SEARCHES_KEY =
 	'portal-search-web-search-bar-recent-searches';
 
@@ -28,7 +30,7 @@ export function getRecentSearches(federatedSearchKey, amount = 5) {
 
 	try {
 		const recentSearchesObject = JSON.parse(
-			localStorage.getItem(RECENT_SEARCHES_KEY)
+			sessionStorage.getItem(RECENT_SEARCHES_KEY)
 		);
 
 		const recentSearchesArray =
