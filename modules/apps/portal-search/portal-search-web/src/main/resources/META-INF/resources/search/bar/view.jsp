@@ -26,9 +26,7 @@ taglib uri="http://liferay.com/tld/react" prefix="react" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.petra.string.StringBundler" %><%@
-page import="com.liferay.petra.string.StringPool" %><%@
-page import="com.liferay.petra.string.StringUtil" %><%@
+<%@ page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
@@ -56,8 +54,6 @@ SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortle
 SearchBarPortletPreferences searchBarPortletPreferences = new SearchBarPortletPreferencesImpl(portletPreferences);
 
 SearchBarPortletInstanceConfiguration searchBarPortletInstanceConfiguration = searchBarPortletDisplayContext.getSearchBarPortletInstanceConfiguration();
-
-String suggestionsContributorConfiguration = StringBundler.concat(StringPool.OPEN_BRACKET, StringUtil.merge(searchBarPortletInstanceConfiguration.suggestionsContributorConfigurations(), StringPool.COMMA), StringPool.CLOSE_BRACKET);
 %>
 
 <c:choose>
@@ -199,8 +195,8 @@ String suggestionsContributorConfiguration = StringBundler.concat(StringPool.OPE
 		HashMapBuilder.<String, Object>put(
 			"federatedSearchKey", searchBarPortletPreferences.getFederatedSearchKey()
 		).put(
-			"suggestionsContributorConfiguration", suggestionsContributorConfiguration
+			"suggestionsContributorConfiguration", searchBarPortletDisplayContext.getSuggestionsContributorConfiguration()
 		).build()
 	%>'
-	module="js/utils/initializeRecentSearchesConfiguration"
+	module="js/utils/recent_searches/initialize_configuration"
 />

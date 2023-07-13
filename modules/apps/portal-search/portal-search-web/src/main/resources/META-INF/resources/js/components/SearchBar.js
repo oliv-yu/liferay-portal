@@ -23,41 +23,9 @@ import {addParams, fetch, navigate} from 'frontend-js-web';
 import React, {useCallback, useRef, useState} from 'react';
 
 import useDebounceCallback from '../hooks/useDebounceCallback';
-import {getRecentSearches} from '../utils/SearchBarUtil';
 import cleanSuggestionsContributorConfiguration from '../utils/clean_suggestions_contributor_configuration';
-import {CONTRIBUTOR_TYPES} from '../utils/types/contributorTypes';
-
-/**
- * Gets the recent contributor object from the suggestions contributor
- * configuration.
- * @param {string} suggestionsContributorConfiguration
- * @returns {object}
- */
-function getRecentContributor(suggestionsContributorConfiguration) {
-	try {
-		const suggestionsContributorConfigurationArray = JSON.parse(
-			suggestionsContributorConfiguration
-		);
-
-		const recentContributorIndex = suggestionsContributorConfigurationArray.findIndex(
-			(contributor) =>
-				contributor.contributorName ===
-				CONTRIBUTOR_TYPES.RECENT_SEARCHES
-		);
-
-		if (recentContributorIndex > -1) {
-			return suggestionsContributorConfigurationArray[
-				recentContributorIndex
-			];
-		}
-		else {
-			throw `Unable to find contributor name: '${CONTRIBUTOR_TYPES.RECENT_SEARCHES}'`;
-		}
-	}
-	catch {
-		return null;
-	}
-}
+import getRecentContributor from '../utils/recent_searches/get_recent_contributor';
+import getRecentSearches from '../utils/recent_searches/get_recent_searches';
 
 export default function SearchBar({
 	destinationFriendlyURL,
@@ -409,7 +377,7 @@ export default function SearchBar({
 						alignElementRef.current.clientWidth + 'px',
 				}}
 			>
-				{!!recentContributorRef.current && (
+				{!!recentContributorRef.current && !!recentSearches.length && (
 					<ClayDropDown.ItemList
 						className="search-bar-suggestions-results-list"
 						key="RECENT_SEARCHES"

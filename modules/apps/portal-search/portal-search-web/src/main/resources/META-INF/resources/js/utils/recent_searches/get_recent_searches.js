@@ -14,16 +14,15 @@
 
 import {sessionStorage} from 'frontend-js-web';
 
-export const RECENT_SEARCHES_KEY =
-	'portal-search-web-search-bar-recent-searches';
+import {RECENT_SEARCHES_KEY} from './constants';
 
 /**
  * Gets the recent searches. Returns an empty array if nothing is found.
  * @param {number} amount
  * @returns {Array}
  */
-export function getRecentSearches(federatedSearchKey, amount = 5) {
-	// eslint-disable-next-line eqeqeq
+export default function getRecentSearches(federatedSearchKey, amount = 5) {
+	// eslint-disable-next-line
 	if (federatedSearchKey == null || federatedSearchKey === '') {
 		federatedSearchKey = 'default';
 	}
@@ -44,5 +43,3 @@ export function getRecentSearches(federatedSearchKey, amount = 5) {
 		return [];
 	}
 }
-
-export default {getRecentSearches};

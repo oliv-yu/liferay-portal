@@ -14,55 +14,10 @@
 
 import {sessionStorage} from 'frontend-js-web';
 
-import {RECENT_SEARCHES_KEY} from './SearchBarUtil';
-import {CONTRIBUTOR_TYPES} from './types/contributorTypes';
+import {RECENT_SEARCHES_KEY} from './constants';
+import getRecentContributor from './get_recent_contributor';
 
-const PROPERTY_THRESHOLD = 'threshold';
-
-/**
- * Finds a suggestion contributor with the contributorName CONTRIBUTOR_TYPES.RECENT_SEARCHES
- * and gets the set threshold configuration.
- * @param {string} suggestionsContributorConfiguration
- * @returns {number}
- */
-function getThresholdConfiguration(suggestionsContributorConfiguration) {
-	try {
-		const suggestionsContributorConfigurationArray = JSON.parse(
-			suggestionsContributorConfiguration
-		);
-
-		// TODO: Figure out why recent contributor is never found
-		// debugger;
-
-		const indexOfRecentContributor = suggestionsContributorConfigurationArray.indexOf(
-			(contributor) => {
-
-				// console.log(contributor.contributorName);
-
-				return (
-					contributor.contributorName ===
-					CONTRIBUTOR_TYPES.RECENT_SEARCHES
-				);
-			}
-		);
-
-		if (indexOfRecentContributor === -1) {
-			throw `Unable to find a contributor with name ${CONTRIBUTOR_TYPES.RECENT_SEARCHES}`;
-		}
-
-		return suggestionsContributorConfigurationArray[
-			indexOfRecentContributor
-		].attributes?.threshold;
-	}
-	catch (error) {
-		if (process.env.NODE_ENV === 'development') {
-			/* eslint-disable-next-line no-console */
-			console.info(error);
-		}
-
-		return -1;
-	}
-}
+const PROPERTY_THRESHOLD = 'characterThreshold';
 
 export default function ({
 	federatedSearchKey,
@@ -72,15 +27,20 @@ export default function ({
 
 		// Get contributor type "recent" threshold configuration.
 
-		const threshold = getThresholdConfiguration(
+		const characterThreshold = getRecentContributor(
 			suggestionsContributorConfiguration
-		);
+		)?.attributes?.characterThreshold;
 
 		// If no contributors with name `CONTRIBUTOR_TYPES.RECENT_SEARCHES` is found, do nothing.
-		// `threshold` is -1 when no `CONTRIBUTOR_TYPES.RECENT_SEARCHES` is found.
+		// `threshold` is empty when no `CONTRIBUTOR_TYPES.RECENT_SEARCHES` is found.
 
-		if (threshold === -1) {
+		if (!characterThreshold) {
 			return;
+		}
+
+		// eslint-disable-next-line
+		if (federatedSearchKey == null || federatedSearchKey === '') {
+			federatedSearchKey = 'default';
 		}
 
 		try {
@@ -95,13 +55,13 @@ export default function ({
 
 			sessionStorage.setItem(
 				RECENT_SEARCHES_KEY,
-				{
+				JSON.stringify({
 					...recentSearchesObject,
 					[federatedSearchKey]: {
 						...(recentSearchesObject[federatedSearchKey] || {}),
-						[PROPERTY_THRESHOLD]: threshold,
+						[PROPERTY_THRESHOLD]: characterThreshold,
 					},
-				},
+				}),
 				sessionStorage.TYPES.PERSONALIZATION
 			);
 		}
@@ -111,11 +71,11 @@ export default function ({
 
 			sessionStorage.setItem(
 				RECENT_SEARCHES_KEY,
-				{
+				JSON.stringify({
 					[federatedSearchKey]: {
-						[PROPERTY_THRESHOLD]: threshold,
+						[PROPERTY_THRESHOLD]: characterThreshold,
 					},
-				},
+				}),
 				sessionStorage.TYPES.PERSONALIZATION
 			);
 		}

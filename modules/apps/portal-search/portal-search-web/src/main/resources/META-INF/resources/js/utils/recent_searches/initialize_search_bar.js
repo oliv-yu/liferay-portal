@@ -14,7 +14,8 @@
 
 import {sessionStorage} from 'frontend-js-web';
 
-import {RECENT_SEARCHES_KEY, getRecentSearches} from './SearchBarUtil';
+import {RECENT_SEARCHES_KEY} from './constants';
+import getRecentSearches from './get_recent_searches';
 
 /**
  * Sets up the listener to save recent searches.
@@ -47,7 +48,7 @@ export default function initializeSearchBarRecentSearches({
 			return;
 		}
 
-		// eslint-disable-next-line eqeqeq
+		// eslint-disable-next-line
 		if (federatedSearchKey == null || federatedSearchKey === '') {
 			federatedSearchKey = 'default';
 		}

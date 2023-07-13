@@ -106,5 +106,5 @@ SearchResultsPortletPreferences searchResultsPortletPreferences = new SearchResu
 			"totalCount", searchResultSummaryDisplayContexts.size()
 		).build()
 	%>'
-	module="js/utils/initializeSearchBarRecentSearches"
+	module="js/utils/recent_searches/initialize_search_bar"
 />
