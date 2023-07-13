@@ -53,7 +53,7 @@ String randomNamespace = PortalUtil.generateRandomKey(request, "portlet_search_b
 
 SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortletDisplayContext)java.util.Objects.requireNonNull(request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT));
 
-SearchBarPortletPreferences searchBarPortletPreferences = new SearchBarPortletPreferencesImpl(java.util.Optional.ofNullable(portletPreferences));
+SearchBarPortletPreferences searchBarPortletPreferences = new SearchBarPortletPreferencesImpl(portletPreferences);
 
 SearchBarPortletInstanceConfiguration searchBarPortletInstanceConfiguration = searchBarPortletDisplayContext.getSearchBarPortletInstanceConfiguration();
 
@@ -102,7 +102,7 @@ String suggestionsContributorConfiguration = StringBundler.concat(StringPool.OPE
 									).put(
 										"emptySearchEnabled", searchBarPortletDisplayContext.isEmptySearchEnabled()
 									).put(
-										"federatedSearchKey", searchBarPortletPreferences.getFederatedSearchKeyString()
+										"federatedSearchKey", searchBarPortletPreferences.getFederatedSearchKey()
 									).put(
 										"isDXP", ReleaseInfo.isDXP()
 									).put(
@@ -197,6 +197,8 @@ String suggestionsContributorConfiguration = StringBundler.concat(StringPool.OPE
 <liferay-frontend:component
 	context='<%=
 		HashMapBuilder.<String, Object>put(
+			"federatedSearchKey", searchBarPortletPreferences.getFederatedSearchKey()
+		).put(
 			"suggestionsContributorConfiguration", suggestionsContributorConfiguration
 		).build()
 	%>'

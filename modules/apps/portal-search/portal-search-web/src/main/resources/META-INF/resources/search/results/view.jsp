@@ -53,7 +53,7 @@ List<SearchResultSummaryDisplayContext> searchResultSummaryDisplayContexts = sea
 
 SearchContainer<Document> searchContainer = searchResultsPortletDisplayContext.getSearchContainer();
 
-SearchResultsPortletPreferences searchResultsPortletPreferences = new SearchResultsPortletPreferencesImpl(java.util.Optional.ofNullable(portletPreferences));
+SearchResultsPortletPreferences searchResultsPortletPreferences = new SearchResultsPortletPreferencesImpl(portletPreferences);
 %>
 
 <c:choose>
@@ -99,7 +99,7 @@ SearchResultsPortletPreferences searchResultsPortletPreferences = new SearchResu
 <liferay-frontend:component
 	context='<%=
 		HashMapBuilder.<String, Object>put(
-			"federatedSearchKey", searchResultsPortletPreferences.getFederatedSearchKeyString()
+			"federatedSearchKey", searchResultsPortletPreferences.getFederatedSearchKey()
 		).put(
 			"keywords", searchResultsPortletDisplayContext.getKeywords()
 		).put(
