@@ -190,7 +190,7 @@ SearchBarPortletInstanceConfiguration searchBarPortletInstanceConfiguration = se
 	</c:otherwise>
 </c:choose>
 
-<liferay-frontend:component
+<%-- <liferay-frontend:component
 	context='<%=
 		HashMapBuilder.<String, Object>put(
 			"federatedSearchKey", searchBarPortletPreferences.getFederatedSearchKey()
@@ -199,4 +199,4 @@ SearchBarPortletInstanceConfiguration searchBarPortletInstanceConfiguration = se
 		).build()
 	%>'
 	module="js/utils/recent_searches/initialize_configuration"
-/>
+/> --%>

@@ -18,10 +18,12 @@ import {CONTRIBUTOR_TYPES} from '../types/contributorTypes';
  * Gets the recent contributor object from the suggestions contributor
  * configuration.
  * @param {string} suggestionsContributorConfiguration
+ * @param {string} recentType
  * @returns {object}
  */
 export default function getRecentContributor(
-	suggestionsContributorConfiguration
+	suggestionsContributorConfiguration,
+	recentType = CONTRIBUTOR_TYPES.RECENT_SEARCHES
 ) {
 	try {
 		const suggestionsContributorConfigurationArray = JSON.parse(
@@ -29,9 +31,7 @@ export default function getRecentContributor(
 		);
 
 		const recentContributorIndex = suggestionsContributorConfigurationArray.findIndex(
-			(contributor) =>
-				contributor.contributorName ===
-				CONTRIBUTOR_TYPES.RECENT_SEARCHES
+			(contributor) => contributor.contributorName === recentType
 		);
 
 		if (recentContributorIndex > -1) {
@@ -40,15 +40,10 @@ export default function getRecentContributor(
 			];
 		}
 		else {
-			throw `Unable to find contributor name: '${CONTRIBUTOR_TYPES.RECENT_SEARCHES}'`;
+			throw `Unable to find contributor name: '${recentType}'`;
 		}
 	}
 	catch (error) {
-		if (process.env.NODE_ENV === 'development') {
-			/* eslint-disable-next-line no-console */
-			console.info(error);
-		}
-
 		return null;
 	}
 }

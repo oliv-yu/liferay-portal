@@ -20,7 +20,13 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import getCN from 'classnames';
-import {addParams, fetch, navigate} from 'frontend-js-web';
+import {
+	addParams,
+	checkConsent,
+	fetch,
+	navigate,
+	sessionStorage,
+} from 'frontend-js-web';
 import React, {useCallback, useRef, useState} from 'react';
 
 import useDebounceCallback from '../hooks/useDebounceCallback';
@@ -71,7 +77,7 @@ export default function SearchBar({
 
 	const alignElementRef = useRef();
 	const dropdownRef = useRef();
-	const recentContributorRef = useRef(
+	const recentSearchContributorRef = useRef(
 		getRecentContributor(suggestionsContributorConfiguration)
 	);
 
@@ -339,6 +345,13 @@ export default function SearchBar({
 		);
 	};
 
+	const _showRecentSearches = () =>
+		checkConsent(sessionStorage.TYPES.PERSONALIZATION) &&
+		!!recentSearchContributorRef.current &&
+		!!recentSearches.length &&
+		inputValue.length >=
+			recentSearchContributorRef.current?.attributes?.characterThreshold;
+
 	const _updateQueryString = (queryString, inputValue) => {
 		const searchParams = new URLSearchParams(queryString);
 
@@ -375,8 +388,7 @@ export default function SearchBar({
 			<ClayDropDown.Menu
 				active={
 					active &&
-					(!!suggestionsResponseItems.length ||
-						!!recentSearches.length)
+					(!!suggestionsResponseItems.length || _showRecentSearches())
 				}
 				alignElementRef={alignElementRef}
 				autoBestAlign={false}
@@ -390,43 +402,51 @@ export default function SearchBar({
 						alignElementRef.current.clientWidth + 'px',
 				}}
 			>
-				{!!recentContributorRef.current && !!recentSearches.length && (
+				{_showRecentSearches() && (
 					<ClayDropDown.ItemList
 						className="search-bar-suggestions-results-list"
 						key="RECENT_SEARCHES"
 					>
 						<ClayDropDown.Group
 							header={
-								recentContributorRef.current?.displayGroupName
+								recentSearchContributorRef.current
+									?.displayGroupName
 							}
 						>
-							{recentSearches.map((keyword, index) => (
-								<ClayDropDown.Item key={index}>
-									<ClayLink
-										className="suggestion-item-title"
-										displayType="unstyled"
-										href={
-											searchURL +
-											_updateQueryString(
-												document.location.search,
-												keyword
-											)
-										}
-									>
-										{keyword}
-									</ClayLink>
+							{recentSearches
+								.slice(
+									0,
+									recentSearchContributorRef.current?.size
+								)
+								.map((keyword, index) => (
+									<ClayDropDown.Item key={index}>
+										<ClayLink
+											className="suggestion-item-title"
+											displayType="unstyled"
+											href={
+												searchURL +
+												_updateQueryString(
+													document.location.search,
+													keyword
+												)
+											}
+										>
+											{keyword}
+										</ClayLink>
 
-									<ClayButton
-										className="dropdown-item-indicator-end"
-										displayType="unstyled"
-										onClick={() =>
-											_handleDeleteRecentSearch(keyword)
-										}
-									>
-										<ClayIcon symbol="times" />
-									</ClayButton>
-								</ClayDropDown.Item>
-							))}
+										<ClayButton
+											className="dropdown-item-indicator-end"
+											displayType="unstyled"
+											onClick={() =>
+												_handleDeleteRecentSearch(
+													keyword
+												)
+											}
+										>
+											<ClayIcon symbol="times" />
+										</ClayButton>
+									</ClayDropDown.Item>
+								))}
 						</ClayDropDown.Group>
 					</ClayDropDown.ItemList>
 				)}
