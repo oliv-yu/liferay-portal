@@ -175,7 +175,14 @@ function SearchBarConfigurationSuggestions({
 				size: '3',
 			});
 		}
-		else if (contributorName === CONTRIBUTOR_TYPES.RECENT_SEARCHES) {
+		else if (
+			[
+				CONTRIBUTOR_TYPES.RECENT_SEARCHES,
+				CONTRIBUTOR_TYPES.RECENT_PAGES,
+				CONTRIBUTOR_TYPES.RECENT_SITES,
+				CONTRIBUTOR_TYPES.RECENTLY_VIEWED,
+			].includes(contributorName)
+		) {
 			onInputSetsAdd({
 				attributes: {
 					characterThreshold: '0',

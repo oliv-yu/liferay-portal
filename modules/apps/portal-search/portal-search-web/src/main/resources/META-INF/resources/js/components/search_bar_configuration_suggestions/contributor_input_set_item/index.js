@@ -36,7 +36,10 @@ function ContributorInputSetItem({index, onInputSetItemChange, value = {}}) {
 			{[
 				CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCH_KEYWORDS,
 				CONTRIBUTOR_TYPES.ASAH_TOP_SEARCH_KEYWORDS,
+				CONTRIBUTOR_TYPES.RECENT_PAGES,
 				CONTRIBUTOR_TYPES.RECENT_SEARCHES,
+				CONTRIBUTOR_TYPES.RECENT_SITES,
+				CONTRIBUTOR_TYPES.RECENTLY_VIEWED,
 			].includes(value.contributorName) && (
 				<SiteActivitiesInputs
 					index={index}

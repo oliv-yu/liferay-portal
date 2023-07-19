@@ -16,7 +16,10 @@ export const CONTRIBUTOR_TYPES = {
 	ASAH_RECENT_SEARCH_KEYWORDS: 'asahRecentSearchKeywords',
 	ASAH_TOP_SEARCH_KEYWORDS: 'asahTopSearchKeywords',
 	BASIC: 'basic',
+	RECENT_PAGES: 'recentPages',
 	RECENT_SEARCHES: 'recentSearches',
+	RECENT_SITES: 'recentSites',
+	RECENTLY_VIEWED: 'recentlyViewed',
 	SXP_BLUEPRINT: 'sxpBlueprint',
 };
 
@@ -24,4 +27,7 @@ export const CONTRIBUTOR_TYPES_ASAH_DEFAULT_DISPLAY_GROUP_NAMES = {
 	[CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCH_KEYWORDS]: 'trending-searches',
 	[CONTRIBUTOR_TYPES.ASAH_TOP_SEARCH_KEYWORDS]: 'top-searches',
 	[CONTRIBUTOR_TYPES.RECENT_SEARCHES]: 'recent-searches',
+	[CONTRIBUTOR_TYPES.RECENT_PAGES]: 'recent-pages',
+	[CONTRIBUTOR_TYPES.RECENT_SITES]: 'recent-sites',
+	[CONTRIBUTOR_TYPES.RECENTLY_VIEWED]: 'recently-viewed',
 };

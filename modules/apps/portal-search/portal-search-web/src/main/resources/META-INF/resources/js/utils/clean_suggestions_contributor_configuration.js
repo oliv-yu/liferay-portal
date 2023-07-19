@@ -39,15 +39,7 @@ export default function cleanSuggestionsContributorConfiguration(
 				return false;
 			}
 
-			if (
-				!isDXP &&
-				[
-					CONTRIBUTOR_TYPES.SXP_BLUEPRINT,
-					CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCH_KEYWORDS,
-					CONTRIBUTOR_TYPES.ASAH_TOP_SEARCH_KEYWORDS,
-					CONTRIBUTOR_TYPES.RECENT_SEARCHES,
-				].includes(item.contributorName)
-			) {
+			if (!isDXP && item.contributorName !== CONTRIBUTOR_TYPES.BASIC) {
 				return false;
 			}
 

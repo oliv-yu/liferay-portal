@@ -78,6 +78,51 @@ function getSiteActivitiesContributorActivityOptions(learnMessages) {
 			),
 			title: Liferay.Language.get('recent-searches'),
 		},
+		{
+			contributorName: CONTRIBUTOR_TYPES.RECENT_PAGES,
+			description: (
+				<>
+					{Liferay.Language.get('recent-pages-help')}
+
+					<LearnMessage
+						className="c-ml-1"
+						learnMessages={learnMessages}
+						resourceKey="search-bar-suggestions-site-activities"
+					/>
+				</>
+			),
+			title: Liferay.Language.get('recent-pages'),
+		},
+		{
+			contributorName: CONTRIBUTOR_TYPES.RECENT_SITES,
+			description: (
+				<>
+					{Liferay.Language.get('recent-sites-help')}
+
+					<LearnMessage
+						className="c-ml-1"
+						learnMessages={learnMessages}
+						resourceKey="search-bar-suggestions-site-activities"
+					/>
+				</>
+			),
+			title: Liferay.Language.get('recent-sites'),
+		},
+		{
+			contributorName: CONTRIBUTOR_TYPES.RECENTLY_VIEWED,
+			description: (
+				<>
+					{Liferay.Language.get('recently-viewed-help')}
+
+					<LearnMessage
+						className="c-ml-1"
+						learnMessages={learnMessages}
+						resourceKey="search-bar-suggestions-site-activities"
+					/>
+				</>
+			),
+			title: Liferay.Language.get('recently-viewed'),
+		},
 	];
 }
 
@@ -248,8 +293,10 @@ function SiteActivities({index, onBlur, onInputSetItemChange, touched, value}) {
 					</ClaySelect>
 				</ClayInput.GroupItem>
 
-				{value.contributorName !==
-					CONTRIBUTOR_TYPES.RECENT_SEARCHES && (
+				{[
+					CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCH_KEYWORDS,
+					CONTRIBUTOR_TYPES.ASAH_TOP_SEARCH_KEYWORDS,
+				].includes(value.contributorName) && (
 					<MinimumSearchesInput
 						onBlur={onBlur('attributes.minCounts')}
 						onChange={_handleChangeAttribute('minCounts')}
