@@ -143,7 +143,21 @@ function SiteActivities({index, onBlur, onInputSetItemChange, touched, value}) {
 	};
 
 	const _handleActivityInputClick = (contributorName) => () => {
+		const {
+			characterThreshold,
+			matchDisplayLanguageId,
+			minCounts = '5',
+		} = value.attributes;
+
+		const attributes = [
+			CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCH_KEYWORDS,
+			CONTRIBUTOR_TYPES.ASAH_TOP_SEARCH_KEYWORDS,
+		].includes(contributorName)
+			? {characterThreshold, matchDisplayLanguageId, minCounts}
+			: {characterThreshold, matchDisplayLanguageId};
+
 		onInputSetItemChange(index, {
+			attributes,
 			contributorName,
 			displayGroupName:
 				CONTRIBUTOR_TYPES_ASAH_DEFAULT_DISPLAY_GROUP_NAMES[

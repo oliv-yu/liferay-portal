@@ -35,6 +35,11 @@ import deleteRecentSearch from '../utils/recent_searches/delete_recent_search';
 import getRecentContributor from '../utils/recent_searches/get_recent_contributor';
 import getRecentSearches from '../utils/recent_searches/get_recent_searches';
 
+const appendKeywordToRecentSearches = (recentSearches, keywords) =>
+	recentSearches[0] === keywords
+		? recentSearches
+		: [keywords, ...recentSearches.filter((item) => item !== keywords)];
+
 export default function SearchBar({
 	destinationFriendlyURL,
 	emptySearchEnabled,
@@ -64,7 +69,10 @@ export default function SearchBar({
 	const [inputValue, setInputValue] = useState(keywords);
 	const [loading, setLoading] = useState(false);
 	const [recentSearches, setRecentSearches] = useState(
-		getRecentSearches(federatedSearchKey)
+		appendKeywordToRecentSearches(
+			getRecentSearches(federatedSearchKey),
+			keywords
+		)
 	);
 	const [scope, setScope] = useState(
 		selectedEverythingSearchScope
@@ -194,7 +202,7 @@ export default function SearchBar({
 
 			_fetchSuggestions(inputValue, scope);
 
-			setActive(!!recentSearches.length);
+			setActive(true);
 		}
 	};
 
