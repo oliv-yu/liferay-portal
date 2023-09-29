@@ -64,7 +64,7 @@ const withSheet = (storyFn) => (
 
 storiesOf('Pages|ResultRankingsForm', module).add('default', () => (
 	<ResultRankingsForm
-		cancelUrl=""
+		cancelURL=""
 		fetchDocumentsHiddenURL="http://www.mocky.io/v2/5e8366a4300000580fcf3df1"
 		fetchDocumentsSearchURL="http://www.mocky.io/v2/5e83720e3000007612cf3e32"
 		fetchDocumentsVisibleURL="http://www.mocky.io/v2/5ea0e59d320000204394b198"
@@ -73,7 +73,7 @@ storiesOf('Pages|ResultRankingsForm', module).add('default', () => (
 		saveActionUrl="#"
 		searchQuery={text('Search Term', 'example')}
 		status={1}
-		validateFormUrl="http://www.mocky.io/v2/5d9dfbea3200008407329b6f"
+		validateFormURL="http://www.mocky.io/v2/5d9dfbea3200008407329b6f"
 	/>
 ));
 

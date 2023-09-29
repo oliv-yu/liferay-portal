@@ -25,14 +25,14 @@ const UNPIN_BUTTON_LABEL = 'unpin-result';
 function renderTestResultRankingsForm(props) {
 	return render(
 		<ResultRankingsForm
-			cancelUrl="cancel"
+			cancelURL="cancel"
 			fetchDocumentsHiddenURL={FETCH_HIDDEN_DOCUMENTS_URL}
 			fetchDocumentsSearchURL={FETCH_SEARCH_DOCUMENTS_URL}
 			fetchDocumentsVisibleURL={FETCH_VISIBLE_DOCUMENTS_URL}
 			formName={FORM_NAME}
 			initialInactive={false}
 			searchQuery=""
-			validateFormUrl={VALIDATE_FORM_URL}
+			validateFormURL={VALIDATE_FORM_URL}
 			{...props}
 		/>
 	);
