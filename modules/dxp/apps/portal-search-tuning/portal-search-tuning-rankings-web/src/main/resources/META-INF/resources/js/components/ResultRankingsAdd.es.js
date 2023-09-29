@@ -35,7 +35,7 @@ const SCOPE_INFO = {
 	},
 };
 
-function ResultRankingsAdd({cancelUrl, fetchSitesURL, formName, namespace}) {
+function ResultRankingsAdd({cancelURL, fetchSitesURL, formName, namespace}) {
 	const [errors, setErrors] = useState({});
 	const [scopeType, setScopeType] = useState(SCOPE_TYPES.EVERYTHING);
 	const [scope, setScope] = useState('');
@@ -84,7 +84,7 @@ function ResultRankingsAdd({cancelUrl, fetchSitesURL, formName, namespace}) {
 	};
 
 	const _handleCancel = () => {
-		navigate(cancelUrl);
+		navigate(cancelURL);
 	};
 
 	const _handleSearchQueryChange = (event) => {
@@ -243,7 +243,7 @@ function ResultRankingsAdd({cancelUrl, fetchSitesURL, formName, namespace}) {
 					<ScopeSelect
 						disabled={false}
 						error={errors.scope}
-						fetchItemsUrl={fetchSitesURL}
+						fetchItemsURL={fetchSitesURL}
 						locator={{
 							id: 'externalReferenceCode',
 							label: 'descriptiveName',
@@ -272,7 +272,7 @@ function ResultRankingsAdd({cancelUrl, fetchSitesURL, formName, namespace}) {
 					<ScopeSelect
 						disabled={false}
 						error={errors.scope}
-						fetchItemsUrl={`${
+						fetchItemsURL={`${
 							window.location.origin
 						}${Liferay.ThemeDisplay.getPathContext()}/o/search-experiences-rest/v1.0/sxp-blueprints`}
 						locator={{
@@ -316,7 +316,7 @@ function ResultRankingsAdd({cancelUrl, fetchSitesURL, formName, namespace}) {
 }
 
 export default function ({
-	cancelUrl,
+	cancelURL,
 	fetchSitesURL,
 	formName,
 	learnResources,
@@ -325,7 +325,7 @@ export default function ({
 	return (
 		<LearnResourcesContext.Provider value={learnResources}>
 			<ResultRankingsAdd
-				cancelUrl={cancelUrl}
+				cancelURL={cancelURL}
 				fetchSitesURL={fetchSitesURL}
 				formName={formName}
 				namespace={namespace}

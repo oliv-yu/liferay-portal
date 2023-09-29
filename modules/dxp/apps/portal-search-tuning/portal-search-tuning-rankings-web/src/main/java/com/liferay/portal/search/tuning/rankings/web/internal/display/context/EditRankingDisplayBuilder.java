@@ -134,7 +134,7 @@ public class EditRankingDisplayBuilder {
 
 	private Map<String, Object> _getProps() {
 		return HashMapBuilder.<String, Object>put(
-			"cancelUrl", HtmlUtil.escape(_getRedirect())
+			"cancelURL", HtmlUtil.escape(_getRedirect())
 		).put(
 			"fetchDocumentsHiddenURL", _getHiddenResultRankingsResourceURL()
 		).put(
@@ -167,7 +167,7 @@ public class EditRankingDisplayBuilder {
 		).put(
 			"searchQuery", _getKeywords()
 		).put(
-			"validateFormUrl", _getValidateResultRankingsResourceURL()
+			"validateFormURL", _getValidateResultRankingsResourceURL()
 		).build();
 	}
 

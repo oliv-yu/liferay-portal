@@ -32,7 +32,7 @@ class ResultRankingsForm extends Component {
 	static contextType = ThemeContext;
 
 	static propTypes = {
-		cancelUrl: PropTypes.string.isRequired,
+		cancelURL: PropTypes.string.isRequired,
 		fetchDocumentsHiddenURL: PropTypes.string.isRequired,
 		fetchDocumentsSearchURL: PropTypes.string.isRequired,
 		fetchDocumentsVisibleURL: PropTypes.string.isRequired,
@@ -43,7 +43,7 @@ class ResultRankingsForm extends Component {
 		initialSXPBlueprintExternalReferenceCode: PropTypes.string,
 		resultsRankingUid: PropTypes.string,
 		searchQuery: PropTypes.string.isRequired,
-		validateFormUrl: PropTypes.string.isRequired,
+		validateFormURL: PropTypes.string.isRequired,
 	};
 
 	static defaultProps = {
@@ -295,13 +295,13 @@ class ResultRankingsForm extends Component {
 		) {
 			const scopeInfo = this.props.initialGroupExternalReferenceCode
 				? {
-						fetchItemByIdUrl: this.props
+						fetchItemByIdURL: this.props
 							.fetchSiteByExternalReferenceCodeURL,
 						label: 'descriptiveName',
 						value: this.props.initialGroupExternalReferenceCode,
 				  }
 				: {
-						fetchItemByIdUrl: `${
+						fetchItemByIdURL: `${
 							window.location.origin
 						}${Liferay.ThemeDisplay.getPathContext()}/o/search-experiences-rest/v1.0/sxp-blueprints/by-external-reference-code/${
 							this.props.initialSXPBlueprintExternalReferenceCode
@@ -311,7 +311,7 @@ class ResultRankingsForm extends Component {
 							.initialSXPBlueprintExternalReferenceCode,
 				  };
 
-			fetchResponse(scopeInfo.fetchItemByIdUrl, {
+			fetchResponse(scopeInfo.fetchItemByIdURL, {
 				[`${this.context.namespace}externalReferenceCode`]: scopeInfo.value,
 			})
 				.then((response) => {
@@ -549,7 +549,7 @@ class ResultRankingsForm extends Component {
 	_handlePublish = () => {
 		const {namespace} = this.context;
 
-		fetchResponse(this.props.validateFormUrl, {
+		fetchResponse(this.props.validateFormURL, {
 			[`${namespace}aliases`]: this.state.aliases,
 			[`${namespace}inactive`]: this.state.inactive,
 			[`${namespace}keywords`]: this.props.searchQuery,
@@ -722,7 +722,7 @@ class ResultRankingsForm extends Component {
 		const {namespace} = this.context;
 
 		const {
-			cancelUrl,
+			cancelURL,
 			fetchDocumentsSearchURL,
 			initialGroupExternalReferenceCode,
 			initialSXPBlueprintExternalReferenceCode,
@@ -769,7 +769,7 @@ class ResultRankingsForm extends Component {
 
 				<PageToolbar
 					inactive={inactive}
-					onCancel={cancelUrl}
+					onCancel={cancelURL}
 					onChangeActive={this._handleActive}
 					onPublish={this._handlePublish}
 				/>

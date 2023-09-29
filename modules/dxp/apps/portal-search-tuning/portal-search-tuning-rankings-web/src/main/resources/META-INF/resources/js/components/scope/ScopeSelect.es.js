@@ -30,7 +30,7 @@ import ScopeSelectModal from './ScopeSelectModal.es';
 const ScopeSelect = ({
 	disabled = false,
 	error,
-	fetchItemsUrl,
+	fetchItemsURL,
 	selected,
 	locator = {
 		id: 'externalReferenceCode',
@@ -53,7 +53,7 @@ const ScopeSelect = ({
 	const _fetchDropdownItems = () => {
 		setLoading(true);
 
-		fetchResponse(fetchItemsUrl, {
+		fetchResponse(fetchItemsURL, {
 			page: 1,
 			pageSize: 5,
 		})
@@ -180,7 +180,7 @@ const ScopeSelect = ({
 					{!!resourceItems.length && (
 						<ClayDropDown.Section>
 							<ScopeSelectModal
-								fetchItemsUrl={fetchItemsUrl}
+								fetchItemsURL={fetchItemsURL}
 								locator={locator}
 								onSubmit={_handleSelect}
 								selected={selected}

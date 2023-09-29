@@ -22,7 +22,7 @@ import {sub} from '../../utils/language.es';
  */
 
 const ScopeSelectModal = ({
-	fetchItemsUrl,
+	fetchItemsURL,
 	locator,
 	observer,
 	onSubmit,
@@ -39,7 +39,7 @@ const ScopeSelectModal = ({
 	useEffect(() => {
 		setLoading(true);
 
-		fetchResponse(fetchItemsUrl, {page: activePage, pageSize: delta})
+		fetchResponse(fetchItemsURL, {page: activePage, pageSize: delta})
 			.then((response) => {
 				setResource(response);
 			})
@@ -49,7 +49,7 @@ const ScopeSelectModal = ({
 			.finally(() => {
 				setLoading(false);
 			});
-	}, [activePage, delta, fetchItemsUrl]);
+	}, [activePage, delta, fetchItemsURL]);
 
 	/**
 	 * Handles what is displayed depending on loading/error/results/no results.
@@ -191,7 +191,7 @@ const ScopeSelectModal = ({
 
 export default function ({
 	children,
-	fetchItemsUrl,
+	fetchItemsURL,
 	locator,
 	onSubmit,
 	selected,
@@ -210,7 +210,7 @@ export default function ({
 		<>
 			{open && (
 				<ScopeSelectModal
-					fetchItemsUrl={fetchItemsUrl}
+					fetchItemsURL={fetchItemsURL}
 					locator={locator}
 					observer={observer}
 					onSubmit={_handleSubmit}
