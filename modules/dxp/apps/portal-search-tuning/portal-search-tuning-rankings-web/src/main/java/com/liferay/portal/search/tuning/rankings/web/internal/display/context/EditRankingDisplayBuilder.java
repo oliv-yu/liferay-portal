@@ -136,16 +136,16 @@ public class EditRankingDisplayBuilder {
 		return HashMapBuilder.<String, Object>put(
 			"cancelUrl", HtmlUtil.escape(_getRedirect())
 		).put(
-			"fetchDocumentsHiddenUrl", _getHiddenResultRankingsResourceURL()
+			"fetchDocumentsHiddenURL", _getHiddenResultRankingsResourceURL()
 		).put(
-			"fetchDocumentsSearchUrl", _getSearchResultRankingsResourceURL()
+			"fetchDocumentsSearchURL", _getSearchResultRankingsResourceURL()
 		).put(
-			"fetchDocumentsVisibleUrl", _getVisibleResultRankingsResourceURL()
+			"fetchDocumentsVisibleURL", _getVisibleResultRankingsResourceURL()
 		).put(
-			"fetchSiteByExternalReferenceCodeUrl",
+			"fetchSiteByExternalReferenceCodeURL",
 			_getSiteByExternalReferenceCodeResourceURL()
 		).put(
-			"fetchSitesUrl", _getSitesResourceURL()
+			"fetchSitesURL", _getSitesResourceURL()
 		).put(
 			"formName", _renderResponse.getNamespace() + _getFormName()
 		).put(

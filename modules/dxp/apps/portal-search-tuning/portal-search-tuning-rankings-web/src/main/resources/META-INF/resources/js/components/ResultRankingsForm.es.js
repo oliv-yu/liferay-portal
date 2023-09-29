@@ -33,9 +33,9 @@ class ResultRankingsForm extends Component {
 
 	static propTypes = {
 		cancelUrl: PropTypes.string.isRequired,
-		fetchDocumentsHiddenUrl: PropTypes.string.isRequired,
-		fetchDocumentsSearchUrl: PropTypes.string.isRequired,
-		fetchDocumentsVisibleUrl: PropTypes.string.isRequired,
+		fetchDocumentsHiddenURL: PropTypes.string.isRequired,
+		fetchDocumentsSearchURL: PropTypes.string.isRequired,
+		fetchDocumentsVisibleURL: PropTypes.string.isRequired,
 		formName: PropTypes.string.isRequired,
 		initialAliases: PropTypes.arrayOf(String),
 		initialGroupExternalReferenceCode: PropTypes.string,
@@ -296,7 +296,7 @@ class ResultRankingsForm extends Component {
 			const scopeInfo = this.props.initialGroupExternalReferenceCode
 				? {
 						fetchItemByIdUrl: this.props
-							.fetchSiteByExternalReferenceCodeUrl,
+							.fetchSiteByExternalReferenceCodeURL,
 						label: 'descriptiveName',
 						value: this.props.initialGroupExternalReferenceCode,
 				  }
@@ -342,7 +342,7 @@ class ResultRankingsForm extends Component {
 
 		const {companyId, namespace} = this.context;
 
-		return fetchDocuments(this.props.fetchDocumentsVisibleUrl, {
+		return fetchDocuments(this.props.fetchDocumentsVisibleURL, {
 			[`${namespace}companyId`]: companyId,
 			[`${namespace}from`]: DELTA * this.state.visibleCur,
 			[`${namespace}keywords`]: this.props.searchQuery,
@@ -448,7 +448,7 @@ class ResultRankingsForm extends Component {
 
 		const {companyId, namespace} = this.context;
 
-		return fetchDocuments(this.props.fetchDocumentsHiddenUrl, {
+		return fetchDocuments(this.props.fetchDocumentsHiddenURL, {
 			[`${namespace}companyId`]: companyId,
 			[`${namespace}from`]: DELTA * this.state.hiddenCur,
 			[`${namespace}keywords`]: this.props.searchQuery,
@@ -723,7 +723,7 @@ class ResultRankingsForm extends Component {
 
 		const {
 			cancelUrl,
-			fetchDocumentsSearchUrl,
+			fetchDocumentsSearchURL,
 			initialGroupExternalReferenceCode,
 			initialSXPBlueprintExternalReferenceCode,
 			searchQuery,
@@ -864,8 +864,8 @@ class ResultRankingsForm extends Component {
 											dataLoading={dataLoadingVisible}
 											dataMap={dataMap}
 											displayError={displayError}
-											fetchDocumentsSearchUrl={
-												fetchDocumentsSearchUrl
+											fetchDocumentsSearchURL={
+												fetchDocumentsSearchURL
 											}
 											onAddResultSubmit={
 												this._handleUpdateAddResultIds

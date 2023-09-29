@@ -65,9 +65,9 @@ const withSheet = (storyFn) => (
 storiesOf('Pages|ResultRankingsForm', module).add('default', () => (
 	<ResultRankingsForm
 		cancelUrl=""
-		fetchDocumentsHiddenUrl="http://www.mocky.io/v2/5e8366a4300000580fcf3df1"
-		fetchDocumentsSearchUrl="http://www.mocky.io/v2/5e83720e3000007612cf3e32"
-		fetchDocumentsVisibleUrl="http://www.mocky.io/v2/5ea0e59d320000204394b198"
+		fetchDocumentsHiddenURL="http://www.mocky.io/v2/5e8366a4300000580fcf3df1"
+		fetchDocumentsSearchURL="http://www.mocky.io/v2/5e83720e3000007612cf3e32"
+		fetchDocumentsVisibleURL="http://www.mocky.io/v2/5ea0e59d320000204394b198"
 		formName="testFm"
 		initialAliases={['one', 'two', 'three']}
 		saveActionUrl="#"
@@ -80,13 +80,13 @@ storiesOf('Pages|ResultRankingsForm', module).add('default', () => (
 storiesOf('Components|AddResult', module)
 	.add('AddResult', () => (
 		<AddResult
-			fetchDocumentsSearchUrl="http://www.mocky.io/v2/5db37f913000005f0057b68e"
+			fetchDocumentsSearchURL="http://www.mocky.io/v2/5db37f913000005f0057b68e"
 			onAddResultSubmit={action('onAddResultSubmit')}
 		/>
 	))
 	.add('AddResultModal', () => (
 		<AddResultModal
-			fetchDocumentsSearchUrl="http://www.mocky.io/v2/5db37f913000005f0057b68e"
+			fetchDocumentsSearchURL="http://www.mocky.io/v2/5db37f913000005f0057b68e"
 			onAddResultSubmit={action('onAddResultSubmit')}
 			onCloseModal={action('onCloseModal')}
 		/>
@@ -143,7 +143,7 @@ storiesOf('Components|List', module)
 		<List
 			dataLoading={false}
 			dataMap={mockDataMap}
-			fetchDocumentsSearchUrl=""
+			fetchDocumentsSearchURL=""
 			onAddResultSubmit={action('onAddResultSubmit')}
 			onClickHide={action('onClickHide')}
 			onClickPin={action('onClickPin')}
@@ -155,7 +155,7 @@ storiesOf('Components|List', module)
 		<List
 			dataLoading={false}
 			dataMap={{}}
-			fetchDocumentsSearchUrl=""
+			fetchDocumentsSearchURL=""
 			onAddResultSubmit={action('onAddResultSubmit')}
 		/>
 	))
@@ -164,7 +164,7 @@ storiesOf('Components|List', module)
 			dataLoading={false}
 			dataMap={{}}
 			displayError
-			fetchDocumentsSearchUrl=""
+			fetchDocumentsSearchURL=""
 			onAddResultSubmit={action('onAddResultSubmit')}
 			onLoadResults={action('load-results')}
 		/>

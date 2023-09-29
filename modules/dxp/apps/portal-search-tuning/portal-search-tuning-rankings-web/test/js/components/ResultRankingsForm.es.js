@@ -26,9 +26,9 @@ function renderTestResultRankingsForm(props) {
 	return render(
 		<ResultRankingsForm
 			cancelUrl="cancel"
-			fetchDocumentsHiddenUrl={FETCH_HIDDEN_DOCUMENTS_URL}
-			fetchDocumentsSearchUrl={FETCH_SEARCH_DOCUMENTS_URL}
-			fetchDocumentsVisibleUrl={FETCH_VISIBLE_DOCUMENTS_URL}
+			fetchDocumentsHiddenURL={FETCH_HIDDEN_DOCUMENTS_URL}
+			fetchDocumentsSearchURL={FETCH_SEARCH_DOCUMENTS_URL}
+			fetchDocumentsVisibleURL={FETCH_VISIBLE_DOCUMENTS_URL}
 			formName={FORM_NAME}
 			initialInactive={false}
 			searchQuery=""
