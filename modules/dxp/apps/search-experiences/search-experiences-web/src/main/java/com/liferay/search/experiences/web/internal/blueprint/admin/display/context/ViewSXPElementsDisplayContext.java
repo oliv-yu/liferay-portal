@@ -94,6 +94,17 @@ public class ViewSXPElementsDisplayContext {
 				LanguageUtil.get(_sxpRequestHelper.getRequest(), "view"), "get",
 				"get", null),
 			new FDSActionDropdownItem(
+				PortletURLBuilder.create(
+					getPortletURL()
+				).setMVCRenderCommandName(
+					"/sxp_blueprint_admin/edit_sxp_element"
+				).setParameter(
+					"sxpElementId", "{id}"
+				).buildString(),
+				"pencil", "view",
+				LanguageUtil.get(_sxpRequestHelper.getRequest(), "edit"), "get",
+				"edit", null),
+			new FDSActionDropdownItem(
 				getAPIURL() + "/{id}/copy", "copy", "copy",
 				LanguageUtil.get(_sxpRequestHelper.getRequest(), "copy"),
 				"post", "create", "async"),

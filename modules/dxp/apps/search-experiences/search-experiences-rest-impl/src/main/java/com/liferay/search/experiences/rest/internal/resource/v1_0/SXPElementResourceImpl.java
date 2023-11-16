@@ -208,10 +208,27 @@ public class SXPElementResourceImpl extends BaseSXPElementResourceImpl {
 								permissionName, sxpElementId);
 						}
 					).put(
-						"get",
-						() -> addAction(
+						"edit",
+						() -> {
+							if (sxpElement.getReadOnly()) {
+								return null;
+							}
+
+							return addAction(
 							ActionKeys.VIEW, "getSXPElement", permissionName,
-							sxpElementId)
+							sxpElementId);
+						}
+					).put(
+						"get",
+						() -> {
+							if (!sxpElement.getReadOnly()) {
+								return null;
+							}
+
+							return addAction(
+							ActionKeys.VIEW, "getSXPElement", permissionName,
+							sxpElementId);
+						}
 					).put(
 						"update",
 						() -> {

@@ -35,7 +35,7 @@ public class SXPElementsTableFDSView extends BaseTableFDSView {
 		return fdsTableSchemaBuilder.add(
 			"title", "title",
 			fdsTableSchemaField -> fdsTableSchemaField.setContentRenderer(
-				"actionLink"
+				"titleTableCellRenderer"
 			).setSortable(
 				true
 			)
