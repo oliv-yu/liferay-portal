@@ -7,11 +7,12 @@ import {defineConfig} from '@playwright/test';
 
 import {config as setup} from './tests/global.setup.config';
 import {config as object} from './tests/object/config';
+import {config as portalSearchTuningWeb} from './tests/portal-search-tuning-web/config';
 import {config as portalWeb} from './tests/portal-web/config';
 
 export default defineConfig({
 	forbidOnly: !!process.env.CI,
-	projects: [object, portalWeb, setup],
+	projects: [object, portalWeb, portalSearchTuningWeb, setup],
 	reporter: [
 		[
 			'html',
