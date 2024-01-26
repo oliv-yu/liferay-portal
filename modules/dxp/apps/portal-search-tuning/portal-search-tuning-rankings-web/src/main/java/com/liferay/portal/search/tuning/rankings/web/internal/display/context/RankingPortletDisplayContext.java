@@ -66,6 +66,10 @@ public class RankingPortletDisplayContext {
 		return _disabledManagementBar;
 	}
 
+	public boolean isEnterpriseSearchEnabled() {
+		return _enterpriseSearchEnabled;
+	}
+
 	public Boolean isShowCreationMenu() {
 		return true;
 	}
@@ -88,6 +92,10 @@ public class RankingPortletDisplayContext {
 
 	public void setDisplayStyle(String displayStyle) {
 		_displayStyle = displayStyle;
+	}
+
+	public void setEnterpriseSearchEnabled(boolean enterpriseSearchEnabled) {
+		_enterpriseSearchEnabled = enterpriseSearchEnabled;
 	}
 
 	public void setFilterItemsDropdownItems(
@@ -127,6 +135,7 @@ public class RankingPortletDisplayContext {
 	private CreationMenu _creationMenu;
 	private boolean _disabledManagementBar;
 	private String _displayStyle;
+	private boolean _enterpriseSearchEnabled;
 	private List<DropdownItem> _filterItemsDropdownItems;
 	private List<LabelItem> _filterLabelItems;
 	private String _orderByType;

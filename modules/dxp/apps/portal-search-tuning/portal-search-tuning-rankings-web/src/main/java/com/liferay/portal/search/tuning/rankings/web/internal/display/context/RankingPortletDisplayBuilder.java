@@ -97,6 +97,8 @@ public class RankingPortletDisplayBuilder {
 		rankingPortletDisplayContext.setDisabledManagementBar(
 			isDisabledManagementBar(searchContainer));
 		rankingPortletDisplayContext.setDisplayStyle(getDisplayStyle());
+		rankingPortletDisplayContext.setEnterpriseSearchEnabled(
+			getEnterpriseSearchEnabled());
 		rankingPortletDisplayContext.setFilterItemsDropdownItems(
 			getFilterItemsDropdownItems());
 		rankingPortletDisplayContext.setFilterLabelItems(getFilterLabelItems());
@@ -208,6 +210,17 @@ public class RankingPortletDisplayBuilder {
 			_renderRequest, ResultRankingsPortletKeys.RESULT_RANKINGS, "list");
 
 		return _displayStyle;
+	}
+
+	protected boolean getEnterpriseSearchEnabled() {
+		SXPBlueprintTitleProvider sxpBlueprintTitleProvider =
+			_sxpBlueprintTitleProviderSnapshot.get();
+
+		if (sxpBlueprintTitleProvider == null) {
+			return false;
+		}
+
+		return true;
 	}
 
 	protected List<DropdownItem> getFilterItemsDropdownItems() {
