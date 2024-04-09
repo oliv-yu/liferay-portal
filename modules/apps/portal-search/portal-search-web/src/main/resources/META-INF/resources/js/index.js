@@ -8,6 +8,7 @@
 export {default as CustomFilter} from './CustomFilter';
 export {default as FacetUtil} from './FacetUtil';
 export {default as SearchBar} from './SearchBar';
+export {default as Autocomplete} from './Autocomplete';
 export {default as Sort} from './Sort';
 
 // Components

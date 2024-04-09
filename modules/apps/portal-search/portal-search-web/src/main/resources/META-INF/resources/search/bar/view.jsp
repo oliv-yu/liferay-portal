@@ -185,3 +185,7 @@ SearchBarPortletDisplayContext searchBarPortletDisplayContext = (SearchBarPortle
 		/>
 	</c:otherwise>
 </c:choose>
+
+<liferay-frontend:component
+	module="{Autocomplete} from portal-search-web"
+/>

@@ -1,3 +1,7 @@
+<#assign
+	searchInputId = namespace + stringUtil.randomId()
+/>
+
 <@liferay_aui.fieldset cssClass="search-bar">
 	<@liferay_aui.input
 		cssClass="search-bar-empty-search-input"
@@ -49,6 +53,7 @@
 				autocomplete="off"
 				cssClass="search-bar-keywords-input"
 				data=data
+				id="${searchInputId}"
 				label=""
 				name=htmlUtil.escape(searchBarPortletDisplayContext.getKeywordsParameterName())
 				placeholder=searchBarPortletDisplayContext.getInputPlaceholder()
@@ -64,7 +69,7 @@
 					autocomplete="off"
 					class="form-control input-group-inset input-group-inset-before search-bar-keywords-input"
 					data-qa-id="searchInput"
-					id="${namespace + stringUtil.randomId()}"
+					id="${searchInputId}"
 					name="${htmlUtil.escape(searchBarPortletDisplayContext.getKeywordsParameterName())}"
 					placeholder="${searchBarPortletDisplayContext.getInputPlaceholder()}"
 					title="${languageUtil.get(locale, "search")}"
@@ -90,3 +95,78 @@
 		</#if>
 	</div>
 </@>
+
+<#if searchBarPortletDisplayContext.isSuggestionsEnabled()>
+	<script>
+		Liferay.on('liferaySearchAutocompleteReady', () => {
+			Liferay.Search.Autocomplete('${searchInputId}', {
+				containerClass: 'search-bar-autocomplete',
+				destinationFriendlyURL:
+					'${searchBarPortletDisplayContext.getDestinationFriendlyURL()}',
+				isSelectedEverythingSearchScope:
+					'${searchBarPortletDisplayContext.isSelectedEverythingSearchScope()?c}',
+				scopeParameterStringCurrentSite:
+					'${searchBarPortletDisplayContext.getCurrentSiteSearchScopeParameterString()}',
+				scopeParameterStringEverything:
+					'${searchBarPortletDisplayContext.getEverythingSearchScopeParameterString()}',
+				showEmptyResultsMenu: true,
+				suggestionsContributorConfiguration:
+					'${searchBarPortletDisplayContext.getSuggestionsContributorConfiguration()}',
+				suggestionsURL:
+					'${searchBarPortletDisplayContext.getSuggestionsURL()}',
+				templates: {
+					renderEmptyResultsMenu: () => {
+						return (
+							`<li class="dropdown-subheader text-1">${languageUtil.get(
+								locale,
+								'no-results-found'
+							)}<li>`
+					);
+					},
+					renderHeader: (group) => {
+						return (
+							`<li class="dropdown-subheader text-1">` +
+							group.displayGroupName +
+							`</li>`
+						);
+					},
+					renderItem: (hit) => {
+						return (
+							`<a class="dropdown-item" href="` +
+							hit.attributes.assetURL +
+							`">
+								<div class="list-group-text text-dark text-1">` +
+							hit.text +
+							`</div>
+								<div class="list-group-text text-truncate text-1">` +
+							hit.attributes.assetSearchSummary +
+							`</div>
+							</a>`
+						);
+					},
+					renderMenu: (resource, {onShowMore, renderHeader, renderItem, renderShowMore}) => {
+						return (
+							resource.items
+								?.map((group) => {
+									return (
+										renderHeader(group) +
+										group.suggestions
+											?.map((hit) => renderItem(hit))
+											.join('')
+									);
+								})
+								.join('') + renderShowMore(onShowMore)
+						);
+					},
+					renderShowMore: (onShowMore) => {
+						return (
+							`<button class="dropdown-item search-bar-suggestions-show-more text-1" onClick="` +
+							onShowMore +
+							`">${languageUtil.get(locale, 'show-more')}</button>`
+						);
+					},
+				},
+			});
+		});
+	</script>
+</#if>
