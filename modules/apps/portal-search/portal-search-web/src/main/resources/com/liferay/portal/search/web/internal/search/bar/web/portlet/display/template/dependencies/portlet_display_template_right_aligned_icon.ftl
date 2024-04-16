@@ -67,7 +67,7 @@
 			<div class="input-group-item search-bar-keywords-input-wrapper">
 				<input
 					autocomplete="off"
-					class="form-control input-group-inset input-group-inset-before search-bar-keywords-input"
+					class="form-control input-group-inset input-group-inset-after search-bar-keywords-input"
 					data-qa-id="searchInput"
 					id="${searchInputId}"
 					name="${htmlUtil.escape(searchBarPortletDisplayContext.getKeywordsParameterName())}"
@@ -77,7 +77,7 @@
 					value="${htmlUtil.escape(searchBarPortletDisplayContext.getKeywords())}"
 				/>
 
-				<div class="input-group-inset-item input-group-inset-item-before">
+				<div class="input-group-inset-item input-group-inset-item-after">
 					<@clay["button"]
 						aria\-label="${languageUtil.get(locale, 'search')}"
 						displayType="unstyled"

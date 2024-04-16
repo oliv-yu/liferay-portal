@@ -44,6 +44,10 @@ public class SearchBarPortletDisplayContext {
 		return _paginationStartParameterName;
 	}
 
+	public String getScopeIfDefined() {
+		return _scopeIfDefined;
+	}
+
 	public String getScopeParameterName() {
 		return _scopeParameterName;
 	}
@@ -197,6 +201,10 @@ public class SearchBarPortletDisplayContext {
 		_retainFacetSelections = retainFacetSelections;
 	}
 
+	public void setScopeIfDefined(String scopeIfDefined) {
+		_scopeIfDefined = scopeIfDefined;
+	}
+
 	public void setScopeParameterName(String scopeParameterName) {
 		_scopeParameterName = scopeParameterName;
 	}
@@ -277,6 +285,7 @@ public class SearchBarPortletDisplayContext {
 	private String _paginationStartParameterName;
 	private boolean _renderNothing;
 	private boolean _retainFacetSelections;
+	private String _scopeIfDefined;
 	private String _scopeParameterName;
 	private String _scopeParameterValue;
 	private SearchBarPortletInstanceConfiguration

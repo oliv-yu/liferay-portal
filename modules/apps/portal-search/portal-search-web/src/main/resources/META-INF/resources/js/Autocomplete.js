@@ -10,9 +10,7 @@ const Autocomplete = (
 	{
 		containerClass,
 		destinationFriendlyURL,
-		isSelectedEverythingSearchScope,
-		scopeParameterStringCurrentSite,
-		scopeParameterStringEverything,
+		scopeIfDefined,
 		suggestionsContributorConfiguration,
 		suggestionsURL,
 		showEmptyResultsMenu = true,
@@ -47,11 +45,6 @@ const Autocomplete = (
 	}
 
 	const _fetchSuggestions = (searchValue) => {
-		const scopeIfDefined =
-			isSelectedEverythingSearchScope === 'false'
-				? scopeParameterStringCurrentSite
-				: scopeParameterStringEverything;
-
 		const serviceURL = new URL(
 			Liferay.ThemeDisplay.getPathContext() + suggestionsURL,
 			Liferay.ThemeDisplay.getPortalURL()

@@ -428,9 +428,15 @@ public class SearchBarPortletDisplayContextFactory {
 			portletPreferencesLookup, searchBarPrecedenceHelper,
 			searchBarPortletPreferences, searchSettings, themeDisplay);
 
+		searchBarPortletDisplayContext.setScopeIfDefined(
+			SearchScope.THIS_SITE.getParameterString());
+
 		if (searchScopePreference == SearchScopePreference.EVERYTHING) {
 			searchBarPortletDisplayContext.setSelectedEverythingSearchScope(
 				true);
+
+			searchBarPortletDisplayContext.setScopeIfDefined(
+				SearchScope.EVERYTHING.getParameterString());
 		}
 		else if (searchScopePreference ==
 					SearchScopePreference.LET_THE_USER_CHOOSE) {
