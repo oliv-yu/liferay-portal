@@ -32,7 +32,7 @@ export class SearchPage {
 			.locator('.navbar')
 			.getByPlaceholder('Search...');
 		this.searchOptionsConfigurationLink = page.getByText(
-			'Configure additional search options in this page'
+			'Configure additional search options in this page.'
 		);
 		this.searchResults = page.locator('.portlet-search-results');
 
