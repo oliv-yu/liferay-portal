@@ -24,18 +24,18 @@ const CONFIGURATION = {
 };
 
 const SELECT_OPTIONS = {
-	ALL: '', //  When 'vocabularyIds' is equal to this, 'All Vocabularies' has been selected.
+	ALL: '', //  When 'vocabularyERCs' is equal to this, 'All Vocabularies' has been selected.
 	SELECT: 'SELECT',
 };
 
 /**
  * Converts a stringified list of IDs into an array of IDs. This separates
  * values by commas and filters out empty values.
- * @param {string} idsString The list of IDs as a string
- * @return {Array} Array of IDs as strings
+ * @param {string} ercsString The list of ERCs as a string
+ * @return {Array} Array of ERCs as strings
  */
-const convertToIDArray = (idsString) =>
-	idsString.split(',').filter((id) => id !== '');
+const convertToERCArray = (ercsString) =>
+	ercsString.split(',').filter((erc) => erc !== '');
 
 function SiteRow({name, onSelect, vocabularies}) {
 	const _handleSelect =
@@ -118,20 +118,20 @@ function VocabularyTree({
 	const _handleSelect = (list, add = true) => {
 		const newList = new Set(selectedKeys);
 
-		list.forEach(({id}) => {
+		list.forEach(({erc}) => {
 			if (add) {
-				newList.add(id);
+				newList.add(erc);
 			}
 			else {
-				newList.delete(id);
+				newList.delete(erc);
 			}
 		});
 
 		setSelectedKeys(newList);
 	};
 
-	const _handleToggle = (id) => {
-		_handleSelect([{id}], !selectedKeys.has(id));
+	const _handleToggle = (erc) => {
+		_handleSelect([{erc}], !selectedKeys.has(erc));
 	};
 
 	if (loading || vocabularyTree === null) {
@@ -164,14 +164,14 @@ function VocabularyTree({
 
 					{item.children?.length ? (
 						<TreeView.Group items={item.children}>
-							{({id, name}) => (
+							{({erc, name}) => (
 								<TreeView.Item
-									key={id}
+									key={erc}
 									style={{cursor: 'unset'}}
 								>
 									<ClayCheckbox
-										checked={selectedKeys.has(id)}
-										onChange={() => _handleToggle(id)}
+										checked={selectedKeys.has(erc)}
+										onChange={() => _handleToggle(erc)}
 									/>
 
 									{name}
@@ -198,28 +198,28 @@ function VocabularyTree({
 }
 
 function SelectVocabularies({
-	initialSelectedVocabularyIds = SELECT_OPTIONS.ALL,
+	initialSelectedVocabularyERCs = SELECT_OPTIONS.ALL,
 	namespace = '',
-	vocabularyIdsInputName = '',
+	vocabularyERCsInputName = '',
 }) {
-	const initialSelectedIdsRef = useRef(
+	const initialSelectedERCsRef = useRef(
 		new Set(
-			initialSelectedVocabularyIds === SELECT_OPTIONS.ALL
+			initialSelectedVocabularyERCs === SELECT_OPTIONS.ALL
 				? []
-				: convertToIDArray(initialSelectedVocabularyIds)
+				: convertToERCArray(initialSelectedVocabularyERCs)
 		)
 	);
 
 	const [selection, setSelection] = useState(
-		initialSelectedVocabularyIds === SELECT_OPTIONS.ALL
+		initialSelectedVocabularyERCs === SELECT_OPTIONS.ALL
 			? SELECT_OPTIONS.ALL
 			: SELECT_OPTIONS.SELECT
 	);
 	const [selectedKeys, setSelectedKeys] = useState(
-		initialSelectedIdsRef.current
+		initialSelectedERCsRef.current
 	);
 	const [vocabularyTree, setVocabularyTree] = useState(null);
-	const [vocabularyTreeIds, setVocabularyTreeIds] = useState([]);
+	const [vocabularyTreeERCs, setVocabularyTreeERCs] = useState([]);
 	const [vocabularyTreeLoading, setVocabularyTreeLoading] = useState(false);
 
 	useEffect(() => {
@@ -263,7 +263,7 @@ function SelectVocabularies({
 					)
 				)
 					.then((responses) => {
-						const ids = [];
+						const ercs = [];
 
 						setVocabularyTree(
 							responses.map((response, index) => ({
@@ -288,18 +288,18 @@ function SelectVocabularies({
 
 										return true;
 									})
-									.map(({id, name}) => {
-										ids.push(id.toString()); // Collect IDs for _isDisplayInfoSelectedVocabulariesHidden
+									.map(({externalReferenceCode, name}) => {
+										ercs.push(externalReferenceCode); // Collect ERCs for _isDisplayInfoSelectedVocabulariesHidden
 
 										return {
-											id: id.toString(),
+											erc: externalReferenceCode,
 											name,
 										};
 									}),
 							}))
 						);
 
-						setVocabularyTreeIds(ids);
+						setVocabularyTreeERCs(ercs);
 					})
 					.catch(() => setVocabularyTree([]));
 			})
@@ -316,8 +316,8 @@ function SelectVocabularies({
 	};
 
 	const _isDisplayInfoSelectedVocabulariesHidden = () =>
-		Array.from(initialSelectedIdsRef.current).some(
-			(id) => !vocabularyTreeIds.includes(id)
+		Array.from(initialSelectedERCsRef.current).some(
+			(erc) => !vocabularyTreeERCs.includes(erc)
 		);
 
 	return (
@@ -326,8 +326,8 @@ function SelectVocabularies({
 
 			<input
 				hidden
-				id={`${namespace}${vocabularyIdsInputName}`}
-				name={`${namespace}${vocabularyIdsInputName}`}
+				id={`${namespace}${vocabularyERCsInputName}`}
+				name={`${namespace}${vocabularyERCsInputName}`}
 				readOnly
 				value={
 					selection === SELECT_OPTIONS.ALL
@@ -394,17 +394,17 @@ function SelectVocabularies({
 }
 
 export default function ({
-	initialSelectedVocabularyIds,
+	initialSelectedVocabularyERCs,
 	learnResources,
 	namespace,
-	vocabularyIdsInputName,
+	vocabularyERCsInputName,
 }) {
 	return (
 		<LearnResourcesContext.Provider value={learnResources}>
 			<SelectVocabularies
-				initialSelectedVocabularyIds={initialSelectedVocabularyIds}
+				initialSelectedVocabularyERCs={initialSelectedVocabularyERCs}
 				namespace={namespace}
-				vocabularyIdsInputName={vocabularyIdsInputName}
+				vocabularyERCsInputName={vocabularyERCsInputName}
 			/>
 		</LearnResourcesContext.Provider>
 	);
