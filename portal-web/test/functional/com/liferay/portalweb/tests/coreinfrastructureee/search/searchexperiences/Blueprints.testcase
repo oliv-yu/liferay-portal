@@ -4294,6 +4294,8 @@ definition {
 
 		Alert.viewErrorMessage(errorMessage = "The title cannot be blank.");
 
+		ClayAlertToast.closeToastAlert(key_type = "danger");
+
 		var elementSourceJson = '''
 {
 	"elementDefinition": {
@@ -4310,6 +4312,8 @@ definition {
 		Button.clickSave();
 
 		Alert.viewErrorMessage(errorMessage = "The title cannot be blank.");
+
+		ClayAlertToast.closeToastAlert(key_type = "danger");
 
 		var elementSourceJson = '''
 {
