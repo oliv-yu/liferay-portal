@@ -11,14 +11,13 @@
 taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/learn" prefix="liferay-learn" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
+taglib uri="http://liferay.com/tld/react" prefix="react" %><%@
 taglib uri="http://liferay.com/tld/template" prefix="liferay-template" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.portal.kernel.json.JSONArray" %><%@
-page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
-page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.search.web.internal.date.facet.configuration.DateFacetPortletInstanceConfiguration" %><%@
 page import="com.liferay.portal.search.web.internal.date.facet.display.context.DateFacetDisplayContext" %><%@
@@ -103,33 +102,18 @@ JSONArray rangesJSONArray = dateFacetPortletPreferences.getRangesJSONArray();
 				collapsible="<%= true %>"
 				label="ranges-configuration"
 			>
-				<aui:fieldset id='<%= liferayPortletResponse.getNamespace() + "rangesId" %>'>
-
-					<%
-					int[] rangesIndexes = new int[rangesJSONArray.length()];
-
-					for (int i = 0; i < rangesJSONArray.length(); i++) {
-						rangesIndexes[i] = i;
-
-						JSONObject jsonObject = rangesJSONArray.getJSONObject(i);
-					%>
-
-						<div class="lfr-form-row lfr-form-row-inline range-form-row">
-							<div class="row-fields">
-								<aui:input cssClass="label-input" label="label" name='<%= "label_" + i %>' required="<%= true %>" value='<%= jsonObject.getString("label") %>' wrapperCssClass="c-mb-2" />
-
-								<aui:input cssClass="range-input" label="range" name='<%= "range_" + i %>' required="<%= true %>" value='<%= jsonObject.getString("range") %>' wrapperCssClass="c-mb-3" />
-							</div>
-						</div>
-
-					<%
-					}
-					%>
-
-					<aui:input cssClass="ranges-input" name="<%= PortletPreferencesJspUtil.getInputName(DateFacetPortletPreferences.PREFERENCE_KEY_RANGES) %>" type="hidden" value="<%= dateFacetPortletPreferences.getRangesString() %>" />
-
-					<aui:input name="rangesIndexes" type="hidden" value="<%= StringUtil.merge(rangesIndexes) %>" />
-				</aui:fieldset>
+				<react:component
+					module="{CustomConfigurationRangeOptions} from portal-search-web"
+					props='<%=
+						HashMapBuilder.<String, Object>put(
+							"namespace", liferayPortletResponse.getNamespace()
+						).put(
+							"rangesInputName", PortletPreferencesJspUtil.getInputName(DateFacetPortletPreferences.PREFERENCE_KEY_RANGES)
+						).put(
+							"rangesJSONArray", dateFacetPortletPreferences.getRangesString()
+						).build()
+					%>'
+				/>
 
 				<aui:input label="display-frequencies" name="<%= PortletPreferencesJspUtil.getInputName(DateFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE) %>" type="checkbox" value="<%= dateFacetPortletPreferences.isFrequenciesVisible() %>" />
 
@@ -142,14 +126,6 @@ JSONArray rangesJSONArray = dateFacetPortletPreferences.getRangesJSONArray();
 		<liferay-frontend:edit-form-buttons />
 	</liferay-frontend:edit-form-footer>
 </liferay-frontend:edit-form>
-
-<aui:script use="liferay-auto-fields">
-	new Liferay.AutoFields({
-		contentBox: 'fieldset#<portlet:namespace />rangesId',
-		fieldIndexes: '<portlet:namespace />rangesIndexes',
-		namespace: '<portlet:namespace />',
-	}).render();
-</aui:script>
 
 <liferay-frontend:component
 	context='<%=

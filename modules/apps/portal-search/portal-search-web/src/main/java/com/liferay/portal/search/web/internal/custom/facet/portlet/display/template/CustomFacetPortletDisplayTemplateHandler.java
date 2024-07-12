@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.web.internal.custom.facet.portlet.display.template;
 
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
@@ -99,6 +100,11 @@ public class CustomFacetPortletDisplayTemplateHandler
 
 	@Override
 	protected String getTemplatesConfigPath() {
+		if (FeatureFlagManagerUtil.isEnabled("LPS-153839")) {
+			return "com/liferay/portal/search/web/internal/custom/facet/portlet" +
+				"/display/template/dependencies/portlet-display-templates-date.xml";
+		}
+
 		return "com/liferay/portal/search/web/internal/custom/facet/portlet" +
 			"/display/template/dependencies/portlet-display-templates.xml";
 	}

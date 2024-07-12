@@ -30,6 +30,13 @@ public class CustomFacetPortletPreferencesImpl
 	}
 
 	@Override
+	public String getAggregationType() {
+		return getString(
+			CustomFacetPortletPreferences.PREFERENCE_KEY_AGGREGATION_TYPE,
+			StringPool.BLANK);
+	}
+
+	@Override
 	public String getCustomHeading() {
 		return getString(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_CUSTOM_HEADING,
@@ -75,6 +82,13 @@ public class CustomFacetPortletPreferencesImpl
 		return getBoolean(
 			CustomFacetPortletPreferences.PREFERENCE_KEY_FREQUENCIES_VISIBLE,
 			true);
+	}
+
+	@Override
+	public boolean isShowInputRange() {
+		return getBoolean(
+			CustomFacetPortletPreferences.PREFERENCE_KEY_SHOW_INPUT_RANGE,
+			false);
 	}
 
 }

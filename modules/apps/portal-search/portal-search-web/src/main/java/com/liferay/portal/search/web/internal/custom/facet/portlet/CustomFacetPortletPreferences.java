@@ -13,6 +13,9 @@ public interface CustomFacetPortletPreferences {
 	public static final String PREFERENCE_KEY_AGGREGATION_FIELD =
 		"aggregationField";
 
+	public static final String PREFERENCE_KEY_AGGREGATION_TYPE =
+		"aggregationType";
+
 	public static final String PREFERENCE_KEY_CUSTOM_HEADING = "customHeading";
 
 	public static final String PREFERENCE_KEY_FEDERATED_SEARCH_KEY =
@@ -30,7 +33,12 @@ public interface CustomFacetPortletPreferences {
 
 	public static final String PREFERENCE_KEY_PARAMETER_NAME = "parameterName";
 
+	public static final String PREFERENCE_KEY_SHOW_INPUT_RANGE =
+		"showInputRange";
+
 	public String getAggregationField();
+
+	public String getAggregationType();
 
 	public String getCustomHeading();
 
@@ -45,5 +53,7 @@ public interface CustomFacetPortletPreferences {
 	public String getParameterName();
 
 	public boolean isFrequenciesVisible();
+
+	public boolean isShowInputRange();
 
 }

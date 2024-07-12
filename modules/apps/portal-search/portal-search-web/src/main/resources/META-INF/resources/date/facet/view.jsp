@@ -40,6 +40,7 @@ DateFacetPortletInstanceConfiguration dateFacetPortletInstanceConfiguration = da
 	<aui:form action="#" autocomplete="off" method="get" name="fm">
 		<aui:input cssClass="facet-parameter-name" name="facet-parameter-name" type="hidden" value="<%= HtmlUtil.escapeAttribute(dateFacetDisplayContext.getParameterName()) %>" />
 		<aui:input name="start-parameter-name" type="hidden" value="<%= dateFacetDisplayContext.getPaginationStartParameterName() %>" />
+		<aui:input cssClass="aggregation-type" name="aggregation-type" type="hidden" value="term" />
 
 		<liferay-ddm:template-renderer
 			className="<%= DateFacetPortlet.class.getName() %>"
@@ -73,6 +74,7 @@ DateFacetPortletInstanceConfiguration dateFacetPortletInstanceConfiguration = da
 
 	<aui:script use="liferay-search-date-facet">
 		new Liferay.Search.DateFacetFilter({
+			aggregationType: 'term',
 			form: A.one('#<portlet:namespace />fm'),
 			fromInputName: '<portlet:namespace />fromInput',
 			namespace: '<portlet:namespace />',

@@ -86,6 +86,14 @@ public class CustomFacetDisplayContextBuilder {
 		return this;
 	}
 
+	public CustomFacetDisplayContextBuilder setAggregationType(
+		String aggregationType) {
+
+		_aggregationType = aggregationType;
+
+		return this;
+	}
+
 	public CustomFacetDisplayContextBuilder setFrequenciesVisible(
 		boolean frequenciesVisible) {
 
@@ -149,6 +157,14 @@ public class CustomFacetDisplayContextBuilder {
 		if (parameterValues != null) {
 			_parameterValues = Arrays.asList(parameterValues);
 		}
+
+		return this;
+	}
+
+	public CustomFacetDisplayContextBuilder setShowInputRange(
+		boolean showInputRange) {
+
+		_showInputRange = showInputRange;
 
 		return this;
 	}
@@ -271,6 +287,7 @@ public class CustomFacetDisplayContextBuilder {
 		return _parameterValues.get(0);
 	}
 
+	private String _aggregationType;
 	private String _customDisplayCaption;
 	private Facet _facet;
 	private String _fieldToAggregate;
@@ -282,5 +299,6 @@ public class CustomFacetDisplayContextBuilder {
 	private String _paginationStartParameterName;
 	private String _parameterName;
 	private List<String> _parameterValues = Collections.emptyList();
+	private boolean _showInputRange;
 
 }

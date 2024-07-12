@@ -22,7 +22,8 @@ public interface CustomFacetSearchContributor {
 		Consumer<CustomFacetBuilder> customFacetBuilderConsumer);
 
 	@ProviderType
-	public interface CustomFacetBuilder {
+	public interface
+	CustomFacetBuilder {
 
 		public CustomFacetBuilder aggregationName(String aggregationName);
 
