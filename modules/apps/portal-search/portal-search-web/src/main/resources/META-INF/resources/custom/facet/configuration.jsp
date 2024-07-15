@@ -123,7 +123,7 @@ CustomFacetPortletPreferences customFacetPortletPreferences = new CustomFacetPor
 							<aui:option label="numeric-range" value="numericRange" />
 						</aui:select>
 
-						<aui:input helpMessage="aggregation-field-help" label="aggregation-field" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_AGGREGATION_FIELD) %>" value="<%= customFacetPortletPreferences.getAggregationField() %>" wrapperCssClass="c-mb-0" />
+						<aui:input helpMessage="aggregation-field-help" label="aggregation-field" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_AGGREGATION_FIELD) %>"  value="<%= customFacetPortletPreferences.getAggregationField() %>" placeholder='<%= LanguageUtil.format(request, "enter-x", "aggregation-field") %>' wrapperCssClass="c-mb-0" />
 
 						<div class="form-feedback-group">
 							<div class="form-text">
@@ -160,7 +160,7 @@ CustomFacetPortletPreferences customFacetPortletPreferences = new CustomFacetPor
 
 					<aui:input label="frequency-threshold" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_FREQUENCY_THRESHOLD) %>" value="<%= customFacetPortletPreferences.getFrequencyThreshold() %>" />
 
-					<aui:select label="order-by" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_ORDER) %>" value="<%= customFacetPortletPreferences.getOrder() %>" id="preferenceKeyOrder">
+					<aui:select helpMessage="order-by-help" label="order-by" name="<%= PortletPreferencesJspUtil.getInputName(CustomFacetPortletPreferences.PREFERENCE_KEY_ORDER) %>" value="<%= customFacetPortletPreferences.getOrder() %>" id="preferenceKeyOrder">
 						<aui:option label="frequency-descending" value="count:desc" />
 						<aui:option label="frequency-ascending" value="count:asc" />
 						<aui:option label="value-ascending" value="key:asc" />
@@ -178,6 +178,15 @@ CustomFacetPortletPreferences customFacetPortletPreferences = new CustomFacetPor
 					collapsible="<%= true %>"
 					label="ranges-configurations"
 				>
+					<div class="form-text">
+						<liferay-ui:message key="ranges-configurations-description" />
+
+						<liferay-learn:message
+							key="custom-facet"
+							resource="portal-search-web"
+						/>
+					</div>
+
 					<react:component
 						module="{CustomConfigurationRangeOptions} from portal-search-web"
 					/>
