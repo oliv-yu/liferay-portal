@@ -71,7 +71,7 @@ definition {
 		SearchPage.searchEmbedded(searchTerm = "apple");
 
 		AssertElementPresent(
-			key_text = "explain",
+			key_text = "explanation",
 			locator1 = "SearchPage#SEARCH_INSIGHTS_WIDGET_RESPONSE_QUERY");
 
 		Portlet.gotoPortletOptions(
@@ -91,7 +91,7 @@ definition {
 		SearchPage.searchEmbedded(searchTerm = "apple");
 
 		AssertElementNotPresent(
-			key_text = "explain",
+			key_text = "explanation",
 			locator1 = "SearchPage#SEARCH_INSIGHTS_WIDGET_RESPONSE_QUERY");
 	}
 
