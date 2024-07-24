@@ -36,7 +36,7 @@ describe('SynonymSetsForm', () => {
 				formName={FORM_NAME}
 				inputName={INPUT_NAME}
 				originalInputName={ORIGINAL_INPUT_NAME}
-				synonymSets="one,two,three"
+				synonymSets='{"en-US":"one,two,three"}'
 			/>
 		);
 
@@ -49,7 +49,7 @@ describe('SynonymSetsForm', () => {
 				formName={FORM_NAME}
 				inputName={INPUT_NAME}
 				originalInputName={ORIGINAL_INPUT_NAME}
-				synonymSets="one,two,three"
+				synonymSets='{"en-US":"one,two,three"}'
 			/>
 		);
 
@@ -62,7 +62,7 @@ describe('SynonymSetsForm', () => {
 				formName={FORM_NAME}
 				inputName={INPUT_NAME}
 				originalInputName={ORIGINAL_INPUT_NAME}
-				synonymSets="one,two,three"
+				synonymSets='{"en-US":"one,two,three"}'
 			/>
 		);
 
@@ -79,7 +79,7 @@ describe('SynonymSetsForm', () => {
 				formName={FORM_NAME}
 				inputName={INPUT_NAME}
 				originalInputName={ORIGINAL_INPUT_NAME}
-				synonymSets="one,two,three"
+				synonymSets='{"en-US":"one,two,three"}'
 			/>
 		);
 
@@ -94,7 +94,7 @@ describe('SynonymSetsForm', () => {
 				formName={FORM_NAME}
 				inputName={INPUT_NAME}
 				originalInputName={ORIGINAL_INPUT_NAME}
-				synonymSets="one,two,three"
+				synonymSets='{"en-US":"one,two,three"}'
 			/>
 		);
 
@@ -107,7 +107,7 @@ describe('SynonymSetsForm', () => {
 				formName={FORM_NAME}
 				inputName={INPUT_NAME}
 				originalInputName={ORIGINAL_INPUT_NAME}
-				synonymSets="one,two,three"
+				synonymSets='{"en-US":"one,two,three"}'
 			/>
 		);
 
@@ -133,7 +133,7 @@ describe('SynonymSetsForm', () => {
 				formName={FORM_NAME}
 				inputName={INPUT_NAME}
 				originalInputName={ORIGINAL_INPUT_NAME}
-				synonymSets="one"
+				synonymSets='{"en-US":"one"}'
 			/>
 		);
 
@@ -149,7 +149,7 @@ describe('SynonymSetsForm', () => {
 				formName={FORM_NAME}
 				inputName={INPUT_NAME}
 				originalInputName={ORIGINAL_INPUT_NAME}
-				synonymSets="one,two,three,four,five"
+				synonymSets='{"en-US":"one,two,three,four,five"}'
 			/>
 		);
 
