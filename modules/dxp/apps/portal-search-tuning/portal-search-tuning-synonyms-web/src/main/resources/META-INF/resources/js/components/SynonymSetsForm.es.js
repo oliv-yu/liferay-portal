@@ -10,8 +10,8 @@ import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
 import ClayLayout from '@clayui/layout';
 import ClayMultiSelect from '@clayui/multi-select';
-import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import {PropTypes} from 'prop-types';
+import React, {useState} from 'react';
 
 const ariaLabels = {
 	default: Liferay.Language.get('default'),
@@ -67,281 +67,246 @@ function trimListItems(list) {
 	}));
 }
 
-class SynonymSetsForm extends Component {
-	static propTypes = {
-		formName: PropTypes.string.isRequired,
-		inputName: PropTypes.string.isRequired,
-		synonymSets: PropTypes.string,
-		translatedSynonymSets: PropTypes.object,
-	};
+/**
+ * Transforms synonym sets into a format that can be used by ClayMultiSelect.
+ * Each locale is assigned an list of label-value objects.
+ * @param {string} synonymSets An stringified object where keys are locale
+ * and values are comma-separated synonym strings.
+ */
+function transformSynonymSets(synonymSets) {
+	try {
+		const translations = {};
 
-	static defaultProps = {
-		synonymSets: '',
-		translatedSynonymSets: {'en-US': ''},
-	};
+		const synonymSetsObject = JSON.parse(synonymSets);
 
-	state = {
-		active: false,
-		inputValue: '',
-		selectedLocale: availableLocales[0],
-		synonyms: [],
-		translations: {
-			'en-US': [],
-		},
-	};
+		Object.entries(synonymSetsObject).forEach(([locale, value]) => {
+			translations[locale] = value
+				.split(',')
+				.filter((synonym) => !!synonym)
+				.map((synonym) => ({
+					label: synonym,
+					value: synonym,
+				}));
+		});
 
-	constructor(props) {
-		super(props);
-
-		const pendingTranslations = {};
-
-		if (Object.keys(props.translatedSynonymSets || {}).length) {
-			Object.entries(props.translatedSynonymSets).forEach(
-				([locale, value]) => {
-					pendingTranslations[locale] = value
-						.split(',')
-						.map((synonym) => ({
-							label: synonym,
-							value: synonym,
-						}));
-				}
-			);
-		}
-
-		this.state.translations = pendingTranslations;
+		return translations;
 	}
+	catch (error) {
+		return {'en-US': []};
+	}
+}
+function SynonymSetsForm({formName, inputName, synonymSets = '{"en-US":""}'}) {
+	const [active, setActive] = useState(false);
+	const [inputValue, setInputValue] = useState('');
+	const [selectedLocale, setSelectedLocale] = useState(availableLocales[0]);
+	const [translations, setTranslations] = useState(
+		transformSynonymSets(synonymSets)
+	);
+
+	const defaultLanguage = availableLocales[0];
 
 	/*
 	 * Any time the input is blurred, adds the current input value to the
 	 * list of synonyms. This ensures that the user does not lose the value
 	 * if they publish without hitting enter or comma.
 	 */
-	_handleBlur = () => {
-		if (this.state.inputValue.trim()) {
-			this.setState({
-				translations: {
-					...this.state.translations,
-					[this.state.selectedLocale.label]: filterDuplicates([
-						...this.state.translations[
-							this.state.selectedLocale.label
-						],
-						{
-							label: this.state.inputValue,
-							value: this.state.inputValue,
-						},
-					]),
-				},
+	const _handleBlur = () => {
+		if (inputValue.trim()) {
+			setTranslations({
+				...translations,
+				[selectedLocale.label]: filterDuplicates([
+					...translations[selectedLocale.label],
+					{
+						label: inputValue,
+						value: inputValue,
+					},
+				]),
 			});
 		}
 
-		this.setState({inputValue: ''});
+		setInputValue('');
 	};
 
-	_handleCancel = () => {
+	const _handleCancel = () => {
 		window.history.back();
 	};
 
-	_handleInputChange = (value) => {
-		this.setState({inputValue: value});
-	};
-
-	_handleSubmit = (event) => {
+	const _handleSubmit = (event) => {
 		event.preventDefault();
 
-		const form = document.forms[this.props.formName];
+		const form = document.forms[formName];
 
 		const translationSet = {};
 
-		Object.entries(this.state.translations).forEach(([locale, value]) => {
+		Object.entries(translations).forEach(([locale, value]) => {
 			translationSet[locale] = value.map(({label}) => label).join(',');
 		});
 
-		form.elements[this.props.inputName].value =
-			JSON.stringify(translationSet);
+		form.elements[inputName].value = JSON.stringify(translationSet);
 
 		submitForm(form);
 	};
 
-	_handleItemsChange = (selectedLocaleLabel, values) => {
-		this.setState({
-			translations: {
-				...this.state.translations,
-				[selectedLocaleLabel]: filterDuplicates(values),
-			},
+	const _handleItemsChange = (values) => {
+		setTranslations({
+			...translations,
+			[selectedLocale.label]: filterDuplicates(values),
 		});
 	};
 
-	_handleActiveChange = (value) => {
-		this.setState({active: value});
-	};
-
-	_handleSelectedLocaleChange = (locale) => {
-		this.setState({selectedLocale: locale});
-	};
-
-	render() {
-		const {active, inputValue, selectedLocale, translations} = this.state;
-
-		const defaultLanguage = availableLocales[0];
-
+	const _isSubmittable = () => {
 		return (
-			<div className="synonym-sets-form">
-				<div className="sheet-title">
-					{Liferay.Language.get('create-synonym-set')}
-				</div>
-
-				<div className="sheet-text">
-					{Liferay.Language.get(
-						'broaden-the-scope-of-search-by-treating-terms-equally-using-synonyms'
-					)}
-				</div>
-
-				<ClayForm.Group>
-					<label htmlFor="synonym-sets-input">
-						{Liferay.Language.get('synonyms')}
-					</label>
-
-					<ClayInput.Group>
-						<ClayInput.GroupItem>
-							<ClayMultiSelect
-								id="synonym-sets-input"
-								items={translations[selectedLocale.label] || []}
-								onBlur={this._handleBlur}
-								onChange={this._handleInputChange}
-								onItemsChange={(value) =>
-									this._handleItemsChange(
-										selectedLocale.label,
-										value
-									)
-								}
-								value={inputValue}
-							/>
-
-							<ClayForm.FeedbackGroup>
-								<ClayForm.Text>
-									{Liferay.Language.get(
-										'type-a-comma-or-press-enter-to-input-a-synonym'
-									)}
-								</ClayForm.Text>
-							</ClayForm.FeedbackGroup>
-						</ClayInput.GroupItem>
-
-						<ClayInput.GroupItem shrink>
-							<ClayInput.GroupItem shrink>
-								<ClayDropDown
-									active={active}
-									onActiveChange={this._handleActiveChange}
-									trigger={
-										<ClayButton
-											displayType="secondary"
-											monospaced
-											onClick={() =>
-												this._handleActiveChange(
-													!active
-												)
-											}
-											title={ariaLabels.openLocalizations}
-										>
-											<span className="inline-item">
-												<ClayIcon
-													symbol={
-														selectedLocale.symbol
-													}
-												/>
-											</span>
-
-											<span className="btn-section">
-												{selectedLocale.label}
-											</span>
-										</ClayButton>
-									}
-								>
-									<ClayDropDown.ItemList>
-										{availableLocales.map((locale) => {
-											const value =
-												translations[locale.label];
-
-											return (
-												<ClayDropDown.Item
-													key={locale.label}
-													onClick={() => {
-														this._handleSelectedLocaleChange(
-															locale
-														);
-													}}
-												>
-													<ClayLayout.ContentRow containerElement="span">
-														<ClayLayout.ContentCol
-															containerElement="span"
-															expand
-														>
-															<ClayLayout.ContentSection>
-																<ClayIcon
-																	className="inline-item inline-item-before"
-																	symbol={
-																		locale.symbol
-																	}
-																/>
-
-																{locale.label}
-															</ClayLayout.ContentSection>
-														</ClayLayout.ContentCol>
-
-														<ClayLayout.ContentCol containerElement="span">
-															<ClayLayout.ContentSection>
-																<ClayLabel
-																	displayType={
-																		locale.label ===
-																		defaultLanguage.label
-																			? 'info'
-																			: value
-																				? 'success'
-																				: 'warning'
-																	}
-																>
-																	{locale.label ===
-																	defaultLanguage.label
-																		? ariaLabels.default
-																		: value
-																			? ariaLabels.translated
-																			: ariaLabels.untranslated}
-																</ClayLabel>
-															</ClayLayout.ContentSection>
-														</ClayLayout.ContentCol>
-													</ClayLayout.ContentRow>
-												</ClayDropDown.Item>
-											);
-										})}
-									</ClayDropDown.ItemList>
-								</ClayDropDown>
-							</ClayInput.GroupItem>
-						</ClayInput.GroupItem>
-					</ClayInput.Group>
-				</ClayForm.Group>
-
-				<ClayLayout.SheetFooter>
-					<ClayButton
-						disabled={
-							!translations[defaultLanguage.label]?.length &&
-							!inputValue.trim()
-						}
-						displayType="primary"
-						onClick={this._handleSubmit}
-						type="submit"
-					>
-						{Liferay.Language.get('publish')}
-					</ClayButton>
-
-					<ClayButton
-						displayType="secondary"
-						onClick={this._handleCancel}
-					>
-						{Liferay.Language.get('cancel')}
-					</ClayButton>
-				</ClayLayout.SheetFooter>
-			</div>
+			translations[defaultLanguage.label]?.length ||
+			(inputValue.trim() &&
+				selectedLocale.label === defaultLanguage.label)
 		);
-	}
+	};
+
+	return (
+		<div className="synonym-sets-form">
+			<div className="sheet-title">
+				{Liferay.Language.get('create-synonym-set')}
+			</div>
+
+			<div className="sheet-text">
+				{Liferay.Language.get(
+					'broaden-the-scope-of-search-by-treating-terms-equally-using-synonyms'
+				)}
+			</div>
+
+			<ClayForm.Group>
+				<label htmlFor="synonym-sets-input">
+					{Liferay.Language.get('synonyms')}
+				</label>
+
+				<ClayInput.Group>
+					<ClayInput.GroupItem>
+						<ClayMultiSelect
+							id="synonym-sets-input"
+							items={translations[selectedLocale.label] || []}
+							onBlur={_handleBlur}
+							onChange={setInputValue}
+							onItemsChange={_handleItemsChange}
+							value={inputValue}
+						/>
+
+						<ClayForm.FeedbackGroup>
+							<ClayForm.Text>
+								{Liferay.Language.get(
+									'type-a-comma-or-press-enter-to-input-a-synonym'
+								)}
+							</ClayForm.Text>
+						</ClayForm.FeedbackGroup>
+					</ClayInput.GroupItem>
+
+					<ClayInput.GroupItem shrink>
+						<ClayInput.GroupItem shrink>
+							<ClayDropDown
+								active={active}
+								onActiveChange={setActive}
+								trigger={
+									<ClayButton
+										displayType="secondary"
+										monospaced
+										onClick={() => setActive(!active)}
+										title={ariaLabels.openLocalizations}
+									>
+										<span className="inline-item">
+											<ClayIcon
+												symbol={selectedLocale.symbol}
+											/>
+										</span>
+
+										<span className="btn-section">
+											{selectedLocale.label}
+										</span>
+									</ClayButton>
+								}
+							>
+								<ClayDropDown.ItemList>
+									{availableLocales.map((locale) => {
+										const value =
+											translations[locale.label];
+
+										return (
+											<ClayDropDown.Item
+												key={locale.label}
+												onClick={() => {
+													setSelectedLocale(locale);
+													setActive(false);
+												}}
+											>
+												<ClayLayout.ContentRow containerElement="span">
+													<ClayLayout.ContentCol
+														containerElement="span"
+														expand
+													>
+														<ClayLayout.ContentSection>
+															<ClayIcon
+																className="inline-item inline-item-before"
+																symbol={
+																	locale.symbol
+																}
+															/>
+
+															{locale.label}
+														</ClayLayout.ContentSection>
+													</ClayLayout.ContentCol>
+
+													<ClayLayout.ContentCol containerElement="span">
+														<ClayLayout.ContentSection>
+															<ClayLabel
+																displayType={
+																	locale.label ===
+																	defaultLanguage.label
+																		? 'info'
+																		: value
+																			? 'success'
+																			: 'warning'
+																}
+															>
+																{locale.label ===
+																defaultLanguage.label
+																	? ariaLabels.default
+																	: value
+																		? ariaLabels.translated
+																		: ariaLabels.untranslated}
+															</ClayLabel>
+														</ClayLayout.ContentSection>
+													</ClayLayout.ContentCol>
+												</ClayLayout.ContentRow>
+											</ClayDropDown.Item>
+										);
+									})}
+								</ClayDropDown.ItemList>
+							</ClayDropDown>
+						</ClayInput.GroupItem>
+					</ClayInput.GroupItem>
+				</ClayInput.Group>
+			</ClayForm.Group>
+
+			<ClayLayout.SheetFooter>
+				<ClayButton
+					disabled={!_isSubmittable()}
+					displayType="primary"
+					onClick={_handleSubmit}
+					type="submit"
+				>
+					{Liferay.Language.get('publish')}
+				</ClayButton>
+
+				<ClayButton displayType="secondary" onClick={_handleCancel}>
+					{Liferay.Language.get('cancel')}
+				</ClayButton>
+			</ClayLayout.SheetFooter>
+		</div>
+	);
 }
+
+SynonymSetsForm.propTypes = {
+	formName: PropTypes.string.isRequired,
+	inputName: PropTypes.string.isRequired,
+	synonymSets: PropTypes.string,
+};
 
 export default SynonymSetsForm;
