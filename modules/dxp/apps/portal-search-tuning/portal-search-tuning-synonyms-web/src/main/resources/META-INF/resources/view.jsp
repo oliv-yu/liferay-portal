@@ -28,8 +28,11 @@ SynonymsDisplayContext synonymsDisplayContext = (SynonymsDisplayContext)request.
 
 <clay:management-toolbar
 	actionDropdownItems="<%= synonymsDisplayContext.getActionDropdownMultipleItems() %>"
+	clearResultsURL="<%= synonymsDisplayContext.getClearResultsURL() %>"
 	creationMenu="<%= synonymsDisplayContext.getCreationMenu() %>"
 	disabled="<%= synonymsDisplayContext.isDisabledManagementBar() %>"
+	filterDropdownItems="<%= synonymsDisplayContext.getFilterItemsDropdownItems() %>"
+	filterLabelItems="<%= synonymsDisplayContext.getFilterLabelItems() %>"
 	itemsTotal="<%= synonymsDisplayContext.getItemsTotal() %>"
 	propsTransformer="{SynonymsManagementToolbarPropsTransformer} from portal-search-tuning-synonyms-web"
 	searchContainerId="synonymSetsEntries"

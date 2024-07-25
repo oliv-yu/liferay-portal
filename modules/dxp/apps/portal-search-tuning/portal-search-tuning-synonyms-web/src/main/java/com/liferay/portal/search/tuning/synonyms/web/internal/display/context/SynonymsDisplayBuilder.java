@@ -9,12 +9,16 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItemListBuilder;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.engine.SearchEngineInformation;
@@ -84,14 +88,48 @@ public class SynonymsDisplayBuilder {
 			isDisabledManagementBar(synonymSetDisplayContexts));
 
 		synonymsDisplayContext.setDropdownItems(getDropdownItems());
+		synonymsDisplayContext.setFilterItemsDropdownItems(
+			getFilterItemsDropdownItems());
+		synonymsDisplayContext.setFilterLabelItems(getFilterLabelItems());
 		synonymsDisplayContext.setItemsTotal(synonymSetDisplayContexts.size());
 		synonymsDisplayContext.setSearchContainer(searchContainer);
+
+		synonymsDisplayContext.setClearResultsURL(getClearResultsURL());
 
 		return synonymsDisplayContext;
 	}
 
 	public String getDisplayedSynonymSet(String synonymSet) {
 		return StringUtil.replace(synonymSet, ',', ", ");
+	}
+
+	public List<LabelItem> getFilterLabelItems() {
+		return LabelItemListBuilder.add(
+			() -> !Objects.equals(_getLanguage(), ""),
+			labelItem -> {
+				labelItem.putData(
+					"removeLabelURL",
+					PortletURLBuilder.create(
+						_getPortletURL()
+					).setParameter(
+						"language", ""
+					).buildString());
+
+				labelItem.setCloseable(true);
+
+				labelItem.setLabel(
+					LanguageUtil.get(_httpServletRequest, "language") + ": " +
+						LanguageUtil.get(_httpServletRequest, _getLanguage()));
+			}
+		).build();
+	}
+
+	protected String getClearResultsURL() {
+		return PortletURLBuilder.createRenderURL(
+			_renderResponse
+		).setMVCRenderCommandName(
+			"/"
+		).buildString();
 	}
 
 	protected CreationMenu getCreationMenu() {
@@ -115,6 +153,22 @@ public class SynonymsDisplayBuilder {
 				dropdownItem.setLabel(
 					_language.get(_httpServletRequest, "delete"));
 				dropdownItem.setQuickAction(true);
+			}
+		).build();
+	}
+
+	protected List<DropdownItem> getFilterItemsDropdownItems() {
+		DropdownItemListBuilder.DropdownItemListWrapper
+			dropdownItemListWrapper =
+				new DropdownItemListBuilder.DropdownItemListWrapper();
+
+		return dropdownItemListWrapper.addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					_getFilterLanguageDropdownItems());
+				dropdownGroupItem.setLabel(
+					LanguageUtil.get(
+						_httpServletRequest, "filter-by-language"));
 			}
 		).build();
 	}
@@ -231,6 +285,28 @@ public class SynonymsDisplayBuilder {
 	private SynonymSetIndexName _buildSynonymSetIndexName() {
 		return _synonymSetIndexNameBuilder.getSynonymSetIndexName(
 			_portal.getCompanyId(_renderRequest));
+	}
+
+	private List<DropdownItem> _getFilterLanguageDropdownItems() {
+		String filterLanguage = _getLanguage();
+
+		DropdownItemListBuilder.DropdownItemListWrapper
+			dropdownItemListWrapper =
+				new DropdownItemListBuilder.DropdownItemListWrapper();
+
+		dropdownItemListWrapper.add(
+			dropdownItem -> {
+				dropdownItem.setActive(filterLanguage.equals("en-US"));
+				dropdownItem.setHref(_getPortletURL(), "language", "en-US");
+				dropdownItem.setLabel(
+					LanguageUtil.get(_httpServletRequest, "language.en"));
+			});
+
+		return dropdownItemListWrapper.build();
+	}
+
+	private String _getLanguage() {
+		return ParamUtil.getString(_httpServletRequest, "language", "");
 	}
 
 	private PortletURL _getPortletURL() {
