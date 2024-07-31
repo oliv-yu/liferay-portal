@@ -8,17 +8,17 @@ import React, {useEffect, useState} from 'react';
 
 import CodeMirrorEditor from '../CodeMirrorEditor';
 
-function JSONInput({
+export default function ({
 	autocompleteSchema,
 	disabled,
-	value,
-	label = Liferay.Language.get('json[stands-for]'),
+	label,
+	name,
 	nullable,
 	readOnly = false,
 	required = true,
-	name,
-	setFieldValue,
 	setFieldTouched,
+	setFieldValue,
+	value,
 }) {
 	const [editValue, setEditValue] = useState(value);
 
@@ -37,7 +37,7 @@ function JSONInput({
 			onBlur={() => setFieldTouched(name)}
 		>
 			<label>
-				{label}
+				{label || Liferay.Language.get('json[stands-for]')}
 
 				{(!required || nullable) && (
 					<span className="optional-text">
@@ -55,5 +55,3 @@ function JSONInput({
 		</div>
 	);
 }
-
-export default JSONInput;

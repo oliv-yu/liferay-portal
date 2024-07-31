@@ -7,7 +7,6 @@ import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayModal, {useModal} from '@clayui/modal';
-import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
 const KeyValueRow = ({
@@ -75,12 +74,12 @@ const KeyValueRow = ({
 	);
 };
 
-const PreviewAttributesModal = ({
+export default function ({
 	children,
-	title = Liferay.Language.get('attributes'),
+	title,
 	description,
 	onSubmit = () => {},
-}) => {
+}) {
 	const [attributes, setAttributes] = useState([{key: '', value: ''}]);
 	const [visible, setVisible] = useState(false);
 	const {observer, onClose: handleClose} = useModal({
@@ -118,7 +117,9 @@ const PreviewAttributesModal = ({
 					observer={observer}
 					size="md"
 				>
-					<ClayModal.Header>{title}</ClayModal.Header>
+					<ClayModal.Header>
+						{title || Liferay.Language.get('attributes')}
+					</ClayModal.Header>
 
 					<ClayModal.Body>
 						{description && (
@@ -183,10 +184,4 @@ const PreviewAttributesModal = ({
 			<span onClick={() => setVisible(!visible)}>{children}</span>
 		</>
 	);
-};
-
-PreviewAttributesModal.propTypes = {
-	onSubmit: PropTypes.func,
-};
-
-export default PreviewAttributesModal;
+}
