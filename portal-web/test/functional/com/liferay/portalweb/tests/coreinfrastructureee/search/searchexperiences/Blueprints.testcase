@@ -2096,14 +2096,22 @@ definition {
 
 		PortletEntry.save();
 
-		ScrollWebElementIntoView(locator1 = "Blueprints#BLUEPRINTS_ADMIN_FIELDS_MENU");
-
-		Click(locator1 = "Blueprints#BLUEPRINTS_ADMIN_FIELDS_MENU");
-
 		for (var field : list "Description,ID,Author,Created,Modified") {
 			AssertElementPresent(
 				key_fieldName = ${field},
 				locator1 = "Blueprints#BLUEPRINTS_ADMIN_FIELD");
+		}
+
+		for (var field : list "Description,ID,Author,Created,Modified") {
+			if (IsElementNotPresent(key_fieldName = ${field}, locator1 = "Blueprints#BLUEPRINTS_ADMIN_FIELDS_MENU_ITEM")) {
+				ScrollWebElementIntoView(locator1 = "Blueprints#BLUEPRINTS_ADMIN_FIELDS_MENU");
+
+				Click(locator1 = "Blueprints#BLUEPRINTS_ADMIN_FIELDS_MENU");
+			}
+
+			AssertElementPresent(
+				key_fieldName = ${field},
+				locator1 = "Blueprints#BLUEPRINTS_ADMIN_FIELDS_MENU_ITEM");
 
 			Click(
 				key_fieldName = ${field},
