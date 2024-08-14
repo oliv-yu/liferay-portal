@@ -2096,6 +2096,8 @@ definition {
 
 		PortletEntry.save();
 
+		ScrollWebElementIntoView(locator1 = "Blueprints#BLUEPRINTS_ADMIN_FIELDS_MENU");
+
 		Click(locator1 = "Blueprints#BLUEPRINTS_ADMIN_FIELDS_MENU");
 
 		for (var field : list "Description,ID,Author,Created,Modified") {
