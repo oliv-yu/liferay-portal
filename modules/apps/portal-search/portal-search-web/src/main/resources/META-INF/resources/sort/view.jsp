@@ -31,10 +31,6 @@ page import="com.liferay.portal.search.web.internal.sort.display.context.SortTer
 <%
 SortDisplayContext sortDisplayContext = (SortDisplayContext)java.util.Objects.requireNonNull(request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT));
 
-if (sortDisplayContext.isRenderNothing()) {
-	return;
-}
-
 SortPortletInstanceConfiguration sortPortletInstanceConfiguration = sortDisplayContext.getSortPortletInstanceConfiguration();
 %>
 
@@ -45,7 +41,7 @@ SortPortletInstanceConfiguration sortPortletInstanceConfiguration = sortDisplayC
 
 			<clay:link
 				href="javascript:void(0);"
-				label='<%= LanguageUtil.get(request, "complete-its-configuration-to-make-it-visible") %>'
+				label='<%= LanguageUtil.get(request, "configure-options-in-this-page") %>'
 				onClick="<%= portletDisplay.getURLConfigurationJS() %>"
 			/>
 		</div>

@@ -16,6 +16,7 @@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.petra.string.StringPool" %><%@
+page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
@@ -29,16 +30,22 @@ page import="com.liferay.portal.search.web.internal.site.facet.portlet.SiteFacet
 <%
 ScopeSearchFacetDisplayContext scopeSearchFacetDisplayContext = (ScopeSearchFacetDisplayContext)java.util.Objects.requireNonNull(request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT));
 
-if (scopeSearchFacetDisplayContext.isRenderNothing()) {
-	return;
-}
-
 SiteFacetPortletInstanceConfiguration siteFacetPortletInstanceConfiguration = scopeSearchFacetDisplayContext.getSiteFacetPortletInstanceConfiguration();
 %>
 
 <c:choose>
 	<c:when test="<%= scopeSearchFacetDisplayContext.isRenderNothing() %>">
 		<aui:input name="<%= HtmlUtil.escapeAttribute(scopeSearchFacetDisplayContext.getParameterName()) %>" type="hidden" value="<%= scopeSearchFacetDisplayContext.getParameterValue() %>" />
+
+		<div class="search-portlet-info-barebone-inactive">
+			<liferay-ui:message key="site" />
+
+			<span aria-label="<%= LanguageUtil.get(request, "search-portlet-visibility-help") %>" class="align-middle c-ml-1 lfr-portal-tooltip" tabindex="0" title="<%= LanguageUtil.get(request, "search-portlet-visibility-help") %>">
+				<clay:icon
+					symbol="info-circle"
+				/>
+			</span>
+		</div>
 	</c:when>
 	<c:otherwise>
 		<aui:form action="#" autocomplete="off" method="post" name="fm">
