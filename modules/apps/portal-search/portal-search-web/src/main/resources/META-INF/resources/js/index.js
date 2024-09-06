@@ -19,6 +19,12 @@ export {default as SearchBarConfigurationSuggestions} from './components/search_
 export {default as SemanticSearchConfiguration} from './components/semantic_search_configuration';
 export {default as SystemSettingsFieldList} from './components/SystemSettingsFieldList';
 
+// Fragments
+
+export {default as SearchBarFragment} from './components/SearchBarFragment';
+export {default as SearchResultFragment} from './components/SearchResultFragment';
+export {default as SearchFacetFragment} from './components/SearchFacetFragment';
+
 // Utils + shared
 
 export {default as CodeMirrorTextArea} from './shared/CodeMirrorTextArea';

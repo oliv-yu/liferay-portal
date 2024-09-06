@@ -1,0 +1,37 @@
+{
+	"fieldSets": [
+		{
+			"fields": [
+				{
+					"defaultValue": "q",
+					"label": "parameter-name",
+					"name": "parameterName",
+					"type": "text"
+				},
+				{
+					"label": "blueprint",
+					"name": "itemSelector",
+					"type": "itemSelector",
+					"typeOptions": {
+						"className": "com.liferay.search.experiences.model.SXPBlueprint",
+						"enableSelectTemplate": true
+					}
+				},
+				{
+					"label": "Blueprint ERC",
+					"name": "blueprintExternalReferenceCode",
+					"type": "text"
+				},
+				{
+					"defaultValue": true,
+					"label": "allow-empty-searches",
+					"name": "emptySearchEnabled",
+					"type": "checkbox",
+					"typeOptions": {
+						"displayType": "toggle"
+					}
+				}
+			]
+		}
+	]
+}

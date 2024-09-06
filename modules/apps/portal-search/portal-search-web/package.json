@@ -14,6 +14,7 @@
 		"@clayui/modal": "3.119.0",
 		"@clayui/multi-select": "3.119.0",
 		"@clayui/pagination-bar": "3.119.0",
+		"@clayui/panel": "3.119.0",
 		"@clayui/table": "3.111.0",
 		"@clayui/tooltip": "3.119.0",
 		"@liferay/frontend-js-codemirror-web": "*",

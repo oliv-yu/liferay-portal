@@ -1,0 +1,34 @@
+{
+	"fieldSets": [
+		{
+			"fields": [
+				{
+					"defaultValue": "q",
+					"label": "parameter-name",
+					"name": "parameterName",
+					"type": "text"
+				},
+				{
+					"dataType": "string",
+					"defaultValue": "this-site",
+					"label": "scope",
+					"name": "scope",
+					"type": "select",
+					"typeOptions": {
+						"validValues": [
+							{
+								"value": "this-site"
+							},
+							{
+								"value": "everything"
+							},
+							{
+								"value": "let-the-user-choose"
+							}
+						]
+					}
+				}
+			]
+		}
+	]
+}
