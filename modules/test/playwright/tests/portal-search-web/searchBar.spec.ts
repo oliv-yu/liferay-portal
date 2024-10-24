@@ -49,6 +49,14 @@ test.describe('Search Bar with user input', () => {
 			await expect(page.getByText(/Questionable Text/)).toBeNull;
 		});
 	});
+
+	test('Testing searchpage link @LPD-39110', async ({page, searchPage}) => {
+		await test.step('Check that text does not appear in searchbar', async () => {
+			await searchPage.goto();
+
+			await expect(page.getByText(/ksjdflkadf/)).not.toBeTruthy();
+		});
+	});
 });
 
 test.describe('Search Bar directs to correct page', () => {
