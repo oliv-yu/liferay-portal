@@ -4,8 +4,11 @@
  */
 
 import ClayButton from '@clayui/button';
+import {Option, Picker} from '@clayui/core';
+import {ClayCheckbox} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayModal, {ClayModalProvider, useModal} from '@clayui/modal';
+import {ClayTooltipProvider} from '@clayui/tooltip';
 import {useIsMounted} from '@liferay/frontend-js-react-web';
 import getCN from 'classnames';
 import {fetch, navigate} from 'frontend-js-web';
@@ -20,16 +23,17 @@ import {
 import {DEFAULT_ERROR} from '../utils/errorMessages';
 import {DEFAULT_HEADERS} from '../utils/fetch/fetch_data';
 import {setInitialSuccessToast} from '../utils/toasts';
+import {SELECTION_MODE_TYPES} from '../utils/types/selectionModeTypes';
 
 const ADD_EVENT = 'addSXPBlueprint';
 
-const AddModal = ({
+export function AddModal({
 	defaultLocale,
 	editSXPBlueprintURL,
 	observer,
 	onClose,
 	portletNamespace,
-}) => {
+}) {
 	const isMounted = useIsMounted();
 
 	const [errorMessage, setErrorMessage] = useState();
@@ -245,18 +249,308 @@ const AddModal = ({
 			</form>
 		</ClayModal>
 	);
-};
+}
 
-export function AddSXPBlueprintModal({
+export function AddModalWithSelectionMode({
 	defaultLocale,
 	editSXPBlueprintURL,
+	observer,
+	onClose,
+	portletNamespace,
+}) {
+	const isMounted = useIsMounted();
+
+	const [errorMessage, setErrorMessage] = useState();
+	const [loadingResponse, setLoadingResponse] = useState(false);
+
+	const [descriptionInputValue, setDescriptionInputValue] = useState('');
+	const [titleInputValue, setTitleInputValue] = useState('');
+	const [selectionMode, setSelectionMode] = useState(
+		SELECTION_MODE_TYPES.MANUAL.value
+	);
+	const [createCollectionProvider, setCreateCollectionProvider] =
+		useState(false);
+
+	const _handleFormError = (responseContent) => {
+		setErrorMessage(responseContent.error || DEFAULT_ERROR);
+
+		setLoadingResponse(false);
+	};
+
+	const _handleSubmit = (event) => {
+		event.preventDefault();
+
+		fetch('/o/search-experiences-rest/v1.0/sxp-blueprints', {
+			body: JSON.stringify({
+				configuration: {
+					advancedConfiguration: DEFAULT_ADVANCED_CONFIGURATION,
+					aggregationConfiguration: {},
+					generalConfiguration: {
+						clauseContributorsExcludes: [],
+						clauseContributorsIncludes: ['*'],
+						searchableAssetTypes: [],
+					},
+					highlightConfiguration: DEFAULT_HIGHLIGHT_CONFIGURATION,
+					parameterConfiguration: DEFAULT_PARAMETER_CONFIGURATION,
+					queryConfiguration: {
+						applyIndexerClauses: true,
+					},
+					sortConfiguration: DEFAULT_SORT_CONFIGURATION,
+				},
+				description_i18n: {[defaultLocale]: descriptionInputValue},
+				elementInstances: [],
+				title_i18n: {[defaultLocale]: titleInputValue},
+			}),
+			headers: DEFAULT_HEADERS,
+			method: 'POST',
+		})
+			.then((response) => {
+				if (!response.ok) {
+					_handleFormError();
+				}
+
+				return response.json();
+			})
+			.then((responseContent) => {
+				if (!isMounted()) {
+					return;
+				}
+
+				if (responseContent.error) {
+					_handleFormError(responseContent);
+				}
+				else {
+					onClose();
+
+					if (responseContent.id) {
+						const url = new URL(editSXPBlueprintURL);
+
+						url.searchParams.set(
+							`${portletNamespace}sxpBlueprintId`,
+							responseContent.id
+						);
+
+						setInitialSuccessToast(
+							Liferay.Language.get(
+								'the-blueprint-was-created-successfully'
+							)
+						);
+
+						navigate(url);
+					}
+					else {
+						setInitialSuccessToast(
+							Liferay.Language.get(
+								'the-blueprint-was-created-successfully'
+							)
+						);
+
+						navigate(window.location.href);
+					}
+				}
+			})
+			.catch((response) => {
+				_handleFormError(response);
+			});
+
+		setLoadingResponse(true);
+	};
+
+	return (
+		<ClayModal
+			className="sxp-add-blueprint-modal-root"
+			observer={observer}
+			size="md"
+		>
+			<ClayModal.Header>
+				{Liferay.Language.get('new-blueprint')}
+			</ClayModal.Header>
+
+			<form id={`${portletNamespace}form`} onSubmit={_handleSubmit}>
+				<ClayModal.Body>
+					<div
+						className={getCN('form-group', {
+							'has-error': errorMessage,
+						})}
+					>
+						<label
+							className="control-label"
+							htmlFor={`${portletNamespace}title`}
+						>
+							{Liferay.Language.get('title')}
+
+							<span className="reference-mark">
+								<ClayIcon symbol="asterisk" />
+							</span>
+						</label>
+
+						<input
+							autoFocus
+							className="form-control"
+							disabled={loadingResponse}
+							id={`${portletNamespace}title`}
+							name={`${portletNamespace}title`}
+							onChange={(event) =>
+								setTitleInputValue(event.target.value)
+							}
+							required
+							type="text"
+							value={titleInputValue}
+						/>
+
+						<input
+							id={`${portletNamespace}title_${defaultLocale}`}
+							name={`${portletNamespace}title_${defaultLocale}`}
+							type="hidden"
+							value={titleInputValue}
+						/>
+
+						{errorMessage && (
+							<div className="form-feedback-item">
+								<ClayIcon
+									className="inline-item inline-item-before"
+									symbol="exclamation-full"
+								/>
+
+								{errorMessage}
+							</div>
+						)}
+					</div>
+
+					<div className="form-group">
+						<label
+							className="control-label"
+							htmlFor={`${portletNamespace}selectionMode`}
+						>
+							{Liferay.Language.get('choose-selection-mode')}
+						</label>
+
+						<Picker
+							aria-labelledby={Liferay.Language.get(
+								'choose-selection-mode'
+							)}
+							id={`${portletNamespace}selectionMode`}
+							onSelectionChange={setSelectionMode}
+							placeholder={Liferay.Language.get(
+								'choose-selection-mode'
+							)}
+							selectedKey={selectionMode}
+						>
+							{Object.values(SELECTION_MODE_TYPES).map((item) => (
+								<Option key={item.value}>{item.label}</Option>
+							))}
+						</Picker>
+					</div>
+
+					<div className="form-group">
+						<label
+							className="control-label"
+							htmlFor={`${portletNamespace}description`}
+						>
+							{Liferay.Language.get('description')}
+						</label>
+
+						<textarea
+							className="form-control"
+							disabled={loadingResponse}
+							id={`${portletNamespace}description`}
+							name={`${portletNamespace}description`}
+							onChange={(event) =>
+								setDescriptionInputValue(event.target.value)
+							}
+							value={descriptionInputValue}
+						/>
+
+						<input
+							id={`${portletNamespace}description_${defaultLocale}`}
+							name={`${portletNamespace}description_${defaultLocale}`}
+							type="hidden"
+							value={descriptionInputValue}
+						/>
+					</div>
+
+					<div className="form-group">
+						<ClayCheckbox
+							aria-label={Liferay.Language.get(
+								'create-collection-provider'
+							)}
+							checked={createCollectionProvider}
+							label={
+								<>
+									{Liferay.Language.get(
+										'create-collection-provider'
+									)}
+
+									<ClayTooltipProvider>
+										<span
+											data-tooltip-align="bottom-left"
+											title={Liferay.Language.get(
+												'create-collection-provider-help'
+											)}
+										>
+											<ClayIcon
+												className="c-ml-2 text-3 text-secondary"
+												symbol="question-circle-full"
+											/>
+										</span>
+									</ClayTooltipProvider>
+								</>
+							}
+							onChange={() =>
+								setCreateCollectionProvider(
+									!createCollectionProvider
+								)
+							}
+						/>
+					</div>
+				</ClayModal.Body>
+
+				<ClayModal.Footer
+					last={
+						<ClayButton.Group spaced>
+							<ClayButton
+								disabled={loadingResponse}
+								displayType="secondary"
+								onClick={onClose}
+							>
+								{Liferay.Language.get('cancel')}
+							</ClayButton>
+
+							<ClayButton
+								disabled={loadingResponse}
+								displayType="primary"
+								type="submit"
+							>
+								{loadingResponse && (
+									<span className="inline-item inline-item-before">
+										<span
+											aria-hidden="true"
+											className="loading-animation"
+										></span>
+									</span>
+								)}
+
+								{Liferay.Language.get('create')}
+							</ClayButton>
+						</ClayButton.Group>
+					}
+				/>
+			</form>
+		</ClayModal>
+	);
+}
+
+function AddSXPBlueprintModal({
+	defaultLocale,
+	editSXPBlueprintURL,
+	initialVisible = false,
 	portletNamespace,
 }) {
 	const {observer, onClose} = useModal({
 		onClose: () => setVisibleModal(false),
 	});
 
-	const [visibleModal, setVisibleModal] = useState(false);
+	const [visibleModal, setVisibleModal] = useState(initialVisible); // to see on storybook
 
 	useEffect(() => {
 		Liferay.on(ADD_EVENT, () => setVisibleModal(true));
@@ -268,15 +562,24 @@ export function AddSXPBlueprintModal({
 
 	return (
 		<ClayModalProvider>
-			{visibleModal && (
-				<AddModal
-					defaultLocale={defaultLocale}
-					editSXPBlueprintURL={editSXPBlueprintURL}
-					observer={observer}
-					onClose={onClose}
-					portletNamespace={portletNamespace}
-				/>
-			)}
+			{visibleModal &&
+				(Liferay.FeatureFlags['LPD-00000'] ? (
+					<AddModalWithSelectionMode
+						defaultLocale={defaultLocale}
+						editSXPBlueprintURL={editSXPBlueprintURL}
+						observer={observer}
+						onClose={onClose}
+						portletNamespace={portletNamespace}
+					/>
+				) : (
+					<AddModal
+						defaultLocale={defaultLocale}
+						editSXPBlueprintURL={editSXPBlueprintURL}
+						observer={observer}
+						onClose={onClose}
+						portletNamespace={portletNamespace}
+					/>
+				))}
 		</ClayModalProvider>
 	);
 }
