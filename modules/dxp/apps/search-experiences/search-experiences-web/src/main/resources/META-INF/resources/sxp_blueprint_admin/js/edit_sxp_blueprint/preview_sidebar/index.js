@@ -225,38 +225,42 @@ function PreviewSidebar({
 				<div className="component-title">
 					<span className="text-truncate-inline">
 						<span className="text-truncate">
-							{Liferay.Language.get('preview')}
+							{Liferay.FeatureFlags['LPD-00000']
+								? Liferay.Language.get('test-your-query')
+								: Liferay.Language.get('preview')}
 						</span>
 					</span>
 				</div>
 
 				<span>
-					<PreviewAttributesModal
-						description={Liferay.Language.get(
-							'search-context-attributes-description'
-						)}
-						onSubmit={_handleAttributesSubmit}
-						title={Liferay.Language.get(
-							'search-context-attributes'
-						)}
-					>
-						<ClayTooltipProvider>
-							<ClayButton
-								aria-label={Liferay.Language.get(
-									'search-context-attributes'
-								)}
-								borderless
-								displayType="secondary"
-								monospaced
-								small
-								title={Liferay.Language.get(
-									'search-context-attributes'
-								)}
-							>
-								<ClayIcon symbol="cog" />
-							</ClayButton>
-						</ClayTooltipProvider>
-					</PreviewAttributesModal>
+					{!Liferay.FeatureFlags['LPD-00000'] && (
+						<PreviewAttributesModal
+							description={Liferay.Language.get(
+								'search-context-attributes-description'
+							)}
+							onSubmit={_handleAttributesSubmit}
+							title={Liferay.Language.get(
+								'search-context-attributes'
+							)}
+						>
+							<ClayTooltipProvider>
+								<ClayButton
+									aria-label={Liferay.Language.get(
+										'search-context-attributes'
+									)}
+									borderless
+									displayType="secondary"
+									monospaced
+									small
+									title={Liferay.Language.get(
+										'search-context-attributes'
+									)}
+								>
+									<ClayIcon symbol="cog" />
+								</ClayButton>
+							</ClayTooltipProvider>
+						</PreviewAttributesModal>
+					)}
 
 					<ClayButton
 						aria-label={Liferay.Language.get('close')}

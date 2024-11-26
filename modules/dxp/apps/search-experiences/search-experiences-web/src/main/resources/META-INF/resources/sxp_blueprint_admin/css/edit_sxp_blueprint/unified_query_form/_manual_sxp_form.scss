@@ -1,0 +1,30 @@
+.edit-sxp-blueprint-root {
+	.manual-sxp-form-root {
+		.layout-section-main {
+			padding-bottom: 40px;
+			padding-top: $navigationBarHeight + 40px;
+		}
+
+		.layout-section-main-shift {
+			margin-left: auto;
+			margin-right: calc(50% - #{$layoutSectionMainMaxWidth} / 2);
+			max-width: $layoutSectionMainMaxWidth;
+			transition: margin-right ease 0.2s;
+		}
+
+		@mixin shifted($width) {
+			margin-right: calc(
+				max(
+					50% - (#{$layoutSectionTableMainMinWidth} / 2),
+					#{$width} - (50vw - 50%) + 24px
+				)
+			);
+		}
+
+		@media (min-width: calc(#{$layoutSectionTableMainMinWidth} + #{$previewSidebarWidth})) {
+			.open-preview .layout-section-main-shift {
+				@include shifted($previewSidebarWidth);
+			}
+		}
+	}
+}

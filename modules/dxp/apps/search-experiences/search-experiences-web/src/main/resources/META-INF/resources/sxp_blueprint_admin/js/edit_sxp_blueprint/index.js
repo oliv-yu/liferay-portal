@@ -13,7 +13,10 @@ import fetchData from '../utils/fetch/fetch_data';
 import renameKeys from '../utils/language/rename_keys';
 import transformLocale from '../utils/language/transform_locale';
 import {openInitialSuccessToast} from '../utils/toasts';
+import {SELECTION_MODE_TYPES} from '../utils/types/selectionModeTypes';
 import EditSXPBlueprintForm from './EditSXPBlueprintForm';
+import DynamicSXPForm from './unified_query_form/DynamicSXPForm';
+import ManualSXPForm from './unified_query_form/ManualSXPForm';
 
 export default function ({
 	defaultLocale,
@@ -22,6 +25,7 @@ export default function ({
 	locale,
 	namespace,
 	redirectURL,
+	selectInfoItemsURL,
 	selectSitesURL,
 	sxpBlueprintId,
 }) {
@@ -54,31 +58,80 @@ export default function ({
 				locale,
 				namespace,
 				redirectURL,
+				selectInfoItemsURL,
 				selectSitesURL,
 				sxpType: 'sxpBlueprint',
 			}}
 		>
 			<div className="edit-sxp-blueprint-root">
 				<ErrorBoundary>
-					<EditSXPBlueprintForm
-						entityJSON={resource.entityJSON}
-						initialConfiguration={resource.configuration}
-						initialDescription={resource.description}
-						initialDescriptionI18n={renameKeys(
-							resource.description_i18n,
-							transformLocale
-						)}
-						initialExternalReferenceCode={
-							resource.externalReferenceCode
-						}
-						initialSXPElementInstances={resource.elementInstances}
-						initialTitle={resource.title}
-						initialTitleI18n={renameKeys(
-							resource.title_i18n,
-							transformLocale
-						)}
-						sxpBlueprintId={sxpBlueprintId}
-					/>
+					{Liferay.FeatureFlags['LPD-00000'] ? (
+						<ManualSXPForm
+							initialConfiguration={resource.configuration}
+							initialDescription={resource.description}
+							initialDescriptionI18n={renameKeys(
+								resource.description_i18n,
+								transformLocale
+							)}
+							initialExternalReferenceCode={
+								resource.externalReferenceCode
+							}
+							initialSXPElementInstances={
+								resource.elementInstances
+							}
+							initialTitle={resource.title}
+							initialTitleI18n={renameKeys(
+								resource.title_i18n,
+								transformLocale
+							)}
+							sxpBlueprintId={sxpBlueprintId}
+						/>
+					) : resource.selectionMode ===
+					  SELECTION_MODE_TYPES.DYNAMIC.value ? (
+						<DynamicSXPForm
+							entityJSON={resource.entityJSON}
+							initialConfiguration={resource.configuration}
+							initialDescription={resource.description}
+							initialDescriptionI18n={renameKeys(
+								resource.description_i18n,
+								transformLocale
+							)}
+							initialExternalReferenceCode={
+								resource.externalReferenceCode
+							}
+							initialSXPElementInstances={
+								resource.elementInstances
+							}
+							initialTitle={resource.title}
+							initialTitleI18n={renameKeys(
+								resource.title_i18n,
+								transformLocale
+							)}
+							sxpBlueprintId={sxpBlueprintId}
+						/>
+					) : (
+						<EditSXPBlueprintForm
+							entityJSON={resource.entityJSON}
+							initialConfiguration={resource.configuration}
+							initialDescription={resource.description}
+							initialDescriptionI18n={renameKeys(
+								resource.description_i18n,
+								transformLocale
+							)}
+							initialExternalReferenceCode={
+								resource.externalReferenceCode
+							}
+							initialSXPElementInstances={
+								resource.elementInstances
+							}
+							initialTitle={resource.title}
+							initialTitleI18n={renameKeys(
+								resource.title_i18n,
+								transformLocale
+							)}
+							sxpBlueprintId={sxpBlueprintId}
+						/>
+					)}
 				</ErrorBoundary>
 			</div>
 		</ThemeContext.Provider>
