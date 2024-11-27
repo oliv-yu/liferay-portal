@@ -25,6 +25,7 @@ export default function ({
 	locale,
 	namespace,
 	redirectURL,
+	selectGroupURL,
 	selectInfoItemsURL,
 	selectSitesURL,
 	sxpBlueprintId,
@@ -58,6 +59,7 @@ export default function ({
 				locale,
 				namespace,
 				redirectURL,
+				selectGroupURL,
 				selectInfoItemsURL,
 				selectSitesURL,
 				sxpType: 'sxpBlueprint',
@@ -66,7 +68,7 @@ export default function ({
 			<div className="edit-sxp-blueprint-root">
 				<ErrorBoundary>
 					{Liferay.FeatureFlags['LPD-00000'] ? (
-						<ManualSXPForm
+						<DynamicSXPForm
 							initialConfiguration={resource.configuration}
 							initialDescription={resource.description}
 							initialDescriptionI18n={renameKeys(
@@ -87,9 +89,8 @@ export default function ({
 							sxpBlueprintId={sxpBlueprintId}
 						/>
 					) : resource.selectionMode ===
-					  SELECTION_MODE_TYPES.DYNAMIC.value ? (
-						<DynamicSXPForm
-							entityJSON={resource.entityJSON}
+					  SELECTION_MODE_TYPES.MANUAL.value ? (
+						<ManualSXPForm
 							initialConfiguration={resource.configuration}
 							initialDescription={resource.description}
 							initialDescriptionI18n={renameKeys(

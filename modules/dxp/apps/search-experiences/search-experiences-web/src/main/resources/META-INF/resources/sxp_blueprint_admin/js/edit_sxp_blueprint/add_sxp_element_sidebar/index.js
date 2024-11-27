@@ -20,6 +20,7 @@ import React, {
 	useMemo,
 	useState,
 } from 'react';
+import {useDrag} from 'react-dnd';
 
 import LearnMessage from '../../shared/LearnMessage';
 import SearchInput from '../../shared/SearchInput';
@@ -42,6 +43,24 @@ const DEFAULT_CATEGORY = 'other';
 const DEFAULT_EXPANDED_LIST = ['match'];
 
 const LAST_CATEGORIES = [DEFAULT_CATEGORY, 'custom'];
+
+function SXPElementDragItem({children, index, info}) {
+	const [{isDragging}, drag, dragPreview] = useDrag({
+		collect: (monitor) => ({
+			isDragging: monitor.isDragging(),
+		}),
+		end: (item, monitor) => {
+			return {item, monitor};
+		},
+		item: {index, info, type: 'sxpElement'},
+	});
+
+	return (
+		<div ref={drag}>
+			<div ref={dragPreview}>{children} </div>
+		</div>
+	);
+}
 
 const SXPElementList = ({
 	category,
@@ -95,81 +114,89 @@ const SXPElementList = ({
 							);
 
 						return (
-							<ClayList.Item
-								className={getCN('sxp-element-item', {
-									inactive:
-										isElementInactiveFromNonCompanyIndex(
-											isIndexCompany,
-											sxpElement
-										),
-								})}
-								flex
+							<SXPElementDragItem
+								index={index}
+								info={sxpElement}
 								key={index}
 							>
-								<ClayList.ItemField>
-									<ClaySticker size="md">
-										<ClayIcon
-											symbol={
-												sxpElement.elementDefinition
-													?.icon ||
-												DEFAULT_SXP_ELEMENT_ICON
-											}
-										/>
-									</ClaySticker>
-								</ClayList.ItemField>
+								<ClayList.Item
+									className={getCN('sxp-element-item', {
+										inactive:
+											isElementInactiveFromNonCompanyIndex(
+												isIndexCompany,
+												sxpElement
+											),
+									})}
+									flex
+									key={index}
+								>
+									<ClayList.ItemField>
+										<ClaySticker size="md">
+											<ClayIcon
+												symbol={
+													sxpElement.elementDefinition
+														?.icon ||
+													DEFAULT_SXP_ELEMENT_ICON
+												}
+											/>
+										</ClaySticker>
+									</ClayList.ItemField>
 
-								<ClayList.ItemField expand>
-									{title && (
-										<ClayList.ItemTitle>
-											{title}
-										</ClayList.ItemTitle>
-									)}
+									<ClayList.ItemField expand>
+										{title && (
+											<ClayList.ItemTitle>
+												{title}
+											</ClayList.ItemTitle>
+										)}
 
-									{description && (
-										<ClayList.ItemText subtext={true}>
-											{description}
-										</ClayList.ItemText>
-									)}
-								</ClayList.ItemField>
+										{description && (
+											<ClayList.ItemText subtext={true}>
+												{description}
+											</ClayList.ItemText>
+										)}
+									</ClayList.ItemField>
 
-								<ClayList.ItemField>
-									<div className="add-sxp-element-button-background" />
+									<ClayList.ItemField>
+										<div className="add-sxp-element-button-background" />
 
-									{isElementInactiveFromNonCompanyIndex(
-										isIndexCompany,
-										sxpElement
-									) ? (
-										<ClayTooltipProvider>
+										{isElementInactiveFromNonCompanyIndex(
+											isIndexCompany,
+											sxpElement
+										) ? (
+											<ClayTooltipProvider>
+												<ClayButton
+													aria-disabled="true"
+													className="add-sxp-element-button disabled"
+													data-tooltip-align="left"
+													displayType="secondary"
+													small
+													title={Liferay.Language.get(
+														'query-element-inactive-from-index-help'
+													)}
+												>
+													{Liferay.Language.get(
+														'add'
+													)}
+												</ClayButton>
+											</ClayTooltipProvider>
+										) : (
 											<ClayButton
-												aria-disabled="true"
-												className="add-sxp-element-button disabled"
-												data-tooltip-align="left"
-												displayType="secondary"
-												small
-												title={Liferay.Language.get(
-													'query-element-inactive-from-index-help'
+												aria-label={Liferay.Language.get(
+													'add'
 												)}
+												className="add-sxp-element-button"
+												displayType="secondary"
+												onClick={_handleAddSXPElement(
+													sxpElement
+												)}
+												small
 											>
 												{Liferay.Language.get('add')}
 											</ClayButton>
-										</ClayTooltipProvider>
-									) : (
-										<ClayButton
-											aria-label={Liferay.Language.get(
-												'add'
-											)}
-											className="add-sxp-element-button"
-											displayType="secondary"
-											onClick={_handleAddSXPElement(
-												sxpElement
-											)}
-											small
-										>
-											{Liferay.Language.get('add')}
-										</ClayButton>
-									)}
-								</ClayList.ItemField>
-							</ClayList.Item>
+										)}
+									</ClayList.ItemField>
+								</ClayList.Item>
+							</SXPElementDragItem>
 						);
 					})}
 				</ClayList>

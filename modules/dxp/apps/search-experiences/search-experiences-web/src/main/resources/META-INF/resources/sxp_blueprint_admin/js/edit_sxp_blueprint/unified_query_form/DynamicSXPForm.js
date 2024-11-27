@@ -16,6 +16,8 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
+import {DndProvider} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
 
 import useFetchData from '../../hooks/useFetchData';
 import useShouldConfirmBeforeNavigate from '../../hooks/useShouldConfirmBeforeNavigate';
@@ -75,7 +77,6 @@ const TABS = {
 /* eslint-enable sort-keys */
 
 function DynamicSXPForm({
-	entityJSON,
 	initialConfiguration = {},
 	initialDescription = '',
 	initialDescriptionI18n = {},
@@ -990,7 +991,6 @@ function DynamicSXPForm({
 								elementInstances={
 									formik.values.elementInstances
 								}
-								entityJSON={entityJSON}
 								errors={formik.errors.elementInstances}
 								frameworkConfig={formik.values.frameworkConfig}
 								indexFields={indexFields}
@@ -1026,80 +1026,85 @@ function DynamicSXPForm({
 	}
 
 	return (
-		<form ref={formRef}>
-			<SubmitWarningModal
-				errors={errors}
-				isSubmitting={formik.isSubmitting}
-				message={Liferay.Language.get(
-					'the-blueprint-configuration-has-errors-that-may-cause-unexpected-results.-use-the-preview-panel-to-review-these-errors'
-				)}
-				onClose={() => setShowSubmitWarningModal(false)}
-				onSubmit={_handleSubmit}
-				visible={showSubmitWarningModal}
-			/>
+		<DndProvider backend={HTML5Backend}>
+			<form ref={formRef}>
+				<SubmitWarningModal
+					errors={errors}
+					isSubmitting={formik.isSubmitting}
+					message={Liferay.Language.get(
+						'the-blueprint-configuration-has-errors-that-may-cause-unexpected-results.-use-the-preview-panel-to-review-these-errors'
+					)}
+					onClose={() => setShowSubmitWarningModal(false)}
+					onSubmit={_handleSubmit}
+					visible={showSubmitWarningModal}
+				/>
 
-			<PageToolbar
-				description={initialDescription}
-				descriptionI18n={formik.values.description_i18n}
-				entityId={sxpBlueprintId}
-				externalReferenceCode={formik.values.externalReferenceCode}
-				isSubmitting={formik.isSubmitting}
-				onCancel={redirectURL}
-				onChangeTab={_handleTabChange}
-				onExternalReferenceCodeChange={
-					_handleExternalReferenceCodeChange
-				}
-				onSubmit={_handleSubmit}
-				onTitleAndDescriptionChange={_handleTitleAndDescriptionChange}
-				tab={tab}
-				tabs={TABS}
-				title={initialTitle}
-				titleAndDescriptionEdited={isTitleAndDescriptionEdited}
-				titleI18n={formik.values.title_i18n}
-			>
-				<ClayToolbar.Item>
-					<ClayButton
-						borderless
-						className={getCN({
-							active: openSidebar === SIDEBAR_TYPES.PREVIEW,
-						})}
-						data-qa-id={TEST_IDS.PREVIEW_SIDEBAR_BUTTON}
-						displayType="secondary"
-						onClick={_handleToggleSidebar(SIDEBAR_TYPES.PREVIEW)}
-						small
-					>
-						{Liferay.Language.get('preview')}
-					</ClayButton>
-				</ClayToolbar.Item>
-			</PageToolbar>
+				<PageToolbar
+					description={initialDescription}
+					descriptionI18n={formik.values.description_i18n}
+					entityId={sxpBlueprintId}
+					externalReferenceCode={formik.values.externalReferenceCode}
+					isSubmitting={formik.isSubmitting}
+					onCancel={redirectURL}
+					onChangeTab={_handleTabChange}
+					onExternalReferenceCodeChange={
+						_handleExternalReferenceCodeChange
+					}
+					onSubmit={_handleSubmit}
+					onTitleAndDescriptionChange={
+						_handleTitleAndDescriptionChange
+					}
+					tab={tab}
+					tabs={TABS}
+					title={initialTitle}
+					titleAndDescriptionEdited={isTitleAndDescriptionEdited}
+					titleI18n={formik.values.title_i18n}
+				>
+					<ClayToolbar.Item>
+						<ClayButton
+							borderless
+							className={getCN({
+								active: openSidebar === SIDEBAR_TYPES.PREVIEW,
+							})}
+							data-qa-id={TEST_IDS.PREVIEW_SIDEBAR_BUTTON}
+							displayType="secondary"
+							onClick={_handleToggleSidebar(
+								SIDEBAR_TYPES.PREVIEW
+							)}
+							small
+						>
+							{Liferay.Language.get('test-your-query')}
+						</ClayButton>
+					</ClayToolbar.Item>
+				</PageToolbar>
 
-			<PreviewSidebar
-				errors={previewInfo.results.errors}
-				hits={transformToSearchPreviewHits(previewInfo.results)}
-				loading={previewInfo.loading}
-				onClose={_handleSidebarClose}
-				onFetchCancel={_handleFetchPreviewCancel}
-				onFetchResults={_handleFetchPreviewSearch}
-				onFocusSXPElement={_handleFocusSXPElement}
-				requestString={previewInfo.results.requestString}
-				responseString={previewInfo.results.responseString}
-				totalHits={previewInfo.results.searchHits?.totalHits}
-				visible={openSidebar === SIDEBAR_TYPES.PREVIEW}
-			/>
+				<PreviewSidebar
+					errors={previewInfo.results.errors}
+					hits={transformToSearchPreviewHits(previewInfo.results)}
+					loading={previewInfo.loading}
+					onClose={_handleSidebarClose}
+					onFetchCancel={_handleFetchPreviewCancel}
+					onFetchResults={_handleFetchPreviewSearch}
+					onFocusSXPElement={_handleFocusSXPElement}
+					requestString={previewInfo.results.requestString}
+					responseString={previewInfo.results.responseString}
+					totalHits={previewInfo.results.searchHits?.totalHits}
+					visible={openSidebar === SIDEBAR_TYPES.PREVIEW}
+				/>
 
-			<div
-				className={getCN({
-					'open-preview': openSidebar === SIDEBAR_TYPES.PREVIEW,
-				})}
-			>
-				{_renderTabContent()}
-			</div>
-		</form>
+				<div
+					className={getCN({
+						'open-preview': openSidebar === SIDEBAR_TYPES.PREVIEW,
+					})}
+				>
+					{_renderTabContent()}
+				</div>
+			</form>
+		</DndProvider>
 	);
 }
 
 DynamicSXPForm.propTypes = {
-	entityJSON: PropTypes.object,
 	initialConfiguration: PropTypes.object,
 	initialDescription: PropTypes.string,
 	initialDescriptionI18n: PropTypes.object,

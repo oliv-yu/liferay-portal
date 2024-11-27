@@ -12,6 +12,7 @@ import ClaySticker from '@clayui/sticker';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import getCN from 'classnames';
 import React, {useContext, useEffect, useState} from 'react';
+import {useDrop} from 'react-dnd';
 
 import {DEFAULT_SXP_ELEMENT_ICON} from '../../utils/data';
 import isDefined from '../../utils/functions/is_defined';
@@ -35,9 +36,38 @@ const convertSearchableTypesToSelectOptions = (searchableTypes) => {
 	}));
 };
 
+function SXPElementDropZone({children, onDrop}) {
+	const [{isOver}, drop] = useDrop({
+		accept: 'sxpElement',
+		collect: (monitor) => ({
+			isOver: !!monitor.isOver(),
+		}),
+		drop: (item, monitor) => {
+			onDrop(item);
+
+			return {
+				item,
+				monitor,
+			};
+		},
+	});
+
+	return (
+		<div
+			className="c-p-4"
+			ref={drop}
+			style={{
+				backgroundColor: isOver && '#f1f2f5',
+				border: '#cdced9 1px dashed',
+			}}
+		>
+			{children}
+		</div>
+	);
+}
+
 function SXPUnifiedQueryElement({
 	collapseAll,
-	entityJSON,
 	error = {},
 	id,
 	index,
@@ -104,6 +134,15 @@ function SXPUnifiedQueryElement({
 	const _hasError = (config) =>
 		touched.uiConfigurationValues?.[config.name] &&
 		!!error.uiConfigurationValues?.[config.name];
+
+	const _handleOnDrop = (item) => {
+		console.log('item', item);
+
+		setFieldValue(`elementInstances[${index}].uiConfigurationValues`, [
+			...uiConfigurationValues,
+			item.info,
+		]);
+	};
 
 	return (
 		<div
@@ -244,6 +283,20 @@ function SXPUnifiedQueryElement({
 					)}
 				</ClayList.Item>
 			</ClayList>
+
+			<div className="c-m-4 c-p-2 text-secondary">
+				<SXPElementDropZone onDrop={_handleOnDrop}>
+					{uiConfigurationValues.length ? (
+						<ul>
+							{uiConfigurationValues.map((item) => (
+								<li key={item.id}>{item.title}</li>
+							))}
+						</ul>
+					) : (
+						<div>Drop items here</div>
+					)}
+				</SXPElementDropZone>
+			</div>
 
 			{!collapse && !!fieldSets.length && (
 				<div className="c-ml-2 c-mr-2">

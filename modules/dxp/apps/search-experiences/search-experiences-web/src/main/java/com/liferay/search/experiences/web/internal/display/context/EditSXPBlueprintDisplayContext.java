@@ -10,6 +10,7 @@ import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.item.selector.criteria.GroupItemSelectorReturnType;
 import com.liferay.item.selector.criteria.InfoItemItemSelectorReturnType;
 import com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion;
+import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
 import com.liferay.learn.LearnMessageUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
@@ -75,9 +76,26 @@ public class EditSXPBlueprintDisplayContext {
 		).put(
 			"redirectURL", getRedirect()
 		).put(
+			"selectGroupURL",
+			() -> {
+			ItemSelectorCriterion itemSelectorCriterion =
+					new GroupItemSelectorCriterion();
+
+				itemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+					new GroupItemSelectorReturnType());
+
+				return PortletURLBuilder.create(
+					_itemSelector.getItemSelectorURL(
+						RequestBackedPortletURLFactoryUtil.create(
+							_renderRequest),
+						_renderResponse.getNamespace() + "selectGroup",
+						itemSelectorCriterion)
+				).buildString();
+			}
+		).put(
 			"selectInfoItemsURL",
 			() -> {
-				ItemSelectorCriterion itemSelectorCriterion =
+				InfoItemItemSelectorCriterion itemSelectorCriterion =
 					new InfoItemItemSelectorCriterion();
 
 				itemSelectorCriterion.setDesiredItemSelectorReturnTypes(

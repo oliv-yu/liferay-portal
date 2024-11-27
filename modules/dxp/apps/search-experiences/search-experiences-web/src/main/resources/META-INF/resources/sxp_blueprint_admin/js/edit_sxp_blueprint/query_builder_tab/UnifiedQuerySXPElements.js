@@ -19,7 +19,6 @@ import isUnifiedQuerySXPElement from '../../utils/sxp_element/is_unified_query_s
 
 function UnifiedQuerySXPElements({
 	elementInstances,
-	entityJSON,
 	errors = [],
 	isIndexCompany,
 	isSubmitting,
@@ -43,6 +42,18 @@ function UnifiedQuerySXPElements({
 		onChangeAddSXPElementVisibility();
 	};
 
+	const _handleCollapseAll = (event) => {
+		event.stopPropagation();
+
+		setCollapseAll(!collapseAll);
+	};
+
+	const _handleKeydown = (fn) => (event) => {
+		if (event.key === 'Enter') {
+			fn(event);
+		}
+	};
+
 	return (
 		<div className="c-mb-sm-3 query-sxp-elements sheet">
 			<ClayPanel
@@ -57,39 +68,43 @@ function UnifiedQuerySXPElements({
 							</div>
 
 							<div className="builder-actions c-mr-3">
-								<ClayButton
+								<div
 									aria-label={Liferay.Language.get(
 										'collapse-all'
 									)}
-									borderless={true}
-									className="c-mr-2"
-									displayType="secondary"
-									onClick={(event) => {
-										event.stopPropagation();
-
-										setCollapseAll(!collapseAll);
-									}}
+									className="btn btn-outline-borderless btn-secondary c-mr-2 text-secondary"
+									onClick={_handleCollapseAll}
+									onKeyDown={_handleKeydown(
+										_handleCollapseAll
+									)}
+									role="button"
+									tabIndex="0"
 								>
 									{collapseAll
 										? Liferay.Language.get('expand-all')
 										: Liferay.Language.get('collapse-all')}
-								</ClayButton>
+								</div>
+
+								{/* <ClayButton onClick={() => {}}>Meow</ClayButton> */}
 
 								<ClayTooltipProvider>
-									<ClayButton
+									<div
 										aria-label={Liferay.Language.get(
 											'add-query-element'
 										)}
-										displayType="primary"
-										monospaced
+										className="btn btn-monospaced btn-primary btn-sm"
 										onClick={_handleClickAddQueryElement}
-										size="sm"
+										onKeyDown={_handleKeydown(
+											_handleClickAddQueryElement
+										)}
+										role="button"
+										tabIndex="0"
 										title={Liferay.Language.get(
 											'add-query-element'
 										)}
 									>
 										<ClayIcon symbol="plus" />
-									</ClayButton>
+									</div>
 								</ClayTooltipProvider>
 							</div>
 						</div>
@@ -116,7 +131,6 @@ function UnifiedQuerySXPElements({
 								) ? (
 									<SXPUnifiedQueryElement
 										collapseAll={collapseAll}
-										entityJSON={entityJSON}
 										error={errors[index]}
 										id={id}
 										index={index}
@@ -160,7 +174,6 @@ function UnifiedQuerySXPElements({
 								) : (
 									<SXPElement
 										collapseAll={collapseAll}
-										entityJSON={entityJSON}
 										error={errors[index]}
 										id={id}
 										index={index}
