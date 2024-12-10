@@ -292,8 +292,6 @@ definition {
 		Portlet.viewCannotAddPG(portletName = "Search Insights");
 	}
 
-
-
 	@description = "This is a use case for LPS-152993."
 	@priority = 4
 	test AssertSortWidgetNoXSS {

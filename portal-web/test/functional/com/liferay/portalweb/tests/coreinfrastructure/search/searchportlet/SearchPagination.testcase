@@ -23,7 +23,7 @@ definition {
 	@description = "This is a use case for LPS-130227."
 	@priority = 4
 	test AssertPaginationURLforHTTPS {
-		property custom.properties = "redirect.url.domains.allowed=${line.separator}redirect.url.security.mode=domain${line.separator}web.server.host=localhost${line.separator}web.server.https.port=8443${line.separator}web.server.protocol=https${line.separator}feature.flag.LPD-35013=true";
+		property custom.properties = "feature.flag.LPD-35013=true${line.separator}redirect.url.domains.allowed=${line.separator}redirect.url.security.mode=domain${line.separator}web.server.host=localhost${line.separator}web.server.https.port=8443${line.separator}web.server.protocol=https";
 		property portal.ssl.enabled = "true";
 		property search.environment.suite.exclude = "true";
 		property test.liferay.virtual.instance = "false";
@@ -75,10 +75,10 @@ definition {
 		}
 	}
 
-    @description = "This is a use case for LPS-89561."
+	@description = "This is a use case for LPS-89561."
 	@priority = 4
 	test AssertSearchURLWhenModifyingPagination {
-		property custom.properties = "search.container.page.default.delta=10${line.separator}feature.flag.LPD-35013=true";
+		property custom.properties = "feature.flag.LPD-35013=true${line.separator}search.container.page.default.delta=10";
 
 		for (var count : list "1,2,3,4,5,6,7,8,9,10,11") {
 			JSONWebcontent.addWebContent(
@@ -222,7 +222,7 @@ definition {
 	@priority = 4
 	test ModifyPaginationPortalProperties {
 		property app.server.types = "jboss,tcserver,tomcat,weblogic,wildfly";
-		property custom.properties = "search.container.page.default.delta=1${line.separator}feature.flag.LPD-35013=true";
+		property custom.properties = "feature.flag.LPD-35013=true${line.separator}search.container.page.default.delta=1";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property environment.acceptance = "true";
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
@@ -289,4 +289,5 @@ definition {
 			searchAssetTitle = "WC Title",
 			searchAssetType = "Web Content Article");
 	}
+
 }
