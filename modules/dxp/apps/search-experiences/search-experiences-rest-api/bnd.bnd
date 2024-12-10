@@ -1,6 +1,10 @@
 Bundle-Name: Liferay Search Experiences REST API
 Bundle-SymbolicName: com.liferay.search.experiences.rest.api
+<<<<<<< HEAD
 Bundle-Version: 14.0.1
+=======
+Bundle-Version: 14.0.0
+>>>>>>> 6562cfd (LPS-195907 search-expereinces-rest-: gw buildRest)
 Export-Package:\
 	com.liferay.search.experiences.rest.dto.v1_0,\
 	com.liferay.search.experiences.rest.dto.v1_0.util,\
