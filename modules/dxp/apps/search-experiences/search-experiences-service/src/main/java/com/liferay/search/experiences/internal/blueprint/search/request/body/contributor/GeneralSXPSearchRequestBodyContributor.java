@@ -5,6 +5,7 @@
 
 package com.liferay.search.experiences.internal.blueprint.search.request.body.contributor;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -14,6 +15,8 @@ import com.liferay.portal.search.searcher.SearchRequestBuilder;
 import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterData;
 import com.liferay.search.experiences.rest.dto.v1_0.Configuration;
 import com.liferay.search.experiences.rest.dto.v1_0.GeneralConfiguration;
+
+import java.util.Arrays;
 
 /**
  * @author André de Oliveira
@@ -75,10 +78,18 @@ public class GeneralSXPSearchRequestBodyContributor
 		if (ArrayUtil.isNotEmpty(
 				generalConfiguration.getSearchableAssetTypes())) {
 
-			searchRequestBuilder.entryClassNames(
-				generalConfiguration.getSearchableAssetTypes());
+			String[] searchableAssetTypeNames = Arrays.stream(
+				generalConfiguration.getSearchableAssetTypes()
+			).map(
+				assetType -> StringUtil.split(assetType, StringPool.POUND)[0]
+			).distinct(
+			).toArray(
+				String[]::new
+			);
+
+			searchRequestBuilder.entryClassNames(searchableAssetTypeNames);
 			searchRequestBuilder.modelIndexerClassNames(
-				generalConfiguration.getSearchableAssetTypes());
+				searchableAssetTypeNames);
 		}
 
 		if (!Validator.isBlank(generalConfiguration.getLanguageId())) {
