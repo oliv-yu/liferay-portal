@@ -16,10 +16,11 @@ import com.liferay.search.experiences.internal.blueprint.parameter.SXPParameterD
 import com.liferay.search.experiences.rest.dto.v1_0.Configuration;
 import com.liferay.search.experiences.rest.dto.v1_0.GeneralConfiguration;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 /**
  * @author André de Oliveira
@@ -81,82 +82,57 @@ public class GeneralSXPSearchRequestBodyContributor
 		if (ArrayUtil.isNotEmpty(
 				generalConfiguration.getSearchableAssetTypes())) {
 
-			String[] searchableAssetTypes = Arrays.stream(
-				generalConfiguration.getSearchableAssetTypes()
-			).map(
-				assetType -> {
-					String[] assetTypeName = StringUtil.split(
-						assetType, StringPool.POUND);
+			String[] searchableAssetTypes =
+				generalConfiguration.getSearchableAssetTypes();
 
-					return assetTypeName[0];
+			Set<String> assetTypeNameSet = new HashSet<>();
+
+			for (String searchableAssetType : searchableAssetTypes) {
+				String[] assetTypeIdentifier = StringUtil.split(
+					searchableAssetType, StringPool.POUND);
+
+				assetTypeNameSet.add(assetTypeIdentifier[0]);
+			}
+
+			String[] assetTypeNames = assetTypeNameSet.toArray(new String[0]);
+
+			searchRequestBuilder.entryClassNames(assetTypeNames);
+			searchRequestBuilder.modelIndexerClassNames(assetTypeNames);
+
+			HashMap<String, List<String[]>> assetSubtypeNameHashMap =
+				new HashMap<>();
+
+			for (String searchableAssetType : searchableAssetTypes) {
+				String[] assetTypeIdentifier = StringUtil.split(
+					searchableAssetType, StringPool.POUND);
+
+				if (assetTypeIdentifier.length <= 1) {
+					continue;
 				}
-			).distinct(
-			).toArray(
-				String[]::new
-			);
 
-			searchRequestBuilder.entryClassNames(searchableAssetTypes);
-			searchRequestBuilder.modelIndexerClassNames(searchableAssetTypes);
+				String assetTypeKey = assetTypeIdentifier[0];
 
-			HashMap<String, List<String[]>> searchableAssetSubtypeHashMap =
-				Arrays.stream(
-					generalConfiguration.getSearchableAssetTypes()
-				).map(
-					assetType -> StringUtil.split(assetType, StringPool.POUND)
-				).filter(
-					assetTypeArray -> assetTypeArray.length > 1
-				).collect(
-					Collectors.groupingBy(
-						assetTypeArray -> assetTypeArray[0], HashMap::new,
-						Collectors.mapping(
-							assetTypeArray -> assetTypeArray,
-							Collectors.toList()))
-				);
+				List<String[]> searchableAssetSubtypeIdentifiers;
+
+				if (assetSubtypeNameHashMap.containsKey(assetTypeKey)) {
+					searchableAssetSubtypeIdentifiers =
+						assetSubtypeNameHashMap.get(assetTypeKey);
+
+					searchableAssetSubtypeIdentifiers.add(assetTypeIdentifier);
+				}
+				else {
+					searchableAssetSubtypeIdentifiers = new ArrayList<>();
+
+					searchableAssetSubtypeIdentifiers.add(assetTypeIdentifier);
+				}
+
+				assetSubtypeNameHashMap.put(
+					assetTypeKey, searchableAssetSubtypeIdentifiers);
+			}
 
 			searchRequestBuilder.withSearchContext(
 				searchContext -> searchContext.setAttribute(
-					"searchableAssetSubtypesMap",
-					searchableAssetSubtypeHashMap));
-
-			//			Map<String, LinkedList<String[]>> searchableAssetSubtypeMap =
-//				new HashMap<>();
-//
-//			for (String searchableAssetSubtype :
-//					generalConfiguration.getSearchableAssetTypes()) {
-//
-//				String[] searchableSubtypeIdentifier = StringUtil.split(
-//					searchableAssetSubtype, StringPool.POUND);
-//
-//				if (searchableSubtypeIdentifier.length <= 1) {
-//					continue;
-//				}
-//
-//				String searchableAssetType = searchableSubtypeIdentifier[0];
-//
-//				if (searchableAssetSubtypeMap.containsKey(
-//						searchableAssetType)) {
-//
-//					LinkedList<String[]> searchableAssetSubtypeIdentifiers =
-//						searchableAssetSubtypeMap.get(searchableAssetType);
-//
-//					searchableAssetSubtypeIdentifiers.add(
-//						searchableSubtypeIdentifier);
-//				}
-//				else {
-//					List<String[]> searchableAssetSubtypeIdentifiers =
-//						new LinkedList<>();
-//
-//					searchableAssetSubtypeIdentifiers.add(
-//						searchableSubtypeIdentifier);
-//
-//					searchableAssetSubtypeMap.put(
-//						searchableAssetType, searchableAssetSubtypeIdentifiers);
-//				}
-//			}
-//
-//			searchRequestBuilder.withSearchContext(
-//				searchContext -> searchContext.setAttribute(
-//					"searchableAssetSubtypesMap", searchableAssetSubtypeMap));
+					"searchableAssetSubtypesMap", assetSubtypeNameHashMap));
 		}
 
 		if (!Validator.isBlank(generalConfiguration.getLanguageId())) {
