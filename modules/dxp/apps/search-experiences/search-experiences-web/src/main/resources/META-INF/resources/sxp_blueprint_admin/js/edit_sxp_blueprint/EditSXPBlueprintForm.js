@@ -889,6 +889,7 @@ function EditSXPBlueprintForm({
 						advancedConfig={formik.values.advancedConfig}
 						aggregationConfig={formik.values.aggregationConfig}
 						errors={formik.errors}
+						frameworkConfig={formik.values.frameworkConfig}
 						highlightConfig={formik.values.highlightConfig}
 						indexConfig={formik.values.indexConfig}
 						parameterConfig={formik.values.parameterConfig}
