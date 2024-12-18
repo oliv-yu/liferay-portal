@@ -88,11 +88,11 @@ public class FileEntrySXPBlueprintInfoCollectionProvider
 		GeneralConfiguration generalConfiguration =
 			configuration.getGeneralConfiguration();
 
-		if (generalConfiguration == null) {
+//		if (generalConfiguration == null) {
 			return "0";
-		}
-
-		return generalConfiguration.getSearchableAssetSubType();
+//		}
+//
+//		return generalConfiguration.getSearchableAssetSubType();
 	}
 
 	@Override
