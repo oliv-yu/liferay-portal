@@ -5,6 +5,8 @@
 
 package com.liferay.search.experiences.web.internal.display.context;
 
+import com.liferay.document.library.kernel.model.DLFileEntry;
+import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -80,9 +82,15 @@ public class GetClassSubtypesMVCResourceCommand implements MVCResourceCommand {
 		}
 
 		String classType = ParamUtil.getString(resourceRequest, "classType");
+		String lookupClassType = classType;
+
 
 		if (Validator.isNull(classType)) {
 			return null;
+		}
+
+		if (lookupClassType.equals(DLFileEntry.class.getName())) {
+			lookupClassType = DLFileEntryMetadata.class.getName();
 		}
 
 		JSONArray classSubtypeJSONArray = JSONFactoryUtil.createJSONArray();
@@ -90,7 +98,7 @@ public class GetClassSubtypesMVCResourceCommand implements MVCResourceCommand {
 		List<DDMStructure> classStructures =
 			_ddmStructureLocalService.getClassStructures(
 				ParamUtil.getLong(resourceRequest, "companyId"),
-				_portal.getClassNameId(classType)
+				_portal.getClassNameId(lookupClassType)
 			);
 
 		Locale locale = LocaleUtil.fromLanguageId(
