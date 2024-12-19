@@ -5,14 +5,9 @@
 
 package com.liferay.search.experiences.web.internal.blueprint.admin.portlet.action;
 
-import com.liferay.asset.util.AssetRendererFactoryClassProvider;
-import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.search.experiences.constants.SXPPortletKeys;
-import com.liferay.search.experiences.service.SXPBlueprintLocalService;
 import com.liferay.search.experiences.web.internal.display.context.EditSXPBlueprintDisplayContext;
 
 import javax.portlet.RenderRequest;
@@ -41,30 +36,12 @@ public class EditSXPBlueprintMVCRenderCommand implements MVCRenderCommand {
 		renderRequest.setAttribute(
 			EditSXPBlueprintDisplayContext.class.getName(),
 			new EditSXPBlueprintDisplayContext(
-				_assetRendererFactoryClassProvider, _ddmStructureLocalService,
-				_groupLocalService, _itemSelector, _portal, renderRequest, renderResponse,
-				_sxpBlueprintLocalService));
+				_itemSelector, renderRequest, renderResponse));
 
 		return "/sxp_blueprint_admin/edit_sxp_blueprint.jsp";
 	}
 
 	@Reference
-	private AssetRendererFactoryClassProvider
-		_assetRendererFactoryClassProvider;
-
-	@Reference
-	private DDMStructureLocalService _ddmStructureLocalService;
-
-	@Reference
-	private GroupLocalService _groupLocalService;
-
-	@Reference
 	private ItemSelector _itemSelector;
-
-	@Reference
-	private Portal _portal;
-
-	@Reference
-	private SXPBlueprintLocalService _sxpBlueprintLocalService;
 
 }
