@@ -15,6 +15,11 @@ ViewSXPBlueprintsDisplayContext viewSXPBlueprintsDisplayContext = (ViewSXPBluepr
 	<aui:input name="redirect" type="hidden" value="<%= String.valueOf(viewSXPBlueprintsDisplayContext.getPortletURL()) %>" />
 
 	<frontend-data-set:headless-display
+		additionalProps='<%=
+			HashMapBuilder.<String, Object>put(
+				"typesArray", ""
+			).build()
+		%>'
 		apiURL="<%= viewSXPBlueprintsDisplayContext.getAPIURL() %>"
 		bulkActionDropdownItems="<%= viewSXPBlueprintsDisplayContext.getBulkActionDropdownItems() %>"
 		creationMenu="<%= viewSXPBlueprintsDisplayContext.getCreationMenu() %>"
