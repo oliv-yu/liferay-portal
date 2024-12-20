@@ -10,6 +10,7 @@ import com.liferay.frontend.data.set.view.table.BaseTableFDSView;
 import com.liferay.frontend.data.set.view.table.FDSTableSchema;
 import com.liferay.frontend.data.set.view.table.FDSTableSchemaBuilder;
 import com.liferay.frontend.data.set.view.table.FDSTableSchemaBuilderFactory;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.search.experiences.web.internal.blueprint.admin.constants.SXPBlueprintAdminFDSNames;
 
 import java.util.Locale;
@@ -32,7 +33,7 @@ public class SXPBlueprintsTableFDSView extends BaseTableFDSView {
 		FDSTableSchemaBuilder fdsTableSchemaBuilder =
 			_fdsTableSchemaBuilderFactory.create();
 
-		return fdsTableSchemaBuilder.add(
+		fdsTableSchemaBuilder.add(
 			"title", "title",
 			fdsTableSchemaField -> fdsTableSchemaField.setContentRenderer(
 				"actionLink"
@@ -41,17 +42,21 @@ public class SXPBlueprintsTableFDSView extends BaseTableFDSView {
 			)
 		).add(
 			"description", "description"
-		).add(
-			"id", "id"
-		).add(
-			"collectionProvider", "collection-provider",
-			fdsTableSchemaField -> fdsTableSchemaField.setContentRenderer("collectionProviderCellRenderer")
-		).add(
-			"typeSubtype", "type-and-subtype",
-			fdsTableSchemaField -> fdsTableSchemaField.setContentRenderer(
-				"typeSubtypeCellRenderer"
-			)
-		).add(
+		);
+
+		if (FeatureFlagManagerUtil.isEnabled("LPS-129412")) {
+			fdsTableSchemaBuilder.add(
+				"collectionProvider", "collection-provider",
+				fdsTableSchemaField -> fdsTableSchemaField.setContentRenderer(
+					"collectionProviderCellRenderer")
+			).add(
+				"typeSubtype", "type-and-subtype",
+				fdsTableSchemaField -> fdsTableSchemaField.setContentRenderer(
+					"typeSubtypeCellRenderer")
+			);
+		}
+
+		return fdsTableSchemaBuilder.add(
 			"userName", "author"
 		).add(
 			"createDate", "created",
