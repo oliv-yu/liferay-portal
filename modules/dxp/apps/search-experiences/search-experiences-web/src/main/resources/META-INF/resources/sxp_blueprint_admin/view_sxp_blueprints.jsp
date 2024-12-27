@@ -17,7 +17,7 @@ ViewSXPBlueprintsDisplayContext viewSXPBlueprintsDisplayContext = (ViewSXPBluepr
 	<frontend-data-set:headless-display
 		additionalProps='<%=
 			HashMapBuilder.<String, Object>put(
-				"typesArray", ""
+				"searchableTypesArray", ""
 			).build()
 		%>'
 		apiURL="<%= viewSXPBlueprintsDisplayContext.getAPIURL() %>"

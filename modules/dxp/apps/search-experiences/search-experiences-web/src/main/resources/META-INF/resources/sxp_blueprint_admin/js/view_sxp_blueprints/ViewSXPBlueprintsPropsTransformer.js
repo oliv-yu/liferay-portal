@@ -9,7 +9,7 @@ import CollectionProviderTableCell from './CollectionProviderTableCell';
 import TypeSubtypeTableCell from './TypeSubtypeTableCell';
 
 export default function propsTransformer({
-	additionalProps: {typesArray},
+	additionalProps: {searchableTypesArray},
 	...otherProps
 }) {
 	const collectionProviderCellRenderer = {
@@ -19,7 +19,11 @@ export default function propsTransformer({
 	};
 
 	const typeSubtypeCellRenderer = {
-		component: (props) => TypeSubtypeTableCell({typesArray, ...props}),
+		component: (props) =>
+			TypeSubtypeTableCell({
+				initialSearchableTypesArray: searchableTypesArray,
+				...props,
+			}),
 		name: 'typeSubtypeCellRenderer',
 		type: 'internal',
 	};

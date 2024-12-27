@@ -3,46 +3,97 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import React from 'react';
+import {fetch} from 'frontend-js-web';
+import React, {useEffect, useState} from 'react';
 
-const TypeSubtypeTableCell = ({itemData, typesArray}) => {
-	const getTypeSubtype = (assetTypes) => {
+const TypeSubtypeTableCell = ({itemData, initialSearchableTypesArray = []}) => {
+	const [searchableTypesArray, setSearchableTypesArray] = useState([]);
 
-		// TODO : Need a way to grab the Type / Subtype Name
+	useEffect(() => {
+		fetch(`/o/search-experiences-rest/v1.0/searchable-asset-names/en_US`, {
+			headers: new Headers({
+				'Accept': 'application/json',
+				'Accept-Language': Liferay.ThemeDisplay.getBCP47LanguageId(),
+				'Content-Type': 'application/json',
+			}),
+			method: 'GET',
+		})
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				}
+			})
+			.then(({items}) => {
+				setSearchableTypesArray(items);
+			});
+	}, []);
 
-		// if (!assetTypes.length) {
-		// 	return Liferay.Language.get('asset');
-		// }
+	const DEFAULT_TYPE = Liferay.Language.get('asset');
 
-		// if (assetTypes.length === 1) {
-		// 	const typeInfo = assetTypes[0].split('#');
+	const getDisplayTypeSubtype = (
+		searchableAssetTypes,
+		searchableTypesArray
+	) => {
 
-		// 	if (!typeInfo.length === 1) {
-		// 		return getDisplayNameByClassName(typeInfo[0]);
-		// 	}
+		// An empty searchableAssetTypes array would default to all
+		// asset types.
 
-		// 	return `<${getDisplayNameByClassName(typeInfo[0])}> - <${getDisplayNameByERC(typeInfo[1], typeInfo[2])}>`;
-		// }
+		if (!searchableAssetTypes.length) {
+			return DEFAULT_TYPE;
+		}
 
-		return Liferay.Language.get('asset');
-	};
+		const firstType = searchableAssetTypes[0].split('#');
 
-	const getDisplayNameByClassName = (className) => {
-		return typesArray.find((type) => type.className === className)
-			?.displayName;
-	};
-
-	const getDisplayNameByERC = (groupERC, subtypeERC) => {
-		return typesArray.find(
-			(type) =>
-				type.subtypeERC === subtypeERC && type.groupERC === groupERC
+		const firstTypeDisplayName = searchableTypesArray.find(
+			(type) => type.className === firstType[0]
 		)?.displayName;
+
+		if (!firstTypeDisplayName) {
+			return DEFAULT_TYPE;
+		}
+
+		// If there is only one type, return the displayName of that type
+		// and, if applicable, displayName of that subtype.
+
+		if (searchableAssetTypes.length === 1) {
+			if (firstType.length === 1) {
+				return firstTypeDisplayName;
+			}
+
+			return `<${firstTypeDisplayName}> - <${getSubtypeDisplayNameByERCs(firstType[1], firstType[2])}>`;
+		}
+
+		// If all subtypes belong to the same type, return the type's displayName.
+
+		if (
+			searchableAssetTypes.every(
+				(type) => type.split('#')[0] === firstType[0]
+			)
+		) {
+			return firstTypeDisplayName;
+		}
+
+		return DEFAULT_TYPE;
+	};
+
+	const getSubtypeDisplayNameByERCs = (groupERC, subtypeERC) => {
+
+		// TODO: Figure out how to find subtype displayName
+
+		// [].find(
+		// 	(type) =>
+		// 		type.subtypeERC === subtypeERC && type.groupERC === groupERC
+		// )?.displayName;
+
+		return '';
 	};
 
 	return (
 		<span>
-			{getTypeSubtype(
-				itemData.configuration.generalConfiguration.searchableAssetTypes
+			{getDisplayTypeSubtype(
+				itemData.configuration.generalConfiguration
+					.searchableAssetTypes,
+				searchableTypesArray
 			)}
 		</span>
 	);
