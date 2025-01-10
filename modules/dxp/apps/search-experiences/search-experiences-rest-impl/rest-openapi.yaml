@@ -574,6 +574,8 @@ components:
                     type: string
                 displayName:
                     type: string
+                hasSubtype:
+                    type: boolean
             type: object
 info:
     description:
