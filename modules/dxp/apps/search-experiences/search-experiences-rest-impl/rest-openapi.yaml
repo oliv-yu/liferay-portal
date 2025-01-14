@@ -1022,6 +1022,31 @@ paths:
                             schema:
                                 type: string
             tags: ["SXPBlueprint"]
+    /sxp-blueprints/{sxpBlueprintId}/set-as-collection-provider:
+        post:
+            operationId: postSXPBlueprintSetAsCollectionProvider
+            parameters:
+                - in: path
+                  name: sxpBlueprintId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+                - in: query
+                  name: collectionProvider
+                  required: true
+                  schema:
+                      type: boolean
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/SXPBlueprint"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/SXPBlueprint"
+            tags: ["SXPBlueprint"]
     /sxp-elements:
         get:
             operationId: getSXPElementsPage

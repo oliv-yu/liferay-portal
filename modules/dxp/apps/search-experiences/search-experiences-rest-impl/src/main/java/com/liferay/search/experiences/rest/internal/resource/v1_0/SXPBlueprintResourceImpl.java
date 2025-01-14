@@ -27,6 +27,8 @@ import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.search.experiences.constants.SXPActionKeys;
 import com.liferay.search.experiences.constants.SXPConstants;
 import com.liferay.search.experiences.exception.DuplicateSXPBlueprintExternalReferenceCodeException;
+import com.liferay.search.experiences.rest.dto.v1_0.Configuration;
+import com.liferay.search.experiences.rest.dto.v1_0.GeneralConfiguration;
 import com.liferay.search.experiences.rest.dto.v1_0.SXPBlueprint;
 import com.liferay.search.experiences.rest.dto.v1_0.util.ElementInstanceUtil;
 import com.liferay.search.experiences.rest.dto.v1_0.util.SXPBlueprintUtil;
@@ -267,6 +269,26 @@ public class SXPBlueprintResourceImpl extends BaseSXPBlueprintResourceImpl {
 				sxpBlueprint.getSchemaVersion(),
 				TitleMapUtil.copy(sxpBlueprint.getTitleMap()),
 				ServiceContextFactory.getInstance(contextHttpServletRequest)));
+	}
+
+	@Override
+	public SXPBlueprint postSXPBlueprintSetAsCollectionProvider(
+			Long sxpBlueprintId, Boolean collectionProvider)
+		throws Exception {
+
+		SXPBlueprint sxpBlueprint = getSXPBlueprint(sxpBlueprintId);
+
+		Configuration configuration = Configuration.unsafeToDTO(
+			_getConfigurationJSON(sxpBlueprint));
+
+		GeneralConfiguration generalConfiguration =
+			configuration.getGeneralConfiguration();
+
+		generalConfiguration.setCollectionProvider(() -> collectionProvider);
+
+		sxpBlueprint.setConfiguration(() -> configuration);
+
+		return _updateSXPBlueprint(sxpBlueprintId, sxpBlueprint);
 	}
 
 	@Override
