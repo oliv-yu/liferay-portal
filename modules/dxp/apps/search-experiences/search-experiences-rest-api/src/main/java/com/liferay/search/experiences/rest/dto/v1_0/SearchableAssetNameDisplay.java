@@ -130,7 +130,7 @@ public class SearchableAssetNameDisplay implements Serializable {
 	@JsonIgnore
 	private Supplier<String> _displayNameSupplier;
 
-	@Schema
+	@io.swagger.v3.oas.annotations.media.Schema
 	public Boolean getHasSubtype() {
 		if (_hasSubtypeSupplier != null) {
 			hasSubtype = _hasSubtypeSupplier.get();

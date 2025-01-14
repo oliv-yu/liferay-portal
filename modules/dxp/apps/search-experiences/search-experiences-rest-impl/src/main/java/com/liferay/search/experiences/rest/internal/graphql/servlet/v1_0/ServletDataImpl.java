@@ -208,6 +208,11 @@ public class ServletDataImpl implements ServletData {
 							SXPBlueprintResourceImpl.class,
 							"postSXPBlueprintCopy"));
 					put(
+						"mutation#createSXPBlueprintSetAsCollectionProvider",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"postSXPBlueprintSetAsCollectionProvider"));
+					put(
 						"mutation#createSXPElementsPageExportBatch",
 						new ObjectValuePair<>(
 							SXPElementResourceImpl.class,

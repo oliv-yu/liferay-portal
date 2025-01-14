@@ -1340,6 +1340,27 @@ public abstract class BaseSXPBlueprintResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	@Test
+	public void testPostSXPBlueprintSetAsCollectionProvider() throws Exception {
+		SXPBlueprint randomSXPBlueprint = randomSXPBlueprint();
+
+		SXPBlueprint postSXPBlueprint =
+			testPostSXPBlueprintSetAsCollectionProvider_addSXPBlueprint(
+				randomSXPBlueprint);
+
+		assertEquals(randomSXPBlueprint, postSXPBlueprint);
+		assertValid(postSXPBlueprint);
+	}
+
+	protected SXPBlueprint
+			testPostSXPBlueprintSetAsCollectionProvider_addSXPBlueprint(
+				SXPBlueprint sxpBlueprint)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
 

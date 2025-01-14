@@ -100,6 +100,10 @@ public interface SXPBlueprintResource {
 
 	public Response getSXPBlueprintExport(Long sxpBlueprintId) throws Exception;
 
+	public SXPBlueprint postSXPBlueprintSetAsCollectionProvider(
+			Long sxpBlueprintId, Boolean collectionProvider)
+		throws Exception;
+
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}

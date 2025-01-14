@@ -351,6 +351,20 @@ public class Mutation {
 	}
 
 	@GraphQLField
+	public SXPBlueprint createSXPBlueprintSetAsCollectionProvider(
+			@GraphQLName("sxpBlueprintId") Long sxpBlueprintId,
+			@GraphQLName("collectionProvider") Boolean collectionProvider)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_sxpBlueprintResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			sxpBlueprintResource ->
+				sxpBlueprintResource.postSXPBlueprintSetAsCollectionProvider(
+					sxpBlueprintId, collectionProvider));
+	}
+
+	@GraphQLField
 	public Response createSXPElementsPageExportBatch(
 			@GraphQLName("search") String search,
 			@GraphQLName("filter") String filterString,
