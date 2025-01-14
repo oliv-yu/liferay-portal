@@ -57,7 +57,7 @@ public class EditSXPBlueprintDisplayContext {
 			).setParameter(
 				"languageId", _themeDisplay.getLanguageId()
 			).setResourceID(
-				"/search_experiences/get_class_subtypes"
+				"/search_experiences/get_ddm_structures"
 			).buildString()
 		).put(
 			"fetchSitesURL",
