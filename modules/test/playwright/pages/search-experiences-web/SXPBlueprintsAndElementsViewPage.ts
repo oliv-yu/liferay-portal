@@ -57,7 +57,15 @@ export class SXPBlueprintsAndElementsViewPage {
 
 	// Blueprint/Element Table Actions
 
-	async createBlueprint(title: string, description?: string) {
+	async createBlueprint({
+		description,
+		isCollectionProvider = false,
+		title,
+	}: {
+		description?: string;
+		isCollectionProvider?: boolean;
+		title: string;
+	}) {
 		await this.addBlueprintButton.click();
 
 		await this.addBlueprintElementModal.getByLabel('Title').fill(title);
@@ -66,6 +74,12 @@ export class SXPBlueprintsAndElementsViewPage {
 			await this.addBlueprintElementModal
 				.getByLabel('Description')
 				.fill(description);
+		}
+
+		if (isCollectionProvider) {
+			await this.addBlueprintElementModal
+				.getByRole('checkbox', {name: 'Create Collection Provider'})
+				.click();
 		}
 
 		await this.addBlueprintElementModal

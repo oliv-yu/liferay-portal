@@ -12,6 +12,7 @@ export class EditSXPBlueprintPage {
 	readonly configurationTab: Locator;
 	readonly editTitleButton: Locator;
 	readonly editDescriptionButton: Locator;
+	readonly modalDialog: Locator;
 	readonly page: Page;
 	readonly pageToolbar: Locator;
 	readonly queryBuilderTab: Locator;
@@ -43,6 +44,7 @@ export class EditSXPBlueprintPage {
 		this.querySettingsMenuItem = page.getByRole('menuitem', {
 			name: 'Query Settings',
 		});
+		this.modalDialog = page.locator('.modal-dialog');
 
 		// Main Components
 
@@ -158,6 +160,37 @@ export class EditSXPBlueprintPage {
 		await searchInput.press('Enter');
 
 		await expect(this.previewSidebar).toHaveText(/Result/);
+	}
+
+	// Query Settings - Searchable Types
+
+	async selectSearchableTypes(option: {types: string[]; value: boolean}) {
+		await this.selectQuerySettingsRadioProperty('Selected Types');
+
+		await this.querySettings
+			.getByRole('button', {name: 'Select Asset Types'})
+			.click();
+
+		await expect(this.modalDialog.getByText('Select Types')).toBeVisible();
+
+		for (const type of option.types) {
+			const typeCheckbox = this.modalDialog.getByLabel(`Select ${type}`);
+
+			if (option.value) {
+				await typeCheckbox.check();
+			}
+			else {
+				await typeCheckbox.uncheck();
+			}
+		}
+
+		await this.modalDialog.getByRole('button', {name: 'Done'}).click();
+
+		for (const type of option.types) {
+			await expect(
+				this.page.locator('.list-group-item', {hasText: type})
+			).toBeVisible();
+		}
 	}
 
 	// Query Settings - Clause Contributor Functions
