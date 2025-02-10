@@ -471,6 +471,8 @@ definition {
 			workflowDefinitionTask = ${workflowDefinitionTask},
 			workflowTask = ${workflowTask});
 
+		SearchAdministration.executeReindex();
+
 		Navigator.openURL();
 
 		SearchPage.searchEmbedded(searchTerm = "Blogs");
