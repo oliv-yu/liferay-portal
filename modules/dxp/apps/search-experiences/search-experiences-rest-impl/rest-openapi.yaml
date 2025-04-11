@@ -1026,17 +1026,17 @@ paths:
         post:
             operationId: postSXPBlueprintSetAsCollectionProvider
             parameters:
-                - in: path
-                  name: sxpBlueprintId
-                  required: true
-                  schema:
-                      format: int64
-                      type: integer
-                - in: query
-                  name: collectionProvider
-                  required: true
-                  schema:
-                      type: boolean
+                -   in: path
+                    name: sxpBlueprintId
+                    required: true
+                    schema:
+                        format: int64
+                        type: integer
+                -   in: query
+                    name: collectionProvider
+                    required: true
+                    schema:
+                        type: boolean
             responses:
                 200:
                     content:
