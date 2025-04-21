@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.web.internal.sort.display.context;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.portal.search.web.internal.sort.configuration.SortPortletInstanceConfiguration;
 
 import java.util.List;
@@ -14,6 +15,10 @@ import java.util.List;
  * @author André de Oliveira
  */
 public class SortDisplayContext {
+
+	public List<DropdownItem> getActionDropdownItems() {
+		return _actionDropdownItems;
+	}
 
 	public long getDisplayStyleGroupId() {
 		return _displayStyleGroupId;
@@ -25,6 +30,10 @@ public class SortDisplayContext {
 
 	public String getParameterValue() {
 		return _parameterValue;
+	}
+
+	public SortTermDisplayContext getSelectedSortTerm() {
+		return _selectedSortTerm;
 	}
 
 	public SortPortletInstanceConfiguration
@@ -43,6 +52,10 @@ public class SortDisplayContext {
 
 	public boolean isRenderNothing() {
 		return _renderNothing;
+	}
+
+	public void setActionDropdownItems(List<DropdownItem> actionDropdownItems) {
+		_actionDropdownItems = actionDropdownItems;
 	}
 
 	public void setAnySelected(boolean anySelected) {
@@ -65,6 +78,10 @@ public class SortDisplayContext {
 		_renderNothing = renderNothing;
 	}
 
+	public void setSelectedSortTerm(SortTermDisplayContext selectedSortTerm) {
+		_selectedSortTerm = selectedSortTerm;
+	}
+
 	public void setSortPortletInstanceConfiguration(
 		SortPortletInstanceConfiguration sortPortletInstanceConfiguration) {
 
@@ -77,11 +94,13 @@ public class SortDisplayContext {
 		_sortTermDisplayContexts = sortTermDisplayContexts;
 	}
 
+	private List<DropdownItem> _actionDropdownItems;
 	private boolean _anySelected;
 	private long _displayStyleGroupId;
 	private String _parameterName;
 	private String _parameterValue;
 	private boolean _renderNothing;
+	private SortTermDisplayContext _selectedSortTerm;
 	private SortPortletInstanceConfiguration _sortPortletInstanceConfiguration;
 	private List<SortTermDisplayContext> _sortTermDisplayContexts;
 

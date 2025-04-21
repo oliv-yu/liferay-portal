@@ -5,12 +5,15 @@
 
 package com.liferay.portal.search.web.internal.sort.display.context.builder;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.sort.configuration.SortPortletInstanceConfiguration;
@@ -56,8 +59,14 @@ public class SortDisplayContextBuilder {
 		List<SortTermDisplayContext> sortTermDisplayContexts =
 			_buildTermDisplayContexts();
 
+		List<DropdownItem> actionDropdownItems = _buildActionDropdownItems();
+
 		sortDisplayContext.setAnySelected(
 			isAnySelected(sortTermDisplayContexts));
+		sortDisplayContext.setSelectedSortTerm(
+			getSelectedSortTerm(sortTermDisplayContexts));
+
+		sortDisplayContext.setActionDropdownItems(actionDropdownItems);
 
 		sortDisplayContext.setDisplayStyleGroupId(getDisplayStyleGroupId());
 		sortDisplayContext.setParameterName(_parameterName);
@@ -68,6 +77,12 @@ public class SortDisplayContextBuilder {
 		sortDisplayContext.setSortTermDisplayContexts(sortTermDisplayContexts);
 
 		return sortDisplayContext;
+	}
+
+	public SortDisplayContextBuilder currentURL(String currentURL) {
+		_currentURL = currentURL;
+
+		return this;
 	}
 
 	public SortDisplayContextBuilder parameterName(String parameterName) {
@@ -111,6 +126,20 @@ public class SortDisplayContextBuilder {
 		return null;
 	}
 
+	protected SortTermDisplayContext getSelectedSortTerm(
+		List<SortTermDisplayContext> sortTermDisplayContexts) {
+
+		for (SortTermDisplayContext sortTermDisplayContext :
+				sortTermDisplayContexts) {
+
+			if (sortTermDisplayContext.isSelected()) {
+				return sortTermDisplayContext;
+			}
+		}
+
+		return null;
+	}
+
 	protected boolean isAnySelected(
 		List<SortTermDisplayContext> sortTermDisplayContexts) {
 
@@ -144,6 +173,31 @@ public class SortDisplayContextBuilder {
 		}
 
 		return false;
+	}
+
+	private List<DropdownItem> _buildActionDropdownItems() {
+		DropdownItemListBuilder.DropdownItemListWrapper
+			dropdownItemListWrapper =
+				new DropdownItemListBuilder.DropdownItemListWrapper();
+
+		JSONArray fieldsJSONArray =
+			_sortPortletPreferences.getFieldsJSONArray();
+
+		for (int i = 0; i < fieldsJSONArray.length(); i++) {
+			JSONObject jsonObject = fieldsJSONArray.getJSONObject(i);
+
+			dropdownItemListWrapper.add(
+				dropdownItem -> {
+					dropdownItem.setHref(
+						_getSortURL(jsonObject.getString("field")));
+					dropdownItem.setLabel(
+						_language.get(
+							_portal.getHttpServletRequest(_renderRequest),
+							jsonObject.getString("label")));
+				});
+		}
+
+		return dropdownItemListWrapper.build();
 	}
 
 	private SortTermDisplayContext _buildTermDisplayContext(
@@ -181,6 +235,14 @@ public class SortDisplayContextBuilder {
 		return sortTermDisplayContexts;
 	}
 
+	private String _getSortURL(String field) {
+		String sortURL = HttpComponentsUtil.removeParameter(
+			_currentURL, _parameterName);
+
+		return HttpComponentsUtil.setParameter(sortURL, _parameterName, field);
+	}
+
+	private String _currentURL;
 	private final Language _language;
 	private String _parameterName;
 	private final Portal _portal;
