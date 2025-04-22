@@ -23,6 +23,8 @@ export default function ({
 	locale,
 	namespace,
 	redirectURL,
+	selectDLFileEntrySubtypesURL,
+	selectJournalArticleSubtypesURL,
 	selectSitesURL,
 	sxpBlueprintId,
 }) {
@@ -56,6 +58,8 @@ export default function ({
 				locale,
 				namespace,
 				redirectURL,
+				selectDLFileEntrySubtypesURL,
+				selectJournalArticleSubtypesURL,
 				selectSitesURL,
 				sxpType: 'sxpBlueprint',
 			}}

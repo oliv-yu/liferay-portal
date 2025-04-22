@@ -5,9 +5,13 @@
 
 package com.liferay.search.experiences.web.internal.display.context;
 
+import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
+import com.liferay.dynamic.data.mapping.item.selector.DDMStructureItemSelectorCriterion;
+import com.liferay.dynamic.data.mapping.item.selector.DDMStructureItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.ItemSelectorCriterion;
 import com.liferay.item.selector.criteria.GroupItemSelectorReturnType;
+import com.liferay.journal.model.JournalArticle;
 import com.liferay.learn.LearnMessageUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
@@ -17,6 +21,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.item.selector.SiteItemSelectorCriterion;
@@ -83,6 +88,50 @@ public class EditSXPBlueprintDisplayContext {
 			"namespace", _renderResponse.getNamespace()
 		).put(
 			"redirectURL", getRedirect()
+		).put(
+			"selectDLFileEntrySubtypesURL",
+			() -> {
+				DDMStructureItemSelectorCriterion
+					ddmStructureItemSelectorCriterion =
+						new DDMStructureItemSelectorCriterion();
+
+				ddmStructureItemSelectorCriterion.setClassNameId(
+					PortalUtil.getClassNameId(DLFileEntryMetadata.class));
+				ddmStructureItemSelectorCriterion.
+					setDesiredItemSelectorReturnTypes(
+						new DDMStructureItemSelectorReturnType());
+				ddmStructureItemSelectorCriterion.setMultiSelection(true);
+
+				return PortletURLBuilder.create(
+					_itemSelector.getItemSelectorURL(
+						RequestBackedPortletURLFactoryUtil.create(
+							_renderRequest),
+						_renderResponse.getNamespace() + "selectDDMStructure",
+						ddmStructureItemSelectorCriterion)
+				).buildString();
+			}
+		).put(
+			"selectJournalArticleSubtypesURL",
+			() -> {
+				DDMStructureItemSelectorCriterion
+					ddmStructureItemSelectorCriterion =
+						new DDMStructureItemSelectorCriterion();
+
+				ddmStructureItemSelectorCriterion.setClassNameId(
+					PortalUtil.getClassNameId(JournalArticle.class));
+				ddmStructureItemSelectorCriterion.
+					setDesiredItemSelectorReturnTypes(
+						new DDMStructureItemSelectorReturnType());
+				ddmStructureItemSelectorCriterion.setMultiSelection(true);
+
+				return PortletURLBuilder.create(
+					_itemSelector.getItemSelectorURL(
+						RequestBackedPortletURLFactoryUtil.create(
+							_renderRequest),
+						_renderResponse.getNamespace() + "selectDDMStructure",
+						ddmStructureItemSelectorCriterion)
+				).buildString();
+			}
 		).put(
 			"selectSitesURL",
 			() -> {

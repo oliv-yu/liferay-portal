@@ -6,6 +6,7 @@
 import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import ClayList from '@clayui/list';
+import {openSelectionModal} from 'frontend-js-components-web';
 import React, {useContext, useState} from 'react';
 
 import ThemeContext from '../../shared/ThemeContext';
@@ -97,6 +98,38 @@ const transformSelected = (selected) => {
 	return searchableAssetTypes;
 };
 
+function DDMStructureItemSelector({url}) {
+	const {namespace} = useContext(ThemeContext);
+
+	return (
+		<ClayButton
+			aria-label={Liferay.Language.get('select')}
+			className="btn-sm c-m-1"
+			displayType="secondary"
+			onClick={() => {
+				openSelectionModal({
+					id: `${namespace}selectDDMStructure`,
+					multiple: true,
+					onSelect: (selectedItem) => {
+						if (!selectedItem) {
+							return;
+						}
+
+						console.log(selectedItem);
+					},
+					selectEventName: `${namespace}selectDDMStructure`,
+					title: Liferay.Language.get('select-subtypes'),
+					url,
+				});
+			}}
+			size="sm"
+			type="button"
+		>
+			{Liferay.Language.get('select')}
+		</ClayButton>
+	);
+}
+
 function SelectTypes({
 	onAssetSubtypesMapChange,
 	onFrameworkConfigChange,
@@ -105,7 +138,11 @@ function SelectTypes({
 	initialSelectedTypes = [],
 	assetSubtypesMap,
 }) {
-	const {locale} = useContext(ThemeContext);
+	const {
+		locale,
+		selectDLFileEntrySubtypesURL,
+		selectJournalArticleSubtypesURL,
+	} = useContext(ThemeContext);
 
 	const [selected, setSelected] = useState(
 		setupSelected(initialSelectedTypes, assetSubtypesMap)
@@ -191,6 +228,20 @@ function SelectTypes({
 					{Liferay.Language.get('select-asset-types')}
 				</ClayButton>
 			</SearchableTypesModal>
+
+			<div>
+				<label>{Liferay.Language.get('document')}</label>
+
+				<DDMStructureItemSelector url={selectDLFileEntrySubtypesURL} />
+			</div>
+
+			<div>
+				<label>{Liferay.Language.get('web-content')}</label>
+
+				<DDMStructureItemSelector
+					url={selectJournalArticleSubtypesURL}
+				/>
+			</div>
 
 			{!!selected.length && (
 				<ClayList>
