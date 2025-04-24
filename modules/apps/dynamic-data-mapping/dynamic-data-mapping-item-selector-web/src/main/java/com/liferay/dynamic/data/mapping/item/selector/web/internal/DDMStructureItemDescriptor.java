@@ -56,6 +56,8 @@ public class DDMStructureItemDescriptor
 				WebKeys.THEME_DISPLAY);
 
 		return JSONUtil.put(
+			"ddmstructureERC", _ddmStructure.getExternalReferenceCode()
+		).put(
 			"ddmstructureid", String.valueOf(_ddmStructure.getStructureId())
 		).put(
 			"ddmstructurekey", _ddmStructure.getStructureKey()
@@ -74,6 +76,18 @@ public class DDMStructureItemDescriptor
 				return LanguageUtil.get(
 					themeDisplay.getLocale(),
 					group.getScopeLabel(themeDisplay));
+			}
+		).put(
+			"scopeERC",
+			() -> {
+				Group group = _groupLocalService.fetchGroup(
+					_ddmStructure.getGroupId());
+
+				if (group == null) {
+					return null;
+				}
+
+				return group.getExternalReferenceCode();
 			}
 		).toString();
 	}
