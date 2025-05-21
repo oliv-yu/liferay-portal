@@ -878,6 +878,8 @@ mariadb.executable=${mariadb.executable}]]></echo>
 		<sequential>
 			<property name="test.batch.name" unless:set="test.batch.name" value="${env.TEST_BATCH_NAME}" />
 
+			<echo>Batch Name: ${test.batch.name}</echo>
+
 			<if>
 				<or>
 					<contains string="${test.batch.name}" substring="opensearch2" />
@@ -885,14 +887,17 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<contains string="${test.batch.name}" substring="solr" />
 				</or>
 				<then>
+					<echo>Within search batch run</echo>
 					<if>
 						<contains string="${test.batch.name}" substring="opensearch2" />
 						<then>
+							<echo>Within opensearch2 run</echo>
 							<ant antfile="build-test-opensearch2.xml" target="start-opensearch" />
 
 							<if>
 								<contains string="${test.batch.name}" substring="unit" />
 								<then>
+									<echo>Within opensearch2 unit run</echo>
 									<property name="run.opensearch2.unit.tests" value="true" />
 								</then>
 							</if>
@@ -902,6 +907,7 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<if>
 						<contains string="${test.batch.name}" substring="remote-elasticsearch" />
 						<then>
+							<echo>Within elasticsearch run</echo>
 							<ant antfile="build-test-elasticsearch7.xml" target="start-elasticsearch" />
 						</then>
 					</if>
@@ -909,11 +915,13 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<if>
 						<contains string="${test.batch.name}" substring="solr" />
 						<then>
+							<echo>Within solr run</echo>
 							<ant antfile="build-test-solr.xml" target="start-solr" />
 
 							<if>
 								<contains string="${test.batch.name}" substring="unit" />
 								<then>
+									<echo>Within solr unit run</echo>
 									<property name="run.solr.unit.tests" value="true" />
 								</then>
 							</if>
@@ -7843,6 +7851,8 @@ information. Make sure to commit in all format-javadoc results.
 				</if>
 
 				<property name="test.batch.name" unless:set="test.batch.name" value="${env.TEST_BATCH_NAME}" />
+
+				<echo>Action Test Batch Name: ${env.TEST_BATCH_NAME}</echo>
 
 				<condition else="" property="test.arg.opensearch2.unit.tests" value="-Dcom.liferay.portal.search.opensearch2.test.unit.enabled=true">
 					<istrue value="${run.opensearch2.unit.tests}" />
