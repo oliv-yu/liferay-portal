@@ -9,6 +9,7 @@ import ClayList from '@clayui/list';
 import React, {useContext, useState} from 'react';
 
 import ThemeContext from '../../shared/ThemeContext';
+import removeDuplicates from '../../utils/functions/remove_duplicates';
 import SearchableTypesModal from './SearchableTypesModal';
 import SelectSubtypes from './SelectSubtypes';
 
@@ -130,6 +131,32 @@ function SelectTypes({
 		_handleChangeSelected(newSelected);
 	};
 
+	const _handleAddSubtypes = (type) => (subtypes) => {
+		const newSelected = selected.map((item) => {
+
+			// Handles changing the subtypes of one type
+
+			if (item.type === type) {
+				return {
+					subtypes: removeDuplicates(
+						[...item.subtypes, ...subtypes],
+						'value'
+					),
+					type,
+				};
+			}
+
+			return item;
+		});
+
+		_handleChangeSelected(newSelected);
+
+		// If any new subtypes are in this array, they should be
+		// added to the assetSubtypesMap.
+
+		onAssetSubtypesMapChange(subtypes);
+	};
+
 	const _handleChangeSubtypes = (type) => (subtypes) => {
 		const newSelected = selected.map((item) => {
 
@@ -209,6 +236,9 @@ function SelectTypes({
 										hasSubtype && (
 											<SelectSubtypes
 												className={className}
+												onAddSubtypes={_handleAddSubtypes(
+													className
+												)}
 												onChangeSubtypes={_handleChangeSubtypes(
 													className
 												)}

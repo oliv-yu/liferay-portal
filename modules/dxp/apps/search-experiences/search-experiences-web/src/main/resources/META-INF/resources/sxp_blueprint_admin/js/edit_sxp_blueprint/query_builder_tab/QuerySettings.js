@@ -9,10 +9,8 @@ import ClayIcon from '@clayui/icon';
 import ClayLayout from '@clayui/layout';
 import ClayPanel from '@clayui/panel';
 import ClaySticker from '@clayui/sticker';
-import {openSelectionModal} from 'frontend-js-components-web';
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 
-import ThemeContext from '../../shared/ThemeContext';
 import SelectTypes from './SelectTypes';
 
 const QUERY_CONTRIBUTORS_OPTIONS = {
@@ -20,38 +18,6 @@ const QUERY_CONTRIBUTORS_OPTIONS = {
 	DISABLE_ALL: 'disable-all',
 	ENABLE_ALL: 'enable-all',
 };
-
-function DDMStructureItemSelector({url}) {
-	const {namespace} = useContext(ThemeContext);
-
-	return (
-		<ClayButton
-			aria-label={Liferay.Language.get('select')}
-			className="btn-sm c-m-1"
-			displayType="secondary"
-			onClick={() => {
-				openSelectionModal({
-					id: `${namespace}selectDDMStructure`,
-					multiple: true,
-					onSelect: (selectedItem) => {
-						if (!selectedItem) {
-							return;
-						}
-
-						console.log(selectedItem);
-					},
-					selectEventName: `${namespace}selectDDMStructure`,
-					title: Liferay.Language.get('select-subtypes'),
-					url,
-				});
-			}}
-			size="sm"
-			type="button"
-		>
-			{Liferay.Language.get('select')}
-		</ClayButton>
-	);
-}
 
 function QuerySettings({
 	applyIndexerClauses,
@@ -67,9 +33,6 @@ function QuerySettings({
 	onFrameworkConfigChange,
 	searchableTypes,
 }) {
-	const {selectDLFileEntrySubtypesURL, selectJournalArticleSubtypesURL} =
-		useContext(ThemeContext);
-
 	const [selectAllTypes, setSelectAllTypes] = useState(
 		frameworkConfig.searchableAssetTypes?.length === 0
 	);
@@ -124,26 +87,6 @@ function QuerySettings({
 
 	return (
 		<div className="query-settings">
-			<div className="sheet">
-				<h2>Testing itemSelector</h2>
-
-				<div>
-					<label>{Liferay.Language.get('document')}</label>
-
-					<DDMStructureItemSelector
-						url={selectDLFileEntrySubtypesURL}
-					/>
-				</div>
-
-				<div>
-					<label>{Liferay.Language.get('web-content')}</label>
-
-					<DDMStructureItemSelector
-						url={selectJournalArticleSubtypesURL}
-					/>
-				</div>
-			</div>
-
 			<ClayLayout.Row className="configuration-header" justify="between">
 				<ClayLayout.Col size={12}>
 					{Liferay.Language.get('query-settings')}

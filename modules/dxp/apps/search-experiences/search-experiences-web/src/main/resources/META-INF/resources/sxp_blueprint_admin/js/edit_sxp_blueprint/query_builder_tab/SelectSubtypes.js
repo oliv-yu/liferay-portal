@@ -16,7 +16,10 @@ import ClayModal, {useModal} from '@clayui/modal';
 import {ClayPaginationBarWithBasicItems} from '@clayui/pagination-bar';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import getCN from 'classnames';
-import {ManagementToolbar} from 'frontend-js-components-web';
+import {
+	ManagementToolbar,
+	openSelectionModal,
+} from 'frontend-js-components-web';
 import {addParams, fetch} from 'frontend-js-web';
 import React, {
 	useCallback,
@@ -29,6 +32,20 @@ import React, {
 import ThemeContext from '../../shared/ThemeContext';
 import removeDuplicates from '../../utils/functions/remove_duplicates';
 import sub from '../../utils/language/sub';
+
+const getLabel = ({assetSubtypeLocalizedName, groupLocalizedName}) => {
+	return groupLocalizedName
+		? `${assetSubtypeLocalizedName} (${groupLocalizedName})`
+		: assetSubtypeLocalizedName;
+};
+
+const getValue = ({
+	assetSubtypeExternalReferenceCode,
+	entryClassName,
+	groupExternalReferenceCode,
+}) => {
+	return `${entryClassName}&&${groupExternalReferenceCode}&&${assetSubtypeExternalReferenceCode}`;
+};
 
 export function SearchableSubtypesModal({
 	className,
@@ -47,20 +64,6 @@ export function SearchableSubtypesModal({
 	const [loading, setLoading] = useState(false);
 
 	const {getAssetSubtypesURL = '', namespace} = useContext(ThemeContext);
-
-	const getLabel = ({assetSubtypeLocalizedName, groupLocalizedName}) => {
-		return groupLocalizedName
-			? `${assetSubtypeLocalizedName} (${groupLocalizedName})`
-			: assetSubtypeLocalizedName;
-	};
-
-	const getValue = ({
-		assetSubtypeExternalReferenceCode,
-		entryClassName,
-		groupExternalReferenceCode,
-	}) => {
-		return `${entryClassName}&&${groupExternalReferenceCode}&&${assetSubtypeExternalReferenceCode}`;
-	};
 
 	const isSelected = useCallback(
 		(item) =>
@@ -412,10 +415,16 @@ export function SearchableSubtypesModal({
 
 function SelectSubtypes({
 	className,
+	onAddSubtypes,
 	onChangeSubtypes,
 	onRemoveSubtype,
 	selectedSubtypes,
 }) {
+	const {
+		namespace,
+		selectDLFileEntrySubtypesURL,
+		selectJournalArticleSubtypesURL,
+	} = useContext(ThemeContext);
 	const {observer, onOpenChange, open} = useModal();
 
 	const _handleOpen = () => {
@@ -432,10 +441,65 @@ function SelectSubtypes({
 		onChangeSubtypes(newValues);
 	};
 
+	const _handleOpenSelectionModal = () => {
+		const url = className.includes('DLFileEntry')
+			? selectDLFileEntrySubtypesURL
+			: className.includes('JournalArticle')
+				? selectJournalArticleSubtypesURL
+				: '';
+
+		openSelectionModal({
+			id: `${namespace}selectDDMStructure`,
+			multiple: true,
+			onSelect: (selectedItems) => {
+				if (!selectedItems) {
+					return;
+				}
+
+				console.log(selectedItems);
+
+				const selectedItemsArray = selectedItems.value || selectedItems;
+
+				onAddSubtypes(
+					selectedItemsArray.map((itemStr) => {
+						const {ddmstructureERC, name, scopeERC, scopeName} =
+							JSON.parse(itemStr);
+
+						return {
+							label: getLabel({
+								assetSubtypeLocalizedName: name,
+								groupLocalizedName: scopeName,
+							}),
+							value: getValue({
+								assetSubtypeExternalReferenceCode:
+									ddmstructureERC,
+								entryClassName: className,
+								groupExternalReferenceCode: scopeERC,
+							}),
+						};
+					})
+				);
+			},
+			selectEventName: `${namespace}selectDDMStructure`,
+			title: Liferay.Language.get('select-subtypes'),
+			url,
+		});
+	};
+
 	return (
 		<>
 			<ClayList.ItemText subtext>
 				<span className="align-items-center display-flex">
+					<ClayButton
+						aria-label={Liferay.Language.get('select-subtypes')}
+						className="c-p-0 text-primary"
+						displayType="link"
+						onClick={_handleOpenSelectionModal}
+						size="sm"
+					>
+						{Liferay.Language.get('select-subtypes')}
+					</ClayButton>
+
 					<ClayButton
 						aria-label={Liferay.Language.get('select-subtypes')}
 						className="c-p-0 text-secondary"
