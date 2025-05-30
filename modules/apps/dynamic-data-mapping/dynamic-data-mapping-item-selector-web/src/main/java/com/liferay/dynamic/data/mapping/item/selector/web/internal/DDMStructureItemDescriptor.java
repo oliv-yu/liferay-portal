@@ -5,6 +5,8 @@
 
 package com.liferay.dynamic.data.mapping.item.selector.web.internal;
 
+import com.liferay.document.library.kernel.model.DLFileEntryType;
+import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.item.selector.ItemSelectorViewDescriptor;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -61,6 +63,23 @@ public class DDMStructureItemDescriptor
 			"ddmstructureid", String.valueOf(_ddmStructure.getStructureId())
 		).put(
 			"ddmstructurekey", _ddmStructure.getStructureKey()
+		).put(
+			"fileEntryERC",
+			() -> {
+				Group group = _groupLocalService.fetchGroup(
+					_ddmStructure.getGroupId());
+
+				DLFileEntryType dlFileEntryType =
+					DLFileEntryTypeLocalServiceUtil.
+						fetchDataDefinitionFileEntryType(
+							group.getGroupId(), _ddmStructure.getStructureId());
+
+				if (dlFileEntryType != null) {
+					return dlFileEntryType.getExternalReferenceCode();
+				}
+
+				return null;
+			}
 		).put(
 			"name", _ddmStructure.getName(themeDisplay.getLocale())
 		).put(
