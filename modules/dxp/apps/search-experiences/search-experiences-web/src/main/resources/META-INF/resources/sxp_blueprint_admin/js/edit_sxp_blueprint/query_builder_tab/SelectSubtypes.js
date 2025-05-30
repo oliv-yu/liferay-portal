@@ -462,8 +462,13 @@ function SelectSubtypes({
 
 				onAddSubtypes(
 					selectedItemsArray.map((itemStr) => {
-						const {ddmstructureERC, name, scopeERC, scopeName} =
-							JSON.parse(itemStr);
+						const {
+							ddmstructureERC,
+							fileEntryERC,
+							name,
+							scopeERC,
+							scopeName,
+						} = JSON.parse(itemStr);
 
 						return {
 							label: getLabel({
@@ -472,7 +477,7 @@ function SelectSubtypes({
 							}),
 							value: getValue({
 								assetSubtypeExternalReferenceCode:
-									ddmstructureERC,
+									fileEntryERC || ddmstructureERC,
 								entryClassName: className,
 								groupExternalReferenceCode: scopeERC,
 							}),
