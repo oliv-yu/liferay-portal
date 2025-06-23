@@ -36,14 +36,14 @@ export default function ({
 
 		nameInput.value = fieldNameSelector.value;
 
+		const message = document.getElementById(`${namespace}message`);
+
 		fetch(form.action, {
 			body: new FormData(form),
 			method: 'POST',
 		})
 			.then((response) => response.json())
 			.then((response) => {
-				const message = document.getElementById(`${namespace}message`);
-
 				if (response.success) {
 					message.classList.add('hide');
 
@@ -64,6 +64,9 @@ export default function ({
 				else {
 					message.classList.remove('hide');
 				}
+			})
+			.catch(() => {
+				message.classList.remove('hide');
 			});
 	};
 
