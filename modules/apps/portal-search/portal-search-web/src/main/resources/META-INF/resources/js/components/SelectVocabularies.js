@@ -79,6 +79,7 @@ function SiteRow({name, onSelect, vocabularies}) {
 					<span className="autofit-row">
 						<span className="autofit-col c-mr-1">
 							<ClayButton
+								aria-label={Liferay.Language.get('select-all')}
 								className="quick-action-item"
 								displayType="secondary"
 								onClick={_handleSelect()}
@@ -92,6 +93,9 @@ function SiteRow({name, onSelect, vocabularies}) {
 
 						<span className="autofit-col">
 							<ClayButton
+								aria-label={Liferay.Language.get(
+									'deselect-all'
+								)}
 								className="quick-action-item"
 								displayType="secondary"
 								onClick={_handleSelect(false)}
