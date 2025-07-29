@@ -5,6 +5,7 @@
 
 import {ClayInput, ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import ClayLayout from '@clayui/layout';
 import {ClayTooltipProvider} from '@clayui/tooltip';
 import {LearnMessage} from 'frontend-js-components-web';
 import React from 'react';
@@ -43,68 +44,87 @@ function SXPBlueprint({index, onBlur, onInputSetItemChange, touched, value}) {
 
 	return (
 		<>
-			<InputSetItemHeader>
-				<InputSetItemHeader.Title>
-					{Liferay.Language.get('blueprint-suggestions-contributor')}
-				</InputSetItemHeader.Title>
+			<ClayLayout.Row className="w-100">
+				<ClayLayout.Col className="c-px-1" size={12}>
+					<InputSetItemHeader>
+						<InputSetItemHeader.Title>
+							{Liferay.Language.get(
+								'blueprint-suggestions-contributor'
+							)}
+						</InputSetItemHeader.Title>
 
-				<InputSetItemHeader.Description>
-					{Liferay.Language.get(
-						'blueprint-suggestions-contributor-help'
-					)}
+						<InputSetItemHeader.Description>
+							{Liferay.Language.get(
+								'blueprint-suggestions-contributor-help'
+							)}
 
-					<LearnMessage
-						className="c-ml-1"
-						resource="portal-search-web"
-						resourceKey="search-bar-suggestions-blueprints"
+							<LearnMessage
+								className="c-ml-1"
+								resource="portal-search-web"
+								resourceKey="search-bar-suggestions-blueprints"
+							/>
+						</InputSetItemHeader.Description>
+					</InputSetItemHeader>
+				</ClayLayout.Col>
+			</ClayLayout.Row>
+
+			<ClayLayout.Row className="c-mb-3 w-100">
+				<ClayLayout.Col className="c-px-1" size={6}>
+					<DisplayGroupNameInput
+						index={index}
+						onBlur={onBlur('displayGroupName')}
+						onChange={onInputSetItemChange(
+							index,
+							'displayGroupName'
+						)}
+						touched={touched.displayGroupName}
+						value={value.displayGroupName}
 					/>
-				</InputSetItemHeader.Description>
-			</InputSetItemHeader>
+				</ClayLayout.Col>
 
-			<div className="c-mb-3 form-group-autofit">
-				<DisplayGroupNameInput
-					index={index}
-					onBlur={onBlur('displayGroupName')}
-					onChange={onInputSetItemChange(index, 'displayGroupName')}
-					touched={touched.displayGroupName}
-					value={value.displayGroupName}
-				/>
+				<ClayLayout.Col className="c-px-1" size={6}>
+					<SizeInput
+						index={index}
+						onBlur={onBlur('size')}
+						onChange={onInputSetItemChange(index, 'size')}
+						touched={touched.size}
+						value={value.size}
+					/>
+				</ClayLayout.Col>
+			</ClayLayout.Row>
 
-				<SizeInput
-					index={index}
-					onBlur={onBlur('size')}
-					onChange={onInputSetItemChange(index, 'size')}
-					touched={touched.size}
-					value={value.size}
-				/>
-			</div>
+			<ClayLayout.Row className="c-mb-3 w-100">
+				<ClayLayout.Col className="c-px-1" size={12}>
+					<SXPBlueprintSelectorInput
+						index={index}
+						onBlur={onBlur(
+							'attributes.sxpBlueprintExternalReferenceCode'
+						)}
+						onSubmit={_handleChangeSXPBlueprint}
+						sxpBlueprintExternalReferenceCode={
+							value.attributes?.sxpBlueprintExternalReferenceCode
+						}
+						touched={
+							touched[
+								'attributes.sxpBlueprintExternalReferenceCode'
+							]
+						}
+					/>
+				</ClayLayout.Col>
+			</ClayLayout.Row>
 
-			<div className="c-mb-3 form-group-autofit">
-				<SXPBlueprintSelectorInput
-					index={index}
-					onBlur={onBlur(
-						'attributes.sxpBlueprintExternalReferenceCode'
-					)}
-					onSubmit={_handleChangeSXPBlueprint}
-					sxpBlueprintExternalReferenceCode={
-						value.attributes?.sxpBlueprintExternalReferenceCode
-					}
-					touched={
-						touched['attributes.sxpBlueprintExternalReferenceCode']
-					}
-				/>
-			</div>
+			<ClayLayout.Row className="c-mb-3 w-100">
+				<ClayLayout.Col className="c-px-1" size={4}>
+					<CharacterThresholdInput
+						index={index}
+						onBlur={onBlur('attributes.characterThreshold')}
+						onChange={_handleChangeAttribute('characterThreshold')}
+						touched={touched['attributes.characterThreshold']}
+						value={value.attributes?.characterThreshold}
+					/>
+				</ClayLayout.Col>
 
-			<div className="c-mb-3 form-group-autofit">
-				<CharacterThresholdInput
-					index={index}
-					onBlur={onBlur('attributes.characterThreshold')}
-					onChange={_handleChangeAttribute('characterThreshold')}
-					touched={touched['attributes.characterThreshold']}
-					value={value.attributes?.characterThreshold}
-				/>
-
-				<ClayInput.GroupItem>
+				<ClayLayout.Col className="c-px-1" size={4}>
 					<label htmlFor={`include-asset-url-${index}`}>
 						{Liferay.Language.get('include-asset-url')}
 
@@ -138,9 +158,9 @@ function SXPBlueprint({index, onBlur, onInputSetItemChange, touched, value}) {
 							value={false}
 						/>
 					</ClaySelect>
-				</ClayInput.GroupItem>
+				</ClayLayout.Col>
 
-				<ClayInput.GroupItem>
+				<ClayLayout.Col className="c-px-1" size={4}>
 					<label htmlFor={`include-asset-summary-${index}`}>
 						{Liferay.Language.get('include-asset-summary')}
 
@@ -178,18 +198,20 @@ function SXPBlueprint({index, onBlur, onInputSetItemChange, touched, value}) {
 							value={false}
 						/>
 					</ClaySelect>
-				</ClayInput.GroupItem>
-			</div>
+				</ClayLayout.Col>
+			</ClayLayout.Row>
 
-			<div className="c-mb-0 form-group-autofit">
-				<FieldsInput
-					fields={value.attributes?.fields}
-					index={index}
-					onBlur={onBlur('attributes.fields')}
-					onChange={_handleChangeFields}
-					touched={touched['attributes.fields']}
-				/>
-			</div>
+			<ClayLayout.Row className="w-100">
+				<ClayLayout.Col className="c-px-1" size={12}>
+					<FieldsInput
+						fields={value.attributes?.fields}
+						index={index}
+						onBlur={onBlur('attributes.fields')}
+						onChange={_handleChangeFields}
+						touched={touched['attributes.fields']}
+					/>
+				</ClayLayout.Col>
+			</ClayLayout.Row>
 		</>
 	);
 }

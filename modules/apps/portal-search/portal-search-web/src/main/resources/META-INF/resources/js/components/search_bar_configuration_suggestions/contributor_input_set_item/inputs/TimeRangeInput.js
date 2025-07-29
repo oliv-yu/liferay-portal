@@ -36,7 +36,7 @@ export default function TimeRangeInput({index, onChange, value}) {
 	const [activeDropdown, setActiveDropdown] = useState(false);
 
 	return (
-		<ClayInput.GroupItem>
+		<div>
 			<label htmlFor={`time-range-${index}`}>
 				{Liferay.Language.get('time-range')}
 
@@ -73,6 +73,6 @@ export default function TimeRangeInput({index, onChange, value}) {
 					</Picker>
 				</ClayInput.Group>
 			</ClayInput.Group>
-		</ClayInput.GroupItem>
+		</div>
 	);
 }

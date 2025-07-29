@@ -10,7 +10,7 @@ import React from 'react';
 
 function MatchDisplayLanguageInput({index, onChange, value}) {
 	return (
-		<ClayInput.GroupItem>
+		<>
 			<label htmlFor={`match-display-language-${index}`}>
 				{Liferay.Language.get('match-display-language')}
 
@@ -44,7 +44,7 @@ function MatchDisplayLanguageInput({index, onChange, value}) {
 					value={false}
 				/>
 			</ClaySelect>
-		</ClayInput.GroupItem>
+		</>
 	);
 }
 

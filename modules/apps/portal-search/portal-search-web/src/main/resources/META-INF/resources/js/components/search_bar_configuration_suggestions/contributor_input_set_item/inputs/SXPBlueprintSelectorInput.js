@@ -114,7 +114,7 @@ function SXPBlueprintSelectorInput({
 				/>
 			)}
 
-			<ClayInput.GroupItem
+			<div
 				className={getCN({
 					'has-error': !sxpBlueprintExternalReferenceCode && touched,
 				})}
@@ -172,7 +172,7 @@ function SXPBlueprintSelectorInput({
 						</ClayInput.GroupItem>
 					</ClayInput.Group>
 				</ClayForm.Group>
-			</ClayInput.GroupItem>
+			</div>
 		</>
 	);
 }

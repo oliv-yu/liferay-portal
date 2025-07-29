@@ -7,6 +7,7 @@ import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import ClayLayout from '@clayui/layout';
 import {LearnMessage} from 'frontend-js-components-web';
 import React, {useRef, useState} from 'react';
 
@@ -126,28 +127,32 @@ function SiteActivities({index, onBlur, onInputSetItemChange, touched, value}) {
 
 	return (
 		<>
-			<InputSetItemHeader>
-				<InputSetItemHeader.Title>
-					{Liferay.Language.get(
-						'site-activities-suggestions-contributor'
-					)}
-				</InputSetItemHeader.Title>
+			<ClayLayout.Row className="w-100">
+				<ClayLayout.Col className="c-px-1" size={12}>
+					<InputSetItemHeader>
+						<InputSetItemHeader.Title>
+							{Liferay.Language.get(
+								'site-activities-suggestions-contributor'
+							)}
+						</InputSetItemHeader.Title>
 
-				<InputSetItemHeader.Description>
-					{Liferay.Language.get(
-						'site-activities-suggestions-contributor-help'
-					)}
+						<InputSetItemHeader.Description>
+							{Liferay.Language.get(
+								'site-activities-suggestions-contributor-help'
+							)}
 
-					<LearnMessage
-						className="c-ml-1"
-						resource="portal-search-web"
-						resourceKey="search-bar-suggestions-site-activities"
-					/>
-				</InputSetItemHeader.Description>
-			</InputSetItemHeader>
+							<LearnMessage
+								className="c-ml-1"
+								resource="portal-search-web"
+								resourceKey="search-bar-suggestions-site-activities"
+							/>
+						</InputSetItemHeader.Description>
+					</InputSetItemHeader>
+				</ClayLayout.Col>
+			</ClayLayout.Row>
 
-			<div className="c-mb-3 form-group-autofit">
-				<ClayInput.GroupItem>
+			<ClayLayout.Row className="c-mb-3 w-100">
+				<ClayLayout.Col className="c-px-1" size={12}>
 					<label htmlFor={`activity-${index}`}>
 						<span>
 							{Liferay.Language.get('activity')}
@@ -218,84 +223,40 @@ function SiteActivities({index, onBlur, onInputSetItemChange, touched, value}) {
 							)}
 						</ClayDropDown.ItemList>
 					</ClayDropDown.Menu>
-				</ClayInput.GroupItem>
-			</div>
+				</ClayLayout.Col>
+			</ClayLayout.Row>
 
-			<div className="c-mb-3 form-group-autofit">
-				<DisplayGroupNameInput
-					index={index}
-					onBlur={onBlur('displayGroupName')}
-					onChange={onInputSetItemChange(index, 'displayGroupName')}
-					touched={touched.displayGroupName}
-					value={value.displayGroupName}
-				/>
+			<ClayLayout.Row className="c-mb-3 w-100">
+				<ClayLayout.Col className="c-px-1" size={6}>
+					<DisplayGroupNameInput
+						index={index}
+						onBlur={onBlur('displayGroupName')}
+						onChange={onInputSetItemChange(
+							index,
+							'displayGroupName'
+						)}
+						touched={touched.displayGroupName}
+						value={value.displayGroupName}
+					/>
+				</ClayLayout.Col>
 
-				<SizeInput
-					index={index}
-					onBlur={onBlur('size')}
-					onChange={onInputSetItemChange(index, 'size')}
-					touched={touched.size}
-					value={value.size}
-				/>
-			</div>
+				<ClayLayout.Col className="c-px-1" size={6}>
+					<SizeInput
+						index={index}
+						onBlur={onBlur('size')}
+						onChange={onInputSetItemChange(index, 'size')}
+						touched={touched.size}
+						value={value.size}
+					/>
+				</ClayLayout.Col>
+			</ClayLayout.Row>
 
 			{[
 				CONTRIBUTOR_TYPES.ASAH_TOP_SEARCH_SITE_ACTIVITY,
 				CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCH_SITE_ACTIVITY,
 			].includes(value.contributorName) ? (
-				<div className="c-mb-0 form-group-autofit">
-					<CharacterThresholdInput
-						index={index}
-						onBlur={onBlur('attributes.characterThreshold')}
-						onChange={_handleChangeAttributeInput(
-							'characterThreshold'
-						)}
-						touched={touched['attributes.characterThreshold']}
-						value={value.attributes?.characterThreshold}
-					/>
-
-					<MatchDisplayLanguageInput
-						index={index}
-						onChange={_handleChangeAttributeInput(
-							'matchDisplayLanguageId'
-						)}
-						value={value.attributes?.matchDisplayLanguageId}
-					/>
-
-					<MinimumSearchesInput
-						index={index}
-						onBlur={onBlur('attributes.minCounts')}
-						onChange={_handleChangeAttributeInput('minCounts')}
-						touched={touched['attributes.minCounts']}
-						value={value.attributes?.minCounts}
-					/>
-				</div>
-			) : [
-					CONTRIBUTOR_TYPES.ASAH_RECENT_PAGES_USER_ACTIVITY,
-					CONTRIBUTOR_TYPES.ASAH_RECENT_SITES_USER_ACTIVITY,
-			  ].includes(value.contributorName) ? (
-				<div className="c-mb-0 form-group-autofit">
-					<CharacterThresholdInput
-						index={index}
-						onBlur={onBlur('attributes.characterThreshold')}
-						onChange={_handleChangeAttributeInput(
-							'characterThreshold'
-						)}
-						touched={touched['attributes.characterThreshold']}
-						value={value.attributes?.characterThreshold}
-					/>
-
-					<TimeRangeInput
-						index={index}
-						onBlur={onBlur('attributes.rangeKey')}
-						onChange={_handleChangeAttributeValue('rangeKey')}
-						touched={touched['attributes.rangeKey']}
-						value={value.attributes?.rangeKey}
-					/>
-				</div>
-			) : (
-				<>
-					<div className="c-mb-3 form-group-autofit">
+				<ClayLayout.Row className="w-100">
+					<ClayLayout.Col className="c-px-1" size={4}>
 						<CharacterThresholdInput
 							index={index}
 							onBlur={onBlur('attributes.characterThreshold')}
@@ -305,52 +266,145 @@ function SiteActivities({index, onBlur, onInputSetItemChange, touched, value}) {
 							touched={touched['attributes.characterThreshold']}
 							value={value.attributes?.characterThreshold}
 						/>
+					</ClayLayout.Col>
+
+					<ClayLayout.Col className="c-px-1" size={4}>
+						<MatchDisplayLanguageInput
+							index={index}
+							onChange={_handleChangeAttributeInput(
+								'matchDisplayLanguageId'
+							)}
+							value={value.attributes?.matchDisplayLanguageId}
+						/>
+					</ClayLayout.Col>
+
+					<ClayLayout.Col className="c-px-1" size={4}>
+						<MinimumSearchesInput
+							index={index}
+							onBlur={onBlur('attributes.minCounts')}
+							onChange={_handleChangeAttributeInput('minCounts')}
+							touched={touched['attributes.minCounts']}
+							value={value.attributes?.minCounts}
+						/>
+					</ClayLayout.Col>
+				</ClayLayout.Row>
+			) : [
+					CONTRIBUTOR_TYPES.ASAH_RECENT_PAGES_USER_ACTIVITY,
+					CONTRIBUTOR_TYPES.ASAH_RECENT_SITES_USER_ACTIVITY,
+			  ].includes(value.contributorName) ? (
+				<ClayLayout.Row className="w-100">
+					<ClayLayout.Col className="c-px-1" size={6}>
+						<CharacterThresholdInput
+							index={index}
+							onBlur={onBlur('attributes.characterThreshold')}
+							onChange={_handleChangeAttributeInput(
+								'characterThreshold'
+							)}
+							touched={touched['attributes.characterThreshold']}
+							value={value.attributes?.characterThreshold}
+						/>
+					</ClayLayout.Col>
+
+					<ClayLayout.Col className="c-px-1" size={6}>
+						<TimeRangeInput
+							index={index}
+							onBlur={onBlur('attributes.rangeKey')}
+							onChange={_handleChangeAttributeValue('rangeKey')}
+							touched={touched['attributes.rangeKey']}
+							value={value.attributes?.rangeKey}
+						/>
+					</ClayLayout.Col>
+				</ClayLayout.Row>
+			) : (
+				<>
+					<ClayLayout.Row className="c-mb-3 w-100">
+						<ClayLayout.Col className="c-px-1" size={6}>
+							<CharacterThresholdInput
+								index={index}
+								onBlur={onBlur('attributes.characterThreshold')}
+								onChange={_handleChangeAttributeInput(
+									'characterThreshold'
+								)}
+								touched={
+									touched['attributes.characterThreshold']
+								}
+								value={value.attributes?.characterThreshold}
+							/>
+						</ClayLayout.Col>
 
 						{value.contributorName ===
 							CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCHES_USER_ACTIVITY && (
-							<MatchDisplayLanguageInput
-								index={index}
-								onChange={_handleChangeAttributeInput(
-									'matchDisplayLanguageId'
-								)}
-								value={value.attributes?.matchDisplayLanguageId}
-							/>
+							<ClayLayout.Col className="c-px-1" size={6}>
+								<MatchDisplayLanguageInput
+									index={index}
+									onChange={_handleChangeAttributeInput(
+										'matchDisplayLanguageId'
+									)}
+									value={
+										value.attributes?.matchDisplayLanguageId
+									}
+								/>
+							</ClayLayout.Col>
 						)}
 
 						{value.contributorName ===
 							CONTRIBUTOR_TYPES.ASAH_RECENT_ASSETS_USER_ACTIVITY && (
-							<ContentTypesInput
-								index={index}
-								onBlur={onBlur('attributes.contentTypes')}
-								onChange={_handleChangeAttributeValue(
-									'contentTypes'
-								)}
-								touched={touched['attributes.contentTypes']}
-								value={value.attributes?.contentTypes}
-							/>
+							<ClayLayout.Col className="c-px-1" size={6}>
+								<ContentTypesInput
+									index={index}
+									onBlur={onBlur('attributes.contentTypes')}
+									onChange={_handleChangeAttributeValue(
+										'contentTypes'
+									)}
+									touched={touched['attributes.contentTypes']}
+									value={value.attributes?.contentTypes}
+								/>
+							</ClayLayout.Col>
 						)}
-					</div>
+					</ClayLayout.Row>
 
-					<div className="c-mb-0 form-group-autofit">
+					<ClayLayout.Row className="w-100">
 						{value.contributorName ===
 							CONTRIBUTOR_TYPES.ASAH_RECENT_SEARCHES_USER_ACTIVITY && (
-							<MinimumSearchesInput
-								index={index}
-								onBlur={onBlur('attributes.minCounts')}
-								onChange={_handleChangeAttributeInput(
-									'minCounts'
-								)}
-								touched={touched['attributes.minCounts']}
-								value={value.attributes?.minCounts}
-							/>
+							<>
+								<ClayLayout.Col className="c-px-1" size={6}>
+									<MinimumSearchesInput
+										index={index}
+										onBlur={onBlur('attributes.minCounts')}
+										onChange={_handleChangeAttributeInput(
+											'minCounts'
+										)}
+										touched={
+											touched['attributes.minCounts']
+										}
+										value={value.attributes?.minCounts}
+									/>
+								</ClayLayout.Col>
+								<ClayLayout.Col className="c-px-1" size={6}>
+									<TimeRangeInput
+										index={index}
+										onChange={_handleChangeAttributeValue(
+											'rangeKey'
+										)}
+										value={value.attributes?.rangeKey}
+									/>
+								</ClayLayout.Col>
+							</>
 						)}
 
-						<TimeRangeInput
-							index={index}
-							onChange={_handleChangeAttributeValue('rangeKey')}
-							value={value.attributes?.rangeKey}
-						/>
-					</div>
+						{value.contributorName ===
+							CONTRIBUTOR_TYPES.ASAH_RECENT_ASSETS_USER_ACTIVITY && (
+							<ClayLayout.Col className="c-px-1" size={12}>
+								<TimeRangeInput
+									index={index}
+									onChange={_handleChangeAttributeValue(
+										'rangeKey'
+									)}
+									value={value.attributes?.rangeKey}
+								/>
+							</ClayLayout.Col>
+						)}
+					</ClayLayout.Row>
 				</>
 			)}
 		</>

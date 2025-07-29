@@ -11,7 +11,7 @@ import React from 'react';
 
 function DisplayGroupNameInput({index, onBlur, onChange, touched, value}) {
 	return (
-		<ClayInput.GroupItem
+		<div
 			className={getCN({
 				'has-error': !value && touched,
 			})}
@@ -46,7 +46,7 @@ function DisplayGroupNameInput({index, onBlur, onChange, touched, value}) {
 				type="text"
 				value={value || ''}
 			/>
-		</ClayInput.GroupItem>
+		</div>
 	);
 }
 

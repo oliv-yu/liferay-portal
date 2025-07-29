@@ -12,7 +12,7 @@ import React from 'react';
 
 function SizeInput({index, onBlur, onChange, touched, value}) {
 	return (
-		<ClayInput.GroupItem
+		<div
 			className={getCN({
 				'has-error': (!value || value < 0) && touched,
 			})}
@@ -61,7 +61,7 @@ function SizeInput({index, onBlur, onChange, touched, value}) {
 					</div>
 				</div>
 			)}
-		</ClayInput.GroupItem>
+		</div>
 	);
 }
 

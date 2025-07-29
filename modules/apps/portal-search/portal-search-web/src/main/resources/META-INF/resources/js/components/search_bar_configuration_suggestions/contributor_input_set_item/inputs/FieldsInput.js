@@ -52,7 +52,7 @@ function FieldsInput({
 	}, [items]); //eslint-disable-line
 
 	return (
-		<ClayInput.GroupItem
+		<div
 			className={getCN({
 				'has-error': isRequired && !items.length && touched,
 			})}
@@ -81,7 +81,7 @@ function FieldsInput({
 				onItemsChange={setItems}
 				value={value}
 			/>
-		</ClayInput.GroupItem>
+		</div>
 	);
 }
 

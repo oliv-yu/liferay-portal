@@ -11,7 +11,7 @@ import React from 'react';
 
 function CharacterThresholdInput({index, onBlur, onChange, touched, value}) {
 	return (
-		<ClayInput.GroupItem
+		<div
 			className={getCN({
 				'has-error': typeof value !== undefined && value < 0 && touched,
 			})}
@@ -42,7 +42,7 @@ function CharacterThresholdInput({index, onBlur, onChange, touched, value}) {
 				type="number"
 				value={value || ''}
 			/>
-		</ClayInput.GroupItem>
+		</div>
 	);
 }
 
