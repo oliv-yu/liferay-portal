@@ -87,6 +87,10 @@ definition {
 			searchAssetTitle = "Apple");
 
 		SearchBarSuggestions.viewNoResultAssetTitle(searchAssetTitle = "Apple Pie");
+
+		SearchBarSuggestions.configureEmbeddedSearchBarSuggestions(
+			suggestionContributorOrder = 1,
+			suggestionContributorSize = 2);
 	}
 
 	@priority = 4
@@ -227,6 +231,8 @@ definition {
 	@description = "This is a use case for LPS-166050. When using a Blueprint to drive Search Bar suggestions, I can configure a character threshold that applies to this group"
 	@priority = 3
 	test ConfigureBlueprintContributorCharacterThresholds {
+		property test.run.type = "single";
+
 		task ("Add Web Content and Blueprint") {
 			JSONWebcontent.addWebContent(
 				content = "WC WebContent Content",
@@ -506,11 +512,11 @@ definition {
 			content = "WC WebContent Content",
 			description = "WC WebContent Description",
 			groupName = "Guest",
-			title = "Apple");
+			title = "Orange");
 
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",
-			dmDocumentTitle = "Apple",
+			dmDocumentTitle = "Orange",
 			groupName = "Guest",
 			mimeType = "application/msword",
 			sourceFileName = "Document_1.doc");
@@ -519,21 +525,21 @@ definition {
 
 		Type(
 			locator1 = "Search#EMBEDDED_SEARCH_BAR",
-			value1 = "Ap");
+			value1 = "Or");
 
-		SearchBarSuggestions.viewNoResultAssetTitle(searchAssetTitle = "Apple");
+		SearchBarSuggestions.viewNoResultAssetTitle(searchAssetTitle = "Orange");
 
 		Type(
 			locator1 = "Search#EMBEDDED_SEARCH_BAR",
-			value1 = "App");
+			value1 = "Ora");
 
 		SearchBarSuggestions.viewSuggestions(
 			searchAssetDescription = "DM Document Description",
-			searchAssetTitle = "Apple");
+			searchAssetTitle = "Orange");
 
 		SearchBarSuggestions.viewSuggestions(
 			searchAssetDescription = "WC WebContent Description",
-			searchAssetTitle = "Apple");
+			searchAssetTitle = "Orange");
 	}
 
 	@description = "This is a use case for LPS-162509."
