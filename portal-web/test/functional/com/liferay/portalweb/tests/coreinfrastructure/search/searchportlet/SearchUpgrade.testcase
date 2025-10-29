@@ -601,7 +601,9 @@ definition {
 				value1 = "text-match-over-multiple-fields-description");
 		}
 
-		Navigator.gotoBack();
+		Blueprints.openBlueprintsAdmin();
+
+		Navigator.gotoNavItem(navItem = "Elements");
 
 		task ("Assert elements in Elements admin are using correct translations when using Portuguese locale") {
 			Navigator.ensureLocaleURL(locale = "pt");
