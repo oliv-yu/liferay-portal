@@ -33,6 +33,10 @@ public class SemanticSearchCompanyConfigurationDisplayContext {
 		return _availableTextTruncationStrategies;
 	}
 
+	public String getSelectDLFileEntrySubtypesURL() {
+		return _selectDLFileEntrySubtypesURL;
+	}
+
 	public int getTextEmbeddingCacheTimeout() {
 		return _textEmbeddingCacheTimeout;
 	}
@@ -87,6 +91,10 @@ public class SemanticSearchCompanyConfigurationDisplayContext {
 			textEmbeddingProviderConfigurationJSONs;
 	}
 
+	public void setSelectDLFileEntrySubtypesURL(String selectDLFileEntrySubtypesURL) {
+		_selectDLFileEntrySubtypesURL = selectDLFileEntrySubtypesURL;
+	}
+
 	public void setTextEmbeddingsEnabled(boolean textEmbeddingsEnabled) {
 		_textEmbeddingsEnabled = textEmbeddingsEnabled;
 	}
@@ -99,5 +107,6 @@ public class SemanticSearchCompanyConfigurationDisplayContext {
 	private int _textEmbeddingCacheTimeout;
 	private String[] _textEmbeddingProviderConfigurationJSONs;
 	private boolean _textEmbeddingsEnabled;
+	private String _selectDLFileEntrySubtypesURL;
 
 }

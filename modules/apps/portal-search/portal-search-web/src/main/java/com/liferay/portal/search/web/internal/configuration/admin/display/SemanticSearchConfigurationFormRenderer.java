@@ -5,6 +5,13 @@
 
 package com.liferay.portal.search.web.internal.configuration.admin.display;
 
+import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
+import com.liferay.document.library.kernel.model.DLFileEntry;
+import com.liferay.item.selector.ItemSelector;
+import com.liferay.dynamic.data.mapping.item.selector.DDMStructureItemSelectorCriterion;
+import com.liferay.dynamic.data.mapping.item.selector.DDMStructureItemSelectorReturnType;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.configuration.admin.display.ConfigurationFormRenderer;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -22,7 +29,9 @@ import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.journal.model.JournalArticle;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -134,6 +143,10 @@ public class SemanticSearchConfigurationFormRenderer
 			setTextEmbeddingProviderConfigurationJSONs(
 				semanticSearchConfiguration.
 					textEmbeddingProviderConfigurationJSONs());
+		semanticSearchCompanyConfigurationDisplayContext.
+			setSelectDLFileEntrySubtypesURL(
+				_getSelectDLFileEntrySubtypesURL(httpServletRequest));
+
 
 		httpServletRequest.setAttribute(
 			SemanticSearchCompanyConfigurationDisplayContext.class.getName(),
@@ -255,6 +268,34 @@ public class SemanticSearchConfigurationFormRenderer
 		).build();
 	}
 
+	private String _getSelectDLFileEntrySubtypesURL(HttpServletRequest httpServletRequest) {
+		DDMStructureItemSelectorCriterion
+			ddmStructureItemSelectorCriterion =
+				new DDMStructureItemSelectorCriterion();
+
+		ddmStructureItemSelectorCriterion.setClassNameId(
+			PortalUtil.getClassNameId(DLFileEntryMetadata.class));
+		ddmStructureItemSelectorCriterion.
+			setDesiredItemSelectorReturnTypes(
+				new DDMStructureItemSelectorReturnType());
+		ddmStructureItemSelectorCriterion.setMultiSelection(true);
+
+		// ddmStructureItemSelectorCriterion.setClassNameId(
+		// 	PortalUtil.getClassNameId(JournalArticle.class));
+		// ddmStructureItemSelectorCriterion.
+		// 	setDesiredItemSelectorReturnTypes(
+		// 		new DDMStructureItemSelectorReturnType());
+		// ddmStructureItemSelectorCriterion.setMultiSelection(true);
+
+		return PortletURLBuilder.create(
+			_itemSelector.getItemSelectorURL(
+				RequestBackedPortletURLFactoryUtil.create(
+					httpServletRequest),
+				"selectDDMStructure",
+				ddmStructureItemSelectorCriterion)
+		).buildString();
+	}
+
 	private SemanticSearchConfiguration _getSemanticSearchConfiguration(
 		HttpServletRequest httpServletRequest) {
 
@@ -311,4 +352,6 @@ public class SemanticSearchConfigurationFormRenderer
 	@Reference
 	private TextEmbeddingRetriever _textEmbeddingRetriever;
 
+	@Reference
+	private ItemSelector _itemSelector;
 }

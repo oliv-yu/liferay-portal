@@ -14,6 +14,7 @@ import React, {useMemo, useState} from 'react';
 
 import {LearnMessageWithoutContext} from '../../shared/LearnMessage';
 import sub from '../../utils/language/sub';
+import {DDMStructureItemSelector} from './DDMStructureItemSelector';
 import Input from './Input';
 import SubmitWarningModal from './SubmitWarningModal';
 import TestConfigurationButton from './TestConfigurationButton';
@@ -200,6 +201,7 @@ export default function ({
 	learnMessages,
 	namespace = '',
 	redirectURL,
+	selectDLFileEntrySubtypesURL,
 }) {
 	const resolvedInitialTextEmbeddingProviderConfigurationJSONs = useMemo(
 		() =>
@@ -1639,6 +1641,14 @@ export default function ({
 							]?.modelClassNames
 						}
 					/>
+
+					<div>
+						<label>{Liferay.Language.get('document')}</label>
+
+						<DDMStructureItemSelector
+							url={selectDLFileEntrySubtypesURL}
+						/>
+					</div>
 
 					<Input
 						disabled={formik.isSubmitting}

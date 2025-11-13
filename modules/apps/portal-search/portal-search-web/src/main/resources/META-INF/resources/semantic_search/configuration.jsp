@@ -50,6 +50,8 @@ SemanticSearchCompanyConfigurationDisplayContext semanticSearchCompanyConfigurat
 				"namespace", liferayPortletResponse.getNamespace()
 			).put(
 				"redirectURL", String.valueOf(liferayPortletResponse.createRenderURL())
+			).put(
+				"selectDLFileEntrySubtypesURL", semanticSearchCompanyConfigurationDisplayContext.getSelectDLFileEntrySubtypesURL()
 			).build()
 		%>'
 	/>
