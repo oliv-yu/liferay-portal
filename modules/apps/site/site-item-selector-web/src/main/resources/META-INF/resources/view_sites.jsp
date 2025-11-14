@@ -139,6 +139,15 @@ String target = ParamUtil.getString(request, "target", groupItemSelectorCriterio
 								</aui:a>
 							</div>
 						</c:if>
+
+						<div class="h6">
+							<span><liferay-ui:message key="external-reference-code" />: <%= group.getExternalReferenceCode() %> </span>
+						</div>
+
+						<div class="h6">
+							<span><liferay-ui:message key="id" />: <%= group.getGroupId() %> </span>
+						</div>
+
 					</liferay-ui:search-container-column-text>
 				</c:when>
 				<c:when test='<%= displayStyle.equals("icon") %>'>
