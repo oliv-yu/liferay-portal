@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.item.selector.SiteItemSelectorCriterion;
+import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
 
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
@@ -136,7 +137,7 @@ public class EditSXPBlueprintDisplayContext {
 			"selectSitesURL",
 			() -> {
 				ItemSelectorCriterion itemSelectorCriterion =
-					new SiteItemSelectorCriterion();
+					new GroupItemSelectorCriterion();
 
 				itemSelectorCriterion.setDesiredItemSelectorReturnTypes(
 					new GroupItemSelectorReturnType());
