@@ -9,12 +9,16 @@
 
 <%
 String portletResource = ParamUtil.getString(request, "portletResource");
+
+long[] classNameIds = AssetRendererFactoryRegistryUtil.getIndexableClassNameIds(themeDisplay.getCompanyId(), true);
 %>
 
 <div class="mb-2">
 	<liferay-portlet:actionURL name="/asset_publisher/add_asset_list" portletName="<%= portletResource %>" var="addAssetListURL">
 		<portlet:param name="portletResource" value="<%= portletResource %>" />
 		<portlet:param name="redirect" value="<%= currentURL %>" />
+		<portlet:param name="typeSettingsProperties--anyAssetType--" value="true" />
+		<portlet:param name="typeSettingsProperties--classNameIds--" value="<%= StringUtil.merge(classNameIds) %>" />
 	</liferay-portlet:actionURL>
 
 	<clay:button

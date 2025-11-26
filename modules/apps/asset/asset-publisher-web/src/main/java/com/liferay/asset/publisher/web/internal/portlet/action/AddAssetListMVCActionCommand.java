@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -188,18 +189,29 @@ public class AddAssetListMVCActionCommand extends BaseMVCActionCommand {
 			return null;
 		}
 
-		return _assetListEntryService.addManualAssetListEntry(
-			null, themeDisplay.getScopeGroupId(), title,
-			ListUtil.toLongArray(
-				_assetPublisherHelper.getAssetEntries(
-					actionRequest, portletPreferences,
-					themeDisplay.getPermissionChecker(),
-					_assetPublisherHelper.getGroupIds(
-						portletPreferences, themeDisplay.getScopeGroupId(),
-						themeDisplay.getLayout()),
-					true, true),
-				AssetEntry::getEntryId),
-			serviceContext);
+		AssetListEntry assetListEntry =
+			_assetListEntryService.addManualAssetListEntry(
+				null, themeDisplay.getScopeGroupId(), title,
+				ListUtil.toLongArray(
+					_assetPublisherHelper.getAssetEntries(
+						actionRequest, portletPreferences,
+						themeDisplay.getPermissionChecker(),
+						_assetPublisherHelper.getGroupIds(
+							portletPreferences, themeDisplay.getScopeGroupId(),
+							themeDisplay.getLayout()),
+						true, true),
+					AssetEntry::getEntryId),
+				serviceContext);
+
+		UnicodeProperties typeSettingsUnicodeProperties =
+			PropertiesParamUtil.getProperties(
+				actionRequest, "typeSettingsProperties--");
+
+		_assetListEntryService.updateAssetListEntry(
+			assetListEntry.getAssetListEntryId(), 0,
+			typeSettingsUnicodeProperties.toString(), serviceContext);
+
+		return assetListEntry;
 	}
 
 	private void _handlePortalException(
