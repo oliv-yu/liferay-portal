@@ -58,6 +58,7 @@ page import="com.liferay.asset.publisher.web.internal.servlet.taglib.util.AssetE
 page import="com.liferay.asset.publisher.web.internal.util.AssetRendererUtil" %><%@
 page import="com.liferay.asset.util.AssetHelper" %><%@
 page import="com.liferay.asset.util.AssetPublisherAddItemHolder" %><%@
+page import="com.liferay.asset.util.AssetRendererFactoryWrapper" %><%@
 page import="com.liferay.asset.util.comparator.AssetRendererFactoryTypeNameComparator" %><%@
 page import="com.liferay.document.library.kernel.document.conversion.DocumentConversionUtil" %><%@
 page import="com.liferay.dynamic.data.mapping.model.DDMStructure" %><%@

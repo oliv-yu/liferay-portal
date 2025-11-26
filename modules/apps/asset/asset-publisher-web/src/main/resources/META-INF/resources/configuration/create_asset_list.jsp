@@ -19,6 +19,48 @@ long[] classNameIds = AssetRendererFactoryRegistryUtil.getIndexableClassNameIds(
 		<portlet:param name="redirect" value="<%= currentURL %>" />
 		<portlet:param name="typeSettingsProperties--anyAssetType--" value="true" />
 		<portlet:param name="typeSettingsProperties--classNameIds--" value="<%= StringUtil.merge(classNameIds) %>" />
+
+		<%
+		for (long classNameId : classNameIds) {
+			if (classNameId <= 0) {
+				continue;
+			}
+
+			AssetRendererFactory<?> assetRendererFactory = AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassNameId(classNameId);
+
+			if (assetRendererFactory == null) {
+				continue;
+			}
+		%>
+
+			<c:if test="<%= assetRendererFactory.isSupportsClassTypes() %>">
+
+				<%
+				ClassTypeReader classTypeReader = assetRendererFactory.getClassTypeReader();
+
+				List<ClassType> availableClassTypes = classTypeReader.getAvailableClassTypes(PortalUtil.getCurrentAndAncestorSiteGroupIds(themeDisplay.getScopeGroupId()), themeDisplay.getLocale());
+				%>
+
+				<c:if test="<%= !availableClassTypes.isEmpty() %>">
+
+					<%
+					long[] classTypeIds = ListUtil.toLongArray(availableClassTypes, ClassType::getClassTypeId);
+
+					Class<?> factoryClass = assetRendererFactory.getClass();
+
+					if (assetRendererFactory instanceof AssetRendererFactoryWrapper) {
+						factoryClass = ((AssetRendererFactoryWrapper<?>)assetRendererFactory).getWrappedClass();
+					}
+					%>
+
+					<portlet:param name='<%= "typeSettingsProperties--classTypeIds" + factoryClass.getSimpleName() + "--" %>' value="<%= StringUtil.merge(classTypeIds) %>" />
+				</c:if>
+			</c:if>
+
+		<%
+		}
+		%>
+
 	</liferay-portlet:actionURL>
 
 	<clay:button
