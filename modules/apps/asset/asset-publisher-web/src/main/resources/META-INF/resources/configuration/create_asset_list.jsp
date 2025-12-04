@@ -69,6 +69,8 @@ long[] classNameIds = AssetRendererFactoryRegistryUtil.getIndexableClassNameIds(
 				"portletNamespace", PortalUtil.getPortletNamespace(HtmlUtil.escape(portletResource))
 			).put(
 				"url", addAssetListURL
+			).put(
+				"redirect", currentURL
 			).build()
 		%>'
 		cssClass="c-pl-0 create-collection-link"

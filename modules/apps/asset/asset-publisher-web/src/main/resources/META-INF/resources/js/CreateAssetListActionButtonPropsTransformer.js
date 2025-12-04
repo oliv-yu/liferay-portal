@@ -4,6 +4,7 @@
  */
 
 import {openSimpleInputModal} from 'frontend-js-components-web';
+import {addParams} from 'frontend-js-web';
 
 export default function propsTransformer({additionalProps, ...props}) {
 	return {
@@ -11,7 +12,10 @@ export default function propsTransformer({additionalProps, ...props}) {
 		onClick() {
 			openSimpleInputModal({
 				dialogTitle: Liferay.Language.get('collection-title'),
-				formSubmitURL: additionalProps.url,
+				formSubmitURL: addParams(
+					{redirect: additionalProps.redirect},
+					additionalProps.url
+				),
 				mainFieldLabel: Liferay.Language.get('title'),
 				mainFieldName: 'title',
 				mainFieldPlaceholder: Liferay.Language.get('title'),
