@@ -574,7 +574,7 @@ definition {
 			else {
 				MouseOver.waitForMenuToggleJSMouseOver(locator1 = "Portlet#SPECIFIC_PORTLET_SECTION");
 
-				Click.javaScriptClick(locator1 = "Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
+				Click(locator1 = "Portlet#SPECIFIC_BORDERLESS_ELLIPSIS_ICON");
 			}
 		}
 		else {
