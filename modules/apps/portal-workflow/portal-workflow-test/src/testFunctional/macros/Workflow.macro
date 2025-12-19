@@ -314,6 +314,8 @@ definition {
 
 		Workflow.confirmWorkflowAction();
 
+		Refresh();
+
 		Workflow.viewTaskAssignedToMe(
 			ddlDataDefinitionName = ${ddlDataDefinitionName},
 			multipleTasks = ${multipleTasks},
@@ -501,6 +503,8 @@ definition {
 
 		Click(locator1 = "Button#DONE");
 
+		WaitForElementPresent(locator1 = "Message#SUCCESS_DISMISSIBLE");
+		
 		Alert.viewSuccessMessage();
 	}
 
