@@ -1552,7 +1552,7 @@ definition {
 		var key_workflowAssetTitle = ${workflowAssetTitle};
 		var key_workflowTask = ${workflowTask};
 
-		Navigator.gotoNavTab(navTab = "Assigned to Me");
+		Click(locator1 = "MyWorkflowTasks#ASSIGNED_TO_ME");
 
 		AssertElementPresent(locator1 = "MyWorkflowTasks#ASSIGNED_TO_ME_ACTIVE");
 

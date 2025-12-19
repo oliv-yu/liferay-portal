@@ -11,6 +11,11 @@
 
 <tbody>
 <tr>
+	<td>ASSIGNED_TO_ME</td>
+	<td>//*[contains(@class,'nav-link') and contains(.,'Assigned to Me')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ASSIGNED_TO_ME_ACTIVE</td>
 	<td>//*[contains(@class,'nav-link active') and contains(.,'Assigned to Me')]</td>
 	<td></td>
