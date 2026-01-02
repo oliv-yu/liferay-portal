@@ -605,6 +605,10 @@ definition {
 		Navigator.gotoBack();
 
 		task ("Assert elements in Elements admin are using correct translations when using Portuguese locale") {
+			Blueprints.openBlueprintsAdmin();
+
+			Navigator.gotoNavItem(navItem = "Elements");
+
 			Navigator.ensureLocaleURL(locale = "pt");
 
 			Blueprints.viewEntryTitle(title = "Corresponder texto por vários campos");
