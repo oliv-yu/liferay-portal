@@ -53,7 +53,7 @@ SearchEngineDisplayContext searchEngineDisplayContext = (SearchEngineDisplayCont
 				</c:when>
 				<c:otherwise>
 					<c:if test="<%= searchEngineDisplayContext.isWarnAboutDeprecatedConnection() %>">
-						<div class="alert alert-inline alert-warning">
+						<div class="alert alert-warning">
 							<div class="autofit-row">
 								<div class="autofit-col">
 									<div class="autofit-section c-mr-2">
@@ -101,7 +101,7 @@ SearchEngineDisplayContext searchEngineDisplayContext = (SearchEngineDisplayCont
 					</c:if>
 
 					<c:if test="<%= searchEngineDisplayContext.isWarnAboutSidecarConnection() %>">
-						<div class="alert alert-inline alert-warning">
+						<div class="alert alert-warning">
 							<div class="autofit-row">
 								<div class="autofit-col">
 									<div class="autofit-section c-mr-2">
@@ -163,7 +163,7 @@ SearchEngineDisplayContext searchEngineDisplayContext = (SearchEngineDisplayCont
 					</c:if>
 
 					<c:if test="<%= searchEngineDisplayContext.isWarnAboutCrossClusterReplicationInitializing() %>">
-						<div class="alert alert-info alert-inline">
+						<div class="alert alert-info">
 							<div class="autofit-row">
 								<div class="autofit-col">
 									<div class="autofit-section c-mr-2">
