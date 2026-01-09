@@ -78,6 +78,12 @@ definition {
 
 		SystemSettings.saveConfiguration();
 
+		SearchAdministration.openSearchAdmin();
+
+		while ((IsElementPresent(key_infoMessage = "Cross-cluster replication is still initializing", locator1 = "Message#INFO_SPECIFIC")) && (maxIterations = "20")) {
+			Refresh.pauseRefresh();
+		}
+
 		echo("##");
 
 		echo("## Local Cluster Index List");
@@ -120,12 +126,6 @@ definition {
 			JSONCurlUtil.get("http://${elasticsearchHostname}:9202/_cat/indices?pretty");
 
 			fail("A follower index is in red status.");
-		}
-
-		SearchAdministration.openSearchAdmin();
-
-		while ((IsElementPresent(key_infoMessage = "Cross-cluster replication is still initializing", locator1 = "Message#INFO_SPECIFIC")) && (maxIterations = "20")) {
-			Refresh.pauseRefresh();
 		}
 	}
 
