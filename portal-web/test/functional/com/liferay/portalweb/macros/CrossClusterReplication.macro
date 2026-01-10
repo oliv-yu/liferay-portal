@@ -78,11 +78,17 @@ definition {
 
 		SystemSettings.saveConfiguration();
 
+		Alert.viewSuccessMessage();
+
 		SearchAdministration.openSearchAdmin();
 
-		while ((IsElementPresent(key_infoMessage = "Cross-cluster replication is still initializing", locator1 = "Message#INFO_SPECIFIC")) && (maxIterations = "20")) {
+		while ((IsElementNotPresent(key_infoMessage = "Cross-cluster replication is still initializing", locator1 = "Message#INFO_SPECIFIC")) && (maxIterations = "20")) {
 			Refresh.pauseRefresh();
 		}
+
+		AssertElementPresent(
+			key_infoMessage = "Cross-cluster replication is still initializing", 
+			locator1 = "Message#INFO_SPECIFIC");
 
 		echo("##");
 
