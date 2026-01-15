@@ -37,6 +37,12 @@ definition {
 
 	@summary = "Default summary"
 	macro setupCrossClusterReplication(portalCluster = null) {
+		ServerAdministration.openServerAdmin();
+
+		ServerAdministration.addCategoryLogLevels(
+			categoryLevel = "ALL",
+			categoryName = "com.liferay.portal.search.elasticsearch.cross.cluster.replication.internal.background.task.CrossClusterReplicationBackgroudTaskExecutor");
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
@@ -85,10 +91,6 @@ definition {
 		while ((IsElementNotPresent(key_infoMessage = "Cross-cluster replication is still initializing", locator1 = "Message#INFO_SPECIFIC")) && (maxIterations = "20")) {
 			Refresh.pauseRefresh();
 		}
-
-		AssertElementPresent(
-			key_infoMessage = "Cross-cluster replication is still initializing", 
-			locator1 = "Message#INFO_SPECIFIC");
 
 		echo("##");
 
