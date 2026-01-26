@@ -250,6 +250,7 @@ export default function SearchBar({
 					<ClayInput.GroupInsetItem after>
 						<ClayButton
 							aria-label={Liferay.Language.get('search')}
+							disabled={!emptySearchEnabled && !inputValue}
 							displayType="unstyled"
 							onClick={_handleSubmit}
 							type="submit"
@@ -319,6 +320,7 @@ export default function SearchBar({
 				<ClayInput.GroupItem append className="c-mr-0" shrink>
 					<ClayButton
 						aria-label={Liferay.Language.get('search')}
+						disabled={!emptySearchEnabled && !inputValue}
 						displayType="secondary"
 						onClick={_handleSubmit}
 						type="submit"

@@ -50,6 +50,7 @@
 			<@liferay_aui.input
 				autoFocus=true
 				autocomplete="off"
+				aria\-label="${searchBarPortletDisplayContext.isEmptySearchEnabled()?then(languageUtil.get(locale, 'search'), 'type-to-search')}"
 				cssClass="search-bar-keywords-input"
 				data=data
 				disabled=true
@@ -65,6 +66,7 @@
 		<#else>
 			<div class="input-group-item search-bar-keywords-input-wrapper">
 				<input
+					aria\-label="${searchBarPortletDisplayContext.isEmptySearchEnabled()?then(languageUtil.get(locale, 'search'), 'type-to-search')}"
 					autocomplete="off"
 					class="form-control input-group-inset input-group-inset-before search-bar-keywords-input"
 					data-qa-id="searchInput"

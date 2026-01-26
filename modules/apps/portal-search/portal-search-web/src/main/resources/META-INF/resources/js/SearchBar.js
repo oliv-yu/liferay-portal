@@ -35,7 +35,7 @@ export default function ({formId, initialKeywords, retainFacetSelections}) {
 			keywordsInput.classList.remove('disabled');
 		}
 
-		if (keywordsInputSearchButton) {
+		if (keywordsInputSearchButton && emptySearchEnabled) {
 			keywordsInputSearchButton.disabled = false;
 		}
 
@@ -106,6 +106,15 @@ export default function ({formId, initialKeywords, retainFacetSelections}) {
 		}
 	}
 
+	function onChange(event) {
+		if (event.target.value) {
+			keywordsInputSearchButton.disabled = false;
+		}
+		else {
+			keywordsInputSearchButton.disabled = true;
+		}
+	}
+
 	function onSubmit(event) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -116,6 +125,10 @@ export default function ({formId, initialKeywords, retainFacetSelections}) {
 	form.addEventListener('submit', onSubmit);
 
 	enableKeywordsInput();
+
+	if (!emptySearchEnabled) {
+		keywordsInput.addEventListener('change', onChange);
+	}
 
 	return {
 		dispose() {
