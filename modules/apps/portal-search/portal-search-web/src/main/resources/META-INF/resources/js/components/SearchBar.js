@@ -175,7 +175,7 @@ export default function SearchBar({
 		event.preventDefault();
 		event.stopPropagation();
 
-		if (!!inputValue.trim().length || emptySearchEnabled) {
+		// if (!!inputValue.trim().length || emptySearchEnabled) {
 			const keywords = inputValue.trim();
 			let queryString = _updateQueryString(window.location.search);
 
@@ -194,7 +194,7 @@ export default function SearchBar({
 			}
 
 			navigate(searchURL + queryString);
-		}
+		// }
 	};
 
 	const _handleValueChange = (event) => {
@@ -333,7 +333,7 @@ export default function SearchBar({
 	const _updateQueryString = (queryString) => {
 		const searchParams = new URLSearchParams(queryString);
 
-		if (emptySearchEnabled || inputValue) {
+		if (inputValue) {
 			searchParams.set(
 				keywordsParameterName,
 				inputValue.replace(/^\s+|\s+$/, '')

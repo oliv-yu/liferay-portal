@@ -44,6 +44,13 @@ SearchContainer<Document> searchContainer = searchResultsPortletDisplayContext.g
 %>
 
 <c:choose>
+	<c:when test="<%= searchResultsPortletDisplayContext.isRenderTypeSomething() %>">
+		<div class="sheet">
+			<liferay-frontend:empty-result-message
+				title='<%= LanguageUtil.format(request, "meow", false) %>'
+			/>
+		</div>
+	</c:when>
 	<c:when test="<%= searchResultSummaryDisplayContexts.isEmpty() && searchResultsPortletDisplayContext.isShowEmptyResultMessage() %>">
 		<div class="sheet">
 			<liferay-frontend:empty-result-message

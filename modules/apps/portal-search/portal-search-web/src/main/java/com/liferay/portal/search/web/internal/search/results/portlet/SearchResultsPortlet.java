@@ -165,6 +165,19 @@ public class SearchResultsPortlet extends MVCPortlet {
 		return false;
 	}
 
+	protected boolean isRenderTypeSomething(
+		RenderRequest renderRequest, SearchRequest searchRequest) {
+
+		if ((searchRequest.getQueryString() == null) &&
+			searchRequest.isEmptySearchEnabled()) {
+
+			return true;
+		}
+
+		return false;
+	}
+	
+
 	@Reference
 	protected AssetEntryLocalService assetEntryLocalService;
 
@@ -231,6 +244,8 @@ public class SearchResultsPortlet extends MVCPortlet {
 			GetterUtil.getString(searchRequest.getQueryString()));
 		searchResultsPortletDisplayContext.setRenderNothing(
 			isRenderNothing(renderRequest, searchRequest));
+		searchResultsPortletDisplayContext.setRenderTypeSomething(
+			isRenderTypeSomething(renderRequest, searchRequest));
 
 		searchResultsPortletDisplayContext.setSearchContainer(
 			_buildSearchContainer(

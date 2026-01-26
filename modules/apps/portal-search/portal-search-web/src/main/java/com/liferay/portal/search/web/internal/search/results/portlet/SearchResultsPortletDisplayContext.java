@@ -102,6 +102,10 @@ public class SearchResultsPortletDisplayContext implements Serializable {
 		return _renderNothing;
 	}
 
+	public boolean isRenderTypeSomething() {
+		return _renderTypeSomething;
+	}
+
 	public boolean isShowEmptyResultMessage() {
 		return _showEmptyResultMessage;
 	}
@@ -120,6 +124,10 @@ public class SearchResultsPortletDisplayContext implements Serializable {
 
 	public void setRenderNothing(boolean renderNothing) {
 		_renderNothing = renderNothing;
+	}
+
+	public void setRenderTypeSomething(boolean renderTypeSomething) {
+		_renderTypeSomething = renderTypeSomething;
 	}
 
 	public void setSearchContainer(SearchContainer<Document> searchContainer) {
@@ -174,6 +182,7 @@ public class SearchResultsPortletDisplayContext implements Serializable {
 		_searchResultSummaryDisplayContexts;
 	private boolean _showEmptyResultMessage;
 	private boolean _showPagination;
+	private boolean _renderTypeSomething;
 	private int _totalHits;
 
 }
