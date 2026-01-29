@@ -6,7 +6,12 @@
 package com.liferay.launch.web.internal.portlet;
 
 import com.liferay.launch.constants.LaunchPortletKeys;
+import com.liferay.launch.web.internal.constants.LaunchWebKeys;
+import com.liferay.launch.web.internal.display.context.ViewLaunchesDisplayContext;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.util.Portal;
 
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PortletException;
@@ -16,6 +21,7 @@ import jakarta.portlet.RenderResponse;
 import java.io.IOException;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Olivia Yu
@@ -46,7 +52,25 @@ public class LaunchesPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
+		ViewLaunchesDisplayContext viewLaunchesDisplayContext =
+			new ViewLaunchesDisplayContext(
+				_portal.getHttpServletRequest(renderRequest),
+				_layoutLocalService, _language, _portal);
+
+		renderRequest.setAttribute(
+			LaunchWebKeys.VIEW_LAUNCHES_DISPLAY_CONTEXT,
+			viewLaunchesDisplayContext);
+
 		super.render(renderRequest, renderResponse);
 	}
+
+	@Reference
+	private Language _language;
+
+	@Reference
+	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

@@ -7,13 +7,14 @@
 
 <%@ include file="/init.jsp" %>
 
-<liferay-portlet:renderURL var="backURL" />
+<%
+ViewLaunchesDisplayContext viewLaunchesDisplayContext = (ViewLaunchesDisplayContext)request.getAttribute(LaunchWebKeys.VIEW_LAUNCHES_DISPLAY_CONTEXT);
+%>
 
-<clay:container-fluid
-	cssClass="container-form-lg"
-	fullWidth="<%= true %>"
->
-	<div>
-		<b>Hello</b> from the Launches portlet!
-	</div>
-</clay:container-fluid>
+<div>
+	<frontend-data-set:headless-display
+		apiURL="<%= viewLaunchesDisplayContext.getAPIURL() %>"
+		creationMenu="<%= viewLaunchesDisplayContext.getCreationMenu() %>"
+		id="<%= LaunchFDSNames.LAUNCHES_ACTIVE %>"
+	/>
+</div>

@@ -5,11 +5,15 @@
 
 package com.liferay.launch.web.internal.display.context;
 
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -30,6 +34,24 @@ public class ViewLaunchesDisplayContext {
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+	}
+
+	public String getAPIURL() {
+		return StringBundler.concat(
+			"/o/change-tracking-rest/v1.0/ct-collections?status=",
+			WorkflowConstants.STATUS_DRAFT, "&status=",
+			WorkflowConstants.STATUS_EXPIRED, "&status=",
+			WorkflowConstants.STATUS_INCOMPLETE);
+	}
+
+	public CreationMenu getCreationMenu() {
+		return CreationMenuBuilder.addPrimaryDropdownItem(
+			dropdownItem -> {
+				dropdownItem.setHref('/');
+				dropdownItem.setLabel(
+					_language.get(_httpServletRequest, "create-new-launch"));
+			}
+		).build();
 	}
 
 	private final HttpServletRequest _httpServletRequest;
