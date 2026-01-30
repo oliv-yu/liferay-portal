@@ -75,7 +75,7 @@ const TABS = {
 
 /* eslint-enable sort-keys */
 
-function UQBEditSXPBlueprintForm({
+function EditSXPBlueprintForm({
 	entityJSON,
 	initialConfiguration = {},
 	initialDescription = '',
@@ -1214,7 +1214,7 @@ function UQBEditSXPBlueprintForm({
 	);
 }
 
-UQBEditSXPBlueprintForm.propTypes = {
+EditSXPBlueprintForm.propTypes = {
 	entityJSON: PropTypes.object,
 	initialConfiguration: PropTypes.object,
 	initialDescription: PropTypes.string,
@@ -1226,4 +1226,4 @@ UQBEditSXPBlueprintForm.propTypes = {
 	sxpBlueprintId: PropTypes.string,
 };
 
-export default React.memo(UQBEditSXPBlueprintForm);
+export default React.memo(EditSXPBlueprintForm);
