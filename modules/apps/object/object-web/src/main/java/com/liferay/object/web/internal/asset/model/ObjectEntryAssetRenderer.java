@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -34,8 +35,20 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.trash.TrashRenderer;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.object.model.bag.ObjectFieldBag;
+import com.liferay.object.model.ObjectField;
+import com.liferay.object.constants.ObjectFieldConstants;
+import com.liferay.object.rest.dto.v1_0.ListEntry;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HtmlParserUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
@@ -44,7 +57,11 @@ import jakarta.portlet.PortletURL;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Feliphe Marinho
@@ -113,6 +130,13 @@ public class ObjectEntryAssetRenderer
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
 		return StringPool.BLANK;
+	}
+
+	@Override
+	public String getSearchSummary(Locale locale) {
+		String summary = _getObjectEntryContent(_objectEntry, locale);
+
+		return StringUtil.shorten(summary, 200);
 	}
 
 	@Override
@@ -307,6 +331,95 @@ public class ObjectEntryAssetRenderer
 	@Override
 	public boolean isCommentable() {
 		return _objectDefinition.isEnableComments();
+	}
+
+	private String _getObjectEntryContent(ObjectEntry objectEntry, Locale locale) {
+		StringBundler sb = new StringBundler();
+
+		ObjectDefinition objectDefinition = objectEntry.getObjectDefinition();
+
+		if (objectDefinition == null) {
+			return StringPool.BLANK;
+		}
+
+		ObjectFieldBag objectFieldBag = objectDefinition.getObjectFieldBag();
+
+		if (objectFieldBag == null) {
+			return StringPool.BLANK;
+		}
+
+		List<ObjectField> objectFields = objectFieldBag.getIndexedObjectFields();
+		Map<String, Serializable> values = objectEntry.getIndexedValues();
+
+		for (ObjectField objectField : objectFields) {
+			Serializable fieldValue = values.get(objectField.getName());
+
+			if (objectField.isLocalized()) {
+				Map<String, Object> localizedValues =
+					(Map<String, Object>)values.get(
+						objectField.getI18nObjectFieldName());
+
+				if (MapUtil.isEmpty(localizedValues)) {
+					continue;
+				}
+
+				Serializable localizedFieldValue = (Serializable)localizedValues.get(
+					LocaleUtil.toLanguageId(locale));
+
+				if (localizedFieldValue == null) {
+					localizedFieldValue = (Serializable)localizedValues.get(
+						objectEntry.getDefaultLanguageId());
+				}
+
+				fieldValue = localizedFieldValue;
+			}
+
+			if (fieldValue == null) {
+				continue;
+			}
+
+			if (StringUtil.equals(
+					objectField.getBusinessType(),
+					ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT)) {
+
+				// For attachments, we would ideally get the file name.
+				// This requires DLFileEntryLocalService which is not available here.
+				// For now, we'll just use the ID as a placeholder or skip.
+				// Skipping for now, as it's less critical for search summary
+				// and more complex to implement without the service.
+				continue;
+			}
+			else if (StringUtil.equals(
+						objectField.getBusinessType(),
+						ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT)) {
+
+				fieldValue = HtmlParserUtil.extractText(
+					GetterUtil.getString(fieldValue));
+			}
+			else if (StringUtil.equals(
+						objectField.getBusinessType(),
+						ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST) &&
+					 (fieldValue instanceof List)) {
+
+				fieldValue = ListUtil.toString(
+					(List)fieldValue, (String)null,
+					StringPool.COMMA_AND_SPACE);
+			}
+			else if (StringUtil.equals(
+						objectField.getBusinessType(),
+						ObjectFieldConstants.BUSINESS_TYPE_PICKLIST) &&
+					 (fieldValue instanceof ListEntry)) {
+
+				ListEntry listEntry = (ListEntry)fieldValue;
+
+				fieldValue = listEntry.getKey();
+			}
+
+			sb.append(String.valueOf(fieldValue));
+			sb.append(StringPool.SPACE);
+		}
+
+		return sb.toString().trim();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
