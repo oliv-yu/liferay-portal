@@ -71,8 +71,7 @@ public class ObjectEntryAssetRenderer
 			AssetDisplayPageFriendlyURLProvider
 				assetDisplayPageFriendlyURLProvider,
 			DepotEntryLocalService depotEntryLocalService,
-			DLAppLocalService dlAppLocalService,
-			DLConfiguration dlConfiguration, DLURLHelper dlURLHelper,
+			DLAppLocalService dlAppLocalService, DLURLHelper dlURLHelper,
 			ObjectDefinition objectDefinition, ObjectEntry objectEntry,
 			ObjectEntryDisplayContextFactory objectEntryDisplayContextFactory,
 			ObjectEntryService objectEntryService,
@@ -83,7 +82,6 @@ public class ObjectEntryAssetRenderer
 			assetDisplayPageFriendlyURLProvider;
 		_depotEntryLocalService = depotEntryLocalService;
 		_dlAppLocalService = dlAppLocalService;
-		_dlConfiguration = dlConfiguration;
 		_dlURLHelper = dlURLHelper;
 		_objectDefinition = objectDefinition;
 		_objectEntry = objectEntry;
@@ -119,7 +117,7 @@ public class ObjectEntryAssetRenderer
 				_objectDefinition.getExternalReferenceCode();
 
 			if (Objects.equals(externalReferenceCode, "L_CMS_BASIC_DOCUMENT")) {
-				return _getIconFileMimeType(_getFileMimeType());
+				return _getFileMimeType();
 			}
 			else if (Objects.equals(
 						externalReferenceCode, "L_CMS_BASIC_WEB_CONTENT")) {
@@ -465,47 +463,47 @@ public class ObjectEntryAssetRenderer
 		return null;
 	}
 
-	private String _getIconFileMimeType(String mimeType) {
-		if (_containsMimeType(_dlConfiguration.codeFileMimeTypes(), mimeType)) {
-			return "document-code";
-		}
-		else if (_containsMimeType(
-					_dlConfiguration.compressedFileMimeTypes(), mimeType)) {
-
-			return "document-compressed";
-		}
-		else if (_containsMimeType(
-					_dlConfiguration.multimediaFileMimeTypes(), mimeType)) {
-
-			if (mimeType.startsWith("image")) {
-				return "document-image";
-			}
-
-			return "document-multimedia";
-		}
-		else if (_containsMimeType(
-					_dlConfiguration.presentationFileMimeTypes(), mimeType)) {
-
-			return "document-presentation";
-		}
-		else if (_containsMimeType(
-					_dlConfiguration.spreadSheetFileMimeTypes(), mimeType)) {
-
-			return "document-table";
-		}
-		else if (_containsMimeType(
-					_dlConfiguration.textFileMimeTypes(), mimeType)) {
-
-			return "document-text";
-		}
-		else if (_containsMimeType(
-					_dlConfiguration.vectorialFileMimeTypes(), mimeType)) {
-
-			return "document-vector";
-		}
-
-		return "document-default";
-	}
+//	private String _getIconFileMimeType(String mimeType) {
+//		if (_containsMimeType(_dlConfiguration.codeFileMimeTypes(), mimeType)) {
+//			return "document-code";
+//		}
+//		else if (_containsMimeType(
+//					_dlConfiguration.compressedFileMimeTypes(), mimeType)) {
+//
+//			return "document-compressed";
+//		}
+//		else if (_containsMimeType(
+//					_dlConfiguration.multimediaFileMimeTypes(), mimeType)) {
+//
+//			if (mimeType.startsWith("image")) {
+//				return "document-image";
+//			}
+//
+//			return "document-multimedia";
+//		}
+//		else if (_containsMimeType(
+//					_dlConfiguration.presentationFileMimeTypes(), mimeType)) {
+//
+//			return "document-presentation";
+//		}
+//		else if (_containsMimeType(
+//					_dlConfiguration.spreadSheetFileMimeTypes(), mimeType)) {
+//
+//			return "document-table";
+//		}
+//		else if (_containsMimeType(
+//					_dlConfiguration.textFileMimeTypes(), mimeType)) {
+//
+//			return "document-text";
+//		}
+//		else if (_containsMimeType(
+//					_dlConfiguration.vectorialFileMimeTypes(), mimeType)) {
+//
+//			return "document-vector";
+//		}
+//
+//		return "document-default";
+//	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ObjectEntryAssetRenderer.class);
@@ -514,7 +512,6 @@ public class ObjectEntryAssetRenderer
 		_assetDisplayPageFriendlyURLProvider;
 	private final DepotEntryLocalService _depotEntryLocalService;
 	private final DLAppLocalService _dlAppLocalService;
-	private final DLConfiguration _dlConfiguration;
 	private final DLURLHelper _dlURLHelper;
 	private final ObjectDefinition _objectDefinition;
 	private final ObjectEntry _objectEntry;

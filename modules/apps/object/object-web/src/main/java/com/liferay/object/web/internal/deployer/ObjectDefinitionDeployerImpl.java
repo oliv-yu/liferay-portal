@@ -250,7 +250,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				new ObjectEntryAssetRendererFactory(
 					_assetDisplayPageFriendlyURLProvider,
 					_depotEntryLocalService, _dlAppLocalService,
-					_dlConfiguration, _dlURLHelper, objectDefinition,
+					_dlURLHelper, objectDefinition,
 					_objectEntryDisplayContextFactory, _objectEntryLocalService,
 					_objectFieldLocalService, _objectEntryService,
 					_servletContext),
@@ -782,9 +782,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
-
-	@Reference
-	private DLConfiguration _dlConfiguration;
 
 	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
