@@ -9,12 +9,16 @@ import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvide
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
 import com.liferay.depot.service.DepotEntryLocalService;
+import com.liferay.document.library.configuration.DLConfiguration;
+import com.liferay.document.library.kernel.service.DLAppLocalService;
+import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.display.context.ObjectEntryDisplayContextFactory;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
+import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.web.internal.security.permission.resource.util.ObjectDefinitionResourcePermissionUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -36,9 +40,11 @@ public class ObjectEntryAssetRendererFactory
 	public ObjectEntryAssetRendererFactory(
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
 		DepotEntryLocalService depotEntryLocalService,
-		ObjectDefinition objectDefinition,
+		DLAppLocalService dlAppLocalService, DLConfiguration dlConfiguration,
+		DLURLHelper dlURLHelper, ObjectDefinition objectDefinition,
 		ObjectEntryDisplayContextFactory objectEntryDisplayContextFactory,
 		ObjectEntryLocalService objectEntryLocalService,
+		ObjectFieldLocalService objectFieldLocalService,
 		ObjectEntryService objectEntryService, ServletContext servletContext) {
 
 		setClassName(objectDefinition.getClassName());
@@ -48,9 +54,13 @@ public class ObjectEntryAssetRendererFactory
 		_assetDisplayPageFriendlyURLProvider =
 			assetDisplayPageFriendlyURLProvider;
 		_depotEntryLocalService = depotEntryLocalService;
+		_dlAppLocalService = dlAppLocalService;
+		_dlConfiguration = dlConfiguration;
+		_dlURLHelper = dlURLHelper;
 		_objectDefinition = objectDefinition;
 		_objectEntryDisplayContextFactory = objectEntryDisplayContextFactory;
 		_objectEntryLocalService = objectEntryLocalService;
+		_objectFieldLocalService = objectFieldLocalService;
 		_objectEntryService = objectEntryService;
 		_servletContext = servletContext;
 	}
@@ -66,9 +76,11 @@ public class ObjectEntryAssetRendererFactory
 		ObjectEntryAssetRenderer objectEntryAssetRenderer =
 			new ObjectEntryAssetRenderer(
 				_assetDisplayPageFriendlyURLProvider, _depotEntryLocalService,
+				_dlAppLocalService, _dlConfiguration, _dlURLHelper,
 				_objectDefinition,
 				_objectEntryLocalService.getObjectEntry(classPK),
-				_objectEntryDisplayContextFactory, _objectEntryService);
+				_objectEntryDisplayContextFactory, _objectEntryService,
+				_objectFieldLocalService);
 
 		objectEntryAssetRenderer.setServletContext(_servletContext);
 
@@ -137,11 +149,15 @@ public class ObjectEntryAssetRendererFactory
 	private final AssetDisplayPageFriendlyURLProvider
 		_assetDisplayPageFriendlyURLProvider;
 	private final DepotEntryLocalService _depotEntryLocalService;
+	private final DLAppLocalService _dlAppLocalService;
+	private final DLConfiguration _dlConfiguration;
+	private final DLURLHelper _dlURLHelper;
 	private final ObjectDefinition _objectDefinition;
 	private final ObjectEntryDisplayContextFactory
 		_objectEntryDisplayContextFactory;
 	private final ObjectEntryLocalService _objectEntryLocalService;
 	private final ObjectEntryService _objectEntryService;
+	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ServletContext _servletContext;
 
 }
