@@ -748,6 +748,17 @@ public class SearchResultSummaryDisplayContextBuilder {
 
 		String iconCssClass = assetRendererFactory.getIconCssClass();
 
+		if (Validator.isBlank(iconCssClass)) {
+			try {
+				iconCssClass = assetRenderer.getIconCssClass();
+			}
+			catch (PortalException exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception);
+				}
+			}
+		}
+
 		if (Validator.isNotNull(iconCssClass)) {
 			searchResultSummaryDisplayContext.setIconId(iconCssClass);
 			searchResultSummaryDisplayContext.setIconVisible(true);
