@@ -13,7 +13,6 @@ import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.asset.util.AssetHelper;
 import com.liferay.depot.service.DepotEntryLocalService;
-import com.liferay.document.library.configuration.DLConfiguration;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileSizeException;
 import com.liferay.document.library.kernel.exception.InvalidFileException;
@@ -249,11 +248,10 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				AssetRendererFactory.class,
 				new ObjectEntryAssetRendererFactory(
 					_assetDisplayPageFriendlyURLProvider,
-					_depotEntryLocalService, _dlAppLocalService,
-					_dlConfiguration, _dlURLHelper, objectDefinition,
-					_objectEntryDisplayContextFactory, _objectEntryLocalService,
-					_objectFieldLocalService, _objectEntryService,
-					_servletContext),
+					_depotEntryLocalService, _dlAppLocalService, _dlURLHelper,
+					objectDefinition, _objectEntryDisplayContextFactory,
+					_objectEntryLocalService, _objectFieldLocalService,
+					_objectEntryService, _servletContext),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"company.id", objectDefinition.getCompanyId()
 				).put(
@@ -783,9 +781,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
-
-	@Reference
-	private DLConfiguration _dlConfiguration;
 
 	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;

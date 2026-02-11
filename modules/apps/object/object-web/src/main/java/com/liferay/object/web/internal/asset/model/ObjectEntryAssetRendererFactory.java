@@ -9,7 +9,6 @@ import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvide
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.BaseAssetRendererFactory;
 import com.liferay.depot.service.DepotEntryLocalService;
-import com.liferay.document.library.configuration.DLConfiguration;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.util.DLURLHelper;
 import com.liferay.object.constants.ObjectDefinitionConstants;
@@ -40,8 +39,8 @@ public class ObjectEntryAssetRendererFactory
 	public ObjectEntryAssetRendererFactory(
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
 		DepotEntryLocalService depotEntryLocalService,
-		DLAppLocalService dlAppLocalService, DLConfiguration dlConfiguration,
-		DLURLHelper dlURLHelper, ObjectDefinition objectDefinition,
+		DLAppLocalService dlAppLocalService, DLURLHelper dlURLHelper,
+		ObjectDefinition objectDefinition,
 		ObjectEntryDisplayContextFactory objectEntryDisplayContextFactory,
 		ObjectEntryLocalService objectEntryLocalService,
 		ObjectFieldLocalService objectFieldLocalService,
@@ -55,7 +54,6 @@ public class ObjectEntryAssetRendererFactory
 			assetDisplayPageFriendlyURLProvider;
 		_depotEntryLocalService = depotEntryLocalService;
 		_dlAppLocalService = dlAppLocalService;
-		_dlConfiguration = dlConfiguration;
 		_dlURLHelper = dlURLHelper;
 		_objectDefinition = objectDefinition;
 		_objectEntryDisplayContextFactory = objectEntryDisplayContextFactory;
@@ -76,8 +74,7 @@ public class ObjectEntryAssetRendererFactory
 		ObjectEntryAssetRenderer objectEntryAssetRenderer =
 			new ObjectEntryAssetRenderer(
 				_assetDisplayPageFriendlyURLProvider, _depotEntryLocalService,
-				_dlAppLocalService, _dlConfiguration, _dlURLHelper,
-				_objectDefinition,
+				_dlAppLocalService, _dlURLHelper, _objectDefinition,
 				_objectEntryLocalService.getObjectEntry(classPK),
 				_objectEntryDisplayContextFactory, _objectEntryService,
 				_objectFieldLocalService);
@@ -150,7 +147,6 @@ public class ObjectEntryAssetRendererFactory
 		_assetDisplayPageFriendlyURLProvider;
 	private final DepotEntryLocalService _depotEntryLocalService;
 	private final DLAppLocalService _dlAppLocalService;
-	private final DLConfiguration _dlConfiguration;
 	private final DLURLHelper _dlURLHelper;
 	private final ObjectDefinition _objectDefinition;
 	private final ObjectEntryDisplayContextFactory
