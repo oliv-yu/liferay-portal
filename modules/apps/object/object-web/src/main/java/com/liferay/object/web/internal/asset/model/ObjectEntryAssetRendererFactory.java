@@ -93,7 +93,7 @@ public class ObjectEntryAssetRendererFactory
 		}
 
 		return _icons.getOrDefault(
-			_objectDefinition.getObjectFolderExternalReferenceCode(), "forms");
+			_objectDefinition.getExternalReferenceCode(), "forms");
 	}
 
 	@Override
