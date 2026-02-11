@@ -106,30 +106,6 @@ public class ObjectEntryAssetRenderer
 
 	@Override
 	public String getIconCssClass() {
-		if (_objectDefinition.isCMS()) {
-			String externalReferenceCode =
-				_objectDefinition.getExternalReferenceCode();
-
-			if (Objects.equals(externalReferenceCode, "L_CMS_BASIC_DOCUMENT")) {
-				return _getFileMimeType();
-			}
-			else if (Objects.equals(
-						externalReferenceCode, "L_CMS_BASIC_WEB_CONTENT")) {
-
-				return "forms";
-			}
-			else if (Objects.equals(externalReferenceCode, "L_CMS_BLOG")) {
-				return "blogs";
-			}
-			else if (Objects.equals(
-						externalReferenceCode, "L_CMS_EXTERNAL_VIDEO")) {
-
-				return "document-multimedia";
-			}
-
-			return "web-content";
-		}
-
 		return StringPool.BLANK;
 	}
 
