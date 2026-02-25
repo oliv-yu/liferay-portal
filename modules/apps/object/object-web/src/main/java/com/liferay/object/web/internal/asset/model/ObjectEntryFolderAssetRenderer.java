@@ -6,7 +6,7 @@
 package com.liferay.object.web.internal.asset.model;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
-import com.liferay.asset.kernel.model.BaseAssetRenderer;
+import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.depot.constants.DepotConstants;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryLocalService;
@@ -43,7 +43,7 @@ import java.util.Locale;
  * @author Mikel Lorza
  */
 public class ObjectEntryFolderAssetRenderer
-	extends BaseAssetRenderer<ObjectEntryFolder> {
+	extends BaseJSPAssetRenderer<ObjectEntryFolder> {
 
 	public ObjectEntryFolderAssetRenderer(
 		AssetDisplayPageFriendlyURLProvider assetDisplayPageFriendlyURLProvider,
@@ -80,6 +80,19 @@ public class ObjectEntryFolderAssetRenderer
 	@Override
 	public long getGroupId() {
 		return _objectEntryFolder.getGroupId();
+	}
+
+	@Override
+	public String getJspPath(
+		HttpServletRequest httpServletRequest, String template) {
+
+		if (template.equals(TEMPLATE_ABSTRACT) ||
+			template.equals(TEMPLATE_FULL_CONTENT)) {
+
+			return "/object_folders/edit_object_folder.jsp";
+		}
+
+		return null;
 	}
 
 	@Override
@@ -190,15 +203,19 @@ public class ObjectEntryFolderAssetRenderer
 
 	@Override
 	public boolean include(
-		HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse, String template) {
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse, String template)
+		throws Exception {
 
-		return false;
+		httpServletRequest.setAttribute(
+			"objectEntryFolderId", _objectEntryFolder.getObjectEntryFolderId());
+
+		return super.include(httpServletRequest, httpServletResponse, template);
 	}
 
 	@Override
 	public boolean isDisplayable() {
-		return false;
+		return true;
 	}
 
 	private boolean _hasPermission(
