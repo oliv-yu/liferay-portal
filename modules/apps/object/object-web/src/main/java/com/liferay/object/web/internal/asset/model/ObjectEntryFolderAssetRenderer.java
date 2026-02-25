@@ -12,19 +12,27 @@ import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
+import com.liferay.object.constants.ObjectPortletKeys;
 import com.liferay.object.model.ObjectEntryFolder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
+import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import jakarta.portlet.PortletRequest;
 import jakarta.portlet.PortletResponse;
+import jakarta.portlet.PortletURL;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -87,6 +95,55 @@ public class ObjectEntryFolderAssetRenderer
 	}
 
 	@Override
+	public PortletURL getURLEdit(
+			LiferayPortletRequest liferayPortletRequest,
+			LiferayPortletResponse liferayPortletResponse)
+		throws Exception {
+
+		HttpServletRequest httpServletRequest = _portal.getHttpServletRequest(
+			liferayPortletRequest);
+
+		Group group = GroupLocalServiceUtil.fetchGroup(
+			_objectEntryFolder.getGroupId());
+
+		if ((group != null) && group.isCompany()) {
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)httpServletRequest.getAttribute(
+					WebKeys.THEME_DISPLAY);
+
+			group = themeDisplay.getScopeGroup();
+		}
+
+		return PortletURLBuilder.create(
+			_portal.getControlPanelPortletURL(
+				httpServletRequest, group, ObjectPortletKeys.OBJECT_ENTRY_FOLDER, 0,
+				0, PortletRequest.RENDER_PHASE)
+		).setMVCRenderCommandName(
+			"/object_folders/edit_object_folder"
+		).setParameter(
+			"objectEntryFolderId", _objectEntryFolder.getObjectEntryFolderId()
+		).buildPortletURL();
+	}
+
+	@Override
+	public String getURLViewInContext(
+		LiferayPortletRequest liferayPortletRequest,
+		LiferayPortletResponse liferayPortletResponse,
+		String noSuchEntryRedirect)
+		throws Exception {
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)liferayPortletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		if (themeDisplay == null) {
+			return null;
+		}
+
+		return getURLViewInContext(themeDisplay, noSuchEntryRedirect);
+	}
+
+	@Override
 	public String getURLViewInContext(
 			ThemeDisplay themeDisplay, String noSuchEntryRedirect)
 		throws Exception {
@@ -95,27 +152,11 @@ public class ObjectEntryFolderAssetRenderer
 			return null;
 		}
 
-		DepotEntry depotEntry = _depotEntryLocalService.fetchGroupDepotEntry(
-			_objectEntryFolder.getGroupId());
-
-		if ((depotEntry == null) ||
-			(depotEntry.getType() != DepotConstants.TYPE_SPACE)) {
-
-			return _assetDisplayPageFriendlyURLProvider.getFriendlyURL(
-				new InfoItemReference(
-					getClassName(),
-					new ClassPKInfoItemIdentifier(getClassPK())),
-				themeDisplay);
-		}
-
-		return StringBundler.concat(
-			themeDisplay.getPortalURL(),
-			themeDisplay.getPathFriendlyURLPublic(),
-			GroupConstants.CMS_FRIENDLY_URL, "/e/view-folder/",
-			_portal.getClassNameId(getClassName()), StringPool.SLASH,
-			_objectEntryFolder.getObjectEntryFolderId(),
-			"?p_l_mode=read&redirect=",
-			HtmlUtil.escapeURL(themeDisplay.getURLCurrent()));
+		return _assetDisplayPageFriendlyURLProvider.getFriendlyURL(
+			new InfoItemReference(
+				getClassName(),
+				new ClassPKInfoItemIdentifier(getClassPK())),
+			themeDisplay);
 	}
 
 	@Override
