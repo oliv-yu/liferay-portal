@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
@@ -58,6 +59,7 @@ import com.liferay.portal.search.web.internal.util.SearchStringUtil;
 import com.liferay.portal.search.web.internal.util.SearchUtil;
 
 import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
 
@@ -368,8 +370,7 @@ public class SearchResultSummaryDisplayContextBuilder {
 
 		searchResultSummaryDisplayContext.setHighlightedTitle(
 			summary.getTitle());
-		searchResultSummaryDisplayContext.setPortletURL(
-			_portletURLFactory.getPortletURL());
+		searchResultSummaryDisplayContext.setPortletURL(_getPortletURL());
 
 		if (assetRenderer != null) {
 			searchResultSummaryDisplayContext.setTitle(
@@ -718,8 +719,7 @@ public class SearchResultSummaryDisplayContextBuilder {
 
 		searchResultSummaryDisplayContext.setHighlightedTitle(
 			summary.getTitle());
-		searchResultSummaryDisplayContext.setPortletURL(
-			_portletURLFactory.getPortletURL());
+		searchResultSummaryDisplayContext.setPortletURL(_getPortletURL());
 		searchResultSummaryDisplayContext.setViewURL(StringPool.BLANK);
 
 		_buildDocumentForm(searchResultSummaryDisplayContext);
@@ -1011,6 +1011,22 @@ public class SearchResultSummaryDisplayContextBuilder {
 
 	private String _getHighlightedValuesToString(String fieldName) {
 		return _getValuesToString(_getHighlightedFieldName(fieldName));
+	}
+
+	private PortletURL _getPortletURL() throws PortletException {
+		PortletURL portletURL = PortletURLBuilder.create(
+			_portletURLFactory.getPortletURL()
+		).buildPortletURL();
+
+		portletURL.setParameter("currentURL", (String)null);
+
+		return portletURL;
+
+		//		PortletURL rawPortletURL = _portletURLFactory.getPortletURL();
+
+		//		rawPortletURL.setParameter("currentURL", (String) null);
+
+		//		return rawPortletURL;
 	}
 
 	private String _getPortraitURLString(long userId) {

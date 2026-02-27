@@ -112,7 +112,21 @@ public class SearchResultsPortlet extends MVCPortlet {
 	}
 
 	protected String getCurrentURL(RenderRequest renderRequest) {
-		return _portal.getCurrentURL(renderRequest);
+		HttpServletRequest originalHttpServletRequest =
+			_portal.getOriginalServletRequest(
+				getHttpServletRequest(renderRequest));
+
+		String requestURL = originalHttpServletRequest.getRequestURL(
+		).toString();
+		String queryString = originalHttpServletRequest.getQueryString();
+
+		String fullRawURL = requestURL;
+
+		if (queryString != null) {
+			fullRawURL += "?" + queryString;
+		}
+
+		return HttpComponentsUtil.removeParameter(fullRawURL, "currentURL");
 	}
 
 	protected HttpServletRequest getHttpServletRequest(
@@ -443,7 +457,7 @@ public class SearchResultsPortlet extends MVCPortlet {
 		RenderRequest renderRequest, String paginationStartParameterName) {
 
 		return HttpComponentsUtil.removeParameter(
-			_portal.getCurrentURL(renderRequest), paginationStartParameterName);
+			getCurrentURL(renderRequest), paginationStartParameterName);
 	}
 
 	@Reference
