@@ -12,9 +12,11 @@ definition {
 	property testray.main.component.name = "Collections";
 
 	setUp {
-		task ("Enable DXP segments deprecation feature flag") {
-			SignIn.signIn();
+		TestCase.setUpPortalInstance();
 
+		User.firstLoginPG();
+
+		task ("Enable DXP segments deprecation feature flag") {
 			ApplicationsMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
@@ -30,10 +32,6 @@ definition {
 				featureFlag = "DXP Segments",
 				scope = "Deprecation");
 		}
-
-		TestCase.setUpPortalInstance();
-
-		User.firstLoginPG();
 
 		task ("Enable dynamic and manual selection") {
 			AssetPublisherPortlet.enableDynamicAndManualSelection();
