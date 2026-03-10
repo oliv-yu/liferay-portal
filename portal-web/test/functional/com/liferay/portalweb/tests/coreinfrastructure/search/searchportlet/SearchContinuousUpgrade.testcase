@@ -33,11 +33,23 @@ definition {
 			portlet = "Web Content");
 
 		for (var count : list "1,2,3") {
-			WebContentNavigator.gotoAddCP();
+			Click.clickAt(locator1 = "Button#PLUS");
+
+			SelectFrameTop();
+
+			MenuItem.click(menuItem = "Basic Web Content");
+
+			AssertVisible(locator1 = "TextInput#TITLE");
+
+			WaitForVisible(locator1 = "WCEditWebContent#SIDEBAR");
 
 			WebContent.addCP(webContentTitle = "WC Title ${count}");
 
-			WebContent.publishWithPermissions();
+			Button.clickPublish();
+
+			Click(locator1 = "WCEditWebContent#PUBLISH_WITH_PERMISSIONS_BUTTON");
+
+			WaitForElementPresent.waitForElementPresentNoException(locator1 = "Message#ALERT_DISMISSIBLE");
 		}
 
 		Navigator.openSpecificURL(url = "http://localhost:8080");
