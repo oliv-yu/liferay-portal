@@ -133,7 +133,11 @@ discovery.type: single-node
 http.host: ["_local_", "_site_"]
 ingest.geoip.downloader.enabled: false
 xpack.license.self_generated.type: trial
-xpack.security.enabled: false</echo>
+xpack.security.enabled: false
+cluster.routing.allocation.disk.watermark.low: 95%
+cluster.routing.allocation.disk.watermark.high: 97%
+cluster.routing.allocation.disk.watermark.flood_stage: 98%
+</echo>
 
 			<echo file="${elasticsearch.dir}/config/jvm.options.d/jvm.options">${line.separator}-Xms2g
 -Xmx2g</echo>
@@ -147,7 +151,10 @@ http.port: 9202
 ingest.geoip.downloader.enabled: false
 transport.port: 9500-9600
 xpack.license.self_generated.type: trial
-xpack.security.enabled: false</echo>
+xpack.security.enabled: false
+cluster.routing.allocation.disk.watermark.low: 95%
+cluster.routing.allocation.disk.watermark.high: 97%
+cluster.routing.allocation.disk.watermark.flood_stage: 98%</echo>
 		</sequential>
 	</macrodef>
 
@@ -300,7 +307,8 @@ elasticsearch.username: "kibana_system"</echo>
 	<macrodef name="configure-portal-remote-elasticsearch-osgi-properties">
 		<sequential>
 			<echo append="true" file="${liferay.home}/osgi/configs/com.liferay.portal.search.elasticsearch8.configuration.ElasticsearchConfiguration.config">${line.separator}minimumRequiredNodeVersion="${elasticsearch.version}"
-productionModeEnabled="true"</echo>
+productionModeEnabled="true"
+remoteClusterConnectionId="localcluster"</echo>
 		</sequential>
 	</macrodef>
 
