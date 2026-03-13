@@ -5,6 +5,8 @@
 
 package com.liferay.portal.search.web.internal.display.context;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -41,6 +43,14 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 					WebKeys.CURRENT_URL);
 
 				_url = portalURL.concat(currentURL);
+
+				try {
+					_url = PortalUtil.getLayoutFriendlyURL((ThemeDisplay)_portletRequest.getAttribute(
+						WebKeys.THEME_DISPLAY));
+				}
+				catch (PortalException e) {
+					e.printStackTrace();
+				}
 
 				Map<String, String[]> parameterMap =
 					HttpComponentsUtil.getParameterMap(_url);
