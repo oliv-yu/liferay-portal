@@ -42,15 +42,7 @@ public class PortletURLFactoryImpl implements PortletURLFactory {
 				String currentURL = (String)_portletRequest.getAttribute(
 					WebKeys.CURRENT_URL);
 
-				_url = portalURL.concat(currentURL);
-
-				try {
-					_url = PortalUtil.getLayoutFriendlyURL((ThemeDisplay)_portletRequest.getAttribute(
-						WebKeys.THEME_DISPLAY));
-				}
-				catch (PortalException e) {
-					e.printStackTrace();
-				}
+				_url = PortalUtil.escapeRedirect(portalURL.concat(currentURL));
 
 				Map<String, String[]> parameterMap =
 					HttpComponentsUtil.getParameterMap(_url);
