@@ -1,29 +1,31 @@
 {
 	"mappings": {
-		"properties": {
-			"companyId": {
-				"type": "keyword"
-			},
-			"date": {
-				"type": "date"
-			},
-			"deleted": {
-				"type": "boolean"
-			},
-			"id": {
-				"type": "keyword"
-			},
-			"instanceId": {
-				"type": "keyword"
-			},
-			"name": {
-				"type": "keyword"
-			},
-			"taskId": {
-				"type": "keyword"
-			},
-			"userId": {
-				"type": "keyword"
+		"WorkflowTasksType": {
+			"properties": {
+				"companyId": {
+					"type": "keyword"
+				},
+				"date": {
+					"type": "date"
+				},
+				"deleted": {
+					"type": "boolean"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"instanceId": {
+					"type": "keyword"
+				},
+				"name": {
+					"type": "keyword"
+				},
+				"taskId": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				}
 			}
 		}
 	}
