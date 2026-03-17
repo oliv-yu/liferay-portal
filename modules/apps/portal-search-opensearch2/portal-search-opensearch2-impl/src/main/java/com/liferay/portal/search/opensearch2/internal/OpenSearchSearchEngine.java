@@ -147,13 +147,13 @@ public class OpenSearchSearchEngine
 	}
 
 	@Override
-	public IndexWriter getIndexWriter() {
-		return _indexWriter;
+	public int getPriority() {
+		return 4;
 	}
 
 	@Override
-	public int getPriority() {
-		return 4;
+	public IndexWriter getIndexWriter() {
+		return _indexWriter;
 	}
 
 	@Override

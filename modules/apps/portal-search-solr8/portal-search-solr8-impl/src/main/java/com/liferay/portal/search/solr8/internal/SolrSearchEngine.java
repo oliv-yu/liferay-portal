@@ -25,13 +25,13 @@ public class SolrSearchEngine implements SearchEngine {
 	}
 
 	@Override
-	public IndexSearcher getIndexSearcher() {
-		return _indexSearcher;
+	public IndexWriter getIndexWriter() {
+		return _indexWriter;
 	}
 
 	@Override
-	public IndexWriter getIndexWriter() {
-		return _indexWriter;
+	public IndexSearcher getIndexSearcher() {
+		return _indexSearcher;
 	}
 
 	@Override
