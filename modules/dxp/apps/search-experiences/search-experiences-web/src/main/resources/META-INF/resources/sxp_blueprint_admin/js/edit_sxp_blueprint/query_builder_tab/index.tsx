@@ -121,52 +121,48 @@ function QueryBuilderTab({
 			className="layout-section-main query-builder-tab unified-query-builder-tab"
 			size="xxl"
 		>
-			<div className="layout-section-main-shift">
-				<div className="vertical-nav-content-wrapper">
-					<ScopeSelector scope={scope} setScope={setScope} />
+			<div className="vertical-nav-content-wrapper">
+				<ScopeSelector scope={scope} setScope={setScope} />
 
-					<Source
-						applyIndexerClauses={applyIndexerClauses}
-						assetSubtypesMap={assetSubtypesMap}
-						clauseContributorsList={clauseContributorsList}
-						frameworkConfig={frameworkConfig}
-						onApplyIndexerClausesChange={
-							onApplyIndexerClausesChange
-						}
-						onAssetSubtypesMapChange={onAssetSubtypesMapChange}
-						onChangeClauseContributorsVisibility={_handleChangeSidebarVisibility(
-							SIDEBAR_TYPES.CLAUSE_CONTRIBUTORS
-						)}
-						onChangeIndexerClausesHelpVisibility={_handleChangeSidebarVisibility(
-							SIDEBAR_TYPES.INDEXER_CLAUSES_HELP
-						)}
-						onChangeQueryContributorsHelpVisibility={_handleChangeSidebarVisibility(
-							SIDEBAR_TYPES.QUERY_CONTRIBUTORS_HELP
-						)}
-						onFetchSearchableTypes={onFetchSearchableTypes}
-						onFrameworkConfigChange={onFrameworkConfigChange}
-						searchableTypes={searchableTypes}
-					/>
+				<Source
+					applyIndexerClauses={applyIndexerClauses}
+					assetSubtypesMap={assetSubtypesMap}
+					clauseContributorsList={clauseContributorsList}
+					frameworkConfig={frameworkConfig}
+					onApplyIndexerClausesChange={onApplyIndexerClausesChange}
+					onAssetSubtypesMapChange={onAssetSubtypesMapChange}
+					onChangeClauseContributorsVisibility={_handleChangeSidebarVisibility(
+						SIDEBAR_TYPES.CLAUSE_CONTRIBUTORS
+					)}
+					onChangeIndexerClausesHelpVisibility={_handleChangeSidebarVisibility(
+						SIDEBAR_TYPES.INDEXER_CLAUSES_HELP
+					)}
+					onChangeQueryContributorsHelpVisibility={_handleChangeSidebarVisibility(
+						SIDEBAR_TYPES.QUERY_CONTRIBUTORS_HELP
+					)}
+					onFetchSearchableTypes={onFetchSearchableTypes}
+					onFrameworkConfigChange={onFrameworkConfigChange}
+					searchableTypes={searchableTypes}
+				/>
 
-					<QuerySXPElements
-						elementInstances={elementInstances}
-						entityJSON={entityJSON}
-						errors={errors}
-						indexFields={indexFields}
-						isIndexCompany={isIndexCompany}
-						isSubmitting={isSubmitting}
-						onBlur={onBlur}
-						onChange={onChange}
-						onChangeAddSXPElementVisibility={_handleChangeSidebarVisibility(
-							SIDEBAR_TYPES.ADD_SXP_ELEMENT
-						)}
-						onDeleteSXPElement={onDeleteSXPElement}
-						searchableTypes={searchableTypes}
-						setFieldTouched={setFieldTouched}
-						setFieldValue={setFieldValue}
-						touched={touched}
-					/>
-				</div>
+				<QuerySXPElements
+					elementInstances={elementInstances}
+					entityJSON={entityJSON}
+					errors={errors}
+					indexFields={indexFields}
+					isIndexCompany={isIndexCompany}
+					isSubmitting={isSubmitting}
+					onBlur={onBlur}
+					onChange={onChange}
+					onChangeAddSXPElementVisibility={_handleChangeSidebarVisibility(
+						SIDEBAR_TYPES.ADD_SXP_ELEMENT
+					)}
+					onDeleteSXPElement={onDeleteSXPElement}
+					searchableTypes={searchableTypes}
+					setFieldTouched={setFieldTouched}
+					setFieldValue={setFieldValue}
+					touched={touched}
+				/>
 			</div>
 		</ClayLayout.ContainerFluid>
 	);

@@ -157,45 +157,80 @@ function ConfigurationTab({
 	);
 
 	return (
-		<ClayLayout.ContainerFluid className="layout-section-main" size="xl">
-			<div className="layout-section-main-shift">
-				<div className="sheet sheet-lg">
-					<h2 className="sheet-title">
-						{Liferay.Language.get('configuration')}
-					</h2>
+		<ClayLayout.ContainerFluid className="layout-section-main" size="xxl">
+			<div className="sheet sheet-xxl">
+				<h2 className="sheet-title">
+					{Liferay.Language.get('configuration')}
+				</h2>
 
-					<div className="sheet-text">
-						<span className="help-text">
-							{Liferay.Language.get(
-								'enter-additional-blueprints-configuration-settings-below-refer-to-the-documentation-for-help'
-							)}
-						</span>
+				<div className="sheet-text">
+					<span className="help-text">
+						{Liferay.Language.get(
+							'enter-additional-blueprints-configuration-settings-below-refer-to-the-documentation-for-help'
+						)}
+					</span>
 
-						<LearnMessage resourceKey="search-blueprint-configuration" />
-					</div>
+					<LearnMessage resourceKey="search-blueprint-configuration" />
+				</div>
 
+				<div className="align-items-center c-mb-4">
+					<ClayToggle
+						aria-label={Liferay.Language.get(
+							'enable-as-a-collection-provider'
+						)}
+						label={
+							<>
+								{Liferay.Language.get(
+									'enable-as-a-collection-provider'
+								)}
+
+								<ClayTooltipProvider>
+									<span
+										title={
+											!frameworkConfig.collectionProvider
+												? Liferay.Language.get(
+														'enable-as-a-collection-provider-help'
+													)
+												: Liferay.Language.get(
+														'disable-as-a-collection-provider-help'
+													)
+										}
+									>
+										<ClayIcon
+											className="c-ml-2 text-secondary"
+											symbol="question-circle-full"
+										/>
+									</span>
+								</ClayTooltipProvider>
+							</>
+						}
+						onToggle={_handleCollectionProviderChange}
+						toggled={frameworkConfig.collectionProvider || false}
+					/>
+
+					<span className="c-ml-2 sheet-text">
+						<LearnMessage resourceKey="collections-with-search-blueprints" />
+					</span>
+				</div>
+
+				{isDefined(frameworkConfig.legacyAssetCollectionProvider) && (
 					<div className="align-items-center c-mb-4">
 						<ClayToggle
 							aria-label={Liferay.Language.get(
-								'enable-as-a-collection-provider'
+								'enable-as-a-collection-provider-with-return-type-asset'
 							)}
+							disabled={!frameworkConfig.collectionProvider}
 							label={
 								<>
 									{Liferay.Language.get(
-										'enable-as-a-collection-provider'
+										'enable-as-a-collection-provider-with-return-type-asset'
 									)}
 
 									<ClayTooltipProvider>
 										<span
-											title={
-												!frameworkConfig.collectionProvider
-													? Liferay.Language.get(
-															'enable-as-a-collection-provider-help'
-														)
-													: Liferay.Language.get(
-															'disable-as-a-collection-provider-help'
-														)
-											}
+											title={Liferay.Language.get(
+												'enable-as-a-collection-provider-with-return-type-asset-help'
+											)}
 										>
 											<ClayIcon
 												className="c-ml-2 text-secondary"
@@ -205,205 +240,158 @@ function ConfigurationTab({
 									</ClayTooltipProvider>
 								</>
 							}
-							onToggle={_handleCollectionProviderChange}
+							onToggle={
+								_handleLegacyAssetCollectionProviderChange
+							}
 							toggled={
-								frameworkConfig.collectionProvider || false
+								frameworkConfig.legacyAssetCollectionProvider ??
+								false
 							}
 						/>
+					</div>
+				)}
 
-						<span className="c-ml-2 sheet-text">
-							<LearnMessage resourceKey="collections-with-search-blueprints" />
+				<ClayForm.Group>
+					<label>
+						{Liferay.Language.get('aggregation-configuration')}
+					</label>
+
+					<div className="sheet-text">
+						<span className="help-text">
+							{Liferay.Language.get(
+								'aggregation-configuration-description'
+							)}
 						</span>
+
+						<LearnMessage resourceKey="aggregation-configuration" />
 					</div>
 
-					{isDefined(
-						frameworkConfig.legacyAssetCollectionProvider
-					) && (
-						<div className="align-items-center c-mb-4">
-							<ClayToggle
-								aria-label={Liferay.Language.get(
-									'enable-as-a-collection-provider-with-return-type-asset'
-								)}
-								disabled={!frameworkConfig.collectionProvider}
-								label={
-									<>
-										{Liferay.Language.get(
-											'enable-as-a-collection-provider-with-return-type-asset'
-										)}
+					{_renderEditor('aggregationConfig', aggregationConfig)}
+				</ClayForm.Group>
 
-										<ClayTooltipProvider>
-											<span
-												title={Liferay.Language.get(
-													'enable-as-a-collection-provider-with-return-type-asset-help'
-												)}
-											>
-												<ClayIcon
-													className="c-ml-2 text-secondary"
-													symbol="question-circle-full"
-												/>
-											</span>
-										</ClayTooltipProvider>
-									</>
-								}
-								onToggle={
-									_handleLegacyAssetCollectionProviderChange
-								}
-								toggled={
-									frameworkConfig.legacyAssetCollectionProvider ??
-									false
-								}
-							/>
-						</div>
-					)}
+				<ClayForm.Group>
+					<label>
+						{Liferay.Language.get('highlight-configuration')}
+					</label>
 
-					<ClayForm.Group>
-						<label>
-							{Liferay.Language.get('aggregation-configuration')}
-						</label>
-
-						<div className="sheet-text">
-							<span className="help-text">
-								{Liferay.Language.get(
-									'aggregation-configuration-description'
-								)}
-							</span>
-
-							<LearnMessage resourceKey="aggregation-configuration" />
-						</div>
-
-						{_renderEditor('aggregationConfig', aggregationConfig)}
-					</ClayForm.Group>
-
-					<ClayForm.Group>
-						<label>
-							{Liferay.Language.get('highlight-configuration')}
-						</label>
-
-						<div className="sheet-text">
-							<span className="help-text">
-								{Liferay.Language.get(
-									'highlight-configuration-description'
-								)}
-							</span>
-
-							<LearnMessage resourceKey="highlight-configuration" />
-						</div>
-
-						{_renderEditor('highlightConfig', highlightConfig)}
-					</ClayForm.Group>
-
-					<ClayForm.Group>
-						<label>
-							{Liferay.Language.get('sort-configuration')}
-						</label>
-
-						<div className="sheet-text">
-							<span className="help-text">
-								{Liferay.Language.get(
-									'sort-configuration-description'
-								)}
-							</span>
-
-							<LearnMessage resourceKey="sort-configuration" />
-						</div>
-
-						{_renderEditor('sortConfig', sortConfig)}
-					</ClayForm.Group>
-
-					<ClayForm.Group>
-						<label>
-							{Liferay.Language.get('parameter-configuration')}
-						</label>
-
-						<div className="sheet-text">
-							<span className="help-text">
-								{Liferay.Language.get(
-									'parameter-configuration-description'
-								)}
-							</span>
-
-							<LearnMessage resourceKey="parameter-configuration" />
-						</div>
-
-						{_renderEditor('parameterConfig', parameterConfig)}
-					</ClayForm.Group>
-
-					<ClayForm.Group>
-						<label>
-							{Liferay.Language.get('advanced-configuration')}
-						</label>
-
-						<div className="sheet-text">
-							<span className="help-text">
-								{Liferay.Language.get(
-									'advanced-configuration-description'
-								)}
-							</span>
-
-							<LearnMessage resourceKey="advanced-configuration" />
-						</div>
-
-						{_renderEditor('advancedConfig', advancedConfig)}
-					</ClayForm.Group>
-
-					{Liferay.FeatureFlags['LPS-153813'] && isCompanyAdmin && (
-						<ClayForm.Group>
-							<label>
-								{Liferay.Language.get('index-configuration')}
-							</label>
-
-							<div className="mb-4 sheet-text">
-								<span className="help-text">
-									{Liferay.Language.get(
-										'index-configuration-description'
-									)}
-								</span>
-
-								<LearnMessage resourceKey="index-configuration" />
-							</div>
-
-							<ClayRadioGroup
-								onChange={_handleIndexConfigurationRadioChange}
-								value={_isCompanyIndex()}
-							>
-								<ClayRadio
-									label={Liferay.Language.get(
-										'company-index'
-									)}
-									value={true}
-								/>
-
-								<ClayRadio
-									disabled={!searchIndexes.length}
-									label={Liferay.Language.get(
-										'configure-a-different-index'
-									)}
-									value={false}
-								/>
-							</ClayRadioGroup>
-
-							{!_isCompanyIndex() && (
-								<ClaySelect
-									aria-label={Liferay.Language.get(
-										'index-configuration'
-									)}
-									onChange={
-										_handleIndexConfigurationSelectChange
-									}
-									value={indexConfig.indexName}
-								>
-									{searchIndexes.map((searchIndex) => (
-										<ClaySelect.Option
-											key={searchIndex.name}
-											label={searchIndex.name}
-											value={searchIndex.name}
-										/>
-									))}
-								</ClaySelect>
+					<div className="sheet-text">
+						<span className="help-text">
+							{Liferay.Language.get(
+								'highlight-configuration-description'
 							)}
-						</ClayForm.Group>
-					)}
-				</div>
+						</span>
+
+						<LearnMessage resourceKey="highlight-configuration" />
+					</div>
+
+					{_renderEditor('highlightConfig', highlightConfig)}
+				</ClayForm.Group>
+
+				<ClayForm.Group>
+					<label>{Liferay.Language.get('sort-configuration')}</label>
+
+					<div className="sheet-text">
+						<span className="help-text">
+							{Liferay.Language.get(
+								'sort-configuration-description'
+							)}
+						</span>
+
+						<LearnMessage resourceKey="sort-configuration" />
+					</div>
+
+					{_renderEditor('sortConfig', sortConfig)}
+				</ClayForm.Group>
+
+				<ClayForm.Group>
+					<label>
+						{Liferay.Language.get('parameter-configuration')}
+					</label>
+
+					<div className="sheet-text">
+						<span className="help-text">
+							{Liferay.Language.get(
+								'parameter-configuration-description'
+							)}
+						</span>
+
+						<LearnMessage resourceKey="parameter-configuration" />
+					</div>
+
+					{_renderEditor('parameterConfig', parameterConfig)}
+				</ClayForm.Group>
+
+				<ClayForm.Group>
+					<label>
+						{Liferay.Language.get('advanced-configuration')}
+					</label>
+
+					<div className="sheet-text">
+						<span className="help-text">
+							{Liferay.Language.get(
+								'advanced-configuration-description'
+							)}
+						</span>
+
+						<LearnMessage resourceKey="advanced-configuration" />
+					</div>
+
+					{_renderEditor('advancedConfig', advancedConfig)}
+				</ClayForm.Group>
+
+				{Liferay.FeatureFlags['LPS-153813'] && isCompanyAdmin && (
+					<ClayForm.Group>
+						<label>
+							{Liferay.Language.get('index-configuration')}
+						</label>
+
+						<div className="mb-4 sheet-text">
+							<span className="help-text">
+								{Liferay.Language.get(
+									'index-configuration-description'
+								)}
+							</span>
+
+							<LearnMessage resourceKey="index-configuration" />
+						</div>
+
+						<ClayRadioGroup
+							onChange={_handleIndexConfigurationRadioChange}
+							value={_isCompanyIndex()}
+						>
+							<ClayRadio
+								label={Liferay.Language.get('company-index')}
+								value={true}
+							/>
+
+							<ClayRadio
+								disabled={!searchIndexes.length}
+								label={Liferay.Language.get(
+									'configure-a-different-index'
+								)}
+								value={false}
+							/>
+						</ClayRadioGroup>
+
+						{!_isCompanyIndex() && (
+							<ClaySelect
+								aria-label={Liferay.Language.get(
+									'index-configuration'
+								)}
+								onChange={_handleIndexConfigurationSelectChange}
+								value={indexConfig.indexName}
+							>
+								{searchIndexes.map((searchIndex) => (
+									<ClaySelect.Option
+										key={searchIndex.name}
+										label={searchIndex.name}
+										value={searchIndex.name}
+									/>
+								))}
+							</ClaySelect>
+						)}
+					</ClayForm.Group>
+				)}
 			</div>
 		</ClayLayout.ContainerFluid>
 	);

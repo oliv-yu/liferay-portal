@@ -2,21 +2,13 @@
 	.layout-section-main {
 		padding-bottom: 40px;
 		padding-top: 40px;
+		transition: margin-right ease 0.2s;
+		width: unset;
 
 		&.unified-query-builder-tab {
-			.layout-section-main-shift {
-				max-width: unset;
-				transition: margin-right ease 0.2s;
-			}
-
 			.sheet + .sheet {
 				margin-top: 24px;
 			}
-		}
-
-		.layout-section-main-shift {
-			max-width: $layoutSectionMainMaxWidth;
-			transition: margin-right ease 0.2s;
 		}
 
 		.configuration-header {
@@ -75,32 +67,30 @@
 		}
 	}
 
-	@mixin shifted($width) {
-		margin-right: calc(
-			max(
-				50% - (#{$layoutSectionMainMaxWidth} / 2),
-				#{$width} - (50vw - 50%) + 24px
-			)
+	@mixin shifted($sidebarWidth) {
+		margin-right: max(
+			(100% - #{$layoutSectionMainMaxWidth})/ 2,
+			#{$sidebarWidth} + 12px
 		);
 	}
 
 	@media (min-width: calc(#{$layoutSectionMainMinWidth} + #{$sidebarWidth})) {
 		.open-add-sxp-element,
 		.open-info {
-			.layout-section-main-shift {
+			.layout-section-main {
 				@include shifted($sidebarWidth);
 			}
 		}
 	}
 
 	@media (min-width: calc(#{$layoutSectionMainMinWidth} + #{$previewSidebarWidth})) {
-		.open-preview .layout-section-main-shift {
+		.open-preview .layout-section-main {
 			@include shifted($previewSidebarWidth);
 		}
 	}
 
 	@media (min-width: calc(#{$layoutSectionMainMinWidth} + #{$clauseContributorsSidebarWidth})) {
-		.open-clause-contributors .layout-section-main-shift {
+		.open-clause-contributors .layout-section-main {
 			@include shifted($clauseContributorsSidebarWidth);
 		}
 	}
