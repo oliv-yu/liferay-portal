@@ -101,6 +101,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SEARCH</td>
+	<td>//*[contains(@class,'management-bar')]//input[contains(@aria-label,'S') or contains(@aria-label,'s') or contains(@title,'s')][contains(@aria-label,'earch')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SEARCH_FILTER_LABEL_X</td>
 	<td>//span[contains(@class,'label-item') and contains(.,'${key_filter}')]/..//button</td>
 	<td></td>

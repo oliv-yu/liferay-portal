@@ -194,7 +194,7 @@ definition {
 		Navigator.gotoNavItem(navItem = "Elements");
 
 		if (${searchForElement} == "true") {
-			Search.searchCP(searchTerm = ${element});
+			ManagementBar.search(searchTerm = ${element});
 		}
 
 		Blueprints.gotoEntry(title = ${element});

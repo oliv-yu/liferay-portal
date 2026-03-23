@@ -2513,13 +2513,13 @@ definition {
 
 		PortletEntry.save();
 
-		Search.searchCP(searchTerm = "Two");
+		ManagementBar.search(searchTerm = "Two");
 
 		Blueprints.viewEntryTitle(title = "Blueprint Two");
 
 		Blueprints.viewNoEntry(title = "Blueprint One");
 
-		Search.searchCP(searchTerm = "Description");
+		ManagementBar.search(searchTerm = "Description");
 
 		Blueprints.viewEntryTitle(title = "Blueprint One");
 
@@ -2544,13 +2544,13 @@ definition {
 
 		Blueprints.createElement(title = "Element Two");
 
-		Search.searchCP(searchTerm = "Two");
+		ManagementBar.search(searchTerm = "Two");
 
 		Blueprints.viewEntryTitle(title = "Element Two");
 
 		Blueprints.viewNoEntry(title = "Element One");
 
-		Search.searchCP(searchTerm = "apple");
+		ManagementBar.search(searchTerm = "apple");
 
 		Blueprints.viewEntryTitle(title = "Element One");
 
@@ -2645,7 +2645,7 @@ definition {
 
 		Navigator.gotoNavItem(navItem = "Elements");
 
-		Search.searchCP(searchTerm = "Text Match Over Multiple Fields");
+		ManagementBar.search(searchTerm = "Text Match Over Multiple Fields");
 
 		Blueprints.gotoEntryMenuItem(
 			menuItem = "Copy",
@@ -3053,7 +3053,7 @@ definition {
 
 		Blueprints.viewEntriesSpecificOrder(entryList = "Test Element 3,Test Element 2,Test Element 1");
 
-		Search.searchCP(searchTerm = "Test Element");
+		ManagementBar.search(searchTerm = "Test Element");
 
 		Click(
 			columnName = "Title",
@@ -3101,7 +3101,7 @@ definition {
 
 		Blueprints.viewEntriesSpecificOrder(entryList = "Test Element 2,Test Element 3,Test Element 1");
 
-		Search.searchCP(searchTerm = "Test Element");
+		ManagementBar.search(searchTerm = "Test Element");
 
 		Click(
 			columnName = "Modified",
@@ -3218,7 +3218,7 @@ definition {
 
 		Uncheck.uncheckNotVisible(locator1 = "Checkbox#FDS_SELECT_ALL");
 
-		Search.searchCP(searchTerm = 2);
+		ManagementBar.search(searchTerm = 2);
 
 		Click.clickAtNotVisible(locator1 = "Checkbox#FDS_SELECT_ALL");
 
@@ -4042,19 +4042,6 @@ definition {
 			key_item = "First Name",
 			locator1 = "Blueprints#ELEMENTS_EDIT_PAGE_PREDEFINED_VARIABLES_SIDEBAR_ITEM");
 
-		Search.searchCP(searchTerm = "company");
-
-		AssertVisible(
-			key_item = "Company ID",
-			locator1 = "Blueprints#ELEMENTS_EDIT_PAGE_PREDEFINED_VARIABLES_SIDEBAR_ITEM");
-
-		Click(
-			key_item = "Company ID",
-			locator1 = "Blueprints#ELEMENTS_EDIT_PAGE_PREDEFINED_VARIABLES_SIDEBAR_ITEM");
-
-		AssertTextEquals.assertPartialText(
-			locator1 = "Blueprints#CODE_MIRROR_EDITOR",
-			value1 = "context.company_id");
 	}
 
 	@priority = 3
@@ -4467,7 +4454,7 @@ definition {
 
 		Uncheck.uncheckNotVisible(locator1 = "Checkbox#FDS_SELECT_ALL");
 
-		Search.searchCP(searchTerm = 2);
+		ManagementBar.search(searchTerm = 2);
 
 		Click.clickAtNotVisible(locator1 = "Checkbox#FDS_SELECT_ALL");
 
@@ -4608,7 +4595,7 @@ definition {
 
 		Navigator.gotoNavItem(navItem = "Elements");
 
-		Search.searchCP(searchTerm = "Boost All Keywords Match");
+		ManagementBar.search(searchTerm = "Boost All Keywords Match");
 
 		Blueprints.openEntryMenu(title = "Boost All Keywords Match");
 

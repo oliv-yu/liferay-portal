@@ -43,6 +43,21 @@ definition {
 	}
 
 	@summary = "Default summary"
+	macro search(searchTerm = null) {
+		WaitForElementPresent(locator1 = "ManagementBar#SEARCH");
+
+		Type(
+			locator1 = "ManagementBar#SEARCH",
+			value1 = ${searchTerm});
+
+		KeyPress(
+			locator1 = "ManagementBar#SEARCH",
+			value1 = "\RETURN");
+
+		WaitForLiferayEvent.initializeLiferayEventLog();
+	}
+
+	@summary = "Default summary"
 	macro setFilterAndOrder(orderBy = null, filterBy = null) {
 		if (isSet(filterBy)) {
 			Click.pauseClickAt(locator1 = "ManagementBar#FILTER");
