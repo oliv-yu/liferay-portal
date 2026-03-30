@@ -5,6 +5,7 @@ definition {
 	property custom.properties = "feature.flag.LPD-35013=false";
 	property minimum.slave.ram = "24";
 	property osgi.modules.includes = "wiki";
+	property portal.acceptance = "true";
 	property portal.release = "false";
 	property portal.suite.search.engine = "elasticsearch8,opensearch2";
 	property portal.upstream = "true";
@@ -90,7 +91,6 @@ definition {
 	test AddElementToQueryBuilder {
 		property environment.acceptance = "true";
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
-		property portal.acceptance = "true";
 
 		Blueprints.openBlueprintsAdmin();
 
@@ -2749,6 +2749,8 @@ definition {
 
 	@priority = 3
 	test SortBlueprintsAdminTable {
+		property portal.acceptance = "false";
+
 		Blueprints.openBlueprintsAdmin();
 
 		for (var count : list "1,2,3") {

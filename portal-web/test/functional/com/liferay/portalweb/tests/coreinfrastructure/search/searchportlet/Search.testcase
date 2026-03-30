@@ -2,6 +2,7 @@
 definition {
 
 	property browser.chrome.version = "139.0";
+	property portal.acceptance = "true";
 	property portal.release = "false";
 	property portal.suite.search.engine = "elasticsearch8,opensearch2";
 	property portal.upstream = "true";
@@ -993,6 +994,8 @@ definition {
 	@description = "LPS-182287 - A user can configure Custom Filter widgets with DDM fields"
 	@priority = 4
 	test FilterByDDMFields {
+		property portal.acceptance = "false";
+
 		task ("Add a web content structure with a text field") {
 			WebContentNavigator.openWebContentStructuresAdmin(siteURLKey = "guest");
 
@@ -1304,7 +1307,6 @@ definition {
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver";
 		property environment.acceptance = "true";
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
-		property portal.acceptance = "true";
 
 		JSONLayout.addPublicLayout(
 			groupName = "Guest",
@@ -1397,8 +1399,6 @@ definition {
 
 	@priority = 4
 	test NavigateToSearchResultsViaURL {
-		property portal.acceptance = "true";
-
 		JSONBlog.addEntry(
 			entryContent = "This is a blog about Potatoes",
 			entryTitle = "Potato Blog");
@@ -2125,7 +2125,6 @@ definition {
 	@priority = 4
 	test SearchDifferentScopesViaSearchWidget {
 		property custom.properties = "company.default.time.zone=America/Los_Angeles${line.separator}feature.flag.LPD-35013=true";
-		property portal.acceptance = "true";
 
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentTitle = "Potato Document",
@@ -2259,8 +2258,6 @@ definition {
 	@description = "This is a use case for LPS-81931"
 	@priority = 5
 	test SearchGlobalTemplateSmoke {
-		property portal.acceptance = "true";
-
 		HeadlessSite.addSite(siteName = "Site Name");
 
 		JSONBlog.addEntry(
@@ -3162,7 +3159,6 @@ definition {
 	@priority = 5
 	test ViewSearchResultDetails {
 		property app.server.types = "tomcat";
-		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
