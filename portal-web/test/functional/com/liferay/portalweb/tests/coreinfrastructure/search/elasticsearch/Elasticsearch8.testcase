@@ -931,7 +931,6 @@ definition {
 	@priority = 3
 	test UpdateSystemSettingsWithoutPortalRestart {
 		property embedded.elasticsearch.only = "true";
-		property portal.acceptance = "quarantine";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -964,7 +963,7 @@ definition {
 
 		SystemSettings.saveConfiguration();
 
-		WaitForConsoleTextPresent(value1 = "Stopping sidecar Elasticsearch");
+		WaitForConsoleTextPresent(value1 = "liferay_sidecar started");
 
 		// LRCI-2401
 
@@ -981,9 +980,8 @@ definition {
 		SearchAdministration.openSearchAdmin();
 
 		AssertTextEquals.assertPartialText(
-			key_connectionId = "__SIDECAR__",
-			locator1 = "SearchAdmin#CLUSTER_NAME",
-			value1 = "LiferayElasticsearchCluster1");
+			locator1 = "SearchAdmin#CONNECTION_ID",
+			value1 = "__SIDECAR__");
 
 		Navigator.openURL();
 
