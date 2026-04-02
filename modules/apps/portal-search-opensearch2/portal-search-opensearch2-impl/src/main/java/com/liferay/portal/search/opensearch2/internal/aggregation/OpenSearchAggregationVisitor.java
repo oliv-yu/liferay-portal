@@ -206,11 +206,29 @@ public class OpenSearchAggregationVisitor
 			DateHistogramAggregation.Builder dateHistogramAggregationBuilder =
 				AggregationBuilders.dateHistogram();
 
-		if (dateHistogramAggregation.getDateHistogramInterval() != null) {
-			dateHistogramAggregationBuilder.interval(
-				Time.of(
-					time -> time.time(
-						dateHistogramAggregation.getDateHistogramInterval())));
+		String interval = dateHistogramAggregation.getDateHistogramInterval();
+
+		if (interval != null) {
+			if (interval.endsWith("y") || interval.endsWith("q") ||
+				interval.endsWith("M") || interval.endsWith("w") ||
+				interval.endsWith("d") || interval.endsWith("h") ||
+				interval.endsWith("m")) {
+
+				if (interval.equals("7d")) {
+					interval = "1w";
+				}
+
+				final String finalInterval = interval;
+
+				dateHistogramAggregationBuilder.calendarInterval(
+					_toOpenSearchCalendarInterval(finalInterval));
+			}
+			else {
+				final String finalInterval = interval;
+
+				dateHistogramAggregationBuilder.fixedInterval(
+					Time.of(time -> time.time(finalInterval)));
+			}
 		}
 
 		dateHistogramAggregationBuilder.field(
@@ -258,6 +276,41 @@ public class OpenSearchAggregationVisitor
 			dateHistogramAggregation,
 			aggregationBuilder.dateHistogram(
 				dateHistogramAggregationBuilder.build()));
+	}
+
+	private org.opensearch.client.opensearch._types.aggregations.
+		CalendarInterval _toOpenSearchCalendarInterval(String interval) {
+
+		if (interval.endsWith("y")) {
+			return org.opensearch.client.opensearch._types.aggregations.
+				CalendarInterval.Year;
+		}
+		else if (interval.endsWith("q")) {
+			return org.opensearch.client.opensearch._types.aggregations.
+				CalendarInterval.Quarter;
+		}
+		else if (interval.endsWith("M")) {
+			return org.opensearch.client.opensearch._types.aggregations.
+				CalendarInterval.Month;
+		}
+		else if (interval.endsWith("w")) {
+			return org.opensearch.client.opensearch._types.aggregations.
+				CalendarInterval.Week;
+		}
+		else if (interval.endsWith("d")) {
+			return org.opensearch.client.opensearch._types.aggregations.
+				CalendarInterval.Day;
+		}
+		else if (interval.endsWith("h")) {
+			return org.opensearch.client.opensearch._types.aggregations.
+				CalendarInterval.Hour;
+		}
+		else if (interval.endsWith("m")) {
+			return org.opensearch.client.opensearch._types.aggregations.
+				CalendarInterval.Minute;
+		}
+
+		throw new IllegalArgumentException("Invalid interval: " + interval);
 	}
 
 	@Override
