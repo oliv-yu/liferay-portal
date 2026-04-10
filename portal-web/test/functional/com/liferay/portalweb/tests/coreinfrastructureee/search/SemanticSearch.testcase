@@ -67,7 +67,7 @@ definition {
 
 		AssertElementNotPresent(
 			key_fieldLabel = "Text Embedding Provider",
-			key_value = "txtai",
+			key_value = "txtai (Beta)",
 			locator1 = "Select#GENERIC_SELECT_VALUE");
 
 		AssertElementNotPresent(
@@ -77,10 +77,6 @@ definition {
 
 		OSGiConfig.deleteOSGiConfigFile(osgiConfigFileName = "com.liferay.portal.search.internal.ml.embedding.text.TextEmbeddingRetrieverImpl.config");
 
-		WaitForConsoleTextPresent(value1 = "Enabling txtai");
-
-		WaitForConsoleTextPresent(value1 = "Enabling hugging-face-inference-api");
-
 		// This pause allows the semantic search form to render after LPD-68429.
 
 		Pause(value1 = 60000);
@@ -89,7 +85,7 @@ definition {
 
 		AssertElementPresent(
 			key_fieldLabel = "Text Embedding Provider",
-			key_value = "txtai",
+			key_value = "txtai (Beta)",
 			locator1 = "Select#GENERIC_SELECT_VALUE");
 
 		AssertElementPresent(
@@ -101,7 +97,7 @@ definition {
 
 		AssertElementPresent(
 			key_fieldLabel = "Text Embedding Provider",
-			key_value = "txtai",
+			key_value = "txtai (Beta)",
 			locator1 = "Select#GENERIC_SELECT_VALUE");
 
 		AssertElementPresent(
