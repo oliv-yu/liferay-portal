@@ -873,11 +873,11 @@ definition {
 
 		PortletEntry.inputText(
 			fieldLabel = "Host Address",
-			text = "");
+			text = "null");
 
 		Button.click(button = "Test Configuration");
 
-		Alert.viewWarningSpecific(warningMessage = "Unable to connect to txtai. Connection failed with: java.lang.IllegalArgumentException: Host name may not be null.");
+		Alert.viewWarningSpecific(warningMessage = "Unable to connect to txtai (Beta). Connection failed with: java.net.UnknownHostException");
 
 		AntCommands.runCommand("build-test-semantic-search.xml", "stop-txtai");
 
@@ -885,7 +885,7 @@ definition {
 
 		Button.click(button = "Test Configuration");
 
-		Alert.viewWarningSpecific(warningMessage = "Unable to connect to txtai. Connection failed");
+		Alert.viewWarningSpecific(warningMessage = "Unable to connect to txtai (Beta). Connection failed");
 	}
 
 }
