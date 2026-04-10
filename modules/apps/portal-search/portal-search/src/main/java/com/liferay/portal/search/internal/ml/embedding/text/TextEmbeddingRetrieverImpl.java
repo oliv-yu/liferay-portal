@@ -177,6 +177,12 @@ public class TextEmbeddingRetrieverImpl implements TextEmbeddingRetriever {
 		if (disabledProviders != null) {
 			Collections.addAll(
 				_disabledProviderNames, (String[])disabledProviders);
+
+			if (_log.isInfoEnabled()) {
+				for (String providerName : _disabledProviderNames) {
+					_log.info("Disabling " + providerName);
+				}
+			}
 		}
 
 		_serviceRegistration = bundleContext.registerService(
