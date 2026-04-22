@@ -70,3 +70,19 @@ export {
 	selectedLanguageIdAtom,
 } from './translation_manager/state';
 export {default as Treeview} from './treeview/Treeview';
+
+export {
+	ConditionBuilder,
+	generateConditionId,
+} from './condition_builder/ConditionBuilder';
+export {DefaultValueInput} from './condition_builder/DefaultValueInput';
+export type {
+	ConditionBuilderProps,
+	ConditionType,
+	FilterCondition,
+	GenericOperator,
+	GenericProperty,
+	PropertyOption,
+	PropertyType,
+	ValueInputRenderer,
+} from './condition_builder/types';
