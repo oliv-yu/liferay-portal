@@ -11,6 +11,7 @@ import {
 	AssetVocabularyCategoriesSelector,
 } from 'asset-taglib';
 import PropTypes from 'prop-types';
+import RuleBuilder from './RuleBuilder';
 import React, {useCallback, useState} from 'react';
 
 const DEFAULT_RULE = {
@@ -93,7 +94,7 @@ function AssetTags({groupIds, index, namespace, rule, tagSelectorURL}) {
 	const [selectedItems, setSelectedItems] = useState(rule.selectedItems);
 
 	return (
-		<AssetTagsSelector
+		<div
 			eventName={`${namespace}selectTag`}
 			formGroupClassName="mb-0"
 			groupIds={groupIds}
@@ -309,6 +310,8 @@ function AssetFilterBuilder({
 
 	return (
 		<>
+			<RuleBuilder />
+
 			<ClayInput
 				name={`${namespace}queryLogicIndexes`}
 				type="hidden"
