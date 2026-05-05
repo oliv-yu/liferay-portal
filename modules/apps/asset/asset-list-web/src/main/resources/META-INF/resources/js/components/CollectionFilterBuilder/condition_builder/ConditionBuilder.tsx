@@ -42,6 +42,9 @@ export const TriggerLabel = React.forwardRef<HTMLButtonElement, any>(
 type ConditionRowProps = {
 	condition: GenericCondition;
 	getOperators: (property: GenericProperty) => GenericOperator[];
+	getQuantifierOptions?: (
+		property: GenericProperty
+	) => GenericOperator[] | null;
 	onChange: (condition: GenericCondition) => void;
 	onDelete: () => void;
 	properties: Array<GenericProperty | PropertyGroup>;
@@ -58,6 +61,7 @@ function isPropertyGroup(
 function ConditionRow({
 	condition,
 	getOperators,
+	getQuantifierOptions,
 	onChange,
 	onDelete,
 	properties,
@@ -77,6 +81,11 @@ function ConditionRow({
 	);
 
 	const operators = selectedProperty ? getOperators(selectedProperty) : [];
+
+	const quantifierOptions =
+		selectedProperty && getQuantifierOptions
+			? getQuantifierOptions(selectedProperty)
+			: null;
 
 	const handleValueChange = useCallback(
 		(value: string | Array<string | object>) => {
@@ -110,6 +119,7 @@ function ConditionRow({
 								operatorName:
 									operators?.length === 0 ? 'eq' : undefined,
 								propertyName: (key as string) || undefined,
+								quantifier: undefined,
 								value: undefined,
 							});
 						}}
@@ -162,6 +172,32 @@ function ConditionRow({
 					</div>
 				)}
 
+				{!!quantifierOptions?.length && (
+					<div className="condition-builder__select form-group mb-0 w-100">
+						<Picker
+							aria-label={Liferay.Language.get('quantifier')}
+							as={TriggerLabel}
+							disabled={!selectedProperty}
+							items={quantifierOptions.map((op) => ({
+								label: op.label,
+								value: op.value,
+							}))}
+							onSelectionChange={(key) =>
+								onChange({
+									...condition,
+									quantifier: (key as string) || undefined,
+								})
+							}
+							placeholder={Liferay.Language.get('select')}
+							selectedKey={condition.quantifier ?? ''}
+						>
+							{(item) => (
+								<Option key={item.value}>{item.label}</Option>
+							)}
+						</Picker>
+					</div>
+				)}
+
 				<div className="c-gap-2 condition-builder__value-input d-flex flex-grow-1">
 					{selectedProperty && condition.operatorName
 						? renderValueInput(
@@ -193,6 +229,7 @@ export function ConditionBuilder({
 	conditionType,
 	conditions,
 	getOperators,
+	getQuantifierOptions,
 	onChange,
 	properties,
 	renderValueInput,
@@ -272,6 +309,7 @@ export function ConditionBuilder({
 					<ConditionRow
 						condition={condition}
 						getOperators={getOperators}
+						getQuantifierOptions={getQuantifierOptions}
 						key={condition.id}
 						onChange={(updated) =>
 							handleUpdateCondition(index, updated)
