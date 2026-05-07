@@ -26,6 +26,7 @@ export interface FilterProperty {
 	label: string;
 	name: string;
 	options?: PropertyOption[];
+	sortable?: boolean;
 	type: PropertyType;
 }
 
