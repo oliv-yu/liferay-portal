@@ -27,7 +27,7 @@ export interface FilterProperty {
 	name: string;
 	options?: PropertyOption[];
 	sortable?: boolean;
-	type: PropertyType;
+	type?: PropertyType;
 }
 
 export interface FilterPropertyGroup {

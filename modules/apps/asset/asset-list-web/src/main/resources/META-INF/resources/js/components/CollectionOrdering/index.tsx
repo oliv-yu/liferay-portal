@@ -10,41 +10,64 @@ import ClayIcon from '@clayui/icon';
 import React, {useMemo, useState} from 'react';
 
 import useTypeProperties from '../../hooks/useTypeProperties';
+import {getPropertyKey} from '../CollectionFilterBuilder/types';
 
-import type {FilterProperty} from '../CollectionFilterBuilder/types';
+import type {
+	FilterProperty,
+	FilterPropertyGroup,
+} from '../CollectionFilterBuilder/types';
 
 type OrderByType = 'ASC' | 'DESC';
 
-interface ColumnOption {
-	label: string;
-	value: string;
-}
+type OrderBySelection = Pick<
+	FilterProperty,
+	'classNameId' | 'classTypeId' | 'name'
+>;
 
-interface ColumnGroup {
-	items: ColumnOption[];
-	label: string;
-}
-
-const STATIC_ORDER_BY_OPTIONS: ColumnOption[] = [
-	{label: Liferay.Language.get('title'), value: 'title'},
-	{label: Liferay.Language.get('create-date'), value: 'createDate'},
-	{label: Liferay.Language.get('modified-date'), value: 'modifiedDate'},
-	{label: Liferay.Language.get('publish-date'), value: 'publishDate'},
-	{label: Liferay.Language.get('expiration-date'), value: 'expirationDate'},
-	{label: Liferay.Language.get('priority'), value: 'priority'},
+const STATIC_ORDER_BY_FIELDS: Array<{label: string; name: string}> = [
+	{label: Liferay.Language.get('title'), name: 'title'},
+	{label: Liferay.Language.get('create-date'), name: 'createDate'},
+	{label: Liferay.Language.get('modified-date'), name: 'modifiedDate'},
+	{label: Liferay.Language.get('publish-date'), name: 'publishDate'},
+	{label: Liferay.Language.get('expiration-date'), name: 'expirationDate'},
+	{label: Liferay.Language.get('priority'), name: 'priority'},
 ];
 
-function isGroup(item: ColumnOption | ColumnGroup): item is ColumnGroup {
+function isGroup(
+	item: FilterProperty | FilterPropertyGroup
+): item is FilterPropertyGroup {
 	return 'items' in item;
+}
+
+function parseInitialOrderByColumn(value: string): OrderBySelection {
+	if (value.startsWith('{')) {
+		try {
+			const parsed = JSON.parse(value);
+
+			return {
+				classNameId: parsed.classNameId,
+				classTypeId: parsed.classTypeId,
+				name: parsed.name,
+			};
+		}
+		catch {}
+	}
+
+	return {
+		classNameId: undefined,
+		classTypeId: undefined,
+		name: value,
+	};
 }
 
 interface OrderByFieldProps {
 	columnName: string;
-	columnValue: string;
-	items: Array<ColumnOption | ColumnGroup>;
+	columnValue: OrderBySelection;
+	items: Array<FilterProperty | FilterPropertyGroup>;
 	label: string;
-	onColumnChange: (column: string) => void;
+	onColumnChange: (selection: OrderBySelection) => void;
 	onTypeChange: (type: OrderByType) => void;
+	propertiesMap: Map<string, OrderBySelection>;
 	typeName: string;
 	typeValue: OrderByType;
 }
@@ -56,10 +79,16 @@ function OrderByField({
 	label,
 	onColumnChange,
 	onTypeChange,
+	propertiesMap,
 	typeName,
 	typeValue,
 }: OrderByFieldProps) {
 	const ascending = typeValue === 'ASC';
+	const selectedKey = getPropertyKey(
+		columnValue.classNameId,
+		columnValue.classTypeId,
+		columnValue.name
+	);
 
 	return (
 		<div className="col-md-6">
@@ -69,8 +98,14 @@ function OrderByField({
 				<Picker
 					aria-label={label}
 					items={items}
-					onSelectionChange={(key) => onColumnChange(key as string)}
-					selectedKey={columnValue}
+					onSelectionChange={(key) => {
+						const selection = propertiesMap.get(key as string);
+
+						if (selection) {
+							onColumnChange(selection);
+						}
+					}}
+					selectedKey={selectedKey}
 				>
 					{(item) =>
 						isGroup(item) ? (
@@ -79,19 +114,41 @@ function OrderByField({
 								items={item.items}
 							>
 								{(option) => (
-									<Option key={option.value}>
+									<Option
+										key={getPropertyKey(
+											option.classNameId,
+											option.classTypeId,
+											option.name
+										)}
+									>
 										{option.label}
 									</Option>
 								)}
 							</DropDown.Group>
 						) : (
-							<Option key={item.value}>{item.label}</Option>
+							<Option
+								key={getPropertyKey(
+									item.classNameId,
+									item.classTypeId,
+									item.name
+								)}
+							>
+								{item.label}
+							</Option>
 						)
 					}
 				</Picker>
 			</div>
 
-			<input name={columnName} type="hidden" value={columnValue} />
+			<input
+				name={columnName}
+				type="hidden"
+				value={
+					columnValue.classNameId && columnValue.classTypeId
+						? JSON.stringify(columnValue)
+						: columnValue.name
+				}
+			/>
 
 			<div className="d-inline-flex">
 				<ClayButton
@@ -117,6 +174,44 @@ function OrderByField({
 			</div>
 
 			<input name={typeName} type="hidden" value={typeValue} />
+
+			{process.env.NODE_ENV === 'development' && (
+				<>
+					<div className="mt-4">
+						<code>{columnName}</code>
+
+						<pre
+							style={{
+								background: '#f5f5f5',
+								borderRadius: 4,
+								fontSize: 11,
+								marginTop: 8,
+								padding: 12,
+							}}
+						>
+							{columnValue.classNameId && columnValue.classTypeId
+								? JSON.stringify(columnValue)
+								: columnValue.name}
+						</pre>
+					</div>
+
+					<div className="mt-4">
+						<code>{typeName}</code>
+
+						<pre
+							style={{
+								background: '#f5f5f5',
+								borderRadius: 4,
+								fontSize: 11,
+								marginTop: 8,
+								padding: 12,
+							}}
+						>
+							{typeValue}
+						</pre>
+					</div>
+				</>
+			)}
 		</div>
 	);
 }
@@ -132,16 +227,20 @@ interface CollectionOrderingProps {
 }
 
 export default function CollectionOrdering({
-	initialOrderByColumn1 = 'title',
-	initialOrderByColumn2 = 'title',
+	initialOrderByColumn1 = '',
+	initialOrderByColumn2 = '',
 	initialOrderByType1 = 'ASC',
 	initialOrderByType2 = 'ASC',
 	namespace,
 	properties: initialProperties,
 	propertiesURL,
 }: CollectionOrderingProps) {
-	const [orderByColumn1, setOrderByColumn1] = useState(initialOrderByColumn1);
-	const [orderByColumn2, setOrderByColumn2] = useState(initialOrderByColumn2);
+	const [orderByColumn1, setOrderByColumn1] = useState<OrderBySelection>(() =>
+		parseInitialOrderByColumn(initialOrderByColumn1)
+	);
+	const [orderByColumn2, setOrderByColumn2] = useState<OrderBySelection>(() =>
+		parseInitialOrderByColumn(initialOrderByColumn2)
+	);
 	const [orderByType1, setOrderByType1] =
 		useState<OrderByType>(initialOrderByType1);
 	const [orderByType2, setOrderByType2] =
@@ -153,27 +252,38 @@ export default function CollectionOrdering({
 		initialProperties
 	);
 
-	const items = useMemo<Array<ColumnOption | ColumnGroup>>(() => {
-		if (!properties.length) {
-			return STATIC_ORDER_BY_OPTIONS;
+	const items = useMemo<Array<FilterProperty | FilterPropertyGroup>>(() => {
+		const typeOptions = properties.filter((property) => !!property.name); // Apply property.sortable
+
+		if (!typeOptions.length) {
+			return STATIC_ORDER_BY_FIELDS;
 		}
 
 		return [
-			{items: STATIC_ORDER_BY_OPTIONS, label: ''},
-			...(properties.length
-				? [
-						{
-							items: properties
-								.filter((property) => !!property.name) // Apply property.sortable
-								.map(({label, name}) => ({
-									label,
-									value: name,
-								})),
-							label: Liferay.Language.get('common-fields'),
-						},
-					]
-				: []),
+			{items: STATIC_ORDER_BY_FIELDS, label: ''},
+			{
+				items: typeOptions,
+				label: Liferay.Language.get('common-fields'),
+			},
 		];
+	}, [properties]);
+
+	const propertiesMap = useMemo(() => {
+		const map = new Map<string, OrderBySelection>();
+
+		STATIC_ORDER_BY_FIELDS.forEach(({name}) => {
+			map.set(getPropertyKey(undefined, undefined, name), {name});
+		});
+
+		properties.forEach(({classNameId, classTypeId, name}) => {
+			map.set(getPropertyKey(classNameId, classTypeId, name), {
+				classNameId,
+				classTypeId,
+				name,
+			});
+		});
+
+		return map;
 	}, [properties]);
 
 	return (
@@ -185,6 +295,7 @@ export default function CollectionOrdering({
 				label={Liferay.Language.get('order-by')}
 				onColumnChange={setOrderByColumn1}
 				onTypeChange={setOrderByType1}
+				propertiesMap={propertiesMap}
 				typeName={`${namespace}TypeSettingsProperties--orderByType1--`}
 				typeValue={orderByType1}
 			/>
@@ -196,6 +307,7 @@ export default function CollectionOrdering({
 				label={Liferay.Language.get('and-then-by')}
 				onColumnChange={setOrderByColumn2}
 				onTypeChange={setOrderByType2}
+				propertiesMap={propertiesMap}
 				typeName={`${namespace}TypeSettingsProperties--orderByType2--`}
 				typeValue={orderByType2}
 			/>
