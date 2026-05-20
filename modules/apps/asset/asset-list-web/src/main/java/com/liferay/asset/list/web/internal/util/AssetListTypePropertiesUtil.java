@@ -5,6 +5,12 @@
 
 package com.liferay.asset.list.web.internal.util;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.asset.kernel.model.ClassType;
+import com.liferay.asset.kernel.model.ClassTypeField;
+import com.liferay.asset.kernel.model.ClassTypeReader;
+import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalServiceUtil;
 import com.liferay.object.constants.ObjectFieldConstants;
@@ -12,11 +18,14 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectFieldLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Locale;
@@ -28,7 +37,7 @@ public class AssetListTypePropertiesUtil {
 
 	public static JSONArray getTypePropertiesJSONArray(
 		long[] classNameIds, long[] classTypeIds, long companyId,
-		Locale locale) {
+		DDMIndexer ddmIndexer, Locale locale) {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
@@ -46,32 +55,90 @@ public class AssetListTypePropertiesUtil {
 			ObjectDefinition objectDefinition = _resolveObjectDefinition(
 				classNameIds[i], classTypeId, companyId);
 
-			if (objectDefinition == null) {
+			if (objectDefinition != null) {
+				for (ObjectField objectField :
+						ObjectFieldLocalServiceUtil.getObjectFields(
+							objectDefinition.getObjectDefinitionId())) {
+
+					if (objectField.isMetadata()) {
+						continue;
+					}
+
+					String type = _toFilterType(objectField.getBusinessType());
+
+					if (type == null) {
+						continue;
+					}
+
+					jsonArray.put(
+						_toPropertyJSONObject(
+							classNameIds[i], classTypeId, locale, objectField,
+							type));
+				}
+
 				continue;
 			}
 
-			for (ObjectField objectField :
-					ObjectFieldLocalServiceUtil.getObjectFields(
-						objectDefinition.getObjectDefinitionId())) {
-
-				if (objectField.isMetadata()) {
-					continue;
-				}
-
-				String type = _toFilterType(objectField.getBusinessType());
-
-				if (type == null) {
-					continue;
-				}
-
-				jsonArray.put(
-					_toPropertyJSONObject(
-						classNameIds[i], classTypeId, locale, objectField,
-						type));
-			}
+			_addDDMTypeProperties(
+				classNameIds[i], classTypeId, ddmIndexer, jsonArray, locale);
 		}
 
 		return jsonArray;
+	}
+
+	private static void _addDDMTypeProperties(
+		long classNameId, long classTypeId, DDMIndexer ddmIndexer,
+		JSONArray jsonArray, Locale locale) {
+
+		if ((classTypeId <= 0) || (ddmIndexer == null)) {
+			return;
+		}
+
+		AssetRendererFactory<?> assetRendererFactory =
+			AssetRendererFactoryRegistryUtil.
+				getAssetRendererFactoryByClassNameId(classNameId);
+
+		if (assetRendererFactory == null) {
+			return;
+		}
+
+		ClassTypeReader classTypeReader =
+			assetRendererFactory.getClassTypeReader();
+
+		try {
+			ClassType classType = classTypeReader.getClassType(
+				classTypeId, locale);
+
+			// The encoded name is paired with the ddm__ prefix branch in
+			// AssetEntryQuery.checkOrderByCol and
+			// AssetHelperImpl._getSearchSort; classNameId and classTypeId are
+			// intentionally omitted from the emitted JSON so the React picker
+			// writes the encoded name verbatim (see CollectionOrdering's
+			// hidden-input render).
+
+			for (ClassTypeField classTypeField :
+					classType.getClassTypeFields()) {
+
+				jsonArray.put(
+					JSONUtil.put(
+						"label", classTypeField.getLabel()
+					).put(
+						"name",
+						ddmIndexer.encodeName(
+							classTypeId, classTypeField.getFieldReference(),
+							null)
+					).put(
+						"sortable", true
+					).put(
+						"type", classTypeField.getType()
+					));
+			}
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
+			}
+		}
 	}
 
 	private static ObjectDefinition _resolveObjectDefinition(
@@ -180,5 +247,8 @@ public class AssetListTypePropertiesUtil {
 
 		return jsonObject.put("options", optionsJSONArray);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetListTypePropertiesUtil.class);
 
 }

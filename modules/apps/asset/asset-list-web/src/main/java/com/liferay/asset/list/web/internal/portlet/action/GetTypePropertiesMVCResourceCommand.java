@@ -7,6 +7,7 @@ package com.liferay.asset.list.web.internal.portlet.action;
 
 import com.liferay.asset.list.constants.AssetListPortletKeys;
 import com.liferay.asset.list.web.internal.util.AssetListTypePropertiesUtil;
+import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
@@ -20,6 +21,7 @@ import jakarta.portlet.ResourceRequest;
 import jakarta.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Olivia Yu
@@ -54,7 +56,10 @@ public class GetTypePropertiesMVCResourceCommand
 			resourceRequest, resourceResponse,
 			AssetListTypePropertiesUtil.getTypePropertiesJSONArray(
 				classNameIds, classTypeIds, themeDisplay.getCompanyId(),
-				themeDisplay.getLocale()));
+				_ddmIndexer, themeDisplay.getLocale()));
 	}
+
+	@Reference
+	private DDMIndexer _ddmIndexer;
 
 }

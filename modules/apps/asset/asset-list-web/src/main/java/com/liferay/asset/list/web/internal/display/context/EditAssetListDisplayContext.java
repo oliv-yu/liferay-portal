@@ -1072,9 +1072,12 @@ public class EditAssetListDisplayContext {
 	}
 
 	public JSONArray getTypePropertiesJSONArray() {
+		DDMIndexer ddmIndexer = (DDMIndexer)_httpServletRequest.getAttribute(
+			AssetListWebKeys.DDM_INDEXER);
+
 		return AssetListTypePropertiesUtil.getTypePropertiesJSONArray(
 			getClassNameIds(), getClassTypeIds(), _themeDisplay.getCompanyId(),
-			_themeDisplay.getLocale());
+			ddmIndexer, _themeDisplay.getLocale());
 	}
 
 	public String getTypePropertiesURL() {
