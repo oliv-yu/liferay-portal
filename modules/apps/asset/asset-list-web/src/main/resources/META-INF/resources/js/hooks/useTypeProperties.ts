@@ -6,11 +6,11 @@
 import {addParams, fetch} from 'frontend-js-web';
 import {useEffect, useState} from 'react';
 
-import type {FilterProperty} from '../components/CollectionFilterBuilder/types';
+import type {FilterPropertyGroup} from '../components/CollectionFilterBuilder/types';
 
 interface Store {
-	listeners: Set<(properties: FilterProperty[]) => void>;
-	properties: FilterProperty[];
+	listeners: Set<(properties: FilterPropertyGroup[]) => void>;
+	properties: FilterPropertyGroup[];
 }
 
 const stores = new Map<string, Store>();
@@ -113,7 +113,7 @@ function fetchProperties(
 function getStore(
 	namespace: string,
 	propertiesURL: string,
-	initialProperties: FilterProperty[]
+	initialProperties: FilterPropertyGroup[]
 ): Store {
 	const key = `${namespace}|${propertiesURL}`;
 
@@ -140,10 +140,10 @@ function getStore(
 export default function useTypeProperties(
 	namespace: string,
 	propertiesURL?: string,
-	initialProperties: FilterProperty[] = []
-): FilterProperty[] {
+	initialProperties: FilterPropertyGroup[] = []
+): FilterPropertyGroup[] {
 	const [properties, setProperties] =
-		useState<FilterProperty[]>(initialProperties);
+		useState<FilterPropertyGroup[]>(initialProperties);
 
 	useEffect(() => {
 		if (!propertiesURL) {

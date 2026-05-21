@@ -222,7 +222,7 @@ interface CollectionOrderingProps {
 	initialOrderByType1?: OrderByType;
 	initialOrderByType2?: OrderByType;
 	namespace: string;
-	properties?: FilterProperty[];
+	properties?: FilterPropertyGroup[];
 	propertiesURL?: string;
 }
 
@@ -253,19 +253,18 @@ export default function CollectionOrdering({
 	);
 
 	const items = useMemo<Array<FilterProperty | FilterPropertyGroup>>(() => {
-		const typeOptions = properties.filter((property) => !!property.name); // Apply property.sortable
+		const sortableProperties = properties
+			.map(({items, label}) => ({
+				items: items.filter((property) => !!property.sortable),
+				label,
+			}))
+			.filter(({items}) => items.length);
 
-		if (!typeOptions.length) {
-			return STATIC_ORDER_BY_FIELDS;
+		if (!sortableProperties.length) {
+			return [{items: STATIC_ORDER_BY_FIELDS, label: 'common-fields'}];
 		}
 
-		return [
-			{items: STATIC_ORDER_BY_FIELDS, label: ''},
-			{
-				items: typeOptions,
-				label: Liferay.Language.get('common-fields'),
-			},
-		];
+		return sortableProperties;
 	}, [properties]);
 
 	const propertiesMap = useMemo(() => {
@@ -275,13 +274,15 @@ export default function CollectionOrdering({
 			map.set(getPropertyKey(undefined, undefined, name), {name});
 		});
 
-		properties.forEach(({classNameId, classTypeId, name}) => {
-			map.set(getPropertyKey(classNameId, classTypeId, name), {
-				classNameId,
-				classTypeId,
-				name,
+		properties
+			.flatMap((group) => group.items)
+			.forEach(({classNameId, classTypeId, name}) => {
+				map.set(getPropertyKey(classNameId, classTypeId, name), {
+					classNameId,
+					classTypeId,
+					name,
+				});
 			});
-		});
 
 		return map;
 	}, [properties]);
