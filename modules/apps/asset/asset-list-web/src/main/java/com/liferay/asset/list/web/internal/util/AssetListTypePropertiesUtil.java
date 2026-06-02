@@ -45,6 +45,10 @@ public class AssetListTypePropertiesUtil {
 				"label", LanguageUtil.get(locale, "common-fields")
 			));
 
+		if (classNameIds.length > 1) {
+			return jsonArray;
+		}
+
 		for (int i = 0; i < classNameIds.length; i++) {
 			long classTypeId = 0;
 
