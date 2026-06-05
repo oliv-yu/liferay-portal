@@ -89,6 +89,8 @@ public class OpenAPIResourceImpl {
 
 			add(EmbeddingProviderValidationResultResourceImpl.class);
 
+			add(InferenceEndpointTestResultResourceImpl.class);
+
 			add(SearchResultResourceImpl.class);
 
 			add(SuggestionResourceImpl.class);
@@ -98,4 +100,4 @@ public class OpenAPIResourceImpl {
 	};
 
 }
-// LIFERAY-REST-BUILDER-HASH:-1522889395
+// LIFERAY-REST-BUILDER-HASH:1025311972
