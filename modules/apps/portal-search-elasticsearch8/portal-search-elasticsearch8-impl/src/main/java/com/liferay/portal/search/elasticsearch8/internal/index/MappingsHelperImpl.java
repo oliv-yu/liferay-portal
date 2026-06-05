@@ -61,7 +61,7 @@ public class MappingsHelperImpl implements MappingsHelper {
 
 		this(
 			Collections.emptySet(), elasticsearchIndicesClient, null, indexName,
-			null, jsonFactory, jsonpMapper, Collections.emptySet(),
+			null, null, jsonFactory, jsonpMapper, Collections.emptySet(),
 			overrideMappings, searchEngineInformation, null);
 	}
 
@@ -69,8 +69,9 @@ public class MappingsHelperImpl implements MappingsHelper {
 		Set<String> assetTypes,
 		ElasticsearchIndicesClient elasticsearchIndicesClient,
 		ExternalEmbeddingCapabilityGate externalEmbeddingCapabilityGate,
-		String indexName, String inferenceId, JSONFactory jsonFactory,
-		JsonpMapper jsonpMapper, Set<Locale> locales, String overrideMappings,
+		String indexName, InferenceEndpointValidator inferenceEndpointValidator,
+		String inferenceId, JSONFactory jsonFactory, JsonpMapper jsonpMapper,
+		Set<Locale> locales, String overrideMappings,
 		SearchEngineInformation searchEngineInformation,
 		SemanticFieldNames semanticFieldNames) {
 
@@ -78,6 +79,7 @@ public class MappingsHelperImpl implements MappingsHelper {
 		_elasticsearchIndicesClient = elasticsearchIndicesClient;
 		_externalEmbeddingCapabilityGate = externalEmbeddingCapabilityGate;
 		_indexName = indexName;
+		_inferenceEndpointValidator = inferenceEndpointValidator;
 		_inferenceId = inferenceId;
 		_jsonFactory = jsonFactory;
 		_jsonpMapper = jsonpMapper;
@@ -212,6 +214,15 @@ public class MappingsHelperImpl implements MappingsHelper {
 			getClass(), IndexMappingsConstants.INDEX_MAPPINGS_FILE_NAME);
 
 		if (_isElasticsearchProvidedCapabilityAvailable()) {
+			if (_inferenceEndpointValidator != null) {
+				_inferenceEndpointValidator.validate(_inferenceId);
+			}
+			else if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Skipping the inference endpoint validation for index " +
+						_indexName + " because no validator was given");
+			}
+
 			defaultMappings = _addSemanticTextMappings(defaultMappings);
 		}
 		else {
@@ -243,7 +254,7 @@ public class MappingsHelperImpl implements MappingsHelper {
 	private boolean _isElasticsearchProvidedCapabilityAvailable() {
 		if ((_externalEmbeddingCapabilityGate == null) ||
 			(_semanticFieldNames == null) || _assetTypes.isEmpty() ||
-			_locales.isEmpty() || Validator.isNull(_inferenceId)) {
+			_locales.isEmpty() || Validator.isBlank(_inferenceId)) {
 
 			return false;
 		}
@@ -358,6 +369,7 @@ public class MappingsHelperImpl implements MappingsHelper {
 	private final ExternalEmbeddingCapabilityGate
 		_externalEmbeddingCapabilityGate;
 	private final String _indexName;
+	private final InferenceEndpointValidator _inferenceEndpointValidator;
 	private final String _inferenceId;
 	private final JSONFactory _jsonFactory;
 	private final JsonpMapper _jsonpMapper;

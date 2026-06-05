@@ -94,6 +94,8 @@ public class ElasticsearchTextEmbeddingIndexMigrationHelper
 			return;
 		}
 
+		_inferenceEndpointValidator.validate(inferenceId);
+
 		_putMapping(
 			_indexNameBuilder.getIndexName(companyId),
 			_buildSemanticTextMappings(assetTypes, inferenceId, locales));
@@ -173,6 +175,9 @@ public class ElasticsearchTextEmbeddingIndexMigrationHelper
 
 	@Reference
 	private IndexNameBuilder _indexNameBuilder;
+
+	@Reference
+	private InferenceEndpointValidator _inferenceEndpointValidator;
 
 	@Reference
 	private InferenceIdResolver _inferenceIdResolver;
