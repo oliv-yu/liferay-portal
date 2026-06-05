@@ -86,6 +86,22 @@ components:
                         type: object
                     type: array
             type: object
+        InferenceEndpointTestResult:
+            description:
+                Result of testing the active Elasticsearch inference endpoint with a deterministic sample text. Carries
+                the dimensions of the returned embedding, the endpoint's model, and the response time on success, or an
+                error message on failure.
+            properties:
+                dimensions:
+                    type: integer
+                errorMessage:
+                    type: string
+                modelId:
+                    type: string
+                responseTime:
+                    format: int64
+                    type: integer
+            type: object
         SearchRequestBody:
             description:
                 Request body for POST /search. Carries search context attributes (including blueprint selection and
@@ -723,6 +739,22 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/EmbeddingProviderValidationResult"
             tags: ["EmbeddingProviderValidationResult"]
+    /inference-endpoint/test:
+        post:
+            description:
+                Tests the active Elasticsearch inference endpoint by requesting a text embedding for a deterministic
+                sample text.
+            operationId: postInferenceEndpointTest
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/InferenceEndpointTestResult"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/InferenceEndpointTestResult"
+            tags: ["InferenceEndpointTestResult"]
     /suggestions:
         post:
             operationId: postSuggestionsPage
