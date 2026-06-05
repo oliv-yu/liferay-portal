@@ -10,10 +10,12 @@ import com.liferay.portal.search.rest.internal.graphql.mutation.v1_0.Mutation;
 import com.liferay.portal.search.rest.internal.graphql.query.v1_0.Query;
 import com.liferay.portal.search.rest.internal.resource.v1_0.EmbeddingModelResourceImpl;
 import com.liferay.portal.search.rest.internal.resource.v1_0.EmbeddingProviderValidationResultResourceImpl;
+import com.liferay.portal.search.rest.internal.resource.v1_0.InferenceEndpointTestResultResourceImpl;
 import com.liferay.portal.search.rest.internal.resource.v1_0.SearchResultResourceImpl;
 import com.liferay.portal.search.rest.internal.resource.v1_0.SuggestionResourceImpl;
 import com.liferay.portal.search.rest.resource.v1_0.EmbeddingModelResource;
 import com.liferay.portal.search.rest.resource.v1_0.EmbeddingProviderValidationResultResource;
+import com.liferay.portal.search.rest.resource.v1_0.InferenceEndpointTestResultResource;
 import com.liferay.portal.search.rest.resource.v1_0.SearchResultResource;
 import com.liferay.portal.search.rest.resource.v1_0.SuggestionResource;
 import com.liferay.portal.vulcan.graphql.servlet.ServletData;
@@ -43,6 +45,8 @@ public class ServletDataImpl implements ServletData {
 		Mutation.
 			setEmbeddingProviderValidationResultResourceComponentServiceObjects(
 				_embeddingProviderValidationResultResourceComponentServiceObjects);
+		Mutation.setInferenceEndpointTestResultResourceComponentServiceObjects(
+			_inferenceEndpointTestResultResourceComponentServiceObjects);
 		Mutation.setSearchResultResourceComponentServiceObjects(
 			_searchResultResourceComponentServiceObjects);
 		Mutation.setSuggestionResourceComponentServiceObjects(
@@ -94,6 +98,11 @@ public class ServletDataImpl implements ServletData {
 							EmbeddingProviderValidationResultResourceImpl.class,
 							"postEmbeddingValidateProviderConfiguration"));
 					put(
+						"mutation#createInferenceEndpointTest",
+						new ObjectValuePair<>(
+							InferenceEndpointTestResultResourceImpl.class,
+							"postInferenceEndpointTest"));
+					put(
 						"mutation#createSearchPage",
 						new ObjectValuePair<>(
 							SearchResultResourceImpl.class, "postSearchPage"));
@@ -120,6 +129,10 @@ public class ServletDataImpl implements ServletData {
 		_embeddingProviderValidationResultResourceComponentServiceObjects;
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
+	private ComponentServiceObjects<InferenceEndpointTestResultResource>
+		_inferenceEndpointTestResultResourceComponentServiceObjects;
+
+	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<SearchResultResource>
 		_searchResultResourceComponentServiceObjects;
 
@@ -132,4 +145,4 @@ public class ServletDataImpl implements ServletData {
 		_embeddingModelResourceComponentServiceObjects;
 
 }
-// LIFERAY-REST-BUILDER-HASH:85696989
+// LIFERAY-REST-BUILDER-HASH:-1887900845
