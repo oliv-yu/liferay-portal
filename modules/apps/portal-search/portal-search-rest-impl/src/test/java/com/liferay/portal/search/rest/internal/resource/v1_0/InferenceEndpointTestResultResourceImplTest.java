@@ -9,6 +9,8 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.service.Snapshot;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.rest.dto.v1_0.InferenceEndpointTestResult;
 import com.liferay.portal.search.semantic.InferenceEndpointMetadata;
@@ -17,6 +19,7 @@ import com.liferay.portal.search.semantic.InferenceEndpointTester;
 import com.liferay.portal.search.semantic.InferenceIdResolver;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.NotFoundException;
 
 import org.junit.After;
@@ -76,12 +79,22 @@ public class InferenceEndpointTestResultResourceImplTest {
 
 		_inferenceEndpointTestResultResourceImpl.contextCompany = _company;
 
+		Mockito.when(
+			_permissionChecker.isCompanyAdmin()
+		).thenReturn(
+			true
+		);
+
+		PermissionThreadLocal.setPermissionChecker(_permissionChecker);
+
 		_setUpFeatureFlagManagerUtil(true);
 	}
 
 	@After
 	public void tearDown() {
 		_featureFlagManagerUtilMockedStatic.close();
+
+		PermissionThreadLocal.setPermissionChecker(null);
 	}
 
 	@Test
@@ -155,6 +168,25 @@ public class InferenceEndpointTestResultResourceImplTest {
 			inferenceEndpointTestResult.getErrorMessage());
 
 		Mockito.verifyNoInteractions(_inferenceIdResolver);
+	}
+
+	@Test
+	public void testPostInferenceEndpointTestWithoutPermission() {
+		Mockito.when(
+			_permissionChecker.isCompanyAdmin()
+		).thenReturn(
+			false
+		);
+
+		try {
+			_inferenceEndpointTestResultResourceImpl.
+				postInferenceEndpointTest();
+
+			Assert.fail();
+		}
+		catch (Exception exception) {
+			Assert.assertTrue(exception instanceof NotAuthorizedException);
+		}
 	}
 
 	@Test
@@ -276,5 +308,7 @@ public class InferenceEndpointTestResultResourceImplTest {
 		_inferenceEndpointTestResultResourceImpl;
 	private final InferenceIdResolver _inferenceIdResolver = Mockito.mock(
 		InferenceIdResolver.class);
+	private final PermissionChecker _permissionChecker = Mockito.mock(
+		PermissionChecker.class);
 
 }

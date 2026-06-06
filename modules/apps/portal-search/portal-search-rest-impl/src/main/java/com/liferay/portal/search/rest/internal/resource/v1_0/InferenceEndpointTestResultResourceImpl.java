@@ -10,6 +10,8 @@ import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.service.Snapshot;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.rest.dto.v1_0.InferenceEndpointTestResult;
 import com.liferay.portal.search.rest.resource.v1_0.InferenceEndpointTestResultResource;
@@ -19,7 +21,9 @@ import com.liferay.portal.search.semantic.InferenceEndpointTester;
 import com.liferay.portal.search.semantic.InferenceIdResolver;
 import com.liferay.portal.search.semantic.TextEmbeddingProviderNames;
 
+import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -45,6 +49,8 @@ public class InferenceEndpointTestResultResourceImpl
 
 			throw new NotFoundException();
 		}
+
+		_checkPermission();
 
 		InferenceEndpointMetadataResolver inferenceEndpointMetadataResolver =
 			_inferenceEndpointMetadataResolverSnapshot.get();
@@ -118,6 +124,17 @@ public class InferenceEndpointTestResultResourceImpl
 					setErrorMessage(exception::getMessage);
 				}
 			};
+		}
+	}
+
+	private void _checkPermission() {
+		PermissionChecker permissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		if (!permissionChecker.isCompanyAdmin() &&
+			!permissionChecker.isOmniadmin()) {
+
+			throw new NotAuthorizedException(Response.Status.UNAUTHORIZED);
 		}
 	}
 
