@@ -337,21 +337,33 @@ export default function ({
 	 */
 	const _createInferenceEndpoint = async () => {
 		try {
-			const responseData = await fetch(
-				'/o/search/v1.0/inference-endpoint',
-				{
-					body: JSON.stringify(inferenceEndpointConfiguration),
-					headers: new Headers({
-						'Accept': 'application/json',
-						'Accept-Language':
-							Liferay.ThemeDisplay.getBCP47LanguageId(),
-						'Content-Type': 'application/json',
-					}),
-					method: 'POST',
-				}
-			).then((response) => response.json());
+			const response = await fetch('/o/search/v1.0/inference-endpoint', {
+				body: JSON.stringify(inferenceEndpointConfiguration),
+				headers: new Headers({
+					'Accept': 'application/json',
+					'Accept-Language':
+						Liferay.ThemeDisplay.getBCP47LanguageId(),
+					'Content-Type': 'application/json',
+				}),
+				method: 'POST',
+			});
 
-			return responseData.errorMessage || responseData.message || '';
+			const responseData = await response.json();
+
+			// A 409 Conflict (single-endpoint constraint) and other error
+			// statuses carry the message in "title"; the success body carries
+			// any provider error in "errorMessage".
+
+			if (!response.ok) {
+				return (
+					responseData.title ||
+					responseData.errorMessage ||
+					responseData.message ||
+					Liferay.Language.get('an-unexpected-error-occurred')
+				);
+			}
+
+			return responseData.errorMessage || '';
 		}
 		catch (error) {
 			if (process.env.NODE_ENV === 'development') {
