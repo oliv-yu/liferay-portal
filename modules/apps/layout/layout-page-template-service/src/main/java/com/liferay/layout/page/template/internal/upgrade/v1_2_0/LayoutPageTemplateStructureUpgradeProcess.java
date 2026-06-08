@@ -12,13 +12,10 @@ import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
-import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -28,7 +25,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,11 +33,9 @@ import java.util.List;
 public class LayoutPageTemplateStructureUpgradeProcess extends UpgradeProcess {
 
 	public LayoutPageTemplateStructureUpgradeProcess(
-		FragmentEntryLinkLocalService fragmentEntryLinkLocalService,
-		LayoutLocalService layoutLocalService) {
+		FragmentEntryLinkLocalService fragmentEntryLinkLocalService) {
 
 		_fragmentEntryLinkLocalService = fragmentEntryLinkLocalService;
-		_layoutLocalService = layoutLocalService;
 	}
 
 	@Override
@@ -157,25 +151,24 @@ public class LayoutPageTemplateStructureUpgradeProcess extends UpgradeProcess {
 	private void _upgradeLayouts() throws Exception {
 		long classNameId = PortalUtil.getClassNameId(Layout.class.getName());
 
-		ActionableDynamicQuery actionableDynamicQuery =
-			_layoutLocalService.getActionableDynamicQuery();
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				"select plid, groupId, companyId, userId, userName, " +
+					"createDate from Layout where type_ = ?")) {
 
-		actionableDynamicQuery.setAddCriteriaMethod(
-			dynamicQuery -> dynamicQuery.add(
-				RestrictionsFactoryUtil.eq(
-					"type", LayoutConstants.TYPE_CONTENT)));
-		actionableDynamicQuery.setPerformActionMethod(
-			(Layout layout) -> {
-				Date createDate = layout.getCreateDate();
+			preparedStatement.setString(1, LayoutConstants.TYPE_CONTENT);
 
-				_updateLayoutPageTemplateStructure(
-					layout.getGroupId(), layout.getCompanyId(),
-					layout.getUserId(), layout.getUserName(),
-					new Timestamp(createDate.getTime()), classNameId,
-					layout.getPlid());
-			});
-
-		actionableDynamicQuery.performActions();
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					_updateLayoutPageTemplateStructure(
+						resultSet.getLong("groupId"),
+						resultSet.getLong("companyId"),
+						resultSet.getLong("userId"),
+						resultSet.getString("userName"),
+						resultSet.getTimestamp("createDate"), classNameId,
+						resultSet.getLong("plid"));
+				}
+			}
+		}
 	}
 
 	private void _upgradeSchema() throws Exception {
@@ -190,6 +183,5 @@ public class LayoutPageTemplateStructureUpgradeProcess extends UpgradeProcess {
 		LayoutPageTemplateStructureUpgradeProcess.class);
 
 	private final FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
-	private final LayoutLocalService _layoutLocalService;
 
 }

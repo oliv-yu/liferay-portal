@@ -60,7 +60,7 @@ public class LayoutPageTemplateServiceUpgradeStepRegistrator
 		registry.register(
 			"1.1.1", "1.2.0",
 			new LayoutPageTemplateStructureUpgradeProcess(
-				_fragmentEntryLinkLocalService, _layoutLocalService));
+				_fragmentEntryLinkLocalService));
 
 		registry.register(
 			"1.2.0", "2.0.0",
