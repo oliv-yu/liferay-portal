@@ -80,6 +80,26 @@ public class ProviderInputValidatorRegistryTest {
 	}
 
 	@Test
+	public void testValidateServiceSettingsThatAreNotAMapIsTreatedAsEmpty() {
+		Mockito.when(
+			_providerInputValidator.validate(Collections.emptyMap())
+		).thenReturn(
+			Collections.emptyMap()
+		);
+
+		Map<String, String> fieldErrors =
+			_providerInputValidatorRegistry.validate("openai", "not a map");
+
+		Assert.assertTrue(fieldErrors.toString(), fieldErrors.isEmpty());
+
+		Mockito.verify(
+			_providerInputValidator
+		).validate(
+			Collections.emptyMap()
+		);
+	}
+
+	@Test
 	public void testValidateUnknownServiceIsValid() {
 		Map<String, String> fieldErrors =
 			_providerInputValidatorRegistry.validate(

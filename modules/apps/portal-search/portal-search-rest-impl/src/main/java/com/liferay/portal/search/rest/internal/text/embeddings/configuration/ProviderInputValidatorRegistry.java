@@ -30,13 +30,19 @@ import org.osgi.service.component.annotations.Deactivate;
 public class ProviderInputValidatorRegistry {
 
 	public Map<String, String> validate(
-		String service, Map<String, Object> serviceSettings) {
+		String service, Object serviceSettings) {
+
+		Map<String, Object> serviceSettingsMap = Collections.emptyMap();
+
+		if (serviceSettings instanceof Map) {
+			serviceSettingsMap = (Map<String, Object>)serviceSettings;
+		}
 
 		for (ProviderInputValidator providerInputValidator :
 				_serviceTrackerList) {
 
 			if (Objects.equals(providerInputValidator.getService(), service)) {
-				return providerInputValidator.validate(serviceSettings);
+				return providerInputValidator.validate(serviceSettingsMap);
 			}
 		}
 

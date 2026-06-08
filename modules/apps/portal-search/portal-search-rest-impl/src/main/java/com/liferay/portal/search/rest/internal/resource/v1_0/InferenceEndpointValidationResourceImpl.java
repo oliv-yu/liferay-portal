@@ -57,8 +57,7 @@ public class InferenceEndpointValidationResourceImpl
 
 		Map<String, String> validationFieldErrors =
 			_providerInputValidatorRegistry.validate(
-				service,
-				(Map<String, Object>)inferenceEndpoint.getServiceSettings());
+				service, inferenceEndpoint.getServiceSettings());
 
 		return new InferenceEndpointValidation() {
 			{
