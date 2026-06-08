@@ -13,6 +13,7 @@ import com.liferay.portal.search.rest.dto.v1_0.EmbeddingProviderConfiguration;
 import com.liferay.portal.search.rest.dto.v1_0.EmbeddingProviderValidationResult;
 import com.liferay.portal.search.rest.dto.v1_0.InferenceEndpoint;
 import com.liferay.portal.search.rest.dto.v1_0.InferenceEndpointTestResult;
+import com.liferay.portal.search.rest.dto.v1_0.InferenceEndpointValidation;
 import com.liferay.portal.search.rest.dto.v1_0.SearchRequestBody;
 import com.liferay.portal.search.rest.dto.v1_0.SearchResult;
 import com.liferay.portal.search.rest.dto.v1_0.SuggestionsContributorConfiguration;
@@ -20,6 +21,7 @@ import com.liferay.portal.search.rest.dto.v1_0.SuggestionsContributorResults;
 import com.liferay.portal.search.rest.resource.v1_0.EmbeddingProviderValidationResultResource;
 import com.liferay.portal.search.rest.resource.v1_0.InferenceEndpointResource;
 import com.liferay.portal.search.rest.resource.v1_0.InferenceEndpointTestResultResource;
+import com.liferay.portal.search.rest.resource.v1_0.InferenceEndpointValidationResource;
 import com.liferay.portal.search.rest.resource.v1_0.InferenceServiceResource;
 import com.liferay.portal.search.rest.resource.v1_0.SearchResultResource;
 import com.liferay.portal.search.rest.resource.v1_0.SuggestionResource;
@@ -74,6 +76,15 @@ public class Mutation {
 
 		_inferenceEndpointTestResultResourceComponentServiceObjects =
 			inferenceEndpointTestResultResourceComponentServiceObjects;
+	}
+
+	public static void
+		setInferenceEndpointValidationResourceComponentServiceObjects(
+			ComponentServiceObjects<InferenceEndpointValidationResource>
+				inferenceEndpointValidationResourceComponentServiceObjects) {
+
+		_inferenceEndpointValidationResourceComponentServiceObjects =
+			inferenceEndpointValidationResourceComponentServiceObjects;
 	}
 
 	public static void setInferenceServiceResourceComponentServiceObjects(
@@ -159,6 +170,22 @@ public class Mutation {
 			inferenceEndpointTestResultResource ->
 				inferenceEndpointTestResultResource.
 					postInferenceEndpointTest());
+	}
+
+	@GraphQLField(
+		description = "Validates the service settings for a BYO-LLM inference service before the endpoint is created."
+	)
+	public InferenceEndpointValidation createInferenceEndpointValidate(
+			@GraphQLName("inferenceEndpoint") InferenceEndpoint
+				inferenceEndpoint)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_inferenceEndpointValidationResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			inferenceEndpointValidationResource ->
+				inferenceEndpointValidationResource.
+					postInferenceEndpointValidate(inferenceEndpoint));
 	}
 
 	@GraphQLField
@@ -337,6 +364,26 @@ public class Mutation {
 	}
 
 	private void _populateResourceContext(
+			InferenceEndpointValidationResource
+				inferenceEndpointValidationResource)
+		throws Exception {
+
+		inferenceEndpointValidationResource.setContextAcceptLanguage(
+			_acceptLanguage);
+		inferenceEndpointValidationResource.setContextCompany(_company);
+		inferenceEndpointValidationResource.setContextHttpServletRequest(
+			_httpServletRequest);
+		inferenceEndpointValidationResource.setContextHttpServletResponse(
+			_httpServletResponse);
+		inferenceEndpointValidationResource.setContextUriInfo(_uriInfo);
+		inferenceEndpointValidationResource.setContextUser(_user);
+		inferenceEndpointValidationResource.setGroupLocalService(
+			_groupLocalService);
+		inferenceEndpointValidationResource.setRoleLocalService(
+			_roleLocalService);
+	}
+
+	private void _populateResourceContext(
 			InferenceServiceResource inferenceServiceResource)
 		throws Exception {
 
@@ -399,6 +446,8 @@ public class Mutation {
 		_inferenceEndpointResourceComponentServiceObjects;
 	private static ComponentServiceObjects<InferenceEndpointTestResultResource>
 		_inferenceEndpointTestResultResourceComponentServiceObjects;
+	private static ComponentServiceObjects<InferenceEndpointValidationResource>
+		_inferenceEndpointValidationResourceComponentServiceObjects;
 	private static ComponentServiceObjects<InferenceServiceResource>
 		_inferenceServiceResourceComponentServiceObjects;
 	private static ComponentServiceObjects<SearchResultResource>
@@ -425,4 +474,4 @@ public class Mutation {
 		_vulcanBatchEngineImportTaskResource;
 
 }
-// LIFERAY-REST-BUILDER-HASH:325546335
+// LIFERAY-REST-BUILDER-HASH:2060929992
