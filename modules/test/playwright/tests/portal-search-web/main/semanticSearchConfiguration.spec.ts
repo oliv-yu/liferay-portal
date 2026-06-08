@@ -240,10 +240,12 @@ testWithBYOLLMProviderSelectable(
 			'openai'
 		);
 
-		// Enter an unsupported model and an API key, then save
+		// Enter an unsupported model and an API key, then save. The fields
+		// are targeted by their id (the ES field name), not by their label,
+		// which Elasticsearch may localize.
 
-		await page.getByLabel('api_key').fill('test-api-key');
-		await page.getByLabel('model_id', {exact: true}).fill('not-a-model');
+		await page.locator('#byollm_api_key').fill('test-api-key');
+		await page.locator('#byollm_model_id').fill('not-a-model');
 
 		await semanticSearchConfigurationPage.saveButton.click();
 
