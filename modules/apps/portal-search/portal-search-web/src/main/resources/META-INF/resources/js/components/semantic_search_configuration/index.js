@@ -305,7 +305,7 @@ export default function ({
 	 */
 	const _validateInferenceEndpoint = async () => {
 		try {
-			const responseData = await fetch(
+			const response = await fetch(
 				'/o/search/v1.0/inference-endpoint/validate',
 				{
 					body: JSON.stringify(inferenceEndpointConfiguration),
@@ -317,7 +317,16 @@ export default function ({
 					}),
 					method: 'POST',
 				}
-			).then((response) => response.json());
+			);
+
+			// On a non-OK status there are no per-field errors to show; let
+			// the subsequent create call surface the error inline.
+
+			if (!response.ok) {
+				return {};
+			}
+
+			const responseData = await response.json();
 
 			return responseData.fieldErrors || {};
 		}
