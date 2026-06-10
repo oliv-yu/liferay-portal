@@ -821,7 +821,7 @@ export default function ({
 						label={Liferay.Language.get('text-embedding-provider')}
 						name={`${prefix}.providerName`}
 						onBlur={_handleInputBlur(`${prefix}.providerName`)}
-						onChange={(event) => {
+						onChange={(value) => {
 
 							// The BYO-LLM endpoint configuration belongs to
 							// the previously selected provider and must not
@@ -833,7 +833,7 @@ export default function ({
 							setInferenceEndpointErrorMessage('');
 							setInferenceEndpointFieldErrors({});
 
-							_handleInputChange(`${prefix}.providerName`)(event);
+							_handleInputChange(`${prefix}.providerName`)(value);
 						}}
 						type="select"
 						value={providerName}
@@ -970,35 +970,37 @@ export default function ({
 
 					{providerName !==
 						TEXT_EMBEDDING_PROVIDER_TYPES.ELASTICSEARCH_INFERENCE_ENDPOINT && (
-					<>
-						<Input
-							disabled={formik.isSubmitting}
-							error={errors?.attributes?.maxCharacterCount}
-							helpText={Liferay.Language.get(
-								'text-embedding-provider-max-character-count-help'
-							)}
-							label={Liferay.Language.get('max-character-count')}
-							name={`${prefix}.attributes.maxCharacterCount`}
-							onBlur={_handleInputBlur(
-								`${prefix}.attributes.maxCharacterCount`
-							)}
-							onChange={_handleInputChange(
-								`${prefix}.attributes.maxCharacterCount`
-							)}
-							options={{min: 50}}
-							required
-							touched={touched?.attributes?.maxCharacterCount}
-							type="number"
-							value={attributes?.maxCharacterCount}
-						>
-							<ClayForm.FeedbackGroup>
-								<ClayForm.Text>
-									{Liferay.Language.get(
-										'text-embedding-provider-max-character-count-refer-to-doc-help'
-									)}
-								</ClayForm.Text>
-							</ClayForm.FeedbackGroup>
-						</Input>
+						<>
+							<Input
+								disabled={formik.isSubmitting}
+								error={errors?.attributes?.maxCharacterCount}
+								helpText={Liferay.Language.get(
+									'text-embedding-provider-max-character-count-help'
+								)}
+								label={Liferay.Language.get(
+									'max-character-count'
+								)}
+								name={`${prefix}.attributes.maxCharacterCount`}
+								onBlur={_handleInputBlur(
+									`${prefix}.attributes.maxCharacterCount`
+								)}
+								onChange={_handleInputChange(
+									`${prefix}.attributes.maxCharacterCount`
+								)}
+								options={{min: 50}}
+								required
+								touched={touched?.attributes?.maxCharacterCount}
+								type="number"
+								value={attributes?.maxCharacterCount}
+							>
+								<ClayForm.FeedbackGroup>
+									<ClayForm.Text>
+										{Liferay.Language.get(
+											'text-embedding-provider-max-character-count-refer-to-doc-help'
+										)}
+									</ClayForm.Text>
+								</ClayForm.FeedbackGroup>
+							</Input>
 
 						<Input
 							disabled={formik.isSubmitting}
