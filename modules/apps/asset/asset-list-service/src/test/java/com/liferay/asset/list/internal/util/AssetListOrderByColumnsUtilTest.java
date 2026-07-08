@@ -85,23 +85,6 @@ public class AssetListOrderByColumnsUtilTest {
 	}
 
 	@Test
-	public void testToOrderByColumnResolvesLocalizedTextField() {
-		ObjectField objectField = _setUpObjectField(
-			ObjectFieldConstants.DB_TYPE_STRING, "title");
-
-		Mockito.when(
-			objectField.isLocalized()
-		).thenReturn(
-			true
-		);
-
-		Assert.assertEquals(
-			"nestedFieldArray.title.value_keyword_lowercase",
-			AssetListOrderByColumnsUtil.toOrderByColumn(
-				_COMPANY_ID, _buildOrderByColumn("title")));
-	}
-
-	@Test
 	public void testToOrderByColumnResolvesNumericField() {
 		_setUpObjectField(ObjectFieldConstants.DB_TYPE_DOUBLE, "amount");
 
@@ -109,6 +92,16 @@ public class AssetListOrderByColumnsUtilTest {
 			"nestedFieldArray.amount.value_double",
 			AssetListOrderByColumnsUtil.toOrderByColumn(
 				_COMPANY_ID, _buildOrderByColumn("amount")));
+	}
+
+	@Test
+	public void testToOrderByColumnResolvesTextField() {
+		_setUpObjectField(ObjectFieldConstants.DB_TYPE_STRING, "description");
+
+		Assert.assertEquals(
+			"nestedFieldArray.description.value_keyword_lowercase",
+			AssetListOrderByColumnsUtil.toOrderByColumn(
+				_COMPANY_ID, _buildOrderByColumn("description")));
 	}
 
 	@Test
