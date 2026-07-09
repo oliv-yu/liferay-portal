@@ -43,6 +43,8 @@ public class ClassUUIDSimilarResultsContributorTest
 
 	@Test
 	public void testDetectRoute() {
+		setUpPortalUtil();
+
 		RouteBuilderImpl routeBuilderImpl = new RouteBuilderImpl();
 
 		RouteHelper routeHelper = () ->
@@ -81,6 +83,8 @@ public class ClassUUIDSimilarResultsContributorTest
 
 	@Test
 	public void testWriteDestination() {
+		setUpPortalUtil();
+
 		AssetEntry assetEntry = Mockito.mock(AssetEntry.class);
 
 		Mockito.doReturn(
@@ -93,8 +97,6 @@ public class ClassUUIDSimilarResultsContributorTest
 			new DestinationBuilderImpl("http://localhost:8080?classUuid=uid");
 
 		setUpDestinationHelper(assetEntry);
-
-		setUpPortalUtil();
 
 		_classUUIDSimilarResultsContributor.writeDestination(
 			destinationBuilderImpl, destinationHelper);
