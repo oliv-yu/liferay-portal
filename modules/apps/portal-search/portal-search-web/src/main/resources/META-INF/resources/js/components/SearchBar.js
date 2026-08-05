@@ -105,32 +105,28 @@ export default function SearchBar({
 	);
 
 	const _fetchSuggestions = (searchValue, scopeValue) => {
-		fetch(
-			addParams(
-				{
-					currentURL: window.location.href,
-					destinationFriendlyURL: destinationFriendlyURL.trim().length
-						? destinationFriendlyURL
-						: '/search',
-					groupId: Liferay.ThemeDisplay.getScopeGroupId(),
-					keywordsParameterName,
-					plid: Liferay.ThemeDisplay.getPlid(),
-					scope: scopeValue,
-					search: searchValue,
-				},
-				fetchURL.href
-			),
-			{
-				body: _getSuggestionsContributorConfiguration(),
-				headers: new Headers({
-					'Accept': 'application/json',
-					'Accept-Language':
-						Liferay.ThemeDisplay.getBCP47LanguageId(),
-					'Content-Type': 'application/json',
-				}),
-				method: 'POST',
-			}
-		)
+		const params = {
+			currentURL: window.location.href,
+			groupId: Liferay.ThemeDisplay.getScopeGroupId(),
+			keywordsParameterName,
+			plid: Liferay.ThemeDisplay.getPlid(),
+			scope: scopeValue,
+			search: searchValue,
+		};
+
+		if (destinationFriendlyURL.trim().length) {
+			params.destinationFriendlyURL = destinationFriendlyURL;
+		}
+
+		fetch(addParams(params, fetchURL.href), {
+			body: _getSuggestionsContributorConfiguration(),
+			headers: new Headers({
+				'Accept': 'application/json',
+				'Accept-Language': Liferay.ThemeDisplay.getBCP47LanguageId(),
+				'Content-Type': 'application/json',
+			}),
+			method: 'POST',
+		})
 			.then((response) => response.json())
 			.then((data) => {
 				setSuggestionsResponseItems(data?.items || []);
