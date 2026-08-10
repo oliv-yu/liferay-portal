@@ -26,6 +26,7 @@ export class SearchPage {
 	readonly searchResultsPaginationItemsPerPageToggle: Locator;
 	readonly searchResultsPaginationItemsPerPageDropdown: Locator;
 	readonly searchResultsTotalLabel: Locator;
+	readonly suggestionsDropdown: Locator;
 
 	constructor(page: Page) {
 		this.page = page;
@@ -59,6 +60,9 @@ export class SearchPage {
 			this.searchBarPortletInMainContent.getByPlaceholder('Search...');
 		this.searchBarInputInNavBar =
 			this.searchBarPortletInNavBar.getByPlaceholder('Search...');
+		this.suggestionsDropdown = page.locator(
+			'.search-bar-suggestions-dropdown-menu'
+		);
 
 		// Search Results Elements
 
@@ -136,8 +140,24 @@ export class SearchPage {
 		);
 	}
 
+	getSuggestionItem(searchAssetTitle: string): Locator {
+		return this.suggestionsDropdown.locator('a').filter({
+			has: this.page.locator('.suggestion-item-title', {
+				hasText: searchAssetTitle,
+			}),
+		});
+	}
+
 	async goto() {
 		await this.page.goto('/web/guest/search');
+	}
+
+	async openSearchBarConfigurationInMainContent() {
+		await this.searchBarPortletInMainContent.getByLabel('Options').click();
+
+		await this.configurationMenuItem.click();
+
+		await expect(this.page.locator('#modalIframe')).toBeVisible();
 	}
 
 	async openSearchPortletConfiguration(
@@ -162,6 +182,24 @@ export class SearchPage {
 		await this.configurationMenuItem.click();
 
 		await expect(this.page.locator('#modalIframe')).toBeVisible();
+	}
+
+	async openSuggestions(searchAssetTitle: string) {
+		await expect(this.searchBarInputInMainContent).toBeVisible();
+
+		await expect(async () => {
+
+			// Clearing first drops the keywords below the suggestions display
+			// threshold, so refilling the same text still triggers a new request.
+
+			await this.searchBarInputInMainContent.fill('');
+
+			await this.searchBarInputInMainContent.fill(searchAssetTitle);
+
+			await expect(this.getSuggestionItem(searchAssetTitle)).toBeVisible({
+				timeout: 10000,
+			});
+		}).toPass({timeout: 60000});
 	}
 
 	async removeSearchPortlet(portletName: string, index: number = 0) {
@@ -306,5 +344,18 @@ export class SearchPage {
 				/facet-term-selected/
 			);
 		}
+	}
+
+	async setSearchBarDestinationPage(destination: string) {
+		await this.openSearchBarConfigurationInMainContent();
+
+		await this.fillPortletConfigurationsInput([
+			{
+				label: 'Destination Page',
+				value: destination,
+			},
+		]);
+
+		await this.savePortletConfiguration();
 	}
 }
