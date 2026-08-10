@@ -152,8 +152,8 @@ export class SearchPage {
 		await this.page.goto('/web/guest/search');
 	}
 
-	async openSearchBarConfigurationInMainContent() {
-		await this.searchBarPortletInMainContent.getByLabel('Options').click();
+	async openSearchBarConfigurationInNavBar() {
+		await this.searchBarInputInNavBar.getByLabel('Options').click();
 
 		await this.configurationMenuItem.click();
 
@@ -347,7 +347,7 @@ export class SearchPage {
 	}
 
 	async setSearchBarDestinationPage(destination: string) {
-		await this.openSearchBarConfigurationInMainContent();
+		await this.openSearchBarConfigurationInNavBar();
 
 		await this.fillPortletConfigurationsInput([
 			{

@@ -118,9 +118,16 @@ test.describe('Suggestion Destination', () => {
 			await test.step('Point the search bar at the destination page', async () => {
 				await page.goto(layoutPathname(site, originLayout));
 
-				await searchPage.setSearchBarDestinationPage(
-					destinationLayout.friendlyURL
-				);
+				await searchPage.openSearchBarConfigurationInNavBar();
+
+				await searchPage.fillPortletConfigurationsInput([
+					{
+						label: 'Destination Page',
+						value: destinationLayout.friendlyURL,
+					},
+				]);
+
+				await searchPage.savePortletConfiguration();
 			});
 
 			await test.step('Open the suggestion from the origin page', async () => {
@@ -157,9 +164,7 @@ test.describe('Suggestion Destination', () => {
 			});
 
 			await test.step('Check that the back link returns to the origin page', async () => {
-				await page
-					.getByRole('link', {name: 'Go to', exact: false})
-					.click();
+				await page.getByRole('link', {name: 'Go to'}).click();
 
 				await expect(page).toHaveURL(
 					(url) => url.pathname === layoutPathname(site, originLayout)
