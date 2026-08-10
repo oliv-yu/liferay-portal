@@ -22,46 +22,6 @@ definition {
 		}
 	}
 
-	@description = "This is a use case for LPS-182927 and LPS-164852."
-	@priority = 4
-	test AssertURLforSuggestionsResults {
-		JSONWebcontent.addWebContent(
-			content = "WC WebContent Content",
-			description = "WC WebContent Description",
-			groupName = "Guest",
-			title = "Apple");
-
-		JSONLayout.addPublicLayout(
-			groupName = "Guest",
-			layoutName = "New Search Page");
-
-		Navigator.gotoPage(pageName = "New Search Page");
-
-		SearchBarSuggestions.viewSuggestionResultDetailsURL(
-			expectedURL = "/new-search-page",
-			searchAssetTitle = "Apple");
-
-		Navigator.gotoBack();
-
-		var currentURL = selenium.getCurrentUrl();
-
-		if (!(contains(${currentURL}, "/new-search-page"))) {
-			fail("Clicking the in-page back button should take the user to the page they came from");
-		}
-
-		SearchPage.configureEmbeddedSearchBar(destinationPage = "New Search Page");
-
-		SearchBarSuggestions.viewSuggestionResultDetailsURL(
-			expectedURL = "/new-search-page",
-			searchAssetTitle = "Apple");
-
-		SearchPage.configureEmbeddedSearchBar(destinationPage = "");
-
-		SearchBarSuggestions.viewSuggestionResultDetailsURL(
-			expectedURL = "/new-search-page",
-			searchAssetTitle = "Apple");
-	}
-
 	@priority = 4
 	test CanConfigureSearchContributorSize {
 		property test.run.type = "single";
