@@ -615,22 +615,14 @@ public class AssetHelperImpl implements AssetHelper {
 			String orderByType, String sortField, Locale locale)
 		throws Exception {
 
-		if (sortField.startsWith("nestedFieldArray")) {
+		if (sortField.startsWith("nestedFieldArray.")) {
 			String[] sortFieldParts = StringUtil.split(
 				sortField, CharPool.PERIOD);
 
 			if (sortFieldParts.length == 3) {
-				SortOrder sortOrder = SortOrder.ASC;
-
-				if (Validator.isNotNull(orderByType) &&
-					!StringUtil.equalsIgnoreCase(orderByType, "asc")) {
-
-					sortOrder = SortOrder.DESC;
-				}
-
 				FieldSort fieldSort = _sorts.field(
 					sortFieldParts[0] + StringPool.PERIOD + sortFieldParts[2],
-					sortOrder);
+					_getSortOrder(orderByType));
 
 				NestedSort nestedSort = _sorts.nested(sortFieldParts[0]);
 
@@ -645,16 +637,8 @@ public class AssetHelperImpl implements AssetHelper {
 		}
 
 		if (sortField.startsWith(DDMIndexer.DDM_FIELD_PREFIX)) {
-			SortOrder sortOrder = SortOrder.ASC;
-
-			if (Validator.isNotNull(orderByType) &&
-				!StringUtil.equalsIgnoreCase(orderByType, "asc")) {
-
-				sortOrder = SortOrder.DESC;
-			}
-
 			return _ddmIndexer.createDDMStructureFieldSort(
-				sortField, locale, sortOrder);
+				sortField, locale, _getSortOrder(orderByType));
 		}
 
 		Sort sort = SortFactoryUtil.getSort(
@@ -682,6 +666,16 @@ public class AssetHelperImpl implements AssetHelper {
 			locale);
 
 		return new com.liferay.portal.search.sort.Sort[] {sort1, sort2};
+	}
+
+	private SortOrder _getSortOrder(String orderByType) {
+		if (Validator.isNotNull(orderByType) &&
+			!StringUtil.equalsIgnoreCase(orderByType, "asc")) {
+
+			return SortOrder.DESC;
+		}
+
+		return SortOrder.ASC;
 	}
 
 	private int _getSortType(String fieldType) {

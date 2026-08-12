@@ -6,7 +6,6 @@
 package com.liferay.asset.list.internal.util;
 
 import com.liferay.object.model.ObjectField;
-import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONException;
@@ -24,7 +23,7 @@ import java.util.Locale;
 public class AssetListOrderByColumnsUtil {
 
 	public static String toOrderByColumn(
-		long companyId, String orderByColumn, Locale locale) {
+		long companyId, Locale locale, String orderByColumn) {
 
 		if (Validator.isNull(orderByColumn) ||
 			!orderByColumn.startsWith(StringPool.OPEN_CURLY_BRACE)) {
@@ -55,12 +54,10 @@ public class AssetListOrderByColumnsUtil {
 			return orderByColumn;
 		}
 
-		String subfield = AssetListObjectFieldUtil.getSubfield(
-			locale, objectField);
-
 		return StringBundler.concat(
-			"nestedFieldArray.", objectField.getName(), StringPool.PERIOD,
-			subfield.substring(subfield.indexOf(CharPool.PERIOD) + 1));
+			AssetListObjectFieldUtil.NESTED_FIELD_ARRAY, StringPool.PERIOD,
+			objectField.getName(), StringPool.PERIOD,
+			AssetListObjectFieldUtil.getSubfieldSuffix(locale, objectField));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

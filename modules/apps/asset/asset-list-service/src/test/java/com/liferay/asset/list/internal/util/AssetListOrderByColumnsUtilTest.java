@@ -65,13 +65,12 @@ public class AssetListOrderByColumnsUtilTest {
 		Assert.assertEquals(
 			orderByColumn,
 			AssetListOrderByColumnsUtil.toOrderByColumn(
-				_COMPANY_ID, orderByColumn, LocaleUtil.US));
+				_COMPANY_ID, LocaleUtil.US, orderByColumn));
 	}
 
 	@Test
 	public void testToOrderByColumnResolvesKeywordTextField() {
 		ObjectField objectField = _setUpObjectField(
-			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 			ObjectFieldConstants.DB_TYPE_STRING, "name");
 
 		Mockito.when(
@@ -83,19 +82,17 @@ public class AssetListOrderByColumnsUtilTest {
 		Assert.assertEquals(
 			"nestedFieldArray.name.value_keyword",
 			AssetListOrderByColumnsUtil.toOrderByColumn(
-				_COMPANY_ID, _buildOrderByColumn("name"), LocaleUtil.US));
+				_COMPANY_ID, LocaleUtil.US, _buildOrderByColumn("name")));
 	}
 
 	@Test
 	public void testToOrderByColumnResolvesNumericField() {
-		_setUpObjectField(
-			ObjectFieldConstants.BUSINESS_TYPE_DECIMAL,
-			ObjectFieldConstants.DB_TYPE_DOUBLE, "amount");
+		_setUpObjectField(ObjectFieldConstants.DB_TYPE_DOUBLE, "amount");
 
 		Assert.assertEquals(
 			"nestedFieldArray.amount.value_double",
 			AssetListOrderByColumnsUtil.toOrderByColumn(
-				_COMPANY_ID, _buildOrderByColumn("amount"), LocaleUtil.US));
+				_COMPANY_ID, LocaleUtil.US, _buildOrderByColumn("amount")));
 	}
 
 	@Test
@@ -103,7 +100,7 @@ public class AssetListOrderByColumnsUtilTest {
 		Assert.assertEquals(
 			"priority",
 			AssetListOrderByColumnsUtil.toOrderByColumn(
-				_COMPANY_ID, "priority", LocaleUtil.US));
+				_COMPANY_ID, LocaleUtil.US, "priority"));
 	}
 
 	private static void _setUpJSONFactoryUtil() {
@@ -122,16 +119,8 @@ public class AssetListOrderByColumnsUtilTest {
 		).toString();
 	}
 
-	private ObjectField _setUpObjectField(
-		String businessType, String dbType, String name) {
-
+	private ObjectField _setUpObjectField(String dbType, String name) {
 		ObjectField objectField = Mockito.mock(ObjectField.class);
-
-		Mockito.when(
-			objectField.getBusinessType()
-		).thenReturn(
-			businessType
-		);
 
 		Mockito.when(
 			objectField.getDBType()

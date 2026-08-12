@@ -986,7 +986,7 @@ public class AssetListAssetEntryProviderImpl
 
 		if (FeatureFlagManagerUtil.isEnabled(companyId, "LPD-74731")) {
 			orderByColumn = AssetListOrderByColumnsUtil.toOrderByColumn(
-				companyId, orderByColumn, LocaleUtil.getMostRelevantLocale());
+				companyId, LocaleUtil.getMostRelevantLocale(), orderByColumn);
 		}
 
 		if (orderByColumn.startsWith(StringPool.OPEN_CURLY_BRACE)) {

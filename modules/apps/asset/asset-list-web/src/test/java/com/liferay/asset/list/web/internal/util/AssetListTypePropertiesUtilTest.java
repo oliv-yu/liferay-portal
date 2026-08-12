@@ -173,19 +173,19 @@ public class AssetListTypePropertiesUtilTest {
 				_mockObjectField(
 					ObjectFieldConstants.BUSINESS_TYPE_INTEGER, false, "rank"),
 				_mockObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_TEXT, false, "title"),
-				_mockObjectField(
 					ObjectFieldConstants.BUSINESS_TYPE_LONG_TEXT, false,
 					"summary"),
 				_mockObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT, false,
-					"body"),
+					ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST,
+					false, "labels"),
 				_mockObjectField(
 					ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, false,
 					"category"),
 				_mockObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST,
-					false, "labels")));
+					ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT, false,
+					"body"),
+				_mockObjectField(
+					ObjectFieldConstants.BUSINESS_TYPE_TEXT, false, "title")));
 
 		JSONArray jsonArray =
 			AssetListTypePropertiesUtil.getTypePropertiesJSONArray(
