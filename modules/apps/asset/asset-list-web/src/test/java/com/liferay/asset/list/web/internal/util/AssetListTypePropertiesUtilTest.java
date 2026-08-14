@@ -158,30 +158,37 @@ public class AssetListTypePropertiesUtilTest {
 
 	@Test
 	public void testGetTypePropertiesJSONArrayEmitsSortableFlag() {
+		String longTextFieldName = RandomTestUtil.randomString();
+		String multiselectPicklistFieldName = RandomTestUtil.randomString();
+		String richTextFieldName = RandomTestUtil.randomString();
+
 		_setUpObjectDefinition(
 			_CLASS_NAME_ID_1, _LABEL_1, _CLASS_TYPE_ID_1,
 			Arrays.asList(
 				_mockObjectField(
 					ObjectFieldConstants.BUSINESS_TYPE_BOOLEAN, false,
-					"active"),
+					RandomTestUtil.randomString()),
 				_mockObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_DATE, false, "due"),
+					ObjectFieldConstants.BUSINESS_TYPE_DATE, false,
+					RandomTestUtil.randomString()),
 				_mockObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_INTEGER, false, "rank"),
+					ObjectFieldConstants.BUSINESS_TYPE_INTEGER, false,
+					RandomTestUtil.randomString()),
 				_mockObjectField(
 					ObjectFieldConstants.BUSINESS_TYPE_LONG_TEXT, false,
-					"summary"),
+					longTextFieldName),
 				_mockObjectField(
 					ObjectFieldConstants.BUSINESS_TYPE_MULTISELECT_PICKLIST,
-					false, "labels"),
+					false, multiselectPicklistFieldName),
 				_mockObjectField(
 					ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, false,
-					"category"),
+					RandomTestUtil.randomString()),
 				_mockObjectField(
 					ObjectFieldConstants.BUSINESS_TYPE_RICH_TEXT, false,
-					"body"),
+					richTextFieldName),
 				_mockObjectField(
-					ObjectFieldConstants.BUSINESS_TYPE_TEXT, false, "title")));
+					ObjectFieldConstants.BUSINESS_TYPE_TEXT, false,
+					RandomTestUtil.randomString())));
 
 		JSONArray jsonArray =
 			AssetListTypePropertiesUtil.getTypePropertiesJSONArray(
@@ -202,8 +209,9 @@ public class AssetListTypePropertiesUtilTest {
 
 			boolean expectedSortable = true;
 
-			if (name.equals("body") || name.equals("labels") ||
-				name.equals("summary")) {
+			if (name.equals(longTextFieldName) ||
+				name.equals(multiselectPicklistFieldName) ||
+				name.equals(richTextFieldName)) {
 
 				expectedSortable = false;
 			}
