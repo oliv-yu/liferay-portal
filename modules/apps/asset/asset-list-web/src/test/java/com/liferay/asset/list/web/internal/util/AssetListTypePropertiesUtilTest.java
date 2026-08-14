@@ -188,11 +188,9 @@ public class AssetListTypePropertiesUtilTest {
 				new long[] {_CLASS_NAME_ID_1}, new long[] {_CLASS_TYPE_ID_1},
 				_COMPANY_ID, LocaleUtil.US);
 
-		JSONArray itemsJSONArray = jsonArray.getJSONObject(
-			1
-		).getJSONArray(
-			"items"
-		);
+		JSONObject groupJSONObject = jsonArray.getJSONObject(1);
+
+		JSONArray itemsJSONArray = groupJSONObject.getJSONArray("items");
 
 		Assert.assertEquals(
 			itemsJSONArray.toString(), 8, itemsJSONArray.length());
@@ -222,11 +220,9 @@ public class AssetListTypePropertiesUtilTest {
 			AssetListTypePropertiesUtil.getTypePropertiesJSONArray(
 				new long[0], new long[0], _COMPANY_ID, LocaleUtil.US);
 
-		JSONArray itemsJSONArray = jsonArray.getJSONObject(
-			0
-		).getJSONArray(
-			"items"
-		);
+		JSONObject groupJSONObject = jsonArray.getJSONObject(0);
+
+		JSONArray itemsJSONArray = groupJSONObject.getJSONArray("items");
 
 		for (int i = 0; i < itemsJSONArray.length(); i++) {
 			JSONObject itemJSONObject = itemsJSONArray.getJSONObject(i);
@@ -295,11 +291,9 @@ public class AssetListTypePropertiesUtilTest {
 
 		Assert.assertEquals(jsonArray.toString(), 2, jsonArray.length());
 
-		JSONArray itemsJSONArray = jsonArray.getJSONObject(
-			1
-		).getJSONArray(
-			"items"
-		);
+		JSONObject groupJSONObject = jsonArray.getJSONObject(1);
+
+		JSONArray itemsJSONArray = groupJSONObject.getJSONArray("items");
 
 		Assert.assertEquals(
 			itemsJSONArray.toString(), 1, itemsJSONArray.length());
@@ -406,13 +400,11 @@ public class AssetListTypePropertiesUtilTest {
 
 		Assert.assertEquals(jsonArray.toString(), 2, jsonArray.length());
 
-		JSONObject itemJSONObject = jsonArray.getJSONObject(
-			1
-		).getJSONArray(
-			"items"
-		).getJSONObject(
-			0
-		);
+		JSONObject groupJSONObject = jsonArray.getJSONObject(1);
+
+		JSONArray itemsJSONArray = groupJSONObject.getJSONArray("items");
+
+		JSONObject itemJSONObject = itemsJSONArray.getJSONObject(0);
 
 		Assert.assertEquals("picklist", itemJSONObject.getString("type"));
 
