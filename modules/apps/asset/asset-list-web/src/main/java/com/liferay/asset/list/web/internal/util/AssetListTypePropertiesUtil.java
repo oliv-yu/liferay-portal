@@ -93,28 +93,28 @@ public class AssetListTypePropertiesUtil {
 	private static JSONArray _getCommonFieldsItemsJSONArray(Locale locale) {
 		return JSONUtil.putAll(
 			_toCommonFieldJSONObject(
-				locale, "author-name", Field.USER_NAME, "text"),
+				"author-name", locale, Field.USER_NAME, "text"),
 			_toCommonFieldJSONObject(
-				locale, "created-date", Field.CREATE_DATE, "date"),
+				"created-date", locale, Field.CREATE_DATE, "date"),
 			_toCommonFieldJSONObject(
-				locale, "display-date", Field.DISPLAY_DATE, "date"),
+				"display-date", locale, Field.DISPLAY_DATE, "date"),
 			_toCommonFieldJSONObject(
-				locale, "expiration-date", Field.EXPIRATION_DATE, "date"),
+				"expiration-date", locale, Field.EXPIRATION_DATE, "date"),
 			_toCommonFieldJSONObject(
-				locale, "external-reference-code", "externalReferenceCode",
+				"external-reference-code", locale, "externalReferenceCode",
 				"text"),
 			_toCommonFieldJSONObject(
-				locale, "modified-date", "modifiedDate", "date"),
+				"modified-date", locale, "modifiedDate", "date"),
 			_toCommonFieldJSONObject(
-				locale, "priority", Field.PRIORITY, "decimal"),
+				"priority", locale, Field.PRIORITY, "decimal"),
 			_toCommonFieldJSONObject(
-				locale, "publish-date", Field.PUBLISH_DATE, "date"),
+				"publish-date", locale, Field.PUBLISH_DATE, "date"),
 			_toCommonFieldJSONObject(
-				locale, "review-date", Field.REVIEW_DATE, "date"),
-			_toCommonFieldJSONObject(locale, "status", Field.STATUS, "integer"),
-			_toCommonFieldJSONObject(locale, "title", Field.TITLE, "text"),
+				"review-date", locale, Field.REVIEW_DATE, "date"),
+			_toCommonFieldJSONObject("status", locale, Field.STATUS, "integer"),
+			_toCommonFieldJSONObject("title", locale, Field.TITLE, "text"),
 			_toCommonFieldJSONObject(
-				locale, "view-count", "viewCount", "integer"));
+				"view-count", locale, "viewCount", "integer"));
 	}
 
 	private static List<ObjectField> _getIndexedObjectFields(
@@ -163,7 +163,7 @@ public class AssetListTypePropertiesUtil {
 	}
 
 	private static JSONObject _toCommonFieldJSONObject(
-		Locale locale, String labelKey, String name, String type) {
+		String labelKey, Locale locale, String name, String type) {
 
 		return JSONUtil.put(
 			"label", LanguageUtil.get(locale, labelKey)
