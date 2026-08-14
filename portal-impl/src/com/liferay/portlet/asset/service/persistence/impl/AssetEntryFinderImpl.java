@@ -297,8 +297,8 @@ public class AssetEntryFinderImpl
 			sb.append("AND (ViewCountEntry.viewCount > 0) ");
 		}
 
-		String orderByCol1 = AssetEntryQuery.ORDER_BY_COLUMNS[2];
-		String orderByCol2 = AssetEntryQuery.ORDER_BY_COLUMNS[2];
+		String orderByCol1 = AssetEntryQuery.ORDER_BY_COLUMNS[3];
+		String orderByCol2 = AssetEntryQuery.ORDER_BY_COLUMNS[3];
 
 		for (String orderByColumn : AssetEntryQuery.ORDER_BY_COLUMNS) {
 			if (orderByColumn.equals(entryQuery.getOrderByCol1())) {

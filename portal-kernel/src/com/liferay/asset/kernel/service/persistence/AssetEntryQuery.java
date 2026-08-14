@@ -11,6 +11,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -37,9 +38,10 @@ import java.util.Map;
 public class AssetEntryQuery {
 
 	public static final String[] ORDER_BY_COLUMNS = {
-		"title", "createDate", "modifiedDate", "publishDate", "expirationDate",
-		"displayDate", "priority", "viewCount", "ratings", "ratingsTotalScore",
-		"userName", "reviewDate"
+		Field.CREATE_DATE, Field.DISPLAY_DATE, Field.EXPIRATION_DATE,
+		"modifiedDate", Field.PRIORITY, Field.PUBLISH_DATE, "ratings",
+		"ratingsTotalScore", Field.REVIEW_DATE, Field.TITLE, Field.USER_NAME,
+		"viewCount"
 	};
 
 	public static String checkOrderByCol(String orderByCol) {
@@ -52,7 +54,7 @@ public class AssetEntryQuery {
 			return orderByCol;
 		}
 
-		return ORDER_BY_COLUMNS[2];
+		return ORDER_BY_COLUMNS[3];
 	}
 
 	public static String checkOrderByType(String orderByType) {
