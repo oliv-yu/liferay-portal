@@ -110,33 +110,7 @@ public class AssetListAssetEntryProviderOrderByTest {
 
 	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-74731"))
 	@Test
-	public void testGetAssetEntriesInfoPageOrderedByDateField()
-		throws Exception {
-
-		ObjectEntry objectEntry1 = _addObjectEntry(
-			HashMapBuilder.<String, Serializable>put(
-				"dueDate", "2026-03-01"
-			).build());
-		ObjectEntry objectEntry2 = _addObjectEntry(
-			HashMapBuilder.<String, Serializable>put(
-				"dueDate", "2026-01-01"
-			).build());
-		ObjectEntry objectEntry3 = _addObjectEntry(
-			HashMapBuilder.<String, Serializable>put(
-				"dueDate", "2026-02-01"
-			).build());
-
-		_assertOrderedObjectEntries(
-			_buildOrderByColumn("dueDate"), "ASC", objectEntry2, objectEntry3,
-			objectEntry1);
-		_assertOrderedObjectEntries(
-			_buildOrderByColumn("dueDate"), "DESC", objectEntry1, objectEntry3,
-			objectEntry2);
-	}
-
-	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-74731"))
-	@Test
-	public void testGetAssetEntriesInfoPageOrderedByDisplayDateCommonField()
+	public void testGetAssetEntriesInfoPageOrderedByCommonFieldDisplayDate()
 		throws Exception {
 
 		long now = System.currentTimeMillis();
@@ -162,7 +136,7 @@ public class AssetListAssetEntryProviderOrderByTest {
 
 	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-74731"))
 	@Test
-	public void testGetAssetEntriesInfoPageOrderedByExpirationDateCommonField()
+	public void testGetAssetEntriesInfoPageOrderedByCommonFieldExpirationDate()
 		throws Exception {
 
 		long now = System.currentTimeMillis();
@@ -188,33 +162,7 @@ public class AssetListAssetEntryProviderOrderByTest {
 
 	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-74731"))
 	@Test
-	public void testGetAssetEntriesInfoPageOrderedByIntegerField()
-		throws Exception {
-
-		ObjectEntry objectEntry1 = _addObjectEntry(
-			HashMapBuilder.<String, Serializable>put(
-				"priority", 30
-			).build());
-		ObjectEntry objectEntry2 = _addObjectEntry(
-			HashMapBuilder.<String, Serializable>put(
-				"priority", 10
-			).build());
-		ObjectEntry objectEntry3 = _addObjectEntry(
-			HashMapBuilder.<String, Serializable>put(
-				"priority", 20
-			).build());
-
-		_assertOrderedObjectEntries(
-			_buildOrderByColumn("priority"), "ASC", objectEntry2, objectEntry3,
-			objectEntry1);
-		_assertOrderedObjectEntries(
-			_buildOrderByColumn("priority"), "DESC", objectEntry1, objectEntry3,
-			objectEntry2);
-	}
-
-	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-74731"))
-	@Test
-	public void testGetAssetEntriesInfoPageOrderedByReviewDateCommonField()
+	public void testGetAssetEntriesInfoPageOrderedByCommonFieldReviewDate()
 		throws Exception {
 
 		long now = System.currentTimeMillis();
@@ -240,7 +188,59 @@ public class AssetListAssetEntryProviderOrderByTest {
 
 	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-74731"))
 	@Test
-	public void testGetAssetEntriesInfoPageOrderedByTextField()
+	public void testGetAssetEntriesInfoPageOrderedByObjectFieldDate()
+		throws Exception {
+
+		ObjectEntry objectEntry1 = _addObjectEntry(
+			HashMapBuilder.<String, Serializable>put(
+				"dueDate", "2026-03-01"
+			).build());
+		ObjectEntry objectEntry2 = _addObjectEntry(
+			HashMapBuilder.<String, Serializable>put(
+				"dueDate", "2026-01-01"
+			).build());
+		ObjectEntry objectEntry3 = _addObjectEntry(
+			HashMapBuilder.<String, Serializable>put(
+				"dueDate", "2026-02-01"
+			).build());
+
+		_assertOrderedObjectEntries(
+			_buildOrderByColumn("dueDate"), "ASC", objectEntry2, objectEntry3,
+			objectEntry1);
+		_assertOrderedObjectEntries(
+			_buildOrderByColumn("dueDate"), "DESC", objectEntry1, objectEntry3,
+			objectEntry2);
+	}
+
+	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-74731"))
+	@Test
+	public void testGetAssetEntriesInfoPageOrderedByObjectFieldInteger()
+		throws Exception {
+
+		ObjectEntry objectEntry1 = _addObjectEntry(
+			HashMapBuilder.<String, Serializable>put(
+				"priority", 30
+			).build());
+		ObjectEntry objectEntry2 = _addObjectEntry(
+			HashMapBuilder.<String, Serializable>put(
+				"priority", 10
+			).build());
+		ObjectEntry objectEntry3 = _addObjectEntry(
+			HashMapBuilder.<String, Serializable>put(
+				"priority", 20
+			).build());
+
+		_assertOrderedObjectEntries(
+			_buildOrderByColumn("priority"), "ASC", objectEntry2, objectEntry3,
+			objectEntry1);
+		_assertOrderedObjectEntries(
+			_buildOrderByColumn("priority"), "DESC", objectEntry1, objectEntry3,
+			objectEntry2);
+	}
+
+	@FeatureFlags(featureFlags = @FeatureFlag(value = "LPD-74731"))
+	@Test
+	public void testGetAssetEntriesInfoPageOrderedByObjectFieldText()
 		throws Exception {
 
 		ObjectEntry objectEntry1 = _addObjectEntry(
