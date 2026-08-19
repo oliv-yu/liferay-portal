@@ -14,7 +14,6 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -65,7 +64,7 @@ public class AssetListOrderByColumnsUtilTest {
 		Assert.assertEquals(
 			orderByColumn,
 			AssetListOrderByColumnsUtil.toOrderByColumn(
-				_COMPANY_ID, LocaleUtil.US, orderByColumn));
+				_COMPANY_ID, orderByColumn));
 	}
 
 	@Test
@@ -82,7 +81,7 @@ public class AssetListOrderByColumnsUtilTest {
 		Assert.assertEquals(
 			"nestedFieldArray.name.value_keyword",
 			AssetListOrderByColumnsUtil.toOrderByColumn(
-				_COMPANY_ID, LocaleUtil.US, _buildOrderByColumn("name")));
+				_COMPANY_ID, _buildOrderByColumn("name")));
 	}
 
 	@Test
@@ -92,7 +91,17 @@ public class AssetListOrderByColumnsUtilTest {
 		Assert.assertEquals(
 			"nestedFieldArray.amount.value_double",
 			AssetListOrderByColumnsUtil.toOrderByColumn(
-				_COMPANY_ID, LocaleUtil.US, _buildOrderByColumn("amount")));
+				_COMPANY_ID, _buildOrderByColumn("amount")));
+	}
+
+	@Test
+	public void testToOrderByColumnResolvesTextField() {
+		_setUpObjectField(ObjectFieldConstants.DB_TYPE_STRING, "description");
+
+		Assert.assertEquals(
+			"nestedFieldArray.description.value_keyword_lowercase",
+			AssetListOrderByColumnsUtil.toOrderByColumn(
+				_COMPANY_ID, _buildOrderByColumn("description")));
 	}
 
 	@Test
@@ -100,7 +109,7 @@ public class AssetListOrderByColumnsUtilTest {
 		Assert.assertEquals(
 			"priority",
 			AssetListOrderByColumnsUtil.toOrderByColumn(
-				_COMPANY_ID, LocaleUtil.US, "priority"));
+				_COMPANY_ID, "priority"));
 	}
 
 	private static void _setUpJSONFactoryUtil() {

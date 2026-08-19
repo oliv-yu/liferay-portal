@@ -38,6 +38,16 @@ public class AssetListObjectFieldUtil {
 			objectDefinition.getObjectDefinitionId(), name);
 	}
 
+	public static String getSortSubfieldSuffix(ObjectField objectField) {
+		String subfieldSuffix = _getTypedSubfieldSuffix(objectField);
+
+		if (subfieldSuffix != null) {
+			return subfieldSuffix;
+		}
+
+		return "value_keyword_lowercase";
+	}
+
 	public static String getSubfield(Locale locale, ObjectField objectField) {
 		return NESTED_FIELD_ARRAY + StringPool.PERIOD +
 			getSubfieldSuffix(locale, objectField);
@@ -46,6 +56,38 @@ public class AssetListObjectFieldUtil {
 	public static String getSubfieldSuffix(
 		Locale locale, ObjectField objectField) {
 
+		String subfieldSuffix = _getTypedSubfieldSuffix(objectField);
+
+		if (subfieldSuffix != null) {
+			return subfieldSuffix;
+		}
+
+		if (objectField.isLocalized()) {
+			return Field.getLocalizedName(locale, "value");
+		}
+
+		String indexedLanguageId = objectField.getIndexedLanguageId();
+
+		if (Validator.isNotNull(indexedLanguageId)) {
+			return "value_" + indexedLanguageId;
+		}
+
+		return "value_text";
+	}
+
+	private static ObjectDefinition _fetchObjectDefinition(
+		long classNameId, long companyId) {
+
+		if (classNameId <= 0) {
+			return null;
+		}
+
+		return ObjectDefinitionLocalServiceUtil.
+			fetchObjectDefinitionByClassName(
+				companyId, PortalUtil.getClassName(classNameId));
+	}
+
+	private static String _getTypedSubfieldSuffix(ObjectField objectField) {
 		if (objectField.isIndexedAsKeyword()) {
 			return "value_keyword";
 		}
@@ -76,29 +118,7 @@ public class AssetListObjectFieldUtil {
 			return "value_long";
 		}
 
-		if (objectField.isLocalized()) {
-			return Field.getLocalizedName(locale, "value");
-		}
-
-		String indexedLanguageId = objectField.getIndexedLanguageId();
-
-		if (Validator.isNotNull(indexedLanguageId)) {
-			return "value_" + indexedLanguageId;
-		}
-
-		return "value_text";
-	}
-
-	private static ObjectDefinition _fetchObjectDefinition(
-		long classNameId, long companyId) {
-
-		if (classNameId <= 0) {
-			return null;
-		}
-
-		return ObjectDefinitionLocalServiceUtil.
-			fetchObjectDefinitionByClassName(
-				companyId, PortalUtil.getClassName(classNameId));
+		return null;
 	}
 
 }
