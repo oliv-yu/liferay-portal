@@ -184,6 +184,7 @@ public class ObjectEntryModelSearchConfigurator
 		if (objectFieldsMap != null) {
 			objectDefinition.setObjectFieldBag(
 				new ObjectFieldBag(
+					objectDefinition.isModifiableAndSystem(),
 					objectFieldsMap.getOrDefault(
 						objectDefinition.getObjectDefinitionId(),
 						Collections.emptyList())));
