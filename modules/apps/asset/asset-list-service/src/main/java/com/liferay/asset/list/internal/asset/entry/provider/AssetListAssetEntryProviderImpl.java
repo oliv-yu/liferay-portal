@@ -271,10 +271,10 @@ public class AssetListAssetEntryProviderImpl
 
 		assetEntryQuery.setOrderByCol2(
 			_getOrderByColumn(
-				assetListEntry.getCompanyId(), "modifiedDate",
+				assetListEntry.getCompanyId(), Field.MODIFIED_DATE,
 				GetterUtil.getString(
 					unicodeProperties.getProperty(
-						"orderByColumn2", "modifiedDate"))));
+						"orderByColumn2", Field.MODIFIED_DATE))));
 
 		assetEntryQuery.setOrderByType1(
 			GetterUtil.getString(
