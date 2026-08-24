@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
@@ -144,7 +145,7 @@ public class AddContentPanelDisplayContext {
 		assetEntryQuery.setGroupIds(
 			new long[] {_themeDisplay.getScopeGroupId()});
 		assetEntryQuery.setKeywords(_getKeywords());
-		assetEntryQuery.setOrderByCol1("modifiedDate");
+		assetEntryQuery.setOrderByCol1(Field.MODIFIED_DATE);
 		assetEntryQuery.setOrderByCol2("title");
 		assetEntryQuery.setOrderByType1("DESC");
 		assetEntryQuery.setOrderByType2("ASC");
