@@ -473,6 +473,9 @@ public class AssetEntryFinderImpl
 				sb.append("IS NULL THEN 0 ");
 				sb.append("ELSE TEMP_TABLE_ASSET_ENTRY.averageScore END");
 			}
+			else if (orderByCol1.equals("modified")) {
+				sb.append("AssetEntry.modifiedDate");
+			}
 			else if (orderByCol1.equals("title")) {
 				sb.append("CAST_CLOB_TEXT(AssetEntry.title)");
 			}
@@ -511,6 +514,9 @@ public class AssetEntryFinderImpl
 					sb.append("TEMP_TABLE_ASSET_ENTRY.averageScore IS NULL ");
 					sb.append("THEN 0 ELSE ");
 					sb.append("TEMP_TABLE_ASSET_ENTRY.averageScore END");
+				}
+				else if (orderByCol2.equals("modified")) {
+					sb.append(", AssetEntry.modifiedDate");
 				}
 				else if (orderByCol2.equals("title")) {
 					sb.append(", CAST_CLOB_TEXT(AssetEntry.title)");
