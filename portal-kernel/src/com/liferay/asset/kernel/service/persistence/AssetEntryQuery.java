@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Brian Wing Shun Chan
@@ -37,11 +38,15 @@ import java.util.Map;
 public class AssetEntryQuery {
 
 	public static final String[] ORDER_BY_COLUMNS = {
-		"title", "createDate", "modifiedDate", "publishDate", "expirationDate",
+		"title", "createDate", "modified", "publishDate", "expirationDate",
 		"priority", "viewCount", "ratings", "ratingsTotalScore"
 	};
 
 	public static String checkOrderByCol(String orderByCol) {
+		if (Objects.equals(orderByCol, "modifiedDate")) {
+			return "modified";
+		}
+
 		if (ArrayUtil.contains(ORDER_BY_COLUMNS, orderByCol) ||
 			((orderByCol != null) &&
 			 (orderByCol.startsWith(
