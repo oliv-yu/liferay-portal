@@ -501,10 +501,13 @@ test.describe('Search Paginator', () => {
 
 			await searchPage.searchResultsPaginationItemsPerPageToggle.click();
 
+			const menuId =
+				await searchPage.searchResultsPaginationItemsPerPageToggle.getAttribute(
+					'aria-controls'
+				);
+
 			await expect(
-				searchPage.searchResultsPaginationItemsPerPageDropdown
-					.locator('a.dropdown-item')
-					.first()
+				page.locator(`#${menuId}`).locator('a.dropdown-item').first()
 			).toHaveAttribute('href', /null/);
 		});
 	});

@@ -5,7 +5,6 @@
 
 import {FrameLocator, Locator, Page, expect} from '@playwright/test';
 
-import {clickAndExpectToBeVisible} from '../../utils/clickAndExpectToBeVisible';
 import {waitForAlert} from '../../utils/waitForAlert';
 
 export class SearchPage {
@@ -24,7 +23,6 @@ export class SearchPage {
 	readonly searchResultsPaginationBar: Locator;
 	readonly searchResultsPaginationDescription: Locator;
 	readonly searchResultsPaginationItemsPerPageToggle: Locator;
-	readonly searchResultsPaginationItemsPerPageDropdown: Locator;
 	readonly searchResultsTotalLabel: Locator;
 
 	constructor(page: Page) {
@@ -71,10 +69,6 @@ export class SearchPage {
 		);
 		this.searchResultsPaginationItemsPerPageToggle =
 			this.searchResults.locator('.pagination-items-per-page button');
-		this.searchResultsPaginationItemsPerPageDropdown =
-			this.searchResults.locator(
-				'.pagination-items-per-page .dropdown-menu'
-			);
 		this.searchResultsTotalLabel = this.searchResults.locator(
 			'.search-total-label'
 		);
@@ -216,19 +210,28 @@ export class SearchPage {
 	}
 
 	async selectPaginationItemsPerPage(delta: number, index: number = 0) {
-		await clickAndExpectToBeVisible({
-			autoClick: true,
-			target: this.searchResultsPaginationItemsPerPageDropdown
-				.nth(index)
-				.getByRole('option', {
-					name: new RegExp(`${delta}`),
-				}),
-			trigger: this.searchResultsPaginationItemsPerPageToggle.nth(index),
-		});
+		const toggle =
+			this.searchResultsPaginationItemsPerPageToggle.nth(index);
 
-		await expect(
-			this.searchResultsPaginationItemsPerPageToggle.nth(index)
-		).toHaveText(new RegExp(`${delta} Entries`));
+		await expect(async () => {
+			if ((await toggle.getAttribute('aria-expanded')) !== 'true') {
+				await toggle.click({timeout: 100});
+			}
+
+			const menuId = await toggle.getAttribute('aria-controls');
+
+			expect(menuId).toBeTruthy();
+
+			const option = this.page.locator(`#${menuId}`).getByRole('option', {
+				name: new RegExp(`${delta}`),
+			});
+
+			await expect(option).toBeVisible({timeout: 100});
+
+			await option.click();
+		}).toPass();
+
+		await expect(toggle).toHaveText(new RegExp(`${delta} Entries`));
 	}
 
 	async selectPaginationPageNumber(pageNumber: number) {
