@@ -29,6 +29,12 @@ public class HighlightTranslator {
 	public co.elastic.clients.elasticsearch.core.search.Highlight translate(
 		Highlight highlight) {
 
+		return translate(highlight, null);
+	}
+
+	public co.elastic.clients.elasticsearch.core.search.Highlight translate(
+		Highlight highlight, Query defaultHighlightQuery) {
+
 		co.elastic.clients.elasticsearch.core.search.Highlight.Builder builder =
 			new co.elastic.clients.elasticsearch.core.search.Highlight.
 				Builder();
@@ -72,6 +78,9 @@ public class HighlightTranslator {
 				new Query(
 					ElasticsearchQueryVisitor.INSTANCE.translate(
 						highlight.getHighlightQuery())));
+		}
+		else if (defaultHighlightQuery != null) {
+			builder.highlightQuery(defaultHighlightQuery);
 		}
 
 		SetterUtil.setNotNullInteger(
