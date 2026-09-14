@@ -131,7 +131,7 @@ public class GetFieldValueMVCResourceCommand extends BaseMVCResourceCommand {
 					if (fieldValue instanceof Date) {
 						DateFormat dateFormat =
 							DateFormatFactoryUtil.getSimpleDateFormat(
-								"yyyyMM ddHHmmss");
+								"yyyyMMddHHmmss");
 
 						return dateFormat.format(fieldValue);
 					}
