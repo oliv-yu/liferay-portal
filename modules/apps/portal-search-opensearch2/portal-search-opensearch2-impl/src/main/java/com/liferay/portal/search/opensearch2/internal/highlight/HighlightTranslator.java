@@ -31,6 +31,12 @@ public class HighlightTranslator {
 	public org.opensearch.client.opensearch.core.search.Highlight translate(
 		Highlight highlight) {
 
+		return translate(highlight, null);
+	}
+
+	public org.opensearch.client.opensearch.core.search.Highlight translate(
+		Highlight highlight, Query defaultHighlightQuery) {
+
 		org.opensearch.client.opensearch.core.search.Highlight.Builder builder =
 			new org.opensearch.client.opensearch.core.search.Highlight.
 				Builder();
@@ -74,6 +80,9 @@ public class HighlightTranslator {
 				new Query(
 					OpenSearchQueryVisitor.INSTANCE.translate(
 						highlight.getHighlightQuery())));
+		}
+		else if (defaultHighlightQuery != null) {
+			builder.highlightQuery(defaultHighlightQuery);
 		}
 
 		SetterUtil.setNotNullInteger(

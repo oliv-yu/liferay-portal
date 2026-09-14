@@ -174,7 +174,10 @@ public class SearchSearchRequestAssembler {
 		if (searchSearchRequest.getHighlight() != null) {
 			searchRequestBuilder.highlight(
 				_highlightTranslator.translate(
-					searchSearchRequest.getHighlight()));
+					searchSearchRequest.getHighlight(),
+					HighlightQueryFactory.create(
+						CommonSearchRequestBuilderAssembler.INSTANCE.getQuery(
+							searchSearchRequest))));
 		}
 		else if (searchSearchRequest.isHighlightEnabled()) {
 			searchRequestBuilder.highlight(
