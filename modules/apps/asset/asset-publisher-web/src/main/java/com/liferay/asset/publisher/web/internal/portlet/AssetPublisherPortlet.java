@@ -30,6 +30,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.storage.Field;
+import com.liferay.dynamic.data.mapping.storage.FieldConstants;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMUtil;
 import com.liferay.fragment.processor.PortletRegistry;
@@ -56,6 +57,7 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
@@ -99,6 +101,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -637,6 +640,8 @@ public class AssetPublisherPortlet extends MVCPortlet {
 				return;
 			}
 
+			String fieldDataType = field.getDataType();
+
 			jsonObject.put(
 				"displayValue", _getDisplayFieldValue(field, themeDisplay)
 			).put(
@@ -646,12 +651,19 @@ public class AssetPublisherPortlet extends MVCPortlet {
 						return (Boolean)fieldValue;
 					}
 
-					if (fieldValue instanceof Date) {
+					if (Objects.equals(fieldDataType, FieldConstants.DATE)) {
 						DateFormat dateFormat =
 							DateFormatFactoryUtil.getSimpleDateFormat(
-								"yyyyMMddHHmmss");
+								"yyyy-MM-dd");
 
-						return dateFormat.format(fieldValue);
+						if (fieldValue instanceof Date) {
+							return dateFormat.format(fieldValue);
+						}
+
+						return dateFormat.format(
+							DateUtil.parseDate(
+								String.valueOf(fieldValue),
+								themeDisplay.getLocale()));
 					}
 
 					if (fieldValue instanceof Double) {

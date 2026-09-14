@@ -10,6 +10,7 @@
 <%
 String className = ParamUtil.getString(request, "className");
 long classTypeId = ParamUtil.getLong(request, "classTypeId");
+String ddmStructureDisplayFieldValue = ParamUtil.getString(request, "ddmStructureDisplayFieldValue");
 String ddmStructureFieldName = ParamUtil.getString(request, "ddmStructureFieldName");
 Serializable ddmStructureFieldValue = ParamUtil.getString(request, "ddmStructureFieldValue");
 String name = ParamUtil.getString(request, "name");
@@ -31,6 +32,16 @@ ddmField.setName(name);
 if (name.equals(ddmStructureFieldName)) {
 	ddmField.setValue(themeDisplay.getLocale(), ddmStructureFieldValue);
 }
+
+// A date is stored in the DDM format, but the form field parses what the user
+// would type, so seed the client with the value already formatted for the
+// locale. Every other field type stores what the client expects.
+
+String ddmFormFieldValue = String.valueOf(ddmStructureFieldValue);
+
+if (Validator.isNotNull(ddmStructureDisplayFieldValue) && ArrayUtil.contains(new String[] {"date", "date_time", "ddm-date"}, classTypeField.getType())) {
+	ddmFormFieldValue = ddmStructureDisplayFieldValue;
+}
 %>
 
 <liferay-ddm:html-field
@@ -48,9 +59,7 @@ if (name.equals(ddmStructureFieldName)) {
 				field.get('name') ===
 				'<%= HtmlUtil.escape((String)ddmStructureFieldName) %>'
 			) {
-				field.setValue(
-					'<%= HtmlUtil.escapeJS((String)ddmStructureFieldValue) %>'
-				);
+				field.setValue('<%= HtmlUtil.escapeJS(ddmFormFieldValue) %>');
 			}
 		});
 	});

@@ -16,6 +16,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.storage.Field;
+import com.liferay.dynamic.data.mapping.storage.FieldConstants;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMUtil;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -39,6 +41,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 
 import java.util.Date;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -119,6 +122,8 @@ public class GetFieldValueMVCResourceCommand extends BaseMVCResourceCommand {
 				return;
 			}
 
+			String fieldDataType = field.getDataType();
+
 			jsonObject.put(
 				"displayValue", _getDisplayFieldValue(field, themeDisplay)
 			).put(
@@ -128,12 +133,19 @@ public class GetFieldValueMVCResourceCommand extends BaseMVCResourceCommand {
 						return (Boolean)fieldValue;
 					}
 
-					if (fieldValue instanceof Date) {
+					if (Objects.equals(fieldDataType, FieldConstants.DATE)) {
 						DateFormat dateFormat =
 							DateFormatFactoryUtil.getSimpleDateFormat(
-								"yyyyMMddHHmmss");
+								"yyyy-MM-dd");
 
-						return dateFormat.format(fieldValue);
+						if (fieldValue instanceof Date) {
+							return dateFormat.format(fieldValue);
+						}
+
+						return dateFormat.format(
+							DateUtil.parseDate(
+								String.valueOf(fieldValue),
+								themeDisplay.getLocale()));
 					}
 
 					if (fieldValue instanceof Double) {
