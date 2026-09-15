@@ -25,13 +25,25 @@ public class HighlightQueryFactory {
 			return null;
 		}
 
-		return _removeProximityQueries(query);
+		return _rewriteQuery(query);
+	}
+
+	private static boolean _addOptionalQueryClauses(
+		Consumer<List<Query>> consumer, List<Query> queries) {
+
+		return _addQueryClauses(consumer, queries, true);
 	}
 
 	private static boolean _addQueryClauses(
 		Consumer<List<Query>> consumer, List<Query> queries) {
 
-		List<Query> newQueries = _removeProximityQueries(queries);
+		return _addQueryClauses(consumer, queries, false);
+	}
+
+	private static boolean _addQueryClauses(
+		Consumer<List<Query>> consumer, List<Query> queries, boolean optional) {
+
+		List<Query> newQueries = _rewriteQueryClauses(queries, optional);
 
 		if (ListUtil.isEmpty(newQueries)) {
 			return false;
@@ -42,31 +54,21 @@ public class HighlightQueryFactory {
 		return true;
 	}
 
-	private static List<Query> _removeProximityQueries(List<Query> queries) {
-		List<Query> newQueries = new ArrayList<>(queries.size());
-
-		for (Query query : queries) {
-			Query newQuery = _removeProximityQueries(query);
-
-			if (newQuery != null) {
-				newQueries.add(newQuery);
-			}
+	private static boolean _isProximityQuery(Query query) {
+		if (!query.isMatchPhrase()) {
+			return false;
 		}
 
-		return newQueries;
+		MatchPhraseQuery matchPhraseQuery = query.matchPhrase();
+
+		if (matchPhraseQuery.slop() == null) {
+			return false;
+		}
+
+		return true;
 	}
 
-	private static Query _removeProximityQueries(Query query) {
-		if (query.isMatchPhrase()) {
-			MatchPhraseQuery matchPhraseQuery = query.matchPhrase();
-
-			if (matchPhraseQuery.slop() != null) {
-				return null;
-			}
-
-			return query;
-		}
-
+	private static Query _rewriteQuery(Query query) {
 		if (!query.isBool()) {
 			return query;
 		}
@@ -75,21 +77,39 @@ public class HighlightQueryFactory {
 
 		BoolQuery.Builder builder = new BoolQuery.Builder();
 
-		boolean hasClauses = _addQueryClauses(
-			builder::filter, boolQuery.filter());
+		boolean hasClauses = _addQueryClauses(builder::must, boolQuery.must());
 
-		hasClauses |= _addQueryClauses(builder::must, boolQuery.must());
-		hasClauses |= _addQueryClauses(builder::should, boolQuery.should());
+		hasClauses |= _addOptionalQueryClauses(
+			builder::should, boolQuery.should());
 
 		if (!hasClauses) {
 			return null;
 		}
 
-		if (ListUtil.isNotEmpty(boolQuery.mustNot())) {
-			builder.mustNot(boolQuery.mustNot());
-		}
+		_addQueryClauses(builder::filter, boolQuery.filter());
+		_addQueryClauses(builder::mustNot, boolQuery.mustNot());
 
 		return new Query(builder.build());
+	}
+
+	private static List<Query> _rewriteQueryClauses(
+		List<Query> queries, boolean optional) {
+
+		List<Query> newQueries = new ArrayList<>(queries.size());
+
+		for (Query query : queries) {
+			if (optional && _isProximityQuery(query)) {
+				continue;
+			}
+
+			Query newQuery = _rewriteQuery(query);
+
+			if (newQuery != null) {
+				newQueries.add(newQuery);
+			}
+		}
+
+		return newQueries;
 	}
 
 }
