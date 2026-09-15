@@ -8,6 +8,7 @@ package com.liferay.portal.search.elasticsearch8.internal.highlight;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchPhraseQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -75,7 +76,7 @@ public class HighlightQueryUtil {
 
 		BoolQuery boolQuery = query.bool();
 
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		boolean hasClauses = _addQueryClauses(builder::must, boolQuery.must());
 

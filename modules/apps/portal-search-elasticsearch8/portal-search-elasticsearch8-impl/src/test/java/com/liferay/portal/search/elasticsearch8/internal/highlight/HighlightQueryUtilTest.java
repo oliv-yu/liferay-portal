@@ -9,6 +9,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchPhraseQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -40,7 +41,7 @@ public class HighlightQueryUtilTest {
 	public void testKeepsFilterQueryClauses() {
 		Query filterQuery = _createMatchQuery();
 
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		builder.filter(filterQuery);
 		builder.must(_createMatchQuery());
@@ -61,7 +62,7 @@ public class HighlightQueryUtilTest {
 	public void testKeepsMustNotQueryClauses() {
 		Query query = _createMatchQuery();
 
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		builder.must(_createMatchQuery());
 		builder.mustNot(query);
@@ -76,7 +77,7 @@ public class HighlightQueryUtilTest {
 	public void testKeepsProximityQueryInMustQueryClauses() {
 		Query proximityQuery = _createMatchPhraseQuery(50);
 
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		builder.must(proximityQuery);
 
@@ -105,7 +106,7 @@ public class HighlightQueryUtilTest {
 		Query exactPhraseQuery = _createMatchPhraseQuery(null);
 		Query matchQuery = _createMatchQuery();
 
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		builder.must(matchQuery);
 		builder.should(_createMatchPhraseQuery(50), exactPhraseQuery);
@@ -121,12 +122,12 @@ public class HighlightQueryUtilTest {
 	public void testRemovesProximityQueryFromInnerBooleanQuery() {
 		Query matchQuery = _createMatchQuery();
 
-		BoolQuery.Builder innerBuilder = new BoolQuery.Builder();
+		BoolQuery.Builder innerBuilder = QueryBuilders.bool();
 
 		innerBuilder.must(matchQuery);
 		innerBuilder.should(_createMatchPhraseQuery(50));
 
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		builder.should(new Query(innerBuilder.build()));
 
@@ -149,16 +150,16 @@ public class HighlightQueryUtilTest {
 	public void testRemovesProximityQueryFromShouldQueryClausesUnderMust() {
 		Query matchQuery = _createMatchQuery();
 
-		BoolQuery.Builder innerBuilder = new BoolQuery.Builder();
+		BoolQuery.Builder innerBuilder = QueryBuilders.bool();
 
 		innerBuilder.must(matchQuery);
 		innerBuilder.should(_createMatchPhraseQuery(50));
 
-		BoolQuery.Builder middleBuilder = new BoolQuery.Builder();
+		BoolQuery.Builder middleBuilder = QueryBuilders.bool();
 
 		middleBuilder.should(new Query(innerBuilder.build()));
 
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		builder.must(new Query(middleBuilder.build()));
 
@@ -183,7 +184,7 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testRemovesProximityQueryLeavingNothing() {
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		builder.should(_createMatchPhraseQuery(50));
 
@@ -198,7 +199,7 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testReturnsNullWhenOnlyFilterQueryClausesSurvive() {
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		builder.filter(_createMatchQuery());
 		builder.should(_createMatchPhraseQuery(50));
