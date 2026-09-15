@@ -5,9 +5,9 @@
 
 package com.liferay.portal.search.opensearch2.internal.highlight;
 
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -95,21 +95,15 @@ public class HighlightQueryUtil {
 	private static List<Query> _rewriteQueryClauses(
 		List<Query> queries, boolean optional) {
 
-		List<Query> newQueries = new ArrayList<>(queries.size());
+		return TransformUtil.transform(
+			queries,
+			query -> {
+				if (optional && _isProximityQuery(query)) {
+					return null;
+				}
 
-		for (Query query : queries) {
-			if (optional && _isProximityQuery(query)) {
-				continue;
-			}
-
-			Query newQuery = _rewriteQuery(query);
-
-			if (newQuery != null) {
-				newQueries.add(newQuery);
-			}
-		}
-
-		return newQueries;
+				return _rewriteQuery(query);
+			});
 	}
 
 }
