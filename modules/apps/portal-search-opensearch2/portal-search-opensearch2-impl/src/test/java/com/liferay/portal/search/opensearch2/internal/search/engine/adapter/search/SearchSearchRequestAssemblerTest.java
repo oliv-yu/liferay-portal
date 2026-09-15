@@ -74,12 +74,13 @@ public class SearchSearchRequestAssemblerTest {
 	}
 
 	private Highlight _assemble(SearchSearchRequest searchSearchRequest) {
-		SearchRequest.Builder builder = new SearchRequest.Builder();
+		SearchRequest.Builder searchRequestBuilder =
+			new SearchRequest.Builder();
 
 		SearchSearchRequestAssembler.INSTANCE.assemble(
-			builder, searchSearchRequest);
+			searchRequestBuilder, searchSearchRequest);
 
-		SearchRequest searchRequest = builder.build();
+		SearchRequest searchRequest = searchRequestBuilder.build();
 
 		return searchRequest.highlight();
 	}
