@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import org.opensearch.client.opensearch._types.query_dsl.BoolQuery;
 import org.opensearch.client.opensearch._types.query_dsl.MatchPhraseQuery;
 import org.opensearch.client.opensearch._types.query_dsl.Query;
+import org.opensearch.client.opensearch._types.query_dsl.QueryBuilders;
 
 /**
  * @author Olivia Yu
@@ -75,7 +76,7 @@ public class HighlightQueryUtil {
 
 		BoolQuery boolQuery = query.bool();
 
-		BoolQuery.Builder builder = new BoolQuery.Builder();
+		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		boolean hasClauses = _addQueryClauses(builder::must, boolQuery.must());
 
