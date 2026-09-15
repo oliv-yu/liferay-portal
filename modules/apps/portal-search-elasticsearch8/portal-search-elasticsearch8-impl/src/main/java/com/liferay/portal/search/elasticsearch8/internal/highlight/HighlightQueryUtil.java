@@ -76,21 +76,22 @@ public class HighlightQueryUtil {
 
 		BoolQuery boolQuery = query.bool();
 
-		BoolQuery.Builder builder = QueryBuilders.bool();
+		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
 
-		boolean hasClauses = _addQueryClauses(builder::must, boolQuery.must());
+		boolean hasClauses = _addQueryClauses(
+			boolQueryBuilder::must, boolQuery.must());
 
 		hasClauses |= _addOptionalQueryClauses(
-			builder::should, boolQuery.should());
+			boolQueryBuilder::should, boolQuery.should());
 
 		if (!hasClauses) {
 			return null;
 		}
 
-		_addQueryClauses(builder::filter, boolQuery.filter());
-		_addQueryClauses(builder::mustNot, boolQuery.mustNot());
+		_addQueryClauses(boolQueryBuilder::filter, boolQuery.filter());
+		_addQueryClauses(boolQueryBuilder::mustNot, boolQuery.mustNot());
 
-		return new Query(builder.build());
+		return new Query(boolQueryBuilder.build());
 	}
 
 	private static List<Query> _rewriteQueryClauses(
