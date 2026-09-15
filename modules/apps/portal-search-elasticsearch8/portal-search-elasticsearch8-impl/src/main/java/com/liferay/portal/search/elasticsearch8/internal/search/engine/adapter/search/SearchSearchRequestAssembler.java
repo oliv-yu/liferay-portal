@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.search.collapse.Collapse;
 import com.liferay.portal.search.collapse.InnerCollapse;
 import com.liferay.portal.search.elasticsearch8.internal.groupby.GroupByTranslator;
-import com.liferay.portal.search.elasticsearch8.internal.highlight.HighlightQueryFactory;
+import com.liferay.portal.search.elasticsearch8.internal.highlight.HighlightQueryUtil;
 import com.liferay.portal.search.elasticsearch8.internal.highlight.HighlightTranslator;
 import com.liferay.portal.search.elasticsearch8.internal.legacy.sort.SortTranslator;
 import com.liferay.portal.search.elasticsearch8.internal.sort.ElasticsearchSortFieldTranslator;
@@ -205,7 +205,7 @@ public class SearchSearchRequestAssembler {
 			searchRequestBuilder.highlight(
 				_highlightTranslator.translate(
 					searchSearchRequest.getHighlight(),
-					HighlightQueryFactory.create(
+					HighlightQueryUtil.getHighlightQuery(
 						CommonSearchRequestBuilderAssembler.INSTANCE.getQuery(
 							searchSearchRequest))));
 		}
@@ -216,7 +216,7 @@ public class SearchSearchRequestAssembler {
 					searchSearchRequest.getHighlightFragmentSize(),
 					searchSearchRequest.isHighlightRequireFieldMatch(),
 					searchSearchRequest.getHighlightSnippetSize(),
-					HighlightQueryFactory.create(
+					HighlightQueryUtil.getHighlightQuery(
 						CommonSearchRequestBuilderAssembler.INSTANCE.getQuery(
 							searchSearchRequest))));
 		}

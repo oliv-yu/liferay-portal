@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * @author Olivia Yu
  */
-public class HighlightQueryFactoryTest {
+public class HighlightQueryUtilTest {
 
 	@ClassRule
 	@Rule
@@ -31,23 +31,23 @@ public class HighlightQueryFactoryTest {
 
 	@Test
 	public void testKeepsExactPhraseQuery() {
-		Query query = _matchPhrase(null);
+		Query query = _createMatchPhraseQuery(null);
 
-		Assert.assertSame(query, HighlightQueryFactory.create(query));
+		Assert.assertSame(query, HighlightQueryUtil.getHighlightQuery(query));
 	}
 
 	@Test
 	public void testKeepsFilterQueryClauses() {
-		Query filterQuery = _match();
+		Query filterQuery = _createMatchQuery();
 
 		BoolQuery.Builder builder = new BoolQuery.Builder();
 
 		builder.filter(filterQuery);
-		builder.must(_match());
-		builder.should(_matchPhrase(50));
+		builder.must(_createMatchQuery());
+		builder.should(_createMatchPhraseQuery(50));
 
-		BoolQuery boolQuery = _createBoolQuery(
-			HighlightQueryFactory.create(new Query(builder.build())));
+		BoolQuery boolQuery = _getBoolQuery(
+			HighlightQueryUtil.getHighlightQuery(new Query(builder.build())));
 
 		Assert.assertEquals(List.of(filterQuery), boolQuery.filter());
 		Assert.assertTrue(
@@ -59,83 +59,83 @@ public class HighlightQueryFactoryTest {
 
 	@Test
 	public void testKeepsMustNotQueryClauses() {
-		Query query = _match();
+		Query query = _createMatchQuery();
 
 		BoolQuery.Builder builder = new BoolQuery.Builder();
 
-		builder.must(_match());
+		builder.must(_createMatchQuery());
 		builder.mustNot(query);
 
-		BoolQuery boolQuery = _createBoolQuery(
-			HighlightQueryFactory.create(new Query(builder.build())));
+		BoolQuery boolQuery = _getBoolQuery(
+			HighlightQueryUtil.getHighlightQuery(new Query(builder.build())));
 
 		Assert.assertEquals(List.of(query), boolQuery.mustNot());
 	}
 
 	@Test
 	public void testKeepsProximityQueryInMustQueryClauses() {
-		Query proximityQuery = _matchPhrase(50);
+		Query proximityQuery = _createMatchPhraseQuery(50);
 
 		BoolQuery.Builder builder = new BoolQuery.Builder();
 
 		builder.must(proximityQuery);
 
-		BoolQuery boolQuery = _createBoolQuery(
-			HighlightQueryFactory.create(new Query(builder.build())));
+		BoolQuery boolQuery = _getBoolQuery(
+			HighlightQueryUtil.getHighlightQuery(new Query(builder.build())));
 
 		Assert.assertEquals(List.of(proximityQuery), boolQuery.must());
 	}
 
 	@Test
 	public void testKeepsQueryWithoutProximityQuery() {
-		Query query = _match();
+		Query query = _createMatchQuery();
 
-		Assert.assertSame(query, HighlightQueryFactory.create(query));
+		Assert.assertSame(query, HighlightQueryUtil.getHighlightQuery(query));
 	}
 
 	@Test
 	public void testKeepsStandaloneProximityQuery() {
-		Query query = _matchPhrase(50);
+		Query query = _createMatchPhraseQuery(50);
 
-		Assert.assertSame(query, HighlightQueryFactory.create(query));
+		Assert.assertSame(query, HighlightQueryUtil.getHighlightQuery(query));
 	}
 
 	@Test
 	public void testRemovesProximityQueryFromBooleanQuery() {
-		Query exactPhraseQuery = _matchPhrase(null);
-		Query matchQuery = _match();
+		Query exactPhraseQuery = _createMatchPhraseQuery(null);
+		Query matchQuery = _createMatchQuery();
 
 		BoolQuery.Builder builder = new BoolQuery.Builder();
 
 		builder.must(matchQuery);
-		builder.should(_matchPhrase(50), exactPhraseQuery);
+		builder.should(_createMatchPhraseQuery(50), exactPhraseQuery);
 
-		BoolQuery boolQuery = _createBoolQuery(
-			HighlightQueryFactory.create(new Query(builder.build())));
+		BoolQuery boolQuery = _getBoolQuery(
+			HighlightQueryUtil.getHighlightQuery(new Query(builder.build())));
 
 		Assert.assertEquals(List.of(matchQuery), boolQuery.must());
 		Assert.assertEquals(List.of(exactPhraseQuery), boolQuery.should());
 	}
 
 	@Test
-	public void testRemovesProximityQueryFromNestedBooleanQuery() {
-		Query matchQuery = _match();
+	public void testRemovesProximityQueryFromInnerBooleanQuery() {
+		Query matchQuery = _createMatchQuery();
 
 		BoolQuery.Builder innerBuilder = new BoolQuery.Builder();
 
 		innerBuilder.must(matchQuery);
-		innerBuilder.should(_matchPhrase(50));
+		innerBuilder.should(_createMatchPhraseQuery(50));
 
 		BoolQuery.Builder builder = new BoolQuery.Builder();
 
 		builder.should(new Query(innerBuilder.build()));
 
-		BoolQuery boolQuery = _createBoolQuery(
-			HighlightQueryFactory.create(new Query(builder.build())));
+		BoolQuery boolQuery = _getBoolQuery(
+			HighlightQueryUtil.getHighlightQuery(new Query(builder.build())));
 
 		List<Query> queries = boolQuery.should();
 
-		BoolQuery innerBoolQuery = _createBoolQuery(queries.get(0));
+		BoolQuery innerBoolQuery = _getBoolQuery(queries.get(0));
 
 		Assert.assertEquals(List.of(matchQuery), innerBoolQuery.must());
 		Assert.assertTrue(
@@ -147,12 +147,12 @@ public class HighlightQueryFactoryTest {
 
 	@Test
 	public void testRemovesProximityQueryFromShouldQueryClausesUnderMust() {
-		Query matchQuery = _match();
+		Query matchQuery = _createMatchQuery();
 
 		BoolQuery.Builder innerBuilder = new BoolQuery.Builder();
 
 		innerBuilder.must(matchQuery);
-		innerBuilder.should(_matchPhrase(50));
+		innerBuilder.should(_createMatchPhraseQuery(50));
 
 		BoolQuery.Builder middleBuilder = new BoolQuery.Builder();
 
@@ -162,16 +162,16 @@ public class HighlightQueryFactoryTest {
 
 		builder.must(new Query(middleBuilder.build()));
 
-		BoolQuery boolQuery = _createBoolQuery(
-			HighlightQueryFactory.create(new Query(builder.build())));
+		BoolQuery boolQuery = _getBoolQuery(
+			HighlightQueryUtil.getHighlightQuery(new Query(builder.build())));
 
 		List<Query> queries = boolQuery.must();
 
-		BoolQuery middleBoolQuery = _createBoolQuery(queries.get(0));
+		BoolQuery middleBoolQuery = _getBoolQuery(queries.get(0));
 
 		queries = middleBoolQuery.should();
 
-		BoolQuery innerBoolQuery = _createBoolQuery(queries.get(0));
+		BoolQuery innerBoolQuery = _getBoolQuery(queries.get(0));
 
 		Assert.assertEquals(List.of(matchQuery), innerBoolQuery.must());
 		Assert.assertTrue(
@@ -185,35 +185,39 @@ public class HighlightQueryFactoryTest {
 	public void testRemovesProximityQueryLeavingNothing() {
 		BoolQuery.Builder builder = new BoolQuery.Builder();
 
-		builder.should(_matchPhrase(50));
+		builder.should(_createMatchPhraseQuery(50));
 
 		Assert.assertNull(
-			HighlightQueryFactory.create(new Query(builder.build())));
+			HighlightQueryUtil.getHighlightQuery(new Query(builder.build())));
 	}
 
 	@Test
 	public void testReturnsNullForNullQuery() {
-		Assert.assertNull(HighlightQueryFactory.create(null));
+		Assert.assertNull(HighlightQueryUtil.getHighlightQuery(null));
 	}
 
 	@Test
 	public void testReturnsNullWhenOnlyFilterQueryClausesSurvive() {
 		BoolQuery.Builder builder = new BoolQuery.Builder();
 
-		builder.filter(_match());
-		builder.should(_matchPhrase(50));
+		builder.filter(_createMatchQuery());
+		builder.should(_createMatchPhraseQuery(50));
 
 		Assert.assertNull(
-			HighlightQueryFactory.create(new Query(builder.build())));
+			HighlightQueryUtil.getHighlightQuery(new Query(builder.build())));
 	}
 
-	private BoolQuery _createBoolQuery(Query query) {
-		Assert.assertTrue(String.valueOf(query), query.isBool());
+	private Query _createMatchPhraseQuery(Integer slop) {
+		MatchPhraseQuery.Builder builder = new MatchPhraseQuery.Builder();
 
-		return query.bool();
+		builder.field(_FIELD_NAME);
+		builder.query(_KEYWORDS);
+		builder.slop(slop);
+
+		return new Query(builder.build());
 	}
 
-	private Query _match() {
+	private Query _createMatchQuery() {
 		MatchQuery.Builder builder = new MatchQuery.Builder();
 
 		builder.field(_FIELD_NAME);
@@ -222,14 +226,10 @@ public class HighlightQueryFactoryTest {
 		return new Query(builder.build());
 	}
 
-	private Query _matchPhrase(Integer slop) {
-		MatchPhraseQuery.Builder builder = new MatchPhraseQuery.Builder();
+	private BoolQuery _getBoolQuery(Query query) {
+		Assert.assertTrue(String.valueOf(query), query.isBool());
 
-		builder.field(_FIELD_NAME);
-		builder.query(_KEYWORDS);
-		builder.slop(slop);
-
-		return new Query(builder.build());
+		return query.bool();
 	}
 
 	private static final String _FIELD_NAME = "content_en_US";

@@ -18,9 +18,9 @@ import java.util.function.Consumer;
 /**
  * @author Olivia Yu
  */
-public class HighlightQueryFactory {
+public class HighlightQueryUtil {
 
-	public static Query create(Query query) {
+	public static Query getHighlightQuery(Query query) {
 		if (query == null) {
 			return null;
 		}
