@@ -29,22 +29,10 @@ public class HighlightQueryUtil {
 		return _rewriteQuery(query);
 	}
 
-	private static boolean _addOptionalQueryClauses(
-		Consumer<List<Query>> consumer, List<Query> queries) {
-
-		return _addQueryClauses(consumer, queries, true);
-	}
-
 	private static boolean _addQueryClauses(
 		Consumer<List<Query>> consumer, List<Query> queries) {
 
-		return _addQueryClauses(consumer, queries, false);
-	}
-
-	private static boolean _addQueryClauses(
-		Consumer<List<Query>> consumer, List<Query> queries, boolean optional) {
-
-		List<Query> newQueries = _rewriteQueryClauses(queries, optional);
+		List<Query> newQueries = _rewriteQueryClauses(queries);
 
 		if (ListUtil.isEmpty(newQueries)) {
 			return false;
@@ -81,8 +69,11 @@ public class HighlightQueryUtil {
 		boolean hasClauses = _addQueryClauses(
 			boolQueryBuilder::must, boolQuery.must());
 
-		hasClauses |= _addOptionalQueryClauses(
-			boolQueryBuilder::should, boolQuery.should());
+		hasClauses |= _addQueryClauses(
+			boolQueryBuilder::should,
+			ListUtil.filter(
+				boolQuery.should(),
+				clauseQuery -> !_isProximityQuery(clauseQuery)));
 
 		if (!hasClauses) {
 			return null;
@@ -94,18 +85,9 @@ public class HighlightQueryUtil {
 		return new Query(boolQueryBuilder.build());
 	}
 
-	private static List<Query> _rewriteQueryClauses(
-		List<Query> queries, boolean optional) {
-
+	private static List<Query> _rewriteQueryClauses(List<Query> queries) {
 		return TransformUtil.transform(
-			queries,
-			query -> {
-				if (optional && _isProximityQuery(query)) {
-					return null;
-				}
-
-				return _rewriteQuery(query);
-			});
+			queries, HighlightQueryUtil::_rewriteQuery);
 	}
 
 }
