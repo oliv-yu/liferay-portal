@@ -66,16 +66,16 @@ public class HighlightQueryUtil {
 
 		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
 
-		boolean hasClauses = _addQueryClauses(
+		boolean hasScoringClauses = _addQueryClauses(
 			boolQueryBuilder::must, boolQuery.must());
 
-		hasClauses |= _addQueryClauses(
+		hasScoringClauses |= _addQueryClauses(
 			boolQueryBuilder::should,
 			ListUtil.filter(
 				boolQuery.should(),
 				clauseQuery -> !_isProximityQuery(clauseQuery)));
 
-		if (!hasClauses) {
+		if (!hasScoringClauses) {
 			return null;
 		}
 
