@@ -217,23 +217,23 @@ public class HighlightQueryUtilTest {
 	}
 
 	private Query _createMatchPhraseQuery(Integer slop) {
-		MatchPhraseQuery.Builder boolQueryBuilder =
+		MatchPhraseQuery.Builder matchPhraseQueryBuilder =
 			new MatchPhraseQuery.Builder();
 
-		boolQueryBuilder.field(_FIELD_NAME);
-		boolQueryBuilder.query(_KEYWORDS);
-		boolQueryBuilder.slop(slop);
+		matchPhraseQueryBuilder.field(_FIELD_NAME);
+		matchPhraseQueryBuilder.query(_KEYWORDS);
+		matchPhraseQueryBuilder.slop(slop);
 
-		return new Query(boolQueryBuilder.build());
+		return new Query(matchPhraseQueryBuilder.build());
 	}
 
 	private Query _createMatchQuery() {
-		MatchQuery.Builder boolQueryBuilder = new MatchQuery.Builder();
+		MatchQuery.Builder matchQueryBuilder = new MatchQuery.Builder();
 
-		boolQueryBuilder.field(_FIELD_NAME);
-		boolQueryBuilder.query(_KEYWORDS);
+		matchQueryBuilder.field(_FIELD_NAME);
+		matchQueryBuilder.query(_KEYWORDS);
 
-		return new Query(boolQueryBuilder.build());
+		return new Query(matchQueryBuilder.build());
 	}
 
 	private BoolQuery _getBoolQuery(Query query) {
