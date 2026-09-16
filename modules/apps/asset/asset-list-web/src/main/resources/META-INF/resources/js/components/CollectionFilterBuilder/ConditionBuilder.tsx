@@ -90,6 +90,10 @@ function ConditionRow({
 		[condition, onChange]
 	);
 
+	const isTaken = (value) => {
+		return value === 'any';
+	};
+
 	return (
 		<>
 			<div className="condition-builder__select form-group mb-0">
@@ -198,7 +202,19 @@ function ConditionRow({
 						selectedKey={condition.quantifier ?? ''}
 					>
 						{(item) => (
-							<Option key={item.value}>{item.label}</Option>
+							<Option
+								disabled={isTaken(item.value)}
+								key={item.value}
+								textValue={item.label}
+							>
+								{item.label}
+
+								{isTaken(item.value) && (
+									<span className="text-secondary ml-2">
+										{Liferay.Language.get('in-use')}
+									</span>
+								)}
+							</Option>
 						)}
 					</Picker>
 				</div>
