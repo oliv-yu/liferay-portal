@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.MatchQuery;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
-import com.liferay.portal.search.highlight.FieldConfigBuilder;
 import com.liferay.portal.search.internal.highlight.FieldConfigImpl;
 import com.liferay.portal.search.internal.highlight.HighlightImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -58,14 +57,12 @@ public class SearchSearchRequestAssemblerTest {
 		FieldConfigImpl.FieldConfigBuilderImpl fieldConfigBuilderImpl =
 			new FieldConfigImpl.FieldConfigBuilderImpl(_FIELD_NAME);
 
-		FieldConfigBuilder fieldConfigBuilder = fieldConfigBuilderImpl;
-
 		HighlightImpl.HighlightBuilderImpl highlightBuilderImpl =
 			new HighlightImpl.HighlightBuilderImpl();
 
 		searchSearchRequest.setHighlight(
 			highlightBuilderImpl.fieldConfigs(
-				Collections.singletonList(fieldConfigBuilder.build())
+				Collections.singletonList(fieldConfigBuilderImpl.build())
 			).build());
 
 		Highlight highlight = _assemble(searchSearchRequest);
