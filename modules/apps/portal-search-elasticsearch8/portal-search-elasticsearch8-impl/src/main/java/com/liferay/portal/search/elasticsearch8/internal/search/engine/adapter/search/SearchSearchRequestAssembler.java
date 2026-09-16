@@ -201,24 +201,30 @@ public class SearchSearchRequestAssembler {
 		SearchRequest.Builder searchRequestBuilder,
 		SearchSearchRequest searchSearchRequest) {
 
+		if ((searchSearchRequest.getHighlight() == null) &&
+			!searchSearchRequest.isHighlightEnabled()) {
+
+			return;
+		}
+
+		co.elastic.clients.elasticsearch._types.query_dsl.Query highlightQuery =
+			HighlightQueryUtil.getHighlightQuery(
+				CommonSearchRequestBuilderAssembler.INSTANCE.getQuery(
+					searchSearchRequest));
+
 		if (searchSearchRequest.getHighlight() != null) {
 			searchRequestBuilder.highlight(
 				_highlightTranslator.translate(
-					searchSearchRequest.getHighlight(),
-					HighlightQueryUtil.getHighlightQuery(
-						CommonSearchRequestBuilderAssembler.INSTANCE.getQuery(
-							searchSearchRequest))));
+					searchSearchRequest.getHighlight(), highlightQuery));
 		}
-		else if (searchSearchRequest.isHighlightEnabled()) {
+		else {
 			searchRequestBuilder.highlight(
 				_highlightTranslator.translate(
 					searchSearchRequest.getHighlightFieldNames(),
 					searchSearchRequest.getHighlightFragmentSize(),
 					searchSearchRequest.isHighlightRequireFieldMatch(),
 					searchSearchRequest.getHighlightSnippetSize(),
-					HighlightQueryUtil.getHighlightQuery(
-						CommonSearchRequestBuilderAssembler.INSTANCE.getQuery(
-							searchSearchRequest))));
+					highlightQuery));
 		}
 	}
 
