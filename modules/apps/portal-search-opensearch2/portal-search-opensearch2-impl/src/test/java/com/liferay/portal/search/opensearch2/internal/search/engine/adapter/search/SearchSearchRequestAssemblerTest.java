@@ -54,11 +54,11 @@ public class SearchSearchRequestAssemblerTest {
 	public void testHighlightObjectCarriesHighlightQuery() {
 		SearchSearchRequest searchSearchRequest = _createSearchSearchRequest();
 
-		FieldConfigImpl.FieldConfigBuilderImpl fieldConfigBuilderImpl =
-			new FieldConfigImpl.FieldConfigBuilderImpl(_FIELD_NAME);
-
 		HighlightImpl.HighlightBuilderImpl highlightBuilderImpl =
 			new HighlightImpl.HighlightBuilderImpl();
+
+		FieldConfigImpl.FieldConfigBuilderImpl fieldConfigBuilderImpl =
+			new FieldConfigImpl.FieldConfigBuilderImpl(_FIELD_NAME);
 
 		searchSearchRequest.setHighlight(
 			highlightBuilderImpl.fieldConfigs(

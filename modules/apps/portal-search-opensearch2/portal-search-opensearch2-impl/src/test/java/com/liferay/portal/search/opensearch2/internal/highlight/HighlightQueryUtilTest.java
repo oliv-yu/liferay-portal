@@ -128,6 +128,8 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testRemovesProximityQueryFromInnerBooleanQuery() {
+		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
+
 		BoolQuery.Builder innerBoolQueryBuilder = QueryBuilders.bool();
 
 		Query matchQuery = _createMatchQuery();
@@ -135,8 +137,6 @@ public class HighlightQueryUtilTest {
 		innerBoolQueryBuilder.must(matchQuery);
 
 		innerBoolQueryBuilder.should(_createMatchPhraseQuery(50));
-
-		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
 
 		boolQueryBuilder.should(new Query(innerBoolQueryBuilder.build()));
 
@@ -158,6 +158,10 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testRemovesProximityQueryFromShouldQueryClausesUnderMust() {
+		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
+
+		BoolQuery.Builder middleBoolQueryBuilder = QueryBuilders.bool();
+
 		BoolQuery.Builder innerBoolQueryBuilder = QueryBuilders.bool();
 
 		Query matchQuery = _createMatchQuery();
@@ -166,11 +170,7 @@ public class HighlightQueryUtilTest {
 
 		innerBoolQueryBuilder.should(_createMatchPhraseQuery(50));
 
-		BoolQuery.Builder middleBoolQueryBuilder = QueryBuilders.bool();
-
 		middleBoolQueryBuilder.should(new Query(innerBoolQueryBuilder.build()));
-
-		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
 
 		boolQueryBuilder.must(new Query(middleBoolQueryBuilder.build()));
 
