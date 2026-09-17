@@ -40,11 +40,12 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testKeepsFilterQueryClauses() {
-		Query filterQuery = _createMatchQuery();
-
 		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
 
+		Query filterQuery = _createMatchQuery();
+
 		boolQueryBuilder.filter(filterQuery);
+
 		boolQueryBuilder.must(_createMatchQuery());
 		boolQueryBuilder.should(_createMatchPhraseQuery(50));
 
@@ -62,9 +63,9 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testKeepsMustNotQueryClauses() {
-		Query query = _createMatchQuery();
-
 		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
+
+		Query query = _createMatchQuery();
 
 		boolQueryBuilder.must(_createMatchQuery());
 		boolQueryBuilder.mustNot(query);
@@ -78,9 +79,9 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testKeepsProximityQueryInMustQueryClauses() {
-		Query proximityQuery = _createMatchPhraseQuery(50);
-
 		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
+
+		Query proximityQuery = _createMatchPhraseQuery(50);
 
 		boolQueryBuilder.must(proximityQuery);
 
@@ -107,12 +108,14 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testRemovesProximityQueryFromBooleanQuery() {
-		Query exactPhraseQuery = _createMatchPhraseQuery(null);
-		Query matchQuery = _createMatchQuery();
-
 		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
 
+		Query exactPhraseQuery = _createMatchPhraseQuery(null);
+
+		Query matchQuery = _createMatchQuery();
+
 		boolQueryBuilder.must(matchQuery);
+
 		boolQueryBuilder.should(_createMatchPhraseQuery(50), exactPhraseQuery);
 
 		BoolQuery boolQuery = _getBoolQuery(
@@ -125,11 +128,12 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testRemovesProximityQueryFromInnerBooleanQuery() {
-		Query matchQuery = _createMatchQuery();
-
 		BoolQuery.Builder innerBoolQueryBuilder = QueryBuilders.bool();
 
+		Query matchQuery = _createMatchQuery();
+
 		innerBoolQueryBuilder.must(matchQuery);
+
 		innerBoolQueryBuilder.should(_createMatchPhraseQuery(50));
 
 		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
@@ -154,11 +158,12 @@ public class HighlightQueryUtilTest {
 
 	@Test
 	public void testRemovesProximityQueryFromShouldQueryClausesUnderMust() {
-		Query matchQuery = _createMatchQuery();
-
 		BoolQuery.Builder innerBoolQueryBuilder = QueryBuilders.bool();
 
+		Query matchQuery = _createMatchQuery();
+
 		innerBoolQueryBuilder.must(matchQuery);
+
 		innerBoolQueryBuilder.should(_createMatchPhraseQuery(50));
 
 		BoolQuery.Builder middleBoolQueryBuilder = QueryBuilders.bool();
