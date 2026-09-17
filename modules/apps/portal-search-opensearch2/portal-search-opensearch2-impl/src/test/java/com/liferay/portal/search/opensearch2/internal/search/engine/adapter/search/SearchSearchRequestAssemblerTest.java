@@ -102,9 +102,8 @@ public class SearchSearchRequestAssemblerTest {
 			return 0;
 		}
 
-		int count = 0;
-
 		BoolQuery boolQuery = query.bool();
+		int count = 0;
 
 		for (Query clauseQuery : _getClauses(boolQuery)) {
 			count += _countMatchQueries(clauseQuery);
@@ -128,9 +127,8 @@ public class SearchSearchRequestAssemblerTest {
 			return 0;
 		}
 
-		int count = 0;
-
 		BoolQuery boolQuery = query.bool();
+		int count = 0;
 
 		for (Query clauseQuery : _getClauses(boolQuery)) {
 			count += _countProximityQueries(clauseQuery);
