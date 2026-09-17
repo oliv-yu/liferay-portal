@@ -14,6 +14,7 @@ import co.elastic.clients.elasticsearch.core.search.Highlight;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.MatchQuery;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.internal.highlight.FieldConfigImpl;
@@ -168,10 +169,10 @@ public class SearchSearchRequestAssemblerTest {
 			boolQuery.should());
 	}
 
-	private static final String _FIELD_NAME = "content_en_US";
+	private static final String _FIELD_NAME = RandomTestUtil.randomString();
 
-	private static final String _INDEX_NAME = "test-index";
+	private static final String _INDEX_NAME = RandomTestUtil.randomString();
 
-	private static final String _KEYWORDS = "solar galaxy";
+	private static final String _KEYWORDS = RandomTestUtil.randomString();
 
 }
