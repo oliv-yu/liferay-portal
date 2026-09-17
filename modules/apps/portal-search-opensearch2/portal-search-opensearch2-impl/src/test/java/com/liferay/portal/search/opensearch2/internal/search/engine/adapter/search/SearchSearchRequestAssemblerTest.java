@@ -6,13 +6,14 @@
 package com.liferay.portal.search.opensearch2.internal.search.engine.adapter.search;
 
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
-import com.liferay.portal.kernel.search.BooleanQuery;
-import com.liferay.portal.kernel.search.MatchQuery;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.internal.highlight.FieldConfigImpl;
 import com.liferay.portal.search.internal.highlight.HighlightImpl;
+import com.liferay.portal.search.query.BooleanQuery;
+import com.liferay.portal.search.query.MatchQuery;
+import com.liferay.portal.search.query.QueriesUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;
@@ -40,15 +41,25 @@ public class SearchSearchRequestAssemblerTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@Test
+	public void testCurrentQueryCarriesHighlightQuery() {
+		SearchSearchRequest searchSearchRequest = _createSearchSearchRequest();
+
+		searchSearchRequest.setHighlightEnabled(true);
+		searchSearchRequest.setHighlightFieldNames(_FIELD_NAME);
+		searchSearchRequest.setQuery(_createBooleanQuery());
+
+		_assertHighlightQuery(_assemble(searchSearchRequest));
+	}
+
+	@Test
 	public void testHighlightEnabledCarriesHighlightQuery() {
 		SearchSearchRequest searchSearchRequest = _createSearchSearchRequest();
 
 		searchSearchRequest.setHighlightEnabled(true);
 		searchSearchRequest.setHighlightFieldNames(_FIELD_NAME);
+		searchSearchRequest.setQuery(_createLegacyBooleanQuery());
 
-		Highlight highlight = _assemble(searchSearchRequest);
-
-		_assertHighlightQuery(highlight);
+		_assertHighlightQuery(_assemble(searchSearchRequest));
 	}
 
 	@Test
@@ -66,32 +77,42 @@ public class SearchSearchRequestAssemblerTest {
 				Collections.singletonList(fieldConfigBuilderImpl.build())
 			).build());
 
-		Highlight highlight = _assemble(searchSearchRequest);
+		searchSearchRequest.setQuery(_createLegacyBooleanQuery());
 
-		_assertHighlightQuery(highlight);
+		_assertHighlightQuery(_assemble(searchSearchRequest));
 	}
 
-	private Highlight _assemble(SearchSearchRequest searchSearchRequest) {
+	private SearchRequest _assemble(SearchSearchRequest searchSearchRequest) {
 		SearchRequest.Builder searchRequestBuilder =
 			new SearchRequest.Builder();
 
 		SearchSearchRequestAssembler.INSTANCE.assemble(
 			searchRequestBuilder, searchSearchRequest);
 
-		SearchRequest searchRequest = searchRequestBuilder.build();
-
-		return searchRequest.highlight();
+		return searchRequestBuilder.build();
 	}
 
-	private void _assertHighlightQuery(Highlight highlight) {
+	private void _assertHighlightQuery(SearchRequest searchRequest) {
+		Query query = searchRequest.query();
+
+		Assert.assertNotNull("No query was assembled", query);
+		Assert.assertTrue(
+			String.valueOf(query), _countProximityQueries(query) > 0);
+
+		Highlight highlight = searchRequest.highlight();
+
 		Assert.assertNotNull("No highlight was assembled", highlight);
 
-		Query query = highlight.highlightQuery();
+		Query highlightQuery = highlight.highlightQuery();
 
-		Assert.assertNotNull("No highlight query was assembled", query);
+		Assert.assertNotNull(
+			"No highlight query was assembled", highlightQuery);
 		Assert.assertEquals(
-			String.valueOf(query), 0, _countProximityQueries(query));
-		Assert.assertTrue(String.valueOf(query), _countMatchQueries(query) > 0);
+			String.valueOf(highlightQuery), 0,
+			_countProximityQueries(highlightQuery));
+		Assert.assertTrue(
+			String.valueOf(highlightQuery),
+			_countMatchQueries(highlightQuery) > 0);
 	}
 
 	private int _countMatchQueries(Query query) {
@@ -139,16 +160,38 @@ public class SearchSearchRequestAssemblerTest {
 	}
 
 	private BooleanQuery _createBooleanQuery() {
-		BooleanQuery booleanQuery = new BooleanQuery();
+		BooleanQuery booleanQuery = QueriesUtil.booleanQuery();
 
-		booleanQuery.add(
-			new MatchQuery(_FIELD_NAME, _KEYWORDS), BooleanClauseOccur.MUST);
-
-		MatchQuery matchQuery = new MatchQuery(_FIELD_NAME, _KEYWORDS);
+		MatchQuery matchQuery = QueriesUtil.match(_FIELD_NAME, _KEYWORDS);
 
 		matchQuery.setSlop(50);
 		matchQuery.setType(MatchQuery.Type.PHRASE);
 
+		booleanQuery.addMustQueryClauses(
+			QueriesUtil.match(_FIELD_NAME, _KEYWORDS));
+		booleanQuery.addShouldQueryClauses(matchQuery);
+
+		return booleanQuery;
+	}
+
+	private com.liferay.portal.kernel.search.BooleanQuery
+		_createLegacyBooleanQuery() {
+
+		com.liferay.portal.kernel.search.BooleanQuery booleanQuery =
+			new com.liferay.portal.kernel.search.BooleanQuery();
+
+		com.liferay.portal.kernel.search.MatchQuery matchQuery =
+			new com.liferay.portal.kernel.search.MatchQuery(
+				_FIELD_NAME, _KEYWORDS);
+
+		matchQuery.setSlop(50);
+		matchQuery.setType(
+			com.liferay.portal.kernel.search.MatchQuery.Type.PHRASE);
+
+		booleanQuery.add(
+			new com.liferay.portal.kernel.search.MatchQuery(
+				_FIELD_NAME, _KEYWORDS),
+			BooleanClauseOccur.MUST);
 		booleanQuery.add(matchQuery, BooleanClauseOccur.SHOULD);
 
 		return booleanQuery;
@@ -158,7 +201,6 @@ public class SearchSearchRequestAssemblerTest {
 		SearchSearchRequest searchSearchRequest = new SearchSearchRequest();
 
 		searchSearchRequest.setIndexNames(_INDEX_NAME);
-		searchSearchRequest.setQuery(_createBooleanQuery());
 
 		return searchSearchRequest;
 	}
