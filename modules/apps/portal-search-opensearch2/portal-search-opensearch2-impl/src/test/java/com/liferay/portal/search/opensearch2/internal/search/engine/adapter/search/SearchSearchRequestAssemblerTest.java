@@ -8,12 +8,12 @@ package com.liferay.portal.search.opensearch2.internal.search.engine.adapter.sea
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.MatchQuery;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.search.engine.adapter.search.SearchSearchRequest;
 import com.liferay.portal.search.internal.highlight.FieldConfigImpl;
 import com.liferay.portal.search.internal.highlight.HighlightImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -163,14 +163,9 @@ public class SearchSearchRequestAssemblerTest {
 	}
 
 	private List<Query> _getClauses(BoolQuery boolQuery) {
-		List<Query> queries = new ArrayList<>();
-
-		queries.addAll(boolQuery.filter());
-		queries.addAll(boolQuery.must());
-		queries.addAll(boolQuery.mustNot());
-		queries.addAll(boolQuery.should());
-
-		return queries;
+		return ListUtil.concat(
+			boolQuery.filter(), boolQuery.must(), boolQuery.mustNot(),
+			boolQuery.should());
 	}
 
 	private static final String _FIELD_NAME = "content_en_US";
