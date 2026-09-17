@@ -5,6 +5,7 @@
 
 package com.liferay.portal.search.opensearch2.internal.highlight;
 
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.List;
@@ -245,8 +246,8 @@ public class HighlightQueryUtilTest {
 		return query.bool();
 	}
 
-	private static final String _FIELD_NAME = "content_en_US";
+	private static final String _FIELD_NAME = RandomTestUtil.randomString();
 
-	private static final String _KEYWORDS = "solar galaxy";
+	private static final String _KEYWORDS = RandomTestUtil.randomString();
 
 }
