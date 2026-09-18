@@ -8,7 +8,6 @@ package com.liferay.portal.search.web.internal.search.results.portlet.helper;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -17,8 +16,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import jakarta.portlet.PortletURL;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +27,10 @@ import java.util.Map;
 public class SearchResultsPaginatorHelper {
 
 	public SearchResultsPaginatorHelper(
-		HttpServletRequest httpServletRequest,
-		SearchContainer<?> searchContainer) {
+		SearchContainer<?> searchContainer, boolean totalItemsApproximate) {
 
-		_httpServletRequest = httpServletRequest;
 		_searchContainer = searchContainer;
+		_totalItemsApproximate = totalItemsApproximate;
 	}
 
 	public Map<String, Object> getProps() {
@@ -70,9 +66,7 @@ public class SearchResultsPaginatorHelper {
 		).put(
 			"totalItems", _searchContainer.getTotal()
 		).put(
-			"totalItemsApproximate",
-			FeatureFlagManagerUtil.isEnabled(
-				PortalUtil.getCompanyId(_httpServletRequest), "LPD-98858")
+			"totalItemsApproximate", _totalItemsApproximate
 		).build();
 	}
 
@@ -168,7 +162,7 @@ public class SearchResultsPaginatorHelper {
 
 	private static final String _CUR_PLACEHOLDER = "__CUR__";
 
-	private final HttpServletRequest _httpServletRequest;
 	private final SearchContainer<?> _searchContainer;
+	private final boolean _totalItemsApproximate;
 
 }

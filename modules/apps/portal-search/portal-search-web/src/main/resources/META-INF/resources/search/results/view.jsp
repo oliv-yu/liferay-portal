@@ -81,12 +81,12 @@ SearchContainer<Document> searchContainer = searchResultsPortletDisplayContext.g
 				<c:when test='<%= FeatureFlagManagerUtil.isEnabled(PortalUtil.getCompanyId(request), "LPD-98858") %>'>
 
 					<%
-					SearchResultsPaginatorHelper searchResultsPaginatorHelper = new SearchResultsPaginatorHelper(request, searchContainer);
+					SearchResultsPaginatorHelper searchResultsPaginatorHelper = new SearchResultsPaginatorHelper(searchContainer, searchResultsPortletDisplayContext.isTotalHitsApproximate());
 
 					Map<String, Object> paginatorReactData = searchResultsPaginatorHelper.getProps();
 					%>
 
-					<c:if test="<%= paginatorReactData != null %>">
+					<c:if test="<%= (paginatorReactData != null) && searchResultsPortletDisplayContext.isTotalHitsVisible() %>">
 						<div>
 							<react:component
 								module="{ClassicSearchPaginator} from portal-search-web"
