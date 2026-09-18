@@ -7,6 +7,7 @@ package com.liferay.portal.search.web.internal.search.results.portlet;
 
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.util.AssetRendererFactoryLookup;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.model.User;
@@ -34,10 +35,12 @@ import com.liferay.portal.search.web.internal.display.context.PortletURLFactory;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 import com.liferay.portal.search.web.search.request.SearchSettings;
+import com.liferay.portal.test.rule.FeatureFlag;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.portal.util.PortalImpl;
 
 import jakarta.portlet.PortletException;
+import jakarta.portlet.PortletPreferences;
 import jakarta.portlet.PortletURL;
 import jakarta.portlet.RenderRequest;
 import jakarta.portlet.RenderResponse;
@@ -131,6 +134,82 @@ public class SearchResultsPortletTest {
 		Assert.assertEquals(
 			"/search?delta=10",
 			String.valueOf(searchContainer.getIteratorURL()));
+	}
+
+	@FeatureFlag(enable = false, value = "LPD-98858")
+	@Test
+	public void testTotalHitsApproximateWhenFeatureFlagIsDisabled()
+		throws Exception {
+
+		_setUpAccurateCountLimit("1000");
+		_setUpTotalHits(1000);
+
+		render();
+
+		SearchResultsPortletDisplayContext searchResultsPortletDisplayContext =
+			_getDisplayContext();
+
+		Assert.assertFalse(
+			searchResultsPortletDisplayContext.isTotalHitsApproximate());
+		Assert.assertTrue(
+			searchResultsPortletDisplayContext.isTotalHitsVisible());
+	}
+
+	@FeatureFlag("LPD-98858")
+	@Test
+	public void testTotalHitsApproximateWhenTotalHitsIsAtAccurateCountLimit()
+		throws Exception {
+
+		_setUpAccurateCountLimit("1000");
+		_setUpTotalHits(1000);
+
+		render();
+
+		SearchResultsPortletDisplayContext searchResultsPortletDisplayContext =
+			_getDisplayContext();
+
+		Assert.assertTrue(
+			searchResultsPortletDisplayContext.isTotalHitsApproximate());
+		Assert.assertTrue(
+			searchResultsPortletDisplayContext.isTotalHitsVisible());
+	}
+
+	@FeatureFlag("LPD-98858")
+	@Test
+	public void testTotalHitsApproximateWhenTotalHitsIsBelowAccurateCountLimit()
+		throws Exception {
+
+		_setUpAccurateCountLimit("1000");
+		_setUpTotalHits(999);
+
+		render();
+
+		SearchResultsPortletDisplayContext searchResultsPortletDisplayContext =
+			_getDisplayContext();
+
+		Assert.assertFalse(
+			searchResultsPortletDisplayContext.isTotalHitsApproximate());
+		Assert.assertTrue(
+			searchResultsPortletDisplayContext.isTotalHitsVisible());
+	}
+
+	@FeatureFlag("LPD-98858")
+	@Test
+	public void testTotalHitsVisibleWhenAccurateCountLimitIsZero()
+		throws Exception {
+
+		_setUpAccurateCountLimit("0");
+		_setUpTotalHits(0);
+
+		render();
+
+		SearchResultsPortletDisplayContext searchResultsPortletDisplayContext =
+			_getDisplayContext();
+
+		Assert.assertFalse(
+			searchResultsPortletDisplayContext.isTotalHitsApproximate());
+		Assert.assertFalse(
+			searchResultsPortletDisplayContext.isTotalHitsVisible());
 	}
 
 	protected void render() throws IOException, PortletException {
@@ -350,6 +429,28 @@ public class SearchResultsPortletTest {
 		return argumentCaptor.getValue();
 	}
 
+	private void _setUpAccurateCountLimit(String accurateCountLimit) {
+		PortletPreferences portletPreferences = Mockito.mock(
+			PortletPreferences.class);
+
+		Mockito.doReturn(
+			accurateCountLimit
+		).when(
+			portletPreferences
+		).getValue(
+			SearchResultsPortletPreferences.PREFERENCE_KEY_ACCURATE_COUNT_LIMIT,
+			StringPool.BLANK
+		);
+
+		Mockito.doReturn(
+			portletPreferences
+		).when(
+			_portletSharedSearchResponse
+		).getPortletPreferences(
+			Mockito.any()
+		);
+	}
+
 	private void _setUpPortalUtil() {
 		ReflectionTestUtil.setFieldValue(
 			PortalUtil.class, "_portal", new PortalImpl());
@@ -413,6 +514,14 @@ public class SearchResultsPortletTest {
 		).thenReturn(
 			_searchContext
 		);
+	}
+
+	private void _setUpTotalHits(int totalHits) {
+		Mockito.doReturn(
+			totalHits
+		).when(
+			_searchResponse
+		).getTotalHits();
 	}
 
 	private void _setUpUserLocalService() {

@@ -10,12 +10,14 @@ import com.liferay.asset.util.AssetRendererFactoryLookup;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.IndexerRegistry;
+import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -40,6 +42,7 @@ import com.liferay.portal.search.web.internal.result.display.context.SearchResul
 import com.liferay.portal.search.web.internal.result.display.context.builder.SearchResultSummaryDisplayContextBuilder;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
+import com.liferay.portal.search.web.search.request.SearchSettings;
 
 import jakarta.portlet.Portlet;
 import jakarta.portlet.PortletException;
@@ -255,6 +258,24 @@ public class SearchResultsPortlet extends MVCPortlet {
 			searchResultsPortletPreferences.isShowPagination());
 		searchResultsPortletDisplayContext.setTotalHits(
 			searchResponse.getTotalHits());
+
+		SearchSettings searchSettings =
+			portletSharedSearchResponse.getSearchSettings();
+
+		SearchContext searchContext = searchSettings.getSearchContext();
+
+		if (FeatureFlagManagerUtil.isEnabled(
+				searchContext.getCompanyId(), "LPD-98858")) {
+
+			int accurateCountLimit =
+				searchResultsPortletPreferences.getAccurateCountLimit();
+
+			searchResultsPortletDisplayContext.setTotalHitsApproximate(
+				(accurateCountLimit > 0) &&
+				(searchResponse.getTotalHits() >= accurateCountLimit));
+			searchResultsPortletDisplayContext.setTotalHitsVisible(
+				accurateCountLimit > 0);
+		}
 
 		return searchResultsPortletDisplayContext;
 	}

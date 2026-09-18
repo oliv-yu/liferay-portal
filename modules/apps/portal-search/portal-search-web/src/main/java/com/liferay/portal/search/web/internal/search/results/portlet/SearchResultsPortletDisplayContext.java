@@ -110,6 +110,14 @@ public class SearchResultsPortletDisplayContext implements Serializable {
 		return _showPagination;
 	}
 
+	public boolean isTotalHitsApproximate() {
+		return _totalHitsApproximate;
+	}
+
+	public boolean isTotalHitsVisible() {
+		return _totalHitsVisible;
+	}
+
 	public void setDocuments(List<Document> documents) {
 		_documents = documents;
 	}
@@ -152,6 +160,14 @@ public class SearchResultsPortletDisplayContext implements Serializable {
 		_totalHits = totalHits;
 	}
 
+	public void setTotalHitsApproximate(boolean totalHitsApproximate) {
+		_totalHitsApproximate = totalHitsApproximate;
+	}
+
+	public void setTotalHitsVisible(boolean totalHitsVisible) {
+		_totalHitsVisible = totalHitsVisible;
+	}
+
 	public List<SearchResultSummaryDisplayContext>
 		translateSearchResultSummaryDisplayContexts(List<Document> documents) {
 
@@ -175,5 +191,7 @@ public class SearchResultsPortletDisplayContext implements Serializable {
 	private boolean _showEmptyResultMessage;
 	private boolean _showPagination;
 	private int _totalHits;
+	private boolean _totalHitsApproximate;
+	private boolean _totalHitsVisible = true;
 
 }
