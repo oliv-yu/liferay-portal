@@ -129,6 +129,12 @@ public class SearchResultsPortletDisplayTemplateHandler
 		templateVariableGroup.addVariable(
 			"title", SearchResultSummaryDisplayContext.class,
 			PortletDisplayTemplateConstants.ENTRY, "getHighlightedTitle()");
+		templateVariableGroup.addVariable(
+			"total-hits-approximate", SearchResultsPortletDisplayContext.class,
+			"searchResultsPortletDisplayContext", "isTotalHitsApproximate()");
+		templateVariableGroup.addVariable(
+			"total-hits-visible", SearchResultsPortletDisplayContext.class,
+			"searchResultsPortletDisplayContext", "isTotalHitsVisible()");
 
 		TemplateVariableGroup categoriesServicesTemplateVariableGroup =
 			new TemplateVariableGroup(

@@ -1,10 +1,18 @@
-<div class="c-mb-4 c-mt-4 search-total-label">
-	<#if searchContainer.getTotal() == 1>
-		${languageUtil.format(locale, "x-result-for-x", [searchContainer.getTotal(), "<strong>" + htmlUtil.escape(searchResultsPortletDisplayContext.getKeywords()) + "</strong>"], false)}
-	<#else>
-		${languageUtil.format(locale, "x-results-for-x", [searchContainer.getTotal(), "<strong>" + htmlUtil.escape(searchResultsPortletDisplayContext.getKeywords()) + "</strong>"], false)}
+<#if searchResultsPortletDisplayContext.isTotalHitsVisible()>
+	<#assign totalHitsLabel = searchContainer.getTotal() />
+
+	<#if searchResultsPortletDisplayContext.isTotalHitsApproximate()>
+		<#assign totalHitsLabel = languageUtil.format(locale, "x-plus", [totalHitsLabel], false) />
 	</#if>
-</div>
+
+	<div class="c-mb-4 c-mt-4 search-total-label">
+		<#if searchContainer.getTotal() == 1>
+			${languageUtil.format(locale, "x-result-for-x", [totalHitsLabel, "<strong>" + htmlUtil.escape(searchResultsPortletDisplayContext.getKeywords()) + "</strong>"], false)}
+		<#else>
+			${languageUtil.format(locale, "x-results-for-x", [totalHitsLabel, "<strong>" + htmlUtil.escape(searchResultsPortletDisplayContext.getKeywords()) + "</strong>"], false)}
+		</#if>
+	</div>
+</#if>
 
 <div class="display-list">
 	<ul class="list-group" id="search-results-display-list">
