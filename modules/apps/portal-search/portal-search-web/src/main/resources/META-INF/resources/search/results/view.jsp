@@ -80,10 +80,10 @@ SearchContainer<Document> searchContainer = searchResultsPortletDisplayContext.g
 				<c:when test='<%= FeatureFlagManagerUtil.isEnabled(PortalUtil.getCompanyId(request), "LPD-98858") %>'>
 
 					<%
-					SearchResultsPaginatorDisplayContext searchResultsPaginatorDisplayContext = new SearchResultsPaginatorDisplayContext(request, searchContainer);
+					SearchResultsPaginatorDisplayContext searchResultsPaginatorDisplayContext = new SearchResultsPaginatorDisplayContext(request, searchContainer, searchResultsPortletDisplayContext.isTotalHitsApproximate());
 					%>
 
-					<c:if test="<%= searchResultsPaginatorDisplayContext.isAvailable() %>">
+					<c:if test="<%= searchResultsPaginatorDisplayContext.isAvailable() && searchResultsPortletDisplayContext.isTotalHitsVisible() %>">
 						<div>
 							<react:component
 								module="{ClassicSearchPaginator} from portal-search-web"
