@@ -107,7 +107,11 @@ const SXPElementList = ({
 								key={index}
 							>
 								<ClayList.ItemField>
-									<ClaySticker size="md">
+									<ClaySticker
+										className="bg-light"
+										displayType="secondary"
+										size="md"
+									>
 										<ClayIcon
 											symbol={
 												sxpElement.elementDefinition
