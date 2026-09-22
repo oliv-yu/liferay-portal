@@ -32,7 +32,8 @@ public class HighlightQueryUtil {
 	private static boolean _addQueryClauses(
 		Consumer<List<Query>> consumer, List<Query> queries) {
 
-		List<Query> newQueries = _rewriteQueryClauses(queries);
+		List<Query> newQueries = TransformUtil.transform(
+			queries, HighlightQueryUtil::_rewriteQuery);
 
 		if (ListUtil.isEmpty(newQueries)) {
 			return false;
@@ -83,11 +84,6 @@ public class HighlightQueryUtil {
 		_addQueryClauses(boolQueryBuilder::mustNot, boolQuery.mustNot());
 
 		return new Query(boolQueryBuilder.build());
-	}
-
-	private static List<Query> _rewriteQueryClauses(List<Query> queries) {
-		return TransformUtil.transform(
-			queries, HighlightQueryUtil::_rewriteQuery);
 	}
 
 }
