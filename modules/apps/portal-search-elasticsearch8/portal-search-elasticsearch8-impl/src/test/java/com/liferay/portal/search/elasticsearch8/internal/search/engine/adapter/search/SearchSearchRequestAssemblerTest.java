@@ -41,7 +41,7 @@ public class SearchSearchRequestAssemblerTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@Test
-	public void testCurrentQueryCarriesHighlightQuery() {
+	public void testHighlightEnabledCarriesHighlightQuery() {
 		SearchSearchRequest searchSearchRequest = _createSearchSearchRequest();
 
 		searchSearchRequest.setHighlightEnabled(true);
@@ -52,7 +52,7 @@ public class SearchSearchRequestAssemblerTest {
 	}
 
 	@Test
-	public void testHighlightEnabledCarriesHighlightQuery() {
+	public void testHighlightEnabledCarriesHighlightQueryForLegacyQuery() {
 		SearchSearchRequest searchSearchRequest = _createSearchSearchRequest();
 
 		searchSearchRequest.setHighlightEnabled(true);

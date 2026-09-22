@@ -158,8 +158,8 @@ public class HighlightQueryUtilTest {
 	@Test
 	public void testRemovesProximityQueryFromShouldQueryClausesUnderMust() {
 		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
-		BoolQuery.Builder middleBoolQueryBuilder = QueryBuilders.bool();
 		BoolQuery.Builder innerBoolQueryBuilder = QueryBuilders.bool();
+		BoolQuery.Builder middleBoolQueryBuilder = QueryBuilders.bool();
 
 		Query matchQuery = _createMatchQuery();
 
