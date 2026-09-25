@@ -6,6 +6,7 @@
 package com.liferay.portal.search.elasticsearch8.internal.highlight;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.Query.Kind;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryStringQuery;
 import co.elastic.clients.elasticsearch.core.search.BoundaryScanner;
 import co.elastic.clients.elasticsearch.core.search.HighlightField;
 import co.elastic.clients.elasticsearch.core.search.HighlighterEncoder;
@@ -99,10 +100,10 @@ public class HighlightTranslatorTest {
 		co.elastic.clients.elasticsearch._types.query_dsl.Query highlightQuery =
 			_translateHighlightQuery(_highlightPrototype, defaultQuery);
 
-		Assert.assertEquals(
-			"title:explicit",
-			highlightQuery.queryString(
-			).query());
+		QueryStringQuery queryStringQuery = highlightQuery.queryString();
+
+		Assert.assertEquals("title:explicit", queryStringQuery.query());
+
 		Assert.assertNotSame(defaultQuery, highlightQuery);
 	}
 
@@ -773,9 +774,11 @@ public class HighlightTranslatorTest {
 			co.elastic.clients.elasticsearch._types.query_dsl.Query
 				defaultHighlightQuery) {
 
-		return _highlightTranslator.translate(
-			defaultHighlightQuery, _buildHighlight(highlightPrototype)
-		).highlightQuery();
+		co.elastic.clients.elasticsearch.core.search.Highlight highlight =
+			_highlightTranslator.translate(
+				defaultHighlightQuery, _buildHighlight(highlightPrototype));
+
+		return highlight.highlightQuery();
 	}
 
 	private HighlightPrototype _highlightPrototype;
