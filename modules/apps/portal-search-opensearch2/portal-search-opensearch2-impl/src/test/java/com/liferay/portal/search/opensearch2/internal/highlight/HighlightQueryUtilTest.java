@@ -55,11 +55,10 @@ public class HighlightQueryUtilTest {
 				new Query(boolQueryBuilder.build())));
 
 		Assert.assertEquals(List.of(filterQuery), boolQuery.filter());
-		Assert.assertTrue(
-			boolQuery.should(
-			).toString(),
-			boolQuery.should(
-			).isEmpty());
+
+		List<Query> shouldQueries = boolQuery.should();
+
+		Assert.assertTrue(shouldQueries.toString(), shouldQueries.isEmpty());
 	}
 
 	@Test
@@ -149,11 +148,10 @@ public class HighlightQueryUtilTest {
 		BoolQuery innerBoolQuery = _getBoolQuery(queries.get(0));
 
 		Assert.assertEquals(List.of(matchQuery), innerBoolQuery.must());
-		Assert.assertTrue(
-			innerBoolQuery.should(
-			).toString(),
-			innerBoolQuery.should(
-			).isEmpty());
+
+		List<Query> shouldQueries = innerBoolQuery.should();
+
+		Assert.assertTrue(shouldQueries.toString(), shouldQueries.isEmpty());
 	}
 
 	@Test
@@ -185,11 +183,10 @@ public class HighlightQueryUtilTest {
 		BoolQuery innerBoolQuery = _getBoolQuery(queries.get(0));
 
 		Assert.assertEquals(List.of(matchQuery), innerBoolQuery.must());
-		Assert.assertTrue(
-			innerBoolQuery.should(
-			).toString(),
-			innerBoolQuery.should(
-			).isEmpty());
+
+		List<Query> shouldQueries = innerBoolQuery.should();
+
+		Assert.assertTrue(shouldQueries.toString(), shouldQueries.isEmpty());
 	}
 
 	@Test

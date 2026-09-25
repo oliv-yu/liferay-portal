@@ -35,6 +35,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import org.opensearch.client.opensearch._types.query_dsl.Query.Kind;
+import org.opensearch.client.opensearch._types.query_dsl.QueryStringQuery;
 import org.opensearch.client.opensearch.core.search.BoundaryScanner;
 import org.opensearch.client.opensearch.core.search.BuiltinHighlighterType;
 import org.opensearch.client.opensearch.core.search.HighlightField;
@@ -106,10 +107,10 @@ public class HighlightTranslatorTest {
 		org.opensearch.client.opensearch._types.query_dsl.Query highlightQuery =
 			_translateHighlightQuery(_highlightPrototype, defaultQuery);
 
-		Assert.assertEquals(
-			"title:explicit",
-			highlightQuery.queryString(
-			).query());
+		QueryStringQuery queryStringQuery = highlightQuery.queryString();
+
+		Assert.assertEquals("title:explicit", queryStringQuery.query());
+
 		Assert.assertNotSame(defaultQuery, highlightQuery);
 	}
 
@@ -793,9 +794,11 @@ public class HighlightTranslatorTest {
 			org.opensearch.client.opensearch._types.query_dsl.Query
 				defaultHighlightQuery) {
 
-		return _highlightTranslator.translate(
-			defaultHighlightQuery, _buildHighlight(highlightPrototype)
-		).highlightQuery();
+		org.opensearch.client.opensearch.core.search.Highlight highlight =
+			_highlightTranslator.translate(
+				defaultHighlightQuery, _buildHighlight(highlightPrototype));
+
+		return highlight.highlightQuery();
 	}
 
 	private HighlightPrototype _highlightPrototype;
