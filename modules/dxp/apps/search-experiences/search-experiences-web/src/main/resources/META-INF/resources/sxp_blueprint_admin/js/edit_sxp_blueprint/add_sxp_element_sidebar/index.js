@@ -137,7 +137,7 @@ const SXPElementList = ({
 								</ClayList.ItemField>
 
 								<ClayList.ItemField>
-									<div className="add-sxp-element-button-background" />
+									<div className="add-sxp-element-button-background bg-primary-l3" />
 
 									{isElementInactiveFromNonCompanyIndex(
 										isIndexCompany,
