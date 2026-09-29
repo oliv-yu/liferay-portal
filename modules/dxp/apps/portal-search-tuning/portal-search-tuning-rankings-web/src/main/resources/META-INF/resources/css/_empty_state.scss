@@ -1,26 +1,10 @@
-.empty-state-root {
-	margin: 40px auto;
-	max-width: 340px;
-	text-align: center;
+.c-empty-state-image img {
+	// Match the admin theme's interim Dark Mode fix for the legacy
+	// empty-state illustrations, which are drawn for light backgrounds
 
-	.empty-state-action {
-		margin-top: 16px;
-	}
-
-	.empty-state-description {
-		color: var(--gray-600);
-		font-size: 16px;
-	}
-
-	.empty-state-image {
-		margin-bottom: 40px;
-		max-width: 250px;
-	}
-
-	.empty-state-title {
-		color: var(--gray-900);
-		font-size: 20px;
-		font-weight: 600;
-		margin-bottom: 8px;
+	[data-color-scheme='dark'] &,
+	[data-color-scheme='dark-high-contrast'] & {
+		filter: invert(0.8) sepia(0.8) hue-rotate(198deg) saturate(1)
+			brightness(0.52);
 	}
 }
