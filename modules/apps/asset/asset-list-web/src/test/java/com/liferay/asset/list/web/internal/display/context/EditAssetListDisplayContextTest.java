@@ -6,9 +6,12 @@
 package com.liferay.asset.list.web.internal.display.context;
 
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.model.ClassTypeReader;
+import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
+import com.liferay.asset.kernel.service.AssetTagLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetVocabularyServiceUtil;
 import com.liferay.asset.list.constants.AssetListConstants;
 import com.liferay.asset.list.model.AssetListEntry;
@@ -24,6 +27,7 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -32,6 +36,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -50,6 +55,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -230,6 +237,162 @@ public class EditAssetListDisplayContextTest {
 				new long[] {
 					RandomTestUtil.randomLong(), RandomTestUtil.randomLong()
 				}));
+	}
+
+	@Test
+	public void testGetFilters() {
+		AssetCategory assetCategory = Mockito.mock(AssetCategory.class);
+
+		long assetCategoryId = RandomTestUtil.randomLong();
+
+		Mockito.when(
+			assetCategory.getCategoryId()
+		).thenReturn(
+			assetCategoryId
+		);
+
+		String assetCategoryTitle = RandomTestUtil.randomString();
+
+		Mockito.when(
+			assetCategory.getTitle(LocaleUtil.US)
+		).thenReturn(
+			assetCategoryTitle
+		);
+
+		long[] groupIds = {RandomTestUtil.randomLong()};
+
+		Mockito.when(
+			_portal.getCurrentAndAncestorSiteGroupIds(
+				Mockito.any(long[].class), Mockito.eq(true))
+		).thenReturn(
+			groupIds
+		);
+
+		Mockito.when(
+			_themeDisplay.getScopeGroup()
+		).thenReturn(
+			Mockito.mock(Group.class)
+		);
+
+		String assetTagName = RandomTestUtil.randomString();
+		long deletedAssetCategoryId = RandomTestUtil.randomLong();
+		String deletedAssetTagName = RandomTestUtil.randomString();
+
+		try (MockedStatic<AssetCategoryLocalServiceUtil>
+				assetCategoryLocalServiceUtilMockedStatic = Mockito.mockStatic(
+					AssetCategoryLocalServiceUtil.class);
+			MockedStatic<AssetTagLocalServiceUtil>
+				assetTagLocalServiceUtilMockedStatic = Mockito.mockStatic(
+					AssetTagLocalServiceUtil.class)) {
+
+			assetCategoryLocalServiceUtilMockedStatic.when(
+				() -> AssetCategoryLocalServiceUtil.fetchAssetCategory(
+					assetCategoryId)
+			).thenReturn(
+				assetCategory
+			);
+
+			assetTagLocalServiceUtilMockedStatic.when(
+				() -> AssetTagLocalServiceUtil.getTagIds(groupIds, assetTagName)
+			).thenReturn(
+				new long[] {RandomTestUtil.randomLong()}
+			);
+
+			assetTagLocalServiceUtilMockedStatic.when(
+				() -> AssetTagLocalServiceUtil.getTagIds(
+					groupIds, deletedAssetTagName)
+			).thenReturn(
+				new long[0]
+			);
+
+			JSONArray objectFieldValueJSONArray = JSONUtil.put(
+				JSONUtil.put(
+					"label", RandomTestUtil.randomString()
+				).put(
+					"value", String.valueOf(assetCategoryId)
+				));
+
+			EditAssetListDisplayContext editAssetListDisplayContext =
+				_getEditAssetListDisplayContext(
+					UnicodePropertiesBuilder.put(
+						"filters",
+						JSONUtil.putAll(
+							JSONUtil.put(
+								"propertyName", "assetCategories"
+							).put(
+								"value",
+								JSONUtil.putAll(
+									JSONUtil.put(
+										"label", RandomTestUtil.randomString()
+									).put(
+										"value", String.valueOf(assetCategoryId)
+									),
+									JSONUtil.put(
+										"label", RandomTestUtil.randomString()
+									).put(
+										"value",
+										String.valueOf(deletedAssetCategoryId)
+									))
+							),
+							JSONUtil.put(
+								"propertyName", "assetTags"
+							).put(
+								"value",
+								JSONUtil.putAll(
+									JSONUtil.put(
+										"label", assetTagName
+									).put(
+										"value", assetTagName
+									),
+									JSONUtil.put(
+										"label", deletedAssetTagName
+									).put(
+										"value", deletedAssetTagName
+									))
+							),
+							JSONUtil.put(
+								"classNameId", RandomTestUtil.randomLong()
+							).put(
+								"propertyName", "assetCategories"
+							).put(
+								"value", objectFieldValueJSONArray
+							)
+						).toString()
+					).build());
+
+			List<Map<String, Object>> filters =
+				editAssetListDisplayContext.getFilters();
+
+			Assert.assertEquals(filters.toString(), 3, filters.size());
+
+			Map<String, Object> assetCategoriesFilter = filters.get(0);
+
+			Assert.assertEquals(
+				Collections.singletonList(
+					HashMapBuilder.<String, Object>put(
+						"label", assetCategoryTitle
+					).put(
+						"value", String.valueOf(assetCategoryId)
+					).build()),
+				assetCategoriesFilter.get("value"));
+
+			Map<String, Object> assetTagsFilter = filters.get(1);
+
+			Assert.assertEquals(
+				Collections.singletonList(
+					HashMapBuilder.<String, Object>put(
+						"label", assetTagName
+					).put(
+						"value", assetTagName
+					).build()),
+				assetTagsFilter.get("value"));
+
+			Map<String, Object> objectFieldFilter = filters.get(2);
+
+			Assert.assertEquals(
+				objectFieldValueJSONArray.toString(),
+				String.valueOf(objectFieldFilter.get("value")));
+		}
 	}
 
 	@Test
