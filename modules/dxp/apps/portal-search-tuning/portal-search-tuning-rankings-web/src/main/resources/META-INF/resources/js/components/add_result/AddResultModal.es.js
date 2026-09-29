@@ -446,6 +446,7 @@ function AddResultModal({
 							'inline-item',
 							'inline-item-after',
 							'modal-title-help-icon',
+							'text-secondary',
 							PORTAL_TOOLTIP_TRIGGER_CLASS
 						)}
 						data-title={Liferay.Language.get('add-results-help')}
@@ -462,7 +463,7 @@ function AddResultModal({
 						searchQuery={searchQuery}
 					/>
 
-					<div className="add-result-scroller">
+					<div className="add-result-scroller bg-light">
 						{loading && (
 							<ClayLayout.Sheet className="add-result-sheet">
 								<div className="sheet-title">
