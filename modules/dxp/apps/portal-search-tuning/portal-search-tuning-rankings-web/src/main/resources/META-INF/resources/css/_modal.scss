@@ -5,7 +5,7 @@
 	}
 
 	.add-result-scroller {
-		background-color: $lightBackground;
+		background-color: var(--light);
 		max-height: calc(100vh - 280px);
 		min-height: 400px;
 		overflow: auto;
@@ -25,7 +25,7 @@
 	}
 
 	.modal-title-help-icon {
-		color: $mainLighten28;
+		color: var(--gray-600);
 		font-size: 1rem;
 
 		// Temporary workaround to allow tooltip to activate on entire icon
