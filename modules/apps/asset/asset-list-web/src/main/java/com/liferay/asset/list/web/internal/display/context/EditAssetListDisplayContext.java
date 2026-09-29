@@ -762,6 +762,26 @@ public class EditAssetListDisplayContext {
 					filterMap.put(key, filterJSONObject.get(key));
 				}
 
+				if ((filterJSONObject.getLong("classNameId") <= 0) &&
+					(filterJSONObject.getLong("classTypeId") <= 0)) {
+
+					String propertyName = filterJSONObject.getString(
+						"propertyName");
+
+					if (Objects.equals(propertyName, "assetCategories")) {
+						filterMap.put(
+							"value",
+							_getAssetCategorySelectedItems(
+								filterJSONObject.getJSONArray("value")));
+					}
+					else if (Objects.equals(propertyName, "assetTags")) {
+						filterMap.put(
+							"value",
+							_getAssetTagSelectedItems(
+								filterJSONObject.getJSONArray("value")));
+					}
+				}
+
 				filtersList.add(filterMap);
 			}
 
@@ -1304,6 +1324,20 @@ public class EditAssetListDisplayContext {
 		return StringUtil.merge(filteredAssetTagNames);
 	}
 
+	private List<Map<String, Object>> _getAssetCategorySelectedItems(
+		JSONArray valueJSONArray) {
+
+		return TransformUtil.transform(
+			_filterAssetCategories(
+				GetterUtil.getLongValues(
+					JSONUtil.toStringArray(valueJSONArray, "value"))),
+			assetCategory -> HashMapBuilder.<String, Object>put(
+				"label", assetCategory.getTitle(_themeDisplay.getLocale())
+			).put(
+				"value", String.valueOf(assetCategory.getCategoryId())
+			).build());
+	}
+
 	private JSONArray _getAssetListEntrySegmentsEntryRelJSONArray() {
 		List<AssetListEntrySegmentsEntryRel> assetListEntrySegmentsEntryRels =
 			new ArrayList<>(getAssetListEntrySegmentsEntryRels());
@@ -1360,6 +1394,30 @@ public class EditAssetListDisplayContext {
 					_themeDisplay.getLocale())
 			),
 			_log);
+	}
+
+	private List<Map<String, Object>> _getAssetTagSelectedItems(
+			JSONArray valueJSONArray)
+		throws PortalException {
+
+		long[] groupIds = getReferencedModelsGroupIds();
+
+		return TransformUtil.transformToList(
+			JSONUtil.toStringArray(valueJSONArray, "value"),
+			assetTagName -> {
+				if (ArrayUtil.isEmpty(
+						AssetTagLocalServiceUtil.getTagIds(
+							groupIds, assetTagName))) {
+
+					return null;
+				}
+
+				return HashMapBuilder.<String, Object>put(
+					"label", assetTagName
+				).put(
+					"value", assetTagName
+				).build();
+			});
 	}
 
 	private Long[] _getClassTypeIds(
