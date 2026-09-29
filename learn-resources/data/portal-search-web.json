@@ -1,4 +1,10 @@
 {
+	"configuring-the-search-results-widget": {
+		"en_US": {
+			"message": "Learn more.",
+			"url": "https://learn.liferay.com/w/dxp/search/search-pages-and-widgets/search-results/configuring-the-search-results-widget"
+		}
+	},
 	"custom-facet": {
 		"en_US": {
 			"message": "Learn more.",
