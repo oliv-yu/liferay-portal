@@ -57,6 +57,7 @@ import jakarta.portlet.PortletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -244,23 +245,10 @@ public class EditAssetListDisplayContextTest {
 
 	@Test
 	public void testGetFilters() {
-		AssetCategory assetCategory = Mockito.mock(AssetCategory.class);
-
-		long assetCategoryId = RandomTestUtil.randomLong();
-
-		Mockito.when(
-			assetCategory.getCategoryId()
-		).thenReturn(
-			assetCategoryId
-		);
-
-		String assetCategoryTitle = RandomTestUtil.randomString();
-
-		Mockito.when(
-			assetCategory.getTitle(LocaleUtil.US)
-		).thenReturn(
-			assetCategoryTitle
-		);
+		AssetCategory assetCategory1 = _getAssetCategory(
+			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
+		AssetCategory assetCategory2 = _getAssetCategory(
+			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
 
 		long[] groupIds = {RandomTestUtil.randomLong()};
 
@@ -278,8 +266,6 @@ public class EditAssetListDisplayContextTest {
 		);
 
 		String assetTagName = RandomTestUtil.randomString();
-		long deletedAssetCategoryId = RandomTestUtil.randomLong();
-		String deletedAssetTagName = RandomTestUtil.randomString();
 
 		try (MockedStatic<AssetCategoryLocalServiceUtil>
 				assetCategoryLocalServiceUtilMockedStatic = Mockito.mockStatic(
@@ -290,9 +276,16 @@ public class EditAssetListDisplayContextTest {
 
 			assetCategoryLocalServiceUtilMockedStatic.when(
 				() -> AssetCategoryLocalServiceUtil.fetchAssetCategory(
-					assetCategoryId)
+					assetCategory1.getCategoryId())
 			).thenReturn(
-				assetCategory
+				assetCategory1
+			);
+
+			assetCategoryLocalServiceUtilMockedStatic.when(
+				() -> AssetCategoryLocalServiceUtil.fetchAssetCategory(
+					assetCategory2.getCategoryId())
+			).thenReturn(
+				assetCategory2
 			);
 
 			assetTagLocalServiceUtilMockedStatic.when(
@@ -301,18 +294,11 @@ public class EditAssetListDisplayContextTest {
 				new long[] {RandomTestUtil.randomLong()}
 			);
 
-			assetTagLocalServiceUtilMockedStatic.when(
-				() -> AssetTagLocalServiceUtil.getTagIds(
-					groupIds, deletedAssetTagName)
-			).thenReturn(
-				new long[0]
-			);
-
 			JSONArray objectFieldValueJSONArray = JSONUtil.put(
 				JSONUtil.put(
 					"label", RandomTestUtil.randomString()
 				).put(
-					"value", String.valueOf(assetCategoryId)
+					"value", String.valueOf(assetCategory1.getCategoryId())
 				));
 
 			EditAssetListDisplayContext editAssetListDisplayContext =
@@ -328,13 +314,20 @@ public class EditAssetListDisplayContextTest {
 									JSONUtil.put(
 										"label", RandomTestUtil.randomString()
 									).put(
-										"value", String.valueOf(assetCategoryId)
+										"value",
+										String.valueOf(
+											assetCategory1.getCategoryId())
 									),
+									JSONUtil.put(
+										"value",
+										String.valueOf(
+											assetCategory2.getCategoryId())),
 									JSONUtil.put(
 										"label", RandomTestUtil.randomString()
 									).put(
 										"value",
-										String.valueOf(deletedAssetCategoryId)
+										String.valueOf(
+											RandomTestUtil.randomLong())
 									))
 							),
 							JSONUtil.put(
@@ -348,10 +341,7 @@ public class EditAssetListDisplayContextTest {
 										"value", assetTagName
 									),
 									JSONUtil.put(
-										"label", deletedAssetTagName
-									).put(
-										"value", deletedAssetTagName
-									))
+										"value", RandomTestUtil.randomString()))
 							),
 							JSONUtil.put(
 								"classNameId", RandomTestUtil.randomLong()
@@ -359,50 +349,32 @@ public class EditAssetListDisplayContextTest {
 								"propertyName", "assetCategories"
 							).put(
 								"value", objectFieldValueJSONArray
-							),
-							JSONUtil.put(
-								"propertyName", "assetCategories"
-							).put(
-								"value",
-								JSONUtil.put(
-									JSONUtil.put(
-										"label", RandomTestUtil.randomString()
-									).put(
-										"value",
-										String.valueOf(deletedAssetCategoryId)
-									))
-							),
-							JSONUtil.put(
-								"propertyName", "assetTags"
-							).put(
-								"value",
-								JSONUtil.put(
-									JSONUtil.put(
-										"label", deletedAssetTagName
-									).put(
-										"value", deletedAssetTagName
-									))
 							)
 						).toString()
 					).build());
 
-			List<Map<String, Object>> filters =
+			List<Map<String, Object>> filtersList =
 				editAssetListDisplayContext.getFilters();
 
-			Assert.assertEquals(filters.toString(), 3, filters.size());
+			Assert.assertEquals(filtersList.toString(), 3, filtersList.size());
 
-			Map<String, Object> assetCategoriesFilter = filters.get(0);
+			Map<String, Object> assetCategoriesFilterMap = filtersList.get(0);
 
 			Assert.assertEquals(
-				Collections.singletonList(
+				Arrays.asList(
 					HashMapBuilder.<String, Object>put(
-						"label", assetCategoryTitle
+						"label", assetCategory1.getTitle(LocaleUtil.US)
 					).put(
-						"value", String.valueOf(assetCategoryId)
+						"value", String.valueOf(assetCategory1.getCategoryId())
+					).build(),
+					HashMapBuilder.<String, Object>put(
+						"label", assetCategory2.getTitle(LocaleUtil.US)
+					).put(
+						"value", String.valueOf(assetCategory2.getCategoryId())
 					).build()),
-				assetCategoriesFilter.get("value"));
+				assetCategoriesFilterMap.get("value"));
 
-			Map<String, Object> assetTagsFilter = filters.get(1);
+			Map<String, Object> assetTagsFilterMap = filtersList.get(1);
 
 			Assert.assertEquals(
 				Collections.singletonList(
@@ -411,13 +383,13 @@ public class EditAssetListDisplayContextTest {
 					).put(
 						"value", assetTagName
 					).build()),
-				assetTagsFilter.get("value"));
+				assetTagsFilterMap.get("value"));
 
-			Map<String, Object> objectFieldFilter = filters.get(2);
+			Map<String, Object> objectFieldFilterMap = filtersList.get(2);
 
 			Assert.assertEquals(
 				objectFieldValueJSONArray.toString(),
-				String.valueOf(objectFieldFilter.get("value")));
+				String.valueOf(objectFieldFilterMap.get("value")));
 		}
 	}
 
@@ -490,6 +462,77 @@ public class EditAssetListDisplayContextTest {
 			Assert.assertTrue(
 				StringUtil.startsWith(
 					logEntry.getMessage(), "Unable to resolve filter "));
+		}
+	}
+
+	@Test
+	public void testGetFiltersWhenOnlyAssetCategoryOrTagIsDeleted() {
+		Mockito.when(
+			_portal.getCurrentAndAncestorSiteGroupIds(
+				Mockito.any(long[].class), Mockito.eq(true))
+		).thenReturn(
+			new long[] {RandomTestUtil.randomLong()}
+		);
+
+		Mockito.when(
+			_themeDisplay.getScopeGroup()
+		).thenReturn(
+			Mockito.mock(Group.class)
+		);
+
+		String keywords = RandomTestUtil.randomString();
+
+		try (MockedStatic<AssetCategoryLocalServiceUtil>
+				assetCategoryLocalServiceUtilMockedStatic = Mockito.mockStatic(
+					AssetCategoryLocalServiceUtil.class);
+			MockedStatic<AssetTagLocalServiceUtil>
+				assetTagLocalServiceUtilMockedStatic = Mockito.mockStatic(
+					AssetTagLocalServiceUtil.class)) {
+
+			EditAssetListDisplayContext editAssetListDisplayContext =
+				_getEditAssetListDisplayContext(
+					UnicodePropertiesBuilder.put(
+						"filters",
+						JSONUtil.putAll(
+							JSONUtil.put(
+								"propertyName", "assetCategories"
+							).put(
+								"value",
+								JSONUtil.put(
+									JSONUtil.put(
+										"label", RandomTestUtil.randomString()
+									).put(
+										"value",
+										String.valueOf(
+											RandomTestUtil.randomLong())
+									))
+							),
+							JSONUtil.put(
+								"propertyName", "assetTags"
+							).put(
+								"value",
+								JSONUtil.put(
+									JSONUtil.put(
+										"value", RandomTestUtil.randomString()))
+							),
+							JSONUtil.put(
+								"propertyName", "keywords"
+							).put(
+								"value", keywords
+							)
+						).toString()
+					).build());
+
+			List<Map<String, Object>> filtersList =
+				editAssetListDisplayContext.getFilters();
+
+			Assert.assertEquals(filtersList.toString(), 1, filtersList.size());
+
+			Map<String, Object> keywordsFilterMap = filtersList.get(0);
+
+			Assert.assertEquals(
+				"keywords", keywordsFilterMap.get("propertyName"));
+			Assert.assertEquals(keywords, keywordsFilterMap.get("value"));
 		}
 	}
 
@@ -634,6 +677,24 @@ public class EditAssetListDisplayContextTest {
 				Collections.emptyList(),
 				editAssetListDisplayContext.getVocabularyIds());
 		}
+	}
+
+	private AssetCategory _getAssetCategory(long categoryId, String title) {
+		AssetCategory assetCategory = Mockito.mock(AssetCategory.class);
+
+		Mockito.when(
+			assetCategory.getCategoryId()
+		).thenReturn(
+			categoryId
+		);
+
+		Mockito.when(
+			assetCategory.getTitle(LocaleUtil.US)
+		).thenReturn(
+			title
+		);
+
+		return assetCategory;
 	}
 
 	private EditAssetListDisplayContext _getEditAssetListDisplayContext(
