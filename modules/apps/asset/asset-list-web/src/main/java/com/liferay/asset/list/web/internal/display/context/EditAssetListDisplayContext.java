@@ -762,33 +762,23 @@ public class EditAssetListDisplayContext {
 					filterMap.put(key, filterJSONObject.get(key));
 				}
 
-				if ((filterJSONObject.getLong("classNameId") <= 0) &&
-					(filterJSONObject.getLong("classTypeId") <= 0)) {
+				try {
+					List<Map<String, Object>> selectedItems = _getSelectedItems(
+						filterJSONObject);
 
-					String propertyName = filterJSONObject.getString(
-						"propertyName");
-
-					if (Objects.equals(propertyName, "assetCategories")) {
-						List<Map<String, Object>> assetCategorySelectedItems =
-							_getAssetCategorySelectedItems(
-								filterJSONObject.getJSONArray("value"));
-
-						if (ListUtil.isEmpty(assetCategorySelectedItems)) {
+					if (selectedItems != null) {
+						if (selectedItems.isEmpty()) {
 							continue;
 						}
 
-						filterMap.put("value", assetCategorySelectedItems);
+						filterMap.put("value", selectedItems);
 					}
-					else if (Objects.equals(propertyName, "assetTags")) {
-						List<Map<String, Object>> assetTagSelectedItems =
-							_getAssetTagSelectedItems(
-								filterJSONObject.getJSONArray("value"));
-
-						if (ListUtil.isEmpty(assetTagSelectedItems)) {
-							continue;
-						}
-
-						filterMap.put("value", assetTagSelectedItems);
+				}
+				catch (Exception exception) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Unable to resolve filter " + filterJSONObject,
+							exception);
 					}
 				}
 
@@ -1507,6 +1497,31 @@ public class EditAssetListDisplayContext {
 		}
 
 		return orderByColumn;
+	}
+
+	private List<Map<String, Object>> _getSelectedItems(
+			JSONObject filterJSONObject)
+		throws PortalException {
+
+		if ((filterJSONObject.getLong("classNameId") > 0) ||
+			(filterJSONObject.getLong("classTypeId") > 0)) {
+
+			return null;
+		}
+
+		String propertyName = filterJSONObject.getString("propertyName");
+
+		if (Objects.equals(propertyName, "assetCategories")) {
+			return _getAssetCategorySelectedItems(
+				filterJSONObject.getJSONArray("value"));
+		}
+
+		if (Objects.equals(propertyName, "assetTags")) {
+			return _getAssetTagSelectedItems(
+				filterJSONObject.getJSONArray("value"));
+		}
+
+		return null;
 	}
 
 	private String _getTypeSettings() {
