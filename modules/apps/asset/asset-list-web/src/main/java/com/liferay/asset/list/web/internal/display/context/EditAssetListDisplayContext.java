@@ -769,16 +769,26 @@ public class EditAssetListDisplayContext {
 						"propertyName");
 
 					if (Objects.equals(propertyName, "assetCategories")) {
-						filterMap.put(
-							"value",
+						List<Map<String, Object>> assetCategorySelectedItems =
 							_getAssetCategorySelectedItems(
-								filterJSONObject.getJSONArray("value")));
+								filterJSONObject.getJSONArray("value"));
+
+						if (ListUtil.isEmpty(assetCategorySelectedItems)) {
+							continue;
+						}
+
+						filterMap.put("value", assetCategorySelectedItems);
 					}
 					else if (Objects.equals(propertyName, "assetTags")) {
-						filterMap.put(
-							"value",
+						List<Map<String, Object>> assetTagSelectedItems =
 							_getAssetTagSelectedItems(
-								filterJSONObject.getJSONArray("value")));
+								filterJSONObject.getJSONArray("value"));
+
+						if (ListUtil.isEmpty(assetTagSelectedItems)) {
+							continue;
+						}
+
+						filterMap.put("value", assetTagSelectedItems);
 					}
 				}
 
