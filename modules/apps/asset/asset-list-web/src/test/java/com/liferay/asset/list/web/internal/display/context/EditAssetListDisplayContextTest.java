@@ -245,11 +245,6 @@ public class EditAssetListDisplayContextTest {
 
 	@Test
 	public void testGetFilters() {
-		AssetCategory assetCategory1 = _getAssetCategory(
-			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
-		AssetCategory assetCategory2 = _getAssetCategory(
-			RandomTestUtil.randomLong(), RandomTestUtil.randomString());
-
 		long[] groupIds = {RandomTestUtil.randomLong()};
 
 		Mockito.when(
@@ -265,14 +260,17 @@ public class EditAssetListDisplayContextTest {
 			Mockito.mock(Group.class)
 		);
 
-		String assetTagName = RandomTestUtil.randomString();
-
 		try (MockedStatic<AssetCategoryLocalServiceUtil>
 				assetCategoryLocalServiceUtilMockedStatic = Mockito.mockStatic(
 					AssetCategoryLocalServiceUtil.class);
 			MockedStatic<AssetTagLocalServiceUtil>
 				assetTagLocalServiceUtilMockedStatic = Mockito.mockStatic(
 					AssetTagLocalServiceUtil.class)) {
+
+			AssetCategory assetCategory1 = _getAssetCategory(
+				RandomTestUtil.randomLong(), RandomTestUtil.randomString());
+			AssetCategory assetCategory2 = _getAssetCategory(
+				RandomTestUtil.randomLong(), RandomTestUtil.randomString());
 
 			assetCategoryLocalServiceUtilMockedStatic.when(
 				() -> AssetCategoryLocalServiceUtil.fetchAssetCategory(
@@ -287,6 +285,8 @@ public class EditAssetListDisplayContextTest {
 			).thenReturn(
 				assetCategory2
 			);
+
+			String assetTagName = RandomTestUtil.randomString();
 
 			assetTagLocalServiceUtilMockedStatic.when(
 				() -> AssetTagLocalServiceUtil.getTagIds(groupIds, assetTagName)
@@ -395,17 +395,6 @@ public class EditAssetListDisplayContextTest {
 
 	@Test
 	public void testGetFiltersWhenAssetCategoryLookupFails() {
-		long assetCategoryId = RandomTestUtil.randomLong();
-
-		JSONArray assetCategoriesValueJSONArray = JSONUtil.put(
-			JSONUtil.put(
-				"label", RandomTestUtil.randomString()
-			).put(
-				"value", String.valueOf(assetCategoryId)
-			));
-
-		String keywords = RandomTestUtil.randomString();
-
 		try (MockedStatic<AssetCategoryLocalServiceUtil>
 				assetCategoryLocalServiceUtilMockedStatic = Mockito.mockStatic(
 					AssetCategoryLocalServiceUtil.class);
@@ -413,12 +402,23 @@ public class EditAssetListDisplayContextTest {
 				EditAssetListDisplayContext.class.getName(),
 				LoggerTestUtil.WARN)) {
 
+			long assetCategoryId = RandomTestUtil.randomLong();
+
 			assetCategoryLocalServiceUtilMockedStatic.when(
 				() -> AssetCategoryLocalServiceUtil.fetchAssetCategory(
 					assetCategoryId)
 			).thenThrow(
 				new RuntimeException()
 			);
+
+			JSONArray assetCategoriesValueJSONArray = JSONUtil.put(
+				JSONUtil.put(
+					"label", RandomTestUtil.randomString()
+				).put(
+					"value", String.valueOf(assetCategoryId)
+				));
+
+			String keywords = RandomTestUtil.randomString();
 
 			EditAssetListDisplayContext editAssetListDisplayContext =
 				_getEditAssetListDisplayContext(
@@ -480,14 +480,14 @@ public class EditAssetListDisplayContextTest {
 			Mockito.mock(Group.class)
 		);
 
-		String keywords = RandomTestUtil.randomString();
-
 		try (MockedStatic<AssetCategoryLocalServiceUtil>
 				assetCategoryLocalServiceUtilMockedStatic = Mockito.mockStatic(
 					AssetCategoryLocalServiceUtil.class);
 			MockedStatic<AssetTagLocalServiceUtil>
 				assetTagLocalServiceUtilMockedStatic = Mockito.mockStatic(
 					AssetTagLocalServiceUtil.class)) {
+
+			String keywords = RandomTestUtil.randomString();
 
 			EditAssetListDisplayContext editAssetListDisplayContext =
 				_getEditAssetListDisplayContext(
