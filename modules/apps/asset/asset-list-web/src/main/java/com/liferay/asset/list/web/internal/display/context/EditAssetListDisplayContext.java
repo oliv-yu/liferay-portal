@@ -1503,9 +1503,7 @@ public class EditAssetListDisplayContext {
 			JSONObject filterJSONObject)
 		throws PortalException {
 
-		if ((filterJSONObject.getLong("classNameId") > 0) ||
-			(filterJSONObject.getLong("classTypeId") > 0)) {
-
+		if (!_isCommonFieldFilter(filterJSONObject)) {
 			return null;
 		}
 
@@ -1536,6 +1534,16 @@ public class EditAssetListDisplayContext {
 		}
 
 		return typeSettings;
+	}
+
+	private boolean _isCommonFieldFilter(JSONObject filterJSONObject) {
+		if ((filterJSONObject.getLong("classNameId") <= 0) &&
+			(filterJSONObject.getLong("classTypeId") <= 0)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private void _setDDMStructure() throws Exception {
