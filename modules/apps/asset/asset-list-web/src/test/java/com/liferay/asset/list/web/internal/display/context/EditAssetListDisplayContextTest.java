@@ -356,6 +356,29 @@ public class EditAssetListDisplayContextTest {
 								"propertyName", "assetCategories"
 							).put(
 								"value", objectFieldValueJSONArray
+							),
+							JSONUtil.put(
+								"propertyName", "assetCategories"
+							).put(
+								"value",
+								JSONUtil.put(
+									JSONUtil.put(
+										"label", RandomTestUtil.randomString()
+									).put(
+										"value",
+										String.valueOf(deletedAssetCategoryId)
+									))
+							),
+							JSONUtil.put(
+								"propertyName", "assetTags"
+							).put(
+								"value",
+								JSONUtil.put(
+									JSONUtil.put(
+										"label", deletedAssetTagName
+									).put(
+										"value", deletedAssetTagName
+									))
 							)
 						).toString()
 					).build());
