@@ -45,6 +45,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.segments.configuration.provider.SegmentsConfigurationProvider;
 
@@ -415,6 +418,78 @@ public class EditAssetListDisplayContextTest {
 			Assert.assertEquals(
 				objectFieldValueJSONArray.toString(),
 				String.valueOf(objectFieldFilter.get("value")));
+		}
+	}
+
+	@Test
+	public void testGetFiltersWhenAssetCategoryLookupFails() {
+		long assetCategoryId = RandomTestUtil.randomLong();
+
+		JSONArray assetCategoriesValueJSONArray = JSONUtil.put(
+			JSONUtil.put(
+				"label", RandomTestUtil.randomString()
+			).put(
+				"value", String.valueOf(assetCategoryId)
+			));
+
+		String keywords = RandomTestUtil.randomString();
+
+		try (MockedStatic<AssetCategoryLocalServiceUtil>
+				assetCategoryLocalServiceUtilMockedStatic = Mockito.mockStatic(
+					AssetCategoryLocalServiceUtil.class);
+			LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				EditAssetListDisplayContext.class.getName(),
+				LoggerTestUtil.WARN)) {
+
+			assetCategoryLocalServiceUtilMockedStatic.when(
+				() -> AssetCategoryLocalServiceUtil.fetchAssetCategory(
+					assetCategoryId)
+			).thenThrow(
+				new RuntimeException()
+			);
+
+			EditAssetListDisplayContext editAssetListDisplayContext =
+				_getEditAssetListDisplayContext(
+					UnicodePropertiesBuilder.put(
+						"filters",
+						JSONUtil.putAll(
+							JSONUtil.put(
+								"propertyName", "assetCategories"
+							).put(
+								"value", assetCategoriesValueJSONArray
+							),
+							JSONUtil.put(
+								"propertyName", "keywords"
+							).put(
+								"value", keywords
+							)
+						).toString()
+					).build());
+
+			List<Map<String, Object>> filtersList =
+				editAssetListDisplayContext.getFilters();
+
+			Assert.assertEquals(filtersList.toString(), 2, filtersList.size());
+
+			Map<String, Object> assetCategoriesFilterMap = filtersList.get(0);
+
+			Assert.assertEquals(
+				assetCategoriesValueJSONArray.toString(),
+				String.valueOf(assetCategoriesFilterMap.get("value")));
+
+			Map<String, Object> keywordsFilterMap = filtersList.get(1);
+
+			Assert.assertEquals(keywords, keywordsFilterMap.get("value"));
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			LogEntry logEntry = logEntries.get(0);
+
+			Assert.assertTrue(
+				StringUtil.startsWith(
+					logEntry.getMessage(), "Unable to resolve filter "));
 		}
 	}
 
