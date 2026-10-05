@@ -135,9 +135,13 @@ public class SearchResultsPortletTest {
 	}
 
 	@Test
-	public void testTotalHitsApproximate() throws Exception {
-		_testTotalHitsApproximate(false, TotalHitsRelation.EQ);
-		_testTotalHitsApproximate(true, TotalHitsRelation.GTE);
+	public void testTotalHits() throws Exception {
+		_testTotalHits(6, false, 2, 4, 2, 6, TotalHitsRelation.EQ);
+		_testTotalHits(5, true, 1, 4, 4, 5, TotalHitsRelation.GTE);
+		_testTotalHits(8, true, 2, 4, 4, 5, TotalHitsRelation.GTE);
+		_testTotalHits(7, false, 2, 4, 3, 5, TotalHitsRelation.GTE);
+		_testTotalHits(5, true, 2, 4, 1, 5, TotalHitsRelation.GTE);
+		_testTotalHits(10, true, 2, 4, 1, 10, TotalHitsRelation.GTE);
 	}
 
 	protected void render() throws IOException, PortletException {
@@ -432,14 +436,37 @@ public class SearchResultsPortletTest {
 		);
 	}
 
-	private void _testTotalHitsApproximate(
-			boolean expectedTotalHitsApproximate,
+	private void _testTotalHits(
+			int expectedTotalHits, boolean expectedTotalHitsApproximate,
+			int cur, int delta, int documentsCount, int totalHits,
 			TotalHitsRelation totalHitsRelation)
 		throws Exception {
 
 		_renderRequest = _createRenderRequest();
 
-		int totalHits = RandomTestUtil.randomInt();
+		Mockito.doReturn(
+			String.valueOf(cur)
+		).when(
+			_portletSharedSearchResponse
+		).getParameter(
+			Mockito.eq("start"), Mockito.any()
+		);
+
+		Mockito.doReturn(
+			String.valueOf(delta)
+		).when(
+			_portletSharedSearchResponse
+		).getParameter(
+			Mockito.eq("delta"), Mockito.any()
+		);
+
+		Document[] documents = new Document[documentsCount];
+
+		for (int i = 0; i < documentsCount; i++) {
+			documents[i] = _createDocumentWithSummary();
+		}
+
+		_setUpSearchResponseDocuments(documents);
 
 		Mockito.doReturn(
 			totalHits
@@ -458,8 +485,14 @@ public class SearchResultsPortletTest {
 		SearchResultsPortletDisplayContext searchResultsPortletDisplayContext =
 			_getDisplayContext();
 
+		SearchContainer<Document> searchContainer =
+			searchResultsPortletDisplayContext.getSearchContainer();
+
+		Assert.assertEquals(cur, searchContainer.getCur());
+		Assert.assertEquals(expectedTotalHits, searchContainer.getTotal());
 		Assert.assertEquals(
-			totalHits, searchResultsPortletDisplayContext.getTotalHits());
+			expectedTotalHits,
+			searchResultsPortletDisplayContext.getTotalHits());
 		Assert.assertEquals(
 			expectedTotalHitsApproximate,
 			searchResultsPortletDisplayContext.isTotalHitsApproximate());

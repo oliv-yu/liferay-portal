@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.hits.TotalHitsRelation;
 import com.liferay.portal.search.searcher.SearchRequest;
 import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.summary.SummaryBuilderFactory;
@@ -253,10 +254,14 @@ public class SearchResultsPortlet extends MVCPortlet {
 			searchResultsPortletPreferences.isShowEmptyResultMessage());
 		searchResultsPortletDisplayContext.setShowPagination(
 			searchResultsPortletPreferences.isShowPagination());
+
+		SearchContainer<Document> searchContainer =
+			searchResultsPortletDisplayContext.getSearchContainer();
+
 		searchResultsPortletDisplayContext.setTotalHits(
-			searchResponse.getTotalHits());
+			searchContainer.getTotal());
 		searchResultsPortletDisplayContext.setTotalHitsRelation(
-			searchResponse.getTotalHitsRelation());
+			_getTotalHitsRelation(documents, searchContainer, searchResponse));
 
 		return searchResultsPortletDisplayContext;
 	}
@@ -284,7 +289,20 @@ public class SearchResultsPortlet extends MVCPortlet {
 			portletURL, headerNames, emptyResultsMessage, cssClass);
 
 		searchContainer.setDeltaParam(paginationDeltaParameterName);
-		searchContainer.setResultsAndTotal(() -> documents, totalHits);
+
+		// An approximate total stops counting at the accurate count limit, but
+		// a page past that limit still holds real results. Counting them keeps
+		// the total from falling below the page being shown, which would also
+		// make the search container pull the active page back within it.
+
+		int total = totalHits;
+
+		if (!documents.isEmpty()) {
+			total = Math.max(
+				totalHits, searchContainer.getStart() + documents.size());
+		}
+
+		searchContainer.setResultsAndTotal(() -> documents, total);
 
 		return searchContainer;
 	}
@@ -433,6 +451,33 @@ public class SearchResultsPortlet extends MVCPortlet {
 
 		return portletSharedSearchResponse.getFederatedSearchResponse(
 			searchResultsPortletPreferences.getFederatedSearchKey());
+	}
+
+	private TotalHitsRelation _getTotalHitsRelation(
+		List<Document> documents, SearchContainer<Document> searchContainer,
+		SearchResponse searchResponse) {
+
+		TotalHitsRelation totalHitsRelation =
+			searchResponse.getTotalHitsRelation();
+
+		if (totalHitsRelation != TotalHitsRelation.GTE) {
+			return totalHitsRelation;
+		}
+
+		// A page that comes back short ran out of results, so its end is the
+		// exact total. That end lies past the approximate count, which only
+		// holds results that are known to exist. A short page that ends within
+		// the count was cut off by the search engine's max result window
+		// instead, so the total stays approximate.
+
+		if ((documents.size() < searchContainer.getDelta()) &&
+			((searchContainer.getStart() + documents.size()) >
+				searchResponse.getTotalHits())) {
+
+			return TotalHitsRelation.EQ;
+		}
+
+		return totalHitsRelation;
 	}
 
 	private String _getURLString(
