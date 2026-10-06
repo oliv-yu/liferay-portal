@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {expect, mergeTests} from '@playwright/test';
+import {Page, expect, mergeTests} from '@playwright/test';
 import {createReadStream} from 'fs';
 import path from 'path';
 
@@ -14,6 +14,8 @@ import {isolatedSiteTest} from '../../../fixtures/isolatedSiteTest';
 import {loginTest} from '../../../fixtures/loginTest';
 import {pageEditorPagesTest} from '../../../fixtures/pageEditorPagesTest';
 import {searchPageTest} from '../../../fixtures/searchPageTest';
+import {DataApiHelpers} from '../../../helpers/ApiHelpers';
+import {SearchPage} from '../../../pages/portal-search-web/SearchPage';
 import getRandomString from '../../../utils/getRandomString';
 import {hoverAndExpectToBeVisible} from '../../../utils/hoverAndExpectToBeVisible';
 import {reloadUntilVisible} from '../../../utils/reloadUntilVisible';
@@ -496,6 +498,166 @@ approximateCountsTest.describe('Limit Result Count Accuracy', () => {
 					await instanceSettingsPage.resetInstanceSetting();
 				});
 			}
+		}
+	);
+});
+
+// These tests are skipped until the accurate count limit can be lowered. The
+// limit is a placeholder of 10001 in SearchResultsPortletSharedSearchContributor
+// until the search engine exposes its maximum depth, and no test can create
+// enough results to reach it. Once the limit is configurable, set it to 5 before
+// each test, restore it afterward, and remove the skips.
+
+approximateCountsTest.describe('Approximate Result Count', () => {
+	async function addSearchPage({
+		apiHelpers,
+		keyword,
+		page,
+		resultsCount,
+		searchPage,
+		site,
+	}: {
+		apiHelpers: DataApiHelpers;
+		keyword: string;
+		page: Page;
+		resultsCount: number;
+		searchPage: SearchPage;
+		site: Site;
+	}) {
+		const basicWebContentStructureId =
+			await getBasicWebContentStructureId(apiHelpers);
+
+		for (let count = 0; count < resultsCount; count++) {
+			await apiHelpers.jsonWebServicesJournal.addWebContent({
+				ddmStructureId: basicWebContentStructureId,
+				groupId: site.id,
+				titleMap: {en_US: `${keyword} ${count}`},
+			});
+		}
+
+		const siteLayout = await apiHelpers.jsonWebServicesLayout.addLayout({
+			groupId: site.id,
+			options: {type: 'portlet'},
+			title: getRandomString(),
+		});
+
+		const searchPageURL = `/web${site.friendlyUrlPath}${siteLayout.friendlyURL}`;
+
+		await page.goto(searchPageURL);
+
+		await searchPage.addPortlet('Search Bar', 'Search');
+
+		await searchPage.addPortlet('Search Results', 'Search');
+
+		await searchPage.searchKeywordInMainContent(keyword);
+
+		await expect(searchPage.searchResultsTotalLabel).toBeVisible();
+
+		return searchPageURL;
+	}
+
+	approximateCountsTest.skip(
+		'Shows an approximate count past the accurate count limit',
+		{tag: '@LPD-100897'},
+		async ({apiHelpers, page, searchPage, site}) => {
+			const keyword = getRandomString().replace(/-/g, '');
+
+			let searchPageURL: string;
+
+			await test.step('Build a search page with nine results', async () => {
+				searchPageURL = await addSearchPage({
+					apiHelpers,
+					keyword,
+					page,
+					resultsCount: 9,
+					searchPage,
+					site,
+				});
+			});
+
+			await test.step('Verify the first page shows an approximate count', async () => {
+				await page.goto(`${searchPageURL}?delta=4&q=${keyword}`);
+
+				await expect(searchPage.searchResultsItems).toHaveCount(4);
+				await expect(searchPage.searchResultsTotalLabel).toHaveText(
+					`5+ Results for ${keyword}`
+				);
+				await expect(
+					searchPage.searchResultsTotalLabel.getByLabel(
+						'Filter or search more specifically to get a more accurate count.'
+					)
+				).toBeVisible();
+				await expect(
+					searchPage.searchResultsPaginationDescription
+				).toHaveText('Showing 1 to 4 of 5+ entries.');
+			});
+
+			await test.step('Verify the second page counts its results', async () => {
+				await page.goto(
+					`${searchPageURL}?delta=4&q=${keyword}&start=2`
+				);
+
+				await expect(searchPage.searchResultsItems).toHaveCount(4);
+				await expect(searchPage.searchResultsTotalLabel).toHaveText(
+					`8+ Results for ${keyword}`
+				);
+				await expect(
+					searchPage.searchResultsPaginationDescription
+				).toHaveText('Showing 5 to 8 of 8+ entries.');
+			});
+
+			await test.step('Verify no page past the count is offered', async () => {
+				await expect(
+					searchPage.searchResultsPaginationBar.getByText('2', {
+						exact: true,
+					})
+				).toHaveAttribute('aria-current', 'page');
+				await expect(
+					searchPage.searchResultsPaginationBar.getByText('3', {
+						exact: true,
+					})
+				).toHaveCount(0);
+			});
+		}
+	);
+
+	approximateCountsTest.skip(
+		'Shows an exact count when the last page comes back short',
+		{tag: '@LPD-100897'},
+		async ({apiHelpers, page, searchPage, site}) => {
+			const keyword = getRandomString().replace(/-/g, '');
+
+			let searchPageURL: string;
+
+			await test.step('Build a search page with seven results', async () => {
+				searchPageURL = await addSearchPage({
+					apiHelpers,
+					keyword,
+					page,
+					resultsCount: 7,
+					searchPage,
+					site,
+				});
+			});
+
+			await test.step('Verify the last page shows an exact count', async () => {
+				await page.goto(
+					`${searchPageURL}?delta=4&q=${keyword}&start=2`
+				);
+
+				await expect(searchPage.searchResultsItems).toHaveCount(3);
+				await expect(searchPage.searchResultsTotalLabel).toHaveText(
+					`7 Results for ${keyword}`
+				);
+				await expect(
+					searchPage.searchResultsTotalLabel.getByLabel(
+						'Filter or search more specifically to get a more accurate count.'
+					)
+				).toHaveCount(0);
+				await expect(
+					searchPage.searchResultsPaginationDescription
+				).toHaveText('Showing 5 to 7 of 7 entries.');
+			});
 		}
 	);
 });
