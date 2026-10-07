@@ -1156,6 +1156,8 @@ definition {
 		task ("Then the site designer could directly see usages on the dynamic collection") {
 			DepotNavigator.openDepotAssetListsAdmin(depotName = "Test Depot Name");
 
+			LexiconEntry.changeDisplayStyle(displayStyle = "table");
+
 			LexiconTable.viewTableEntryInfo(
 				columnName = "usages",
 				tableEntry = "Dynamic Collection",
@@ -1232,6 +1234,8 @@ definition {
 
 		task ("Then the site designer could directly see usages on the dynamic collection") {
 			AssetListsAdmin.openAssetListsAdmin(siteURLKey = "test-site-name");
+
+			LexiconEntry.changeDisplayStyle(displayStyle = "table");
 
 			LexiconTable.viewTableEntryInfo(
 				columnName = "usages",
