@@ -67,6 +67,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.odata.entity.EntityField;
@@ -625,7 +626,7 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 					"includes",
 					JSONFactoryUtil.createJSONArray(
 					).put(
-						"fullName"
+						_getLocalizedFullNameFieldName()
 					)
 				))
 		).put(
@@ -745,7 +746,7 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 		return JSONUtil.put(
 			"fields",
 			JSONUtil.put(
-				"fullName",
+				_getLocalizedFullNameFieldName(),
 				JSONUtil.put(
 					"fragment_size", 100
 				).put(
@@ -786,6 +787,11 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 		}
 
 		return sb.toString();
+	}
+
+	private String _getLocalizedFullNameFieldName() {
+		return LocalizationUtil.getLocalizedName(
+			"fullName", LocaleUtil.toLanguageId(_locale));
 	}
 
 	private Map<String, JSONArray> _getSearchFacets(JSONObject jsonObject) {
