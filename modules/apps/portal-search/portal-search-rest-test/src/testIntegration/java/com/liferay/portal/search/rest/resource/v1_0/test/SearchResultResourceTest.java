@@ -91,6 +91,8 @@ import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.search.experiences.model.SXPBlueprint;
 import com.liferay.search.experiences.service.SXPBlueprintLocalService;
 
+import jakarta.ws.rs.core.HttpHeaders;
+
 import java.io.Serializable;
 
 import java.net.URLEncoder;
@@ -859,6 +861,21 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 	}
 
 	private SearchPage<SearchResult> _postSearchPage(
+			Locale locale, Map<String, String> parameters,
+			SearchRequestBody searchRequestBody)
+		throws Exception {
+
+		return _toSearchPage(
+			HTTPTestUtil.invokeToJSONObject(
+				searchRequestBody.toString(), _getEndpoint(parameters),
+				HashMapBuilder.put(
+					HttpHeaders.ACCEPT_LANGUAGE,
+					LocaleUtil.toW3cLanguageId(locale)
+				).build(),
+				Http.Method.POST));
+	}
+
+	private SearchPage<SearchResult> _postSearchPage(
 			Map<String, String> parameters, SearchRequestBody searchRequestBody)
 		throws Exception {
 
@@ -1616,17 +1633,23 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 			},
 			ObjectDefinitionConstants.SCOPE_COMPANY);
 
+		Map<String, String> parameters = HashMapBuilder.put(
+			"entryClassNames", objectDefinition.getClassName()
+		).put(
+			"nestedFields", "embedded"
+		).put(
+			"scope", "0"
+		).put(
+			"search", "Paulo"
+		).build();
+
 		SearchPage<SearchResult> searchPage = _postSearchPage(
-			HashMapBuilder.put(
-				"entryClassNames", objectDefinition.getClassName()
-			).put(
-				"nestedFields", "embedded"
-			).put(
-				"scope", "0"
-			).put(
-				"search", "Paulo"
-			).build(),
-			new SearchRequestBody());
+			parameters, new SearchRequestBody());
+
+		Assert.assertEquals(0L, searchPage.getTotalCount());
+
+		searchPage = _postSearchPage(
+			LocaleUtil.BRAZIL, parameters, new SearchRequestBody());
 
 		List<SearchResult> searchResults = ListUtil.fromCollection(
 			searchPage.getItems());
