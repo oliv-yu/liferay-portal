@@ -116,8 +116,6 @@ definition {
 
 	@summary = "Default summary"
 	macro startReindex(action = null) {
-		TestUtils.hardRefresh();
-
 		Click(
 			key_action = ${action},
 			locator1 = "SearchAdmin#EXECUTE_REINDEX_BUTTON");
