@@ -120,7 +120,7 @@ definition {
 			key_action = ${action},
 			locator1 = "SearchAdmin#EXECUTE_REINDEX_BUTTON");
 
-		if (IsElementPresent.isElementPresentNoSPARefresh(key_text = "Execute", locator1 = "Modal#MODAL_FOOTER_BUTTON")) {
+		if (IsElementPresent.pauseIsElementPresent(key_text = "Execute", locator1 = "Modal#MODAL_FOOTER_BUTTON")) {
 			Click(
 				key_text = "Execute",
 				locator1 = "Modal#MODAL_FOOTER_BUTTON");
