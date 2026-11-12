@@ -13,6 +13,7 @@ import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.test.util.CompanyConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -29,6 +30,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
@@ -96,6 +98,7 @@ public class SuggestionResourceTest extends BaseSuggestionResourceTestCase {
 		_testPostSuggestionsPageWithBasicSuggestionsContributorWithSearchResultsPortletWithoutViewInContext();
 		_testPostSuggestionsPageWithBasicSuggestionsContributorWithSearchResultsPortletWithoutViewInContextWithLayout();
 		_testPostSuggestionsPageWithBasicSuggestionsContributorWithThisSiteScope();
+		_testPostSuggestionsPageWithSuggestionsSizeLimit();
 		_testPostSuggestionsPageWithSXPBlueprintSuggestionsContributor();
 		_testPostSuggestionsPageWithSXPBlueprintSuggestionsContributorWithGroupERCScope();
 		_testPostSuggestionsPageWithSXPBlueprintSuggestionsContributorWithSearchExperiencesAttributes();
@@ -164,6 +167,35 @@ public class SuggestionResourceTest extends BaseSuggestionResourceTestCase {
 
 		Assert.assertEquals(
 			Arrays.toString(expectedTexts), String.valueOf(texts));
+	}
+
+	private void _assertSuggestionsCount(
+			int expectedCount, String search, int suggestionsSize)
+		throws Exception {
+
+		Page<SuggestionsContributorResults> suggestionsPage =
+			_postSuggestionsPage(
+				"http://localhost:" + PortalUtil.getPortalServerPort(false) +
+					"/web/guest/home",
+				"/search", null, "q", _layout.getPlid(), null, search,
+				new SuggestionsContributorConfiguration[] {
+					new SuggestionsContributorConfiguration() {
+						{
+							contributorName = "basic";
+							displayGroupName = RandomTestUtil.randomString();
+							size = suggestionsSize;
+						}
+					}
+				});
+
+		SuggestionsContributorResults suggestionsContributorResults =
+			suggestionsPage.fetchFirstItem();
+
+		Suggestion[] suggestions =
+			suggestionsContributorResults.getSuggestions();
+
+		Assert.assertEquals(
+			Arrays.toString(suggestions), expectedCount, suggestions.length);
 	}
 
 	private String _getAssetURL(Layout destinationLayout, String search)
@@ -640,6 +672,37 @@ public class SuggestionResourceTest extends BaseSuggestionResourceTestCase {
 		_assertSuggestionContributorResults(
 			suggestionsDisplayGroupGroupName, page,
 			_journalArticle.getTitle(_locale));
+	}
+
+	private void _testPostSuggestionsPageWithSuggestionsSizeLimit()
+		throws Exception {
+
+		JournalArticle journalArticle1 = JournalTestUtil.addArticle(
+			testGroup.getGroupId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString());
+		JournalArticle journalArticle2 = JournalTestUtil.addArticle(
+			testGroup.getGroupId(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString());
+
+		String search = StringBundler.concat(
+			_journalArticle.getTitle(_locale), StringPool.SPACE,
+			journalArticle1.getTitle(_locale), StringPool.SPACE,
+			journalArticle2.getTitle(_locale));
+
+		try (CompanyConfigurationTemporarySwapper
+				companyConfigurationTemporarySwapper =
+					new CompanyConfigurationTemporarySwapper(
+						TestPropsValues.getCompanyId(),
+						"com.liferay.portal.search.rest.configuration." +
+							"SearchSuggestionsCompanyConfiguration",
+						MapUtil.singletonDictionary(
+							"suggestionsSizeLimit", 2))) {
+
+			_assertSuggestionsCount(1, search, 1);
+			_assertSuggestionsCount(2, search, 3);
+		}
+
+		_assertSuggestionsCount(3, search, 3);
 	}
 
 	@Inject
