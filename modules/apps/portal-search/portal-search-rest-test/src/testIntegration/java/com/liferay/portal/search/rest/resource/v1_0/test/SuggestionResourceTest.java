@@ -169,33 +169,47 @@ public class SuggestionResourceTest extends BaseSuggestionResourceTestCase {
 			Arrays.toString(expectedTexts), String.valueOf(texts));
 	}
 
-	private void _assertSuggestionsCount(
-			int expectedCount, String search, int suggestionsSize)
+	private void _assertSuggestionsCounts(
+			int[] expectedCounts, String search, int[] suggestionsSizes)
 		throws Exception {
+
+		SuggestionsContributorConfiguration[]
+			suggestionsContributorConfigurations =
+				new SuggestionsContributorConfiguration[suggestionsSizes.length];
+
+		for (int i = 0; i < suggestionsSizes.length; i++) {
+			int suggestionsSize = suggestionsSizes[i];
+
+			suggestionsContributorConfigurations[i] =
+				new SuggestionsContributorConfiguration() {
+					{
+						contributorName = "basic";
+						displayGroupName = RandomTestUtil.randomString();
+						size = suggestionsSize;
+					}
+				};
+		}
 
 		Page<SuggestionsContributorResults> suggestionsPage =
 			_postSuggestionsPage(
 				"http://localhost:" + PortalUtil.getPortalServerPort(false) +
 					"/web/guest/home",
 				"/search", null, "q", _layout.getPlid(), null, search,
-				new SuggestionsContributorConfiguration[] {
-					new SuggestionsContributorConfiguration() {
-						{
-							contributorName = "basic";
-							displayGroupName = RandomTestUtil.randomString();
-							size = suggestionsSize;
-						}
-					}
-				});
+				suggestionsContributorConfigurations);
 
-		SuggestionsContributorResults suggestionsContributorResults =
-			suggestionsPage.fetchFirstItem();
+		List<Integer> suggestionsCounts = new ArrayList<>();
 
-		Suggestion[] suggestions =
-			suggestionsContributorResults.getSuggestions();
+		for (SuggestionsContributorResults suggestionsContributorResults :
+				suggestionsPage.getItems()) {
+
+			Suggestion[] suggestions =
+				suggestionsContributorResults.getSuggestions();
+
+			suggestionsCounts.add(suggestions.length);
+		}
 
 		Assert.assertEquals(
-			Arrays.toString(suggestions), expectedCount, suggestions.length);
+			Arrays.toString(expectedCounts), suggestionsCounts.toString());
 	}
 
 	private String _getAssetURL(Layout destinationLayout, String search)
@@ -698,11 +712,13 @@ public class SuggestionResourceTest extends BaseSuggestionResourceTestCase {
 						MapUtil.singletonDictionary(
 							"suggestionsSizeLimit", 2))) {
 
-			_assertSuggestionsCount(1, search, 1);
-			_assertSuggestionsCount(2, search, 3);
+			_assertSuggestionsCounts(new int[] {1}, search, new int[] {1});
+			_assertSuggestionsCounts(new int[] {2}, search, new int[] {3});
+			_assertSuggestionsCounts(
+				new int[] {2, 1, 2}, search, new int[] {3, 1, 3});
 		}
 
-		_assertSuggestionsCount(3, search, 3);
+		_assertSuggestionsCounts(new int[] {3}, search, new int[] {3});
 	}
 
 	@Inject
